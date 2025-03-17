@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical"
+    android:layout_margin="@dimen/activity_margin_10"
+    android:background="@drawable/bg_register"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin_20"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/activity_top_margin_10"
+            android:layout_height="wrap_content">
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_5sdp"
+
+                android:text="@string/voucherFlashSale"
+                android:textSize="@dimen/text_size_13"
+                android:paddingHorizontal="@dimen/activity_horizontal_padding_15"
+
+                android:background="@drawable/bg_voucher_flash_sale"
+
+                android:textColor="@color/color0095FF"
+                android:textStyle="bold"
+
+
+                />
+
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/activity_start_margin_10"
+                android:gravity="right|clip_horizontal"
+
+                android:text="3 ngày"
+                android:textSize="@dimen/text_size_13"
+                android:paddingHorizontal="@dimen/activity_horizontal_padding_15"
+
+
+
+                android:textColor="@color/AFAFAF"
+                android:textStyle="bold"
+
+
+                />
+        </LinearLayout>
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bạn đã nhận được 1 Voucher ưu đãi 30K"
+            android:textSize="@dimen/text_size_15"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/activity_top_margin_15"
+            />
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_bottom_margin_10"
+            android:text="Chào mừng thành viên mới. Contrast xin gửi tặng cậu một Voucher"
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@color/AFAFAF"
+            android:layout_marginTop="@dimen/activity_top_margin_15"
+            />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

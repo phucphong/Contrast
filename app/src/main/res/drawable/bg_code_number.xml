@@ -1,0 +1,10 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Nền trắng -->
+    <solid android:color="@android:color/white" />
+
+    <!-- Không có viền ở các cạnh -->
+    <corners android:radius="0dp" />
+
+    <!-- Chỉ có viền dưới màu đen -->
+    <stroke android:color="#000000" android:width="2dp" android:dashWidth="0dp" android:dashGap="0dp" />
+</shape>

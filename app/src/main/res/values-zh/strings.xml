@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">对比</string>
+    <string name="register_account">注册账户</string>
+    <string name="phone_number">电话号码</string>
+    <string name="phone_placeholder">输入电话号码</string>
+    <string name="password">密码</string>
+    <string name="password_placeholder">输入密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="confirm_password_placeholder">重新输入密码</string>
+    <string name="info_account">个人信息</string>
+    <string name="full_name">全名</string>
+    <string name="ex_full_name">例如：张伟</string>
+    <string name="occupation">职业</string>
+    <string name="ex_occupation">例如：软件工程师</string>
+    <string name="email">电子邮件</string>
+    <string name="email_placeholder">输入您的电子邮件</string>
+    <string name="warning_title">注意：</string>
+    <string name="warning_message">注册完成后，您将无法更改个人信息和生日。\n\n因此，请确保信息是正确的。</string>
+    <string name="create_account_button">创建账户</string>
+    <string name="password_length">必须包含 8 - 15 个字符</string>
+    <string name="password_digit">至少 1 个数字</string>
+    <string name="password_uppercase">至少 1 个大写字母</string>
+    <string name="password_lowercase">至少 1 个小写字母</string>
+    <string name="password_special">至少 1 个特殊字符 (例如: !, @, #, $, %, ^)</string>
+    <string name="contact_info">其他联系信息</string>
+    <string name="onboarding_title_1">磨杵成针</string>
+    <string name="onboarding_desc_1">顾客每次购物都会累积积分，提升等级，并获得Contrast的独家优惠。</string>
+
+    <string name="onboarding_title_2">滴水穿石</string>
+    <string name="onboarding_desc_2">使用累积积分兑换优惠券和独家商品等精彩奖励。</string>
+
+    <string name="onboarding_title_3">活动</string>
+    <string name="onboarding_desc_3">获取最新活动、促销和Contrast的独家优惠信息。</string>
+
+    <string name="onboarding_title_4">坚持与纪律</string>
+    <string name="onboarding_desc_4">Contrast Coffee很荣幸能成为您成功旅途上的可靠伙伴。</string>
+
+    <string name="next_button">继续</string>
+    <string name="finish_button">立即探索</string>
+    <string name="otp_sent">验证码已发送至 %1$s</string>
+    <string name="otp_title">验证 OTP</string>
+    <string name="otp_timer">有效期 %1$d:%2$02d</string>
+    <string name="otp_resend_question">未收到验证码？</string>
+    <string name="otp_resend">重新发送</string>
+    <string name="welcome_title">欢迎来到 Contrast Coffee</string>
+    <string name="welcome_subtitle">动力开始的地方！</string>
+
+
+</resources>

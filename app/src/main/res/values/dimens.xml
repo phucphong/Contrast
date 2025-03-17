@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_top_margin_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_vertical_margin_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_horizontal_margin_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_vertical_margin_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_horizontal_margin_15">@dimen/_15sdp</dimen>
+    <dimen name="activity_vertical_margin_15">@dimen/_15sdp</dimen>
+    <dimen name="activity_horizontal_margin_30">@dimen/_30sdp</dimen>
+    <dimen name="activity_horizontal_margin_20">@dimen/_20sdp</dimen>
+    <dimen name="activity_vertical_margin_30">@dimen/_30sdp</dimen>
+    <dimen name="activity_vertical_margin_20">@dimen/_20sdp</dimen>
+    <dimen name="activity_bottom_margin_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_bottom_margin_20">@dimen/_20sdp</dimen>
+    <dimen name="activity_bottom_margin_30">@dimen/_30sdp</dimen>
+    <dimen name="activity_bottom_margin_40">@dimen/_40sdp</dimen>
+    <dimen name="activity_bottom_margin_50">@dimen/_50sdp</dimen>
+    <dimen name="activity_input_padding">@dimen/_15sdp</dimen>
+
+
+    <dimen name="activity_horizontal_margin_50">@dimen/_50sdp</dimen>
+    <dimen name="activity_vertical_margin_50">@dimen/_50sdp</dimen>
+
+    <dimen name="activity_horizontal_padding_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_vertical_padding_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_horizontal_padding_7">@dimen/_7sdp</dimen>
+    <dimen name="activity_vertical_padding_7">@dimen/_7sdp</dimen>
+    <dimen name="activity_horizontal_padding_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_vertical_padding_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_horizontal_padding_15">@dimen/_15sdp</dimen>
+    <dimen name="activity_vertical_padding_15">@dimen/_15sdp</dimen>
+
+    <dimen name="activity_margin_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_margin_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_margin_15">@dimen/_15sdp</dimen>
+    <dimen name="activity_top_margin_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_start_margin_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_start_margin_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_top_margin_15">@dimen/_15sdp</dimen>
+    <dimen name="activity_top_margin_20">@dimen/_20sdp</dimen>
+    <dimen name="activity_top_margin_30">@dimen/_30sdp</dimen>
+    <dimen name="activity_top_margin_50">@dimen/_50sdp</dimen>
+    <dimen name="activity_top_margin_150">@dimen/_150sdp</dimen>
+
+    <dimen name="activity_padding_5">@dimen/_5sdp</dimen>
+    <dimen name="activity_padding_10">@dimen/_10sdp</dimen>
+    <dimen name="activity_padding_15">@dimen/_15sdp</dimen>
+    <dimen name="activity_5sdp">@dimen/_5sdp</dimen>
+    <dimen name="activity_10sdp">@dimen/_10sdp</dimen>
+    <dimen name="activity_30sdp">@dimen/_30sdp</dimen>
+    <dimen name="activity_40sdp">@dimen/_40sdp</dimen>
+    <dimen name="activity_20sdp">@dimen/_20sdp</dimen>
+    <dimen name="activity_25sdp">@dimen/_25sdp</dimen>
+
+    <dimen name="activity_top_padding_10">@dimen/_10sdp</dimen>
+    <dimen name="text_size_10">@dimen/_10ssp</dimen>
+    <dimen name="text_size_12">@dimen/_12ssp</dimen>
+    <dimen name="text_size_13">@dimen/_13ssp</dimen>
+    <dimen name="text_size_14">@dimen/_14ssp</dimen>
+    <dimen name="text_size_15">@dimen/_15ssp</dimen>
+    <dimen name="text_size_16">@dimen/_16ssp</dimen>
+    <dimen name="text_size_18">@dimen/_18ssp</dimen>
+    <dimen name="text_size_20">@dimen/_20ssp</dimen>
+    <dimen name="text_size_22">@dimen/_22ssp</dimen>
+    <dimen name="text_size_24">@dimen/_24ssp</dimen>
+    <dimen name="text_size_25">@dimen/_25ssp</dimen>
+    <dimen name="text_size_30">@dimen/_30ssp</dimen>
+
+
+    <dimen name="text_size_32">@dimen/_32ssp</dimen>
+
+    <dimen name="text_size_34">34sp</dimen>
+
+
+</resources>

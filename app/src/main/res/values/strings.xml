@@ -1,0 +1,927 @@
+<resources xmlns:tools="http://schemas.android.com/tools" translatable="false">
+
+
+    <string name="register_account" translatable="false">Tạo tài khoản</string>
+    <string name="phone_number" translatable="false">Số điện thoại</string>
+    <string name="password" translatable="false">Mật khẩu</string>
+    <string name="password_new" translatable="false">Mật khẩu mới</string>
+    <string name="confirm_password" translatable="false">Xác nhận mật khẩu mới</string>
+    <string name="info_account" translatable="false">Thông tin cá nhân</string>
+    <string name="full_name" translatable="false">Họ và tên</string>
+    <string name="occupation" translatable="false">Nghề nghiệp</string>
+    <string name="ex_occupation" translatable="false">vd: Học sinh</string>
+    <string name="ex_full_name" translatable="false">vd: Nguyễn Phúc Phong</string>
+    <string name="cancel">Huỷ</string>
+    <string name="notification_permission_title">Ứng dụng bị từ chối truy cập</string>
+    <string name="notification_permission_message">Để bật thông báo, vui lòng vào Cài đặt và cho phép thông báo cho ứng dụng này.</string>
+    <string name="email_placeholder">Nhập email của bạn</string>
+    <string name="warning_title">Lưu ý:</string>
+    <string name="warning_message">Bạn sẽ không thể thay đổi thông tin cá nhân &amp; sinh nhật sau khi đăng ký thành công.\n\nVì vậy, hãy chắc chắn các thông tin đã chính xác.</string>
+    <string name="location_permission_title">Cho phép Contrast truy cập vị trí</string>
+    <string name="location_permission_message">Bạn cần bật quyền truy xuất dịch vụ định vị để xác định vị trí hiện tại.</string>
+    <string name="accept">Đồng ý</string>
+
+    <string name="membership_policy_points">CHÍNH SÁCH ĐIỂM</string>
+    <string name="membership_policy_details">
+        KAT là gì?
+        KAT là đơn vị tính điểm của KATINAT. 1 KAT = 10.000 VND.
+
+        Phân loại điểm:
+        1. Điểm tích lũy: dùng để xét hạng thành viên.
+        2. Điểm quy đổi: dùng để quy đổi mã ưu đãi.
+
+        Quy tắc làm tròn điểm:
+        - +0.5 làm tròn điểm xuống (VD: 74.4000 → 7 KAT).
+        - -0.5 làm tròn điểm lên (VD: 75.0000 → 8 KAT).
+
+        Cách thức tích điểm tại cửa hàng:
+        - Quét QR tích điểm qua Momo tại cửa hàng.
+        - Điểm tích lũy cập nhật trong vòng 30 phút.
+    </string>
+    <string name="biometric_disable_title">Bạn có chắc chắn?</string>
+    <string name="biometric_disable_message">Nếu bạn tắt mở khóa bằng sinh trắc học, bạn cần phải nhập mật khẩu cho mỗi lần đăng nhập tiếp theo.\n\nBạn có muốn tiếp tục?</string>
+    <string name="disable_biometric">Tắt khóa bằng sinh trắc học</string>
+    <string name="language_english">Tiếng Anh</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="forgot_password_title">Quên mật mã?</string>
+    <string name="forgot_password_message">Vì lý do bảo mật, bạn sẽ bị đăng xuất ra khỏi tài khoản. Để tạo mật mã mới, vui lòng đăng nhập lại và vào mục Cài đặt > Bảo mật.\n\nBạn có muốn tiếp tục?</string>
+    <!-- Chính sách thành viên -->
+    <string name="membership_policy_title">Chính sách thành viên</string>
+    <string name="membership_policy_heading">CHÍNH SÁCH THÀNH VIÊN</string>
+
+    <!-- Chính sách điểm -->
+    <string name="points_policy_title">CHÍNH SÁCH ĐIỂM</string>
+    <string name="what_is_kat">KAT là gì?</string>
+    <string name="kat_definition">KAT là đơn vị tích điểm của KATINAT\n1 KAT = 10.000VNĐ.</string>
+
+    <string name="point_types">Phân loại điểm (KAT)</string>
+    <string name="point_types_description">Hiện tại KATINAT có hai loại điểm:</string>
+    <string name="point_types_accumulation">1. Điểm thành viên\nChức năng: dùng để xét hạng thành viên.</string>
+    <string name="point_types_bonus">2. Điểm tích luỹ: Dùng để quy đổi mã ưu đãi.</string>
+
+    <string name="rounding_rules">Quy tắc làm tròn điểm</string>
+    <string name="rounding_rules_description">+ 0.5* làm tròn điểm xuống [VD: 74.000đ = 7 KAT].\n+ ≥ 0.5 làm tròn lên [VD: 75.000đ = 8 KAT].</string>
+
+    <string name="how_to_earn_points">Cách thức tích điểm</string>
+    <string name="how_to_earn_points_description">Thông qua 1 trong hai hình thức:</string>
+    <string name="how_to_earn_points_method1">1. Quét QR tích điểm qua máy Scan Momo tại cửa hàng.</string>
+    <string name="how_to_earn_points_method2">2. Đọc số điện thoại thành viên cho nhân viên cửa hàng, điểm sẽ tích vào tài khoản sau 30 phút.</string>
+
+    <string name="point_accumulation_rules">Quy định tích điểm</string>
+    <string name="point_accumulation_rules_description">KATINAT chỉ hỗ trợ tích điểm bù cho khách hàng trong vòng 24h kể từ thời gian mua hàng.</string>
+
+    <!-- Chính sách xét hạng -->
+    <string name="rank_policy_title">CHÍNH SÁCH XÉT HẠNG</string>
+    <string name="rank_policy_heading">CHÍNH SÁCH XÉT HẠNG</string>
+    <string name="rank_policy_description">Đối tượng xét hạng\nÁp dụng với thành viên Silver, Gold và Black Diamond.\n* Black Diamond là hạng Bạch Kim ở hệ thống cũ.</string>
+
+    <string name="rank_evaluation_time">Thời gian xét hạng</string>
+    <string name="rank_evaluation_description">Trong vòng 03 tháng kể từ ngày bạn lên hạng hoặc xuống hạng.</string>
+    <string name="rank_evaluation_case">Trường hợp: Bạn đang là hạng Bạc, Vàng, Bạch Kim của hệ thống cũ thời gian xét hạng sẽ tính từ ngày bạn đăng ký tài khoản KATINAT APP.</string>
+
+    <string name="how_to_keep_rank">Làm thế nào để giữ hạng?</string>
+    <string name="how_to_keep_rank_description">Trong 03 tháng này tài khoản thành viên cần phát sinh 01 đơn hàng để giữ hạng thành công.</string>
+    <string name="rank_drop_rules_description">1. Điểm tích luỹ: Giữ nguyên không bị ảnh hưởng.\n2. Điểm thành viên: Rớt xuống điểm cao nhất của hạng liền kề bên dưới.\n+ Rớt hạng ở bất kỳ điểm nào khi là Silver Member sẽ về 99 điểm New Member.\n+ Rớt hạng ở bất kỳ điểm nào khi là Gold Member sẽ về 499 điểm Silver.\n+ Rớt hạng ở bất kỳ điểm nào khi là Black Diamond sẽ về 999 điểm Gold.</string>
+    <string name="rank_drop_rules">Quy định mức điểm khi rớt hạng</string>
+    <string name="rank_drop_rules_keep_points">1. Điểm tích luỹ: Giữ nguyên không bị ảnh hưởng.</string>
+    <string name="rank_drop_rules_demote">2. Điểm thành viên: Rớt xuống điểm cao nhất của hạng liền kề bên dưới.</string>
+    <string name="rank_drop_rules_silver">+ Rớt hạng ở bất kỳ điểm nào khi là Silver Member sẽ về 99 điểm New Member.</string>
+    <string name="rank_drop_rules_gold">+ Rớt hạng ở bất kỳ điểm nào khi là Gold Member sẽ về 499 điểm Silver.</string>
+    <string name="rank_drop_rules_black_diamond">+ Rớt hạng ở bất kỳ điểm nào khi là Black Diamond sẽ về 999 điểm Gold.</string>
+    <string name="birthday">Sinh nhật</string>
+    <string name="birthday_description">Contrast Coffee sẽ tặng bạn một món quà nhỏ trong dịp đặc biệt này 🥰</string>
+    <string name="day_placeholder">DD</string>
+    <string name="month_placeholder">MM</string>
+    <string name="year_placeholder">YY</string>
+    <string name="biometric_title">Kích hoạt xác thực sinh trắc học?</string>
+    <string name="do_not_show_again">Không hiện lần nữa</string>
+    <string name="activate_biometric">Kích hoạt sinh trắc học</string>
+
+    <string name="faceid_title">Bạn có muốn cho phép "Contrast" sử dụng FaceID không?</string>
+    <string name="faceid_message">Contrast yêu cầu quyền truy cập FaceID để cho phép bạn truy cập nhanh chóng và bảo mật thông tin.</string>
+    <string name="agree">Đồng ý</string>
+    <string name="faceid">Face id</string>
+    <string name="personal_info_title">Thông tin cá nhân</string>
+    <string name="personal_info_heading">THÔNG TIN CÁ NHÂN</string>
+
+    <string name="personal_info_warning">Bạn sẽ không thể thay đổi thông tin cá nhân  &amp;  sinh nhật.</string>
+
+    <string name="decline">Từ chối</string>
+    <string name="password_reset_success">Thiết lập mật khẩu mới thành công</string>
+    <string name="password_reset_message">Hãy đăng nhập lại để tiếp tục!</string>
+    <string name="continue_button">Tiếp tục</string>
+    <string name="feedback_success_title">Gửi phản hồi thành công</string>
+    <string name="feedback_success_message">Phản hồi của bạn giúp Contrast Coffee nâng cao chất lượng dịch vụ tốt hơn.</string>
+    <string name="password_length">Bao gồm 8 - 15 ký tự</string>
+    <string name="password_digit">Ít nhất 1 chữ số</string>
+    <string name="congratulations">Chúc mừng!</string>
+    <string name="received_points">Bạn đã nhận thêm +20 🏆</string>
+    <string name="redeem_voucher">Đổi voucher</string>
+
+    <string name="voucher_redeem_success">Bạn đã đổi voucher thành công!</string>
+    <string name="view_vouchers">Xem các voucher bạn đang sở hữu</string>
+    <string name="password_uppercase">Có ít nhất 1 chữ in hoa</string>
+    <string name="password_lowercase">Có ít nhất 1 chữ thường</string>
+    <string name="password_special">Có ít nhất 1 ký tự đặc biệt (vd: !, @, #, $, %, ^)</string>
+    <string name="contact_info">Thông tin liên hệ khác</string>
+    <string name="events_happening">Sự kiện đang diễn ra</string>
+    <string name="store_list">Danh sách cửa hàng</string>
+    <string name="see_all">XEM TẤT CẢ</string>
+    <string name="feedback">Phản hồi</string>
+    <string name="greeting">Contrast xin chào 👋</string>
+    <string name="add_money">+ Nạp tiền</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="error_invalid_login">Số điện thoại hoặc mật khẩu không đúng</string>
+    <string name="onboarding_title_1">Có công mài sắt</string>
+    <string name="onboarding_desc_1">Khách hàng tích lũy điểm qua mỗi lần mua sắm, thắng hạng và nhận ưu đãi đặc biệt từ Contrast.</string>
+
+    <string name="onboarding_title_2">Có ngày nên kim</string>
+    <string name="onboarding_desc_2">Dùng điểm tích lũy để đổi các phần quà hấp dẫn như voucher và vật phẩm độc quyền.</string>
+
+    <string name="onboarding_title_3">Sự kiện</string>
+    <string name="onboarding_desc_3">Cập nhật thông tin về các sự kiện, khuyến mãi và ưu đãi đặc biệt từ Contrast.</string>
+
+    <string name="onboarding_title_4">Kiên trì, Kỉ luật</string>
+    <string name="onboarding_desc_4">Contrast Coffee tự hào là người đồng hành đáng tin cậy trên con đường trở thành công dân tốt.</string>
+
+    <string name="next_button">Tiếp tục</string>
+    <string name="finish_button">Khám phá ngay</string>
+    <string name="register_title">Tạo tài khoản</string>
+    <string name="phone_label">Số điện thoại *</string>
+    <string name="otp_sent">Mã xác nhận đã được gửi vào số %1$s</string>
+    <string name="otp_title">Xác nhận OTP</string>
+    <string name="otp_timer">Có hiệu lực trong %1$d:%2$02d</string>
+    <string name="otp_resend_question">Bạn chưa nhận được mã?</string>
+    <string name="otp_resend">Gửi lại</string>
+    <string name="welcome_title">Chào mừng đến với Contrast Coffee</string>
+    <string name="welcome_subtitle">Nơi động lực bắt đầu!</string>
+    <string name="alert_title">Thông báo</string>
+    <string name="ok">OK</string>
+    <string name="success_message">Lưu thành công</string>
+    <string name="timeout_message">Quá thời gian tải, vui lòng thử lại!</string>
+    <string name="error_empty_phone">Đện thoại không được để trống!</string>
+    <string name="error_invalid_phone">Đện thoại không đúng định dạng!</string>
+    <string name="error_empty_fullname">Họ tên không được để trống!</string>
+    <string name="error_empty_password">Mật khẩu không được để trống!</string>
+    <string name="error_empty_re_password">Nhập lại mật khẩu không được để trống!</string>
+    <string name="error_unknown">Không xác định</string>
+    <string name="registered_phone">Số điện thoại đã đăng ký!</string>
+    <string name="registered_email">Email đã đăng ký!</string>
+
+    <string name="error_connection">Lỗi kết nối</string>
+    <string name="error_invalid_length">Mật khẩu phải từ 8 - 15 ký tự!</string>
+    <string name="error_missing_number">Mật khẩu phải chứa ít nhất một chữ số!</string>
+    <string name="error_missing_uppercase">Mật khẩu phải chứa ít nhất một chữ in hoa!</string>
+    <string name="error_missing_lowercase">Mật khẩu phải chứa ít nhất một chữ thường!</string>
+    <string name="error_missing_special_char">Mật khẩu phải chứa ít nhất một ký tự đặc biệt (vd: !, @, #, $, %)!</string>
+    <string name="error_password_mismatch">Mật khẩu nhập lại không khớp!</string>
+
+
+    <string name="confirm_button">Xác nhận</string>
+    <string name="policy_text">
+        Bằng việc nhấn “Xác nhận”, bạn đã đồng ý thực hiện mọi giao dịch theo
+        <b>Quy chế hoạt động</b> và <b>Chính sách bảo vệ thông tin khách hàng</b> của Contrast Coffee
+    </string>
+
+
+    <string name="logout" translatable="false">Đăng xuất</string>
+    <string name="internetNotConnect" translatable="false">Mất kết nối internet!</string>
+    <string name="expiredToken" translatable="false"> Phiên bản đăng nhập đã hết hạn vui lòng liên hệ người quản lý!</string>
+    <string name="passwordChangeDueDate" translatable="false">Đã đến hạn đổi mật khẩu vui lòng đổi mật khẩu!</string>
+    <string name="pleaseChangePassword" translatable="false">Vui lòng đổi mật khẩu lần đầu tiên khi sử dụng!</string>
+
+    <string name="changePasswordComplete" translatable="false">Đổi mật khẩu thành công!</string>
+    <string name="showProduct" translatable="false">Hiển thị sản phẩm</string>
+    <string name="support" translatable="false">Hỗ trợ: 02432018959</string>
+    <string name="setting" translatable="false">Cài đặt</string>
+    <string name="settingAccount" translatable="false">Thiết lập tài khoản</string>
+    <string name="please_enter_account" translatable="false">Vui lòng nhập tài khoản!</string>
+    <string name="please_enter_pass" translatable="false">Vui lòng nhập mật khẩu!</string>
+
+    <string name="confirmDeletion" translatable="false">Xác nhận xóa?</string>
+    <string name="noOder" translatable="false">Chưa có đơn hàng</string>
+    <string name="noSearchOder" translatable="false">Không có sản phẩm chứa từ khoá bạn đang tìm</string>
+    <string name="noSearchNews" translatable="false">Không có tin tức chứa từ khoá bạn đang tìm</string>
+    <string name="noSearchVideo" translatable="false">Không có video chứa từ khoá bạn đang tìm</string>
+    <string name="noProduct" translatable="false">Không có sản phẩm</string>
+    <string name="noVideo" translatable="false">Không có video</string>
+
+
+    <string name="create_account_button" translatable="false">Tạo tài khoản</string>
+    <string name="phone_placeholder" translatable="false">Nhập số điện thoại của bạn</string>
+    <string name="password_placeholder" translatable="false">Nhập mật khẩu mới của bạn</string>
+    <string name="confirm_password_placeholder" translatable="false">Nhập mật khẩu xác nhận của bạn</string>
+    <string name="emptyCart" translatable="false">Giỏ hàng đang trống</string>
+
+    <string name="noDataNews" translatable="false">Không có tin tức</string>
+    <string name="editExchange" translatable="false">Sửa trao đổi</string>
+    <string name="addExchange" translatable="false">Thêm trao đổi</string>
+    <string name="addCustomer" translatable="false">Thêm khách hàng</string>
+    <string name="editCustomer" translatable="false">Sửa khách hàng</string>
+    <string name="editAgency" translatable="false">Sửa đại lý</string>
+    <string name="youCanNotSpaAtHome" translatable="false">Bạn chưa có hướng dẫn spa nào </string>
+    <string name="addAgency" translatable="false">Thêm đại lý</string>
+    <string name="active" translatable="false">Hoạt động</string>
+    <string name="editContact" translatable="false">Sửa liên hệ</string>
+    <string name="addContact" translatable="false">Thêm liên hệ</string>
+    <string name="emailErrorFormat" translatable="false">Email sai định dạng</string>
+    <string name="emailRegister" translatable="false">Email đã được đăng ký</string>
+    <string name="phoneRegister" translatable="false">Số điện thoại đã được sử dụng!</string>
+    <string name="customerKeyRegister" translatable="false">Mã khách hàng đã được đăng ký</string>
+    <string name="youMayWantToDelete" translatable="false">Bạn có muốn xóa không?</string>
+    <string name="youConnectOtherDomain" translatable="false">Đang truy cập vào 1 đường dẫn khác, bạn có muốn tiếp tục không?</string>
+    <string name="cart" translatable="false">Giỏ hàng</string>
+
+
+    <string name="login" translatable="false">Đăng nhập</string>
+    <string name="account" translatable="false">Tài khoản</string>
+    <string name="accountAlikeEmail" translatable="false">Giống email</string>
+
+    <string name="savePassword" translatable="false">Lưu mật khẩu</string>
+    <string name="passwordNew" translatable="false">Mật khẩu mới</string>
+    <string name="reNewPassword" translatable="false">Nhập lại mật khẩu</string>
+
+    <string name="totalSales" translatable="false">Tổng doanh số</string>
+    <string name="percentageOfBenefit" translatable="false">Phần trăm hưởng</string>
+    <string name="amountOfBenefit" translatable="false">Số tiền được hưởng</string>
+    <string name="numberOderWaitingConfirm" translatable="false">Số lượng đơn hàng chờ xác nhận </string>
+    <string name="numberOderConfirm" translatable="false">Số lượng đơn hàng đã xác nhận: </string>
+    <string name="amountCostOnPrice" translatable="false">Số tiền chi tiêu cá nhân tính trên giá gốc </string>
+    <string name="amountCostOnPriceDiscountLevel" translatable="false">Số tiền chi tiêu cá nhân tính trên giá chiết khấu hạng </string>
+    <string name="totalAmountAgencyPrice" translatable="false">Số tiền đại lý cấp dưới mang về tính trên giá gốc </string>
+    <string name="totalAmountAgencyPriceDiscount" translatable="false">Số tiền đại lý cấp dưới mang về tính trên giá chiết khấu hạng </string>
+    <string name="numberOderWaitingConfirmed" translatable="false">Số lượng đơn hàng đã xác nhận: </string>
+    <string name="savedSuccessfully" translatable="false">Lưu thành công</string>
+    <string name="savedSuccessfullyEvaluate" translatable="false">Lưu đánh giá thành công</string>
+    <string name="savedSuccessfullyTimekeeping" translatable="false">Chấm công thành công lúc&#160; </string>
+    <string name="registerAgencySuccessfully" translatable="false">Chúc mừng bạn đã đăng ký trở thành đại lý thành công</string>
+    <string name="registerAccountSuccessfully" translatable="false">Đăng ký tài khoản thành công!</string>
+    <string name="registerAccountAgency" translatable="false">Đăng ký trở thành đại lý với Qr Code</string>
+    <string name="agencyPolicy" translatable="false">Chính sách đại lý</string>
+    <string name="dataNotAvailable" translatable="false">Dữ liệu không tồn tại hoặc đã bị xóa!</string>
+    <string name="videoNotAvailable" translatable="false">Video không tồn tại hoặc đã bị xóa!</string>
+    <string name="imageSelectMax" translatable="false">Tối đa chỉ được 6 ảnh </string>
+    <string name="videoSelectMax" translatable="false">Tối đa chỉ được 6 video </string>
+
+
+    <string name="editRegisterAgency" translatable="false">Sửa đại lý</string>
+    <string name="registerAgency" translatable="false">Thêm đại lý</string>
+    <string name="sorryAnErrorOccurred" translatable="false">Rất tiếc đã sảy ra lỗi!&#160; </string>
+    <string name="pleaseChoseProduct" translatable="false">Vui lòng chọn sản phẩm trước khi thanh toán! </string>
+    <string name="addProductSuccessful" translatable="false">Thêm sản phẩm thành công! </string>
+    <string name="accountOrPasswordError" translatable="false">Tài khoản hoặc mật khẩu không đúng!</string>
+    <string name="accountEmtry" translatable="false">Tài khoản đang trống!</string>
+    <string name="passwordEmtry" translatable="false">Mật khẩu đang trống!</string>
+    <string name="accountAndPasswordEmtry" translatable="false">Tài khoản và mật khẩu đang trống!</string>
+    <string name="pleaseEnterFullName" translatable="false">Vui lòng nhập họ tên!</string>
+    <string name="pleaseEnterPhone" translatable="false">Vui lòng nhập điện thoại!</string>
+    <string name="pleaseEnterPassword" translatable="false">Vui lòng nhập mật khẩu!</string>
+    <string name="pleaseEnterNewPassword" translatable="false">Vui lòng nhập mật khẩu mới!</string>
+    <string name="pleaseEnterReNewPassword" translatable="false">Vui lòng nhập lại mật khẩu mới!</string>
+    <string name="pleaseEnterReNewPasswordInCorect" translatable="false">Mật khẩu mới không khớp vui lòng nhập lại!</string>
+    <string name="pleaseEnterName" translatable="false">Vui lòng nhập tên!</string>
+    <string name="pleaseEnterStartDate" translatable="false">Vui lòng nhập bắt đầu!</string>
+    <string name="pleaseEnterEndDate" translatable="false">Vui lòng nhập kết thúc!</string>
+    <string name="pleaseEnterComplete" translatable="false">Vui lòng nhập hoàn thành!</string>
+    <string name="pleaseChoseProjectManagement" translatable="false">Vui lòng chọn quản lý dự án!</string>
+    <string name="pleaseChosePersonInCharge" translatable="false">Vui lòng chọn người phụ trách</string>
+    <string name="pleaseChoseDateOfCost" translatable="false">Vui lòng chọn ngày chi</string>
+    <string name="pleaseChosePersonCost" translatable="false">Vui lòng chọn người chi</string>
+    <string name="pleaseChoseCustomer" translatable="false">Vui lòng chọn khách hàng!</string>
+    <string name="pleaseChosePersonReceiver" translatable="false">Vui lòng chọn người nhận!</string>
+    <string name="pleaseEnterCosttype" translatable="false">Vui lòng nhập số tiền!</string>
+    <string name="pleaseChoseCostType" translatable="false">Vui lòng chọn loại chi phí!</string>
+    <string name="pleaseChoseProject" translatable="false">Vui lòng chọn dự án!</string>
+    <string name="pleaseChoseContact" translatable="false">Vui lòng chọn liên hệ!</string>
+    <string name="pleaseChoseOpportunities" translatable="false">Vui lòng chọn cơ hội kinh doanh!</string>
+    <string name="pleaseEnterVerificationCodes" translatable="false">Vui lòng nhập tên miền hoặc mã xác thực!</string>
+    <string name="pleaseChoseProductName" translatable="false">Vui lòng chọn sản phẩm!</string>
+    <string name="pleaseChoseUnitName" translatable="false">Vui lòng chọn đơn vị!</string>
+    <string name="pleaseEnterCountNumber" translatable="false">Vui lòng nhập số lượng!</string>
+    <string name="pleaseEnterCountNumberOther0" translatable="false">Vui lòng nhập số lượng >0!</string>
+    <string name="pleaseChoseMoneyFund" translatable="false">Vui lòng chọn quỹ tiền!</string>
+    <string name="pleaseEnterAmountOfMoney" translatable="false">Vui lòng nhập số tiền >0!</string>
+    <string name="pleaseEnterAmountOfMoneyBiggerRemainingCostLimit" translatable="false">Vui lòng nhập số tiền > hạn mức chi phí!</string>
+    <string name="pleaseEnterCustomerKey" translatable="false">Vui lòng nhập mã khách hàng!</string>
+    <string name="pleaseEnterKey" translatable="false">Vui lòng nhập mã!</string>
+    <string name="pleaseEnterWorkName" translatable="false">Vui lòng nhập tên công việc!</string>
+
+    <string name="percentComplete" translatable="false">Phần trăm hoàn  thành</string>
+    <string name="overview" translatable="false">Tổng quan</string>
+    <string name="viewAll" translatable="false">Xem tất cả</string>
+    <string name="viewedNow" translatable="false">Đã xem gần đây</string>
+    <string name="viewAdd" translatable="false">Xem thêm</string>
+    <string name="createOpportunities" translatable="false">Cần tư vấn thêm</string>
+    <string name="opportunities" translatable="false">Cơ hội kinh doanh</string>
+    <string name="opportunitiesName" translatable="false">Tên cơ hội</string>
+    <string name="opportunitiesKeyRegister" translatable="false">Mã cơ hội kinh doanh đã được đăng ký</string>
+    <string name="opportunitiesCost" translatable="false">Chi phí cơ hội kinh doanh</string>
+    <string name="productOpportunities" translatable="false">Sản phẩm cơ hội kinh doanh</string>
+    <string name="youCanNotProduct" translatable="false">Bạn chưa có sản phẩm </string>
+    <string name="viewProductOpportunities" translatable="false">Chi tiết sản phẩm CHKD</string>
+    <string name="viewProductProject" translatable="false">Chi tiết sản phẩm dự án</string>
+    <string name="addProductOpportunities" translatable="false">Thêm sản phẩm cơ hội kinh doanh</string>
+    <string name="editProductOpportunities" translatable="false">Sửa sản phẩm cơ hội kinh doanh</string>
+    <string name="productProject" translatable="false">Sản phẩm cơ dự án</string>
+    <string name="editOpportunities" translatable="false">Sửa cơ hội kinh doanh</string>
+    <string name="editWork" translatable="false">Sửa công việc </string>
+    <string name="editWorkOpportunities" translatable="false">Sửa công việc CHKD</string>
+    <string name="editOpportunitiesCost" translatable="false">Sửa chi phí cơ hội kinh doanh</string>
+    <string name="addOpportunitiesCost" translatable="false">Thêm chi phí cơ hội kinh doanh</string>
+    <string name="addOpportunities" translatable="false">Thêm cơ hôị kinh doanh</string>
+    <string name="addWorkOpportunities" translatable="false">Thêm công việc CHKD</string>
+    <string name="addWork" translatable="false">Thêm công việc </string>
+    <string name="addWorkProject" translatable="false">Thêm công việc dự án</string>
+    <string name="addWorkOther" translatable="false">Thêm công việc khác</string>
+    <string name="addProject" translatable="false">Thêm dự án</string>
+    <string name="addProjectCost" translatable="false">Thêm chi phí dự án</string>
+    <string name="projectCost" translatable="false">Chi phí dự án</string>
+    <string name="addProductProject" translatable="false">Thêm sản phẩm dự án</string>
+    <string name="editProductProject" translatable="false">Sửa sản phẩm dự án</string>
+    <string name="editProject" translatable="false">Sửa dự án</string>
+    <string name="editWorkProject" translatable="false">Sửa công việc dự án</string>
+    <string name="editWorkOther" translatable="false">Sửa công việc khác</string>
+    <string name="editProjectCost" translatable="false">Sửa chi phí dự án</string>
+    <string name="opportunitiesView" translatable="false">Chi tiết cơ hội kinh doanh</string>
+    <string name="costDetail" translatable="false">Chi tiết chi phí</string>
+    <string name="projectView" translatable="false">Chi tiết dự án</string>
+    <string name="deploymentProcess" translatable="false">Quy trình triển khai</string>
+
+    <string name="oppor" translatable="false">CHKD</string>
+
+    <string name="attach" translatable="false">Đính kèm</string>
+    <string name="product" translatable="false">Sản phẩm</string>
+    <string name="timekeeping" translatable="false">Chấm công</string>
+    <string name="category" translatable="false">Danh mục</string>
+    <string name="productOther" translatable="false">Sản phẩm khác</string>
+    <string name="productOnCategory" translatable="false">Sản phẩm liên quan</string>
+    <string name="productPause" translatable="false">Sản phẩm ngừng bán</string>
+    <string name="opportunityHasNotBeenSuccessfulAndCannotBeTransferredToProject" translatable="false">Cơ hội kinh doanh chưa thành công lên chưa chuyển sang dự án được!</string>
+    <string name="productName" translatable="false">Tên sản phẩm</string>
+
+    <string name="contactCustomer" translatable="false">Liên hệ khách hàng</string>
+    <string name="contactOppotunity" translatable="false">Liên hệ cơ hội kinh doanh</string>
+    <string name="addContactOppotunity" translatable="false"> Thêm liên hệ cơ hội</string>
+    <string name="contactProject" translatable="false">Liên hệ dự án</string>
+    <string name="addContactProject" translatable="false">Thêm liên hệ dự án</string>
+    <string name="content" translatable="false">Nội dung</string>
+    <string name="typReport" translatable="false">Loại báo cáo</string>
+
+    <string name="result" translatable="false">Kết quả</string>
+    <string name="workOpportunities" translatable="false">Công việc CHKD</string>
+    <string name="workProject" translatable="false">Công việc dự án</string>
+    <string name="detailWorkProject" translatable="false">Chi tiết công việc dự án</string>
+    <string name="detailService" translatable="false">Chi tiết dịch vụ</string>
+    <string name="detailServiceCalendar" translatable="false">Chi tiết lịch thực hiện dịch vụ</string>
+    <string name="advise" translatable="false">Tư vấn</string>
+    <string name="detailProduct" translatable="false">Chi tiết sản phẩm</string>
+    <string name="flashSale" translatable="false">Ưu đãi chớp nhoáng</string>
+    <string name="detailWorkOpportunities" translatable="false">Chi tiết công việc CHKD</string>
+    <string name="detailWorkOther" translatable="false">Chi tiết công việc khác</string>
+    <string name="projectWarehouse" translatable="false">Xuất kho dự án</string>
+    <string name="workOther" translatable="false">Công việc khác</string>
+    <string name="callLog" translatable="false">Nhật ký cuộc gọi</string>
+    <string name="payments" translatable="false">Thanh toán</string>
+    <string name="buyIn" translatable="false">Mua vào</string>
+    <string name="paymentHistory" translatable="false">Lịch sử thanh toán</string>
+    <string name="spaAtHome" translatable="false">Hướng dẫn spa tại nhà</string>
+    <string name="monthNow" translatable="false">Tháng này</string>
+    <string name="monthPrevious" translatable="false">Tháng trước</string>
+    <string name="monthPrevious2" translatable="false">2 tháng trước</string>
+    <string name="paymentsEd" translatable="false">Đã thanh toán</string>
+    <string name="advised" translatable="false">Đã tư vấn </string>
+    <string name="advisWaiting" translatable="false">Chưa tư vấn </string>
+
+
+    <string name="last15day" translatable="false">15 Ngày trước</string>
+    <string name="month" translatable="false">Tháng</string>
+    <string name="quarterNow" translatable="false">Quý này</string>
+    <string name="dateNow" translatable="false">Hôm nay</string>
+    <string name="yesterday" translatable="false">Hôm qua</string>
+    <string name="tomorrow" translatable="false">Ngày mai</string>
+    <string name="weekDay" translatable="false">Tuần này</string>
+    <string name="mothNow" translatable="false">Tháng này</string>
+    <string name="moth" translatable="false">Tháng </string>
+    <string name="today" translatable="false">Hôm nay</string>
+    <string name="last7day" translatable="false">7 Ngày trước</string>
+    <string name="last30day" translatable="false">30 Ngày trước</string>
+    <string name="prevuis" translatable="false">Quý này</string>
+    <string name="quarter" translatable="false">Quý </string>
+    <string name="project" translatable="false">Dự án</string>
+    <string name="projectType" translatable="false">Kiểu dự án</string>
+    <string name="projectName" translatable="false">Tên dự án</string>
+    <string name="oder" translatable="false">Đơn hàng</string>
+    <string name="oderBuy" translatable="false">Đơn mua</string>
+    <string name="oderList" translatable="false">Danh sách đơn hàng</string>
+    <string name="oderConfirmEd" translatable="false">Đơn đặt hàng đã xác nhận</string>
+    <string name="oderWaitingConfirm" translatable="false">Đơn đặt hàng chờ xác nhận</string>
+    <string name="oderHistory" translatable="false">Lịch sử mua hàng</string>
+    <string name="searchOder" translatable="false">Tìm kiếm đơn hàng</string>
+    <string name="searchAgency" translatable="false">Tìm kiếm đại lý</string>
+    <string name="salesOfMyAccount" translatable="false">Doanh số tiêu dùng cá nhâń</string>
+    <string name="evaluateProduct" translatable="false">Đánh giá sản phẩm</string>
+    <string name="viewPurchaseHistory" translatable="false">Xem lịch sử mua hàng</string>
+    <string name="waitForConfirmation" translatable="false">Chờ xác nhận</string>
+
+    <string name="waitForDelivery" translatable="false">Chờ giao hàng</string>
+    <string name="infoProduct" translatable="false">Thông tin sản phẩm</string>
+    <string name="file" translatable="false">Tài liệu</string>
+    <string name="delivered" translatable="false">Đã giao hàng</string>
+    <string name="revenue" translatable="false">Doanh thu</string>
+    <string name="other" translatable="false">Khác</string>
+
+    <string name="image" translatable="false">Ảnh</string>
+    <string name="images" translatable="false">Kèm hình ảnh</string>
+    <string name="implementationSession" translatable="false">Buổi thực hiện</string>
+    <string name="implement" translatable="false">Thực hiện</string>
+    <string name="technician" translatable="false">Kỹ thuật viên</string>
+    <string name="timeBookCalendar" translatable="false">Thời gian đặt lịch</string>
+    <string name="selectReason" translatable="false">Chọn lý do</string>
+    <string name="selectHour" translatable="false">Chọn giờ</string>
+    <string name="bookCalendar" translatable="false">Đặt lịch</string>
+
+    <string name="shareEvaluateProduct" translatable="false">Chia sẻ đánh giá của bạn về sản phẩm này.</string>
+    <string name="exchange" translatable="false">Trao đổi</string>
+    <string name="info" translatable="false">Thông tin </string>
+    <string name="infoPayment" translatable="false">Thông tin thanh toán</string>
+    <string name="infoCustomer" translatable="false">Thông tin khách hàng</string>
+    <string name="infoMyself" translatable="false">Thông tin cá nhân</string>
+
+    <string name="revenueTotal" translatable="false">Tổng hợp doanh thu</string>
+    <string name="customer" translatable="false">Khách hàng</string>
+    <string name="customers" translatable="false">Danh sách khách hàng</string>
+    <string name="guest" translatable="false">Khách mời</string>
+    <string name="youMayWantToDeleteProduct" translatable="false">Bạn có chắc muốn xoá đơn hàng này không?</string>
+    <string name="youMayWantToDeleteProductOnCart" translatable="false">Bạn có chắc muốn bỏ sản phẩm này?</string>
+    <string name="youMayWantToDeleteAllProductOnCart" translatable="false">Bạn có chắc muốn xóa tất cả sản phẩm giỏ hàng không?</string>
+    <string name="youNotCanEdit" translatable="false">Bạn không có quyền sửa!</string>
+    <string name="youConnectWifi" translatable="false">Vui lòng kết nối Wifi để chấm công!</string>
+    <string name="youNotAgency" translatable="false">Bạn chưa có đại lý nào</string>
+    <string name="youNotEvaluateProduct" translatable="false">Chưa có đánh giá nào cho sản phẩm này</string>
+    <string name="youNotOder" translatable="false">Bạn chưa có đơn hàng nào</string>
+    <string name="youNotCanDelete" translatable="false">Bạn không có quyền xóa!</string>
+    <string name="timeKeepingNotValidate" translatable="false">Chấm công không thành công vui lòng truy cập Wifi được phép chấm công!</string>
+    <string name="totalMemory25" translatable="false">Tổng dung lượng các file không được vượt quá 25mb</string>
+    <string name="youNotHaveOpportunities" translatable="false">Bạn chưa có cơ hội nào</string>
+    <string name="youNotHaveProject" translatable="false">Bạn chưa có dự án nào</string>
+    <string name="checkinNotAuto" translatable="false">Check in thủ công</string>
+    <string name="checkQR" translatable="false">Quét mã QR</string>
+    <string name="qrCode" translatable="false">Mã QR</string>
+    <string name="qrCodeAffiliate" translatable="false">Mã QR giới thiệu</string>
+    <string name="qrCodePayment" translatable="false">QR thanh toán</string>
+    <string name="rate" translatable="false">Đánh giá App</string>
+    <string name="qrCodeError" translatable="false">Mã QR không đúng</string>
+    <string name="checkQRTransferToAccountBank" translatable="false">Quét mã  để chuyển tiền đến</string>
+    <string name="customerHaveContent" translatable="false">Khách hàng đã có cơ hội kinh doanh hoặc không có quyền xóa!</string>
+    <string name="customerView" translatable="false">Chi tiết khách hàng</string>
+    <string name="contactView" translatable="false">Chi tiết liên hệ</string>
+    <string name="dateConfirmation" translatable="false">Ngày xác nhận KHMT</string>
+    <string name="policyGroup" translatable="false">Nhóm chính sách</string>
+    <string name="passportIssuer" translatable="false">Nơi cấp</string>
+    <string name="industryGroup" translatable="false">Nhóm nghành nghề</string>
+    <string name="citizenIdentification" translatable="false">CCCD/CMT</string>
+    <string name="enterContent" translatable="false">Nhập nội dung</string>
+    <string name="enterSearch" translatable="false">Nhập tìm kiếm</string>
+    <string name="myCustomer" translatable="false">Khách hàng cá nhân</string>
+    <string name="customerCompany" translatable="false">Khách hàng tổ chức</string>
+    <string name="customerType" translatable="false">Kiểu khách hàng</string>
+    <string name="infoCompany" translatable="false">Thông tin doanh nghiệp</string>
+    <string name="infoPersonReciver" translatable="false">Thông tin người nhận</string>
+    <string name="company" translatable="false">Công ty</string>
+    <string name="commentRate" translatable="false">Viết đánh giá </string>
+    <string name="comment" translatable="false">Kèm bình luận</string>
+
+    <string name="taxCode" translatable="false">Mã số thuế</string>
+    <string name="brother" translatable="false">Anh</string>
+    <string name="male" translatable="false">Nam</string>
+    <string name="female" translatable="false">Nữ</string>
+    <string name="sister" translatable="false">Chị</string>
+    <string name="grandfather" translatable="false">Ông</string>
+    <string name="android" translatable="false">android</string>
+    <string name="grandma" translatable="false">Bà</string>
+
+    <string name="audio" translatable="false">Ghi âm</string>
+    <string name="fullName" translatable="false">Họ tên</string>
+    <string name="name" translatable="false">Tên</string>
+    <string name="rankNow" translatable="false">Hạng hiện tại</string>
+    <string name="sex" translatable="false">Giới tính</string>
+    <string name="cushion" translatable="false">Đệm</string>
+    <string name="key" translatable="false">Mã</string>
+    <string name="oderKey" translatable="false">Mã đơn hàng: </string>
+    <string name="vocative" translatable="false">Xưng hô</string>
+    <string name="firstName" translatable="false">Họ</string>
+    <string name="cardClass" translatable="false">Hạng thẻ</string>
+    <string name="cardClassNow" translatable="false">Hạng thẻ hiện tại</string>
+    <string name="discountPercentage" translatable="false">% chiết khấu</string>
+    <string name="billingInformation" translatable="false">Thông tin thanh toán</string>
+    <string name="phone" translatable="false">Điện thoại</string>
+    <string name="houseNumber" translatable="false">Số nhà</string>
+    <string name="phoneCustomer" translatable="false">Điện thoại khách hàng</string>
+    <string name="phoneAddress" translatable="false">Điện thoại nhà riêng</string>
+
+    <string name="address" translatable="false">Địa chỉ</string>
+    <string name="addressCompany" translatable="false">Địa chỉ công ty</string>
+
+
+    <string name="enterAddress" translatable="false">Nhập địa chỉ của bạn</string>
+    <string name="editAddress" translatable="false">Sửa địa chỉ</string>
+    <string name="editLocation" translatable="false">Sửa vị trí</string>
+    <string name="addressDelivery" translatable="false">Địa chỉ nhận hàng</string>
+    <string name="addressWork" translatable="false">Địa chỉ triển khai</string>
+
+    <string name="detail" translatable="false">Chi tiết</string>
+    <string name="detailOder" translatable="false">Chi tiết đơn hàng</string>
+    <string name="weightWork" translatable="false">Trọng số</string>
+    <string name="numberOfDaysOfImplementation" translatable="false">Số ngày triển khai</string>
+
+    <string name="position" translatable="false">Vị trí</string>
+
+    <string name="map" translatable="false">Bản đồ</string>
+    <string name="showGetMap" translatable="false">Khi bật, dịch vụ này sẽ có thể truy cập dữ liệu vị trí GNSS, điểm phát sóng Wi-Fi và trạm phát sóng. Dữ liệu này được sử dụng để lưu địa chỉ khách hàng</string>
+    <string name="home" translatable="false">Trang chủ</string>
+    <string name="mapView" translatable="false"> <a href="" translatable="false">Xem bản đồ</a></string>
+    <string name="location" translatable="false">Vị trí</string>
+    <string name="level" translatable="false">Cấp độ</string>
+    <string name="levelOld" translatable="false">Cấp độ cũ </string>
+    <string name="levelNew" translatable="false">Cấp độ mới </string>
+    <string name="news" translatable="false">Tin tức</string>
+    <string name="DataHasBeenDeletedOrDoesNotExist" translatable="false">Dữ liệu đã xóa hoặc không tồn tại</string>
+    <string name="customerList" translatable="false">Danh sách khách hàng</string>
+    <string name="supplier" translatable="false">Nhà cung cấp</string>
+    <string name="agency" translatable="false">Đại lý</string>
+    <string name="moneyDiscount" translatable="false">Tiền chiết khấu</string>
+    <string name="salesNumber" translatable="false">Doanh số</string>
+    <string name="agentSub" translatable="false">Đại lý cấp dưới</string>
+
+    <string name="agencyLevel" translatable="false">Cấp đại lý</string>
+    <string name="salesReportByAgentByLevel" translatable="false">Báo cáo doanh số theo từng đại lý, từng cấp</string>
+    <string name="passiveCommissionReport" translatable="false">Báo cáo hưởng hoa hồng thụ động</string>
+    <string name="upToLevelReport" translatable="false">Báo cáo thưởng thăng cấp</string>
+
+    <string name="upToLevelReportAccount" translatable="false">Báo cáo thưởng thăng cấp cá nhân</string>
+    <string name="consumptionSales" translatable="false">Doanh số tiêu dùng cá nhân</string>
+    <string name="timeType" translatable="false">Loại thời gian</string>
+    <string name="time" translatable="false">Thời gian</string>
+    <string name="startDate" translatable="false">Từ ngày</string>
+
+    <string name="rejecte" translatable="false">Từ chối</string>
+    <string name="answer" translatable="false">Trả lời</string>
+
+    <string name="getLocation" translatable="false"> <a href="" translatable="false">Lấy địa chỉ map</a></string>
+    <string name="start" translatable="false">*</string>
+    <string name="rank" translatable="false">* Xếp hạng</string>
+
+    <string name="good" translatable="false">Tốt</string>
+    <string name="great" translatable="false">Tuyệt vời</string>
+    <string name="medium" translatable="false">Trung bình</string>
+
+    <string name="ios" translatable="false">App IOS</string>
+    <string name="androidApp" translatable="false">App Android</string>
+    <string name="selectAll" translatable="false">Chọn tất cả</string>
+    <string name="like" translatable="false">Yêu thích</string>
+    <string name="liked" translatable="false">Đã thích</string>
+    <string name="likeCount" translatable="false">Lượt thích</string>
+    <string name="deleteAllCart" translatable="false">Xóa tất cả giỏ hàng</string>
+    <string name="send" translatable="false">Gửi</string>
+
+    <string name="price" translatable="false">Đơn giá</string>
+    <string name="priceColon" translatable="false">Đơn giá:</string>
+    <string name="numberCount" translatable="false">Số lượng</string>
+    <string name="numberCountcolon" translatable="false">Số lượng:</string>
+
+    <string name="salesProcess" translatable="false">Quy trình bán hàng</string>
+
+    <string name="endDate" translatable="false">Đến ngày</string>
+    <string name="pleaseChoseEndDateLagerStartDateOppor" translatable="false">Đến ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu</string>
+    <string name="pleaseChoseTimeDateLagerDateNow" translatable="false">Vui lòng chọn ngày hẹn >= ngày hiện tại</string>
+    <string name="pleaseChoseEndDateLagerStartDateProject" translatable="false">Đến ngày phải lớn hơn hoặc bằng từ ngày</string>
+    <string name="pleaseChoseDateCompleteLagerStartDateProject" translatable="false">Ngày hoàn thành phải lớn hơn hoặc bằng từ ngày</string>
+    <string name="clearSearch" translatable="false">Xóa tìm kếm</string>
+    <string name="salesTarget" translatable="false">Mục tiêu doanh số</string>
+    <string name="cash" translatable="false">Tiền mặt</string>
+    <string name="transfer" translatable="false">Chuyển khoản</string>
+    <string name="transferredToProject" translatable="false">Sang dự án</string>
+    <string name="debt" translatable="false">Công nợ</string>
+
+    <string name="deleteSuccessfully" translatable="false">Xóa thành công</string>
+    <string name="macNotRelease" translatable="false">Chưa lấy địa chỉ Wifi vui lòng xem lại </string>
+    <string name="debtTotal" translatable="false">Tổng công nợ</string>
+    <string name="saleCash" translatable="false">Bán hàng TM</string>
+    <string name="saleTransfer" translatable="false">Bán hàng CK</string>
+    <string name="debtCollection" translatable="false">Thu nợ</string>
+    <string name="debtCollectioncash" translatable="false">Thu nợ TM</string>
+    <string name="debtCollectionTransfer" translatable="false">Bán hàng CK</string>
+    <string name="balanceSheet" translatable="false">Cân đối thu chi</string>
+
+    <string name="oderNow" translatable="false">Đặt hàng</string>
+    <string name="cost" translatable="false">Chi phí</string>
+    <string name="costOpportunitie" translatable="false">Chi phí cơ hội kinh doanh</string>
+    <string name="costProject" translatable="false">Chi phí dự án</string>
+    <string name="spent" translatable="false">Đã chi</string>
+    <string name="remainingCostLimit" translatable="false">Hạn mức chi phí còn lại</string>
+    <string name="costType" translatable="false">Loại chi phí</string>
+    <string name="type" translatable="false">Loại</string>
+
+
+    <string name="stillInDebt" translatable="false">Còn nợ</string>
+    <string name="sell" translatable="false">Bán hàng</string>
+    <string name="sellOut" translatable="false">Bán ra</string>
+    <string name="mySell" translatable="false">Bán hàng cá nhân</string>
+
+    <string name="searchEng" translatable="false">Search</string>
+    <string name="searchOderNameOrKey" translatable="false">Tìm kiếm sản phẩm</string>
+    <string name="youCanSearchOderNameOrKey" translatable="false">Bạn có thể tìm kiếm theo tên hoặc mã sản phẩm</string>
+    <string name="searchOther" translatable="false">Điều kiện khác</string>
+
+    <string name="share" translatable="false">Chia sẻ</string>
+    <string name="shareLocation" translatable="false">Chia sẻ vị trí</string>
+    <string name="classbcvn" translatable="false">Lớp</string>
+    <string name="least" translatable="false">Kém</string>
+    <string name="leaveType" translatable="false">Loại nghỉ</string>
+    <string name="interest" translatable="false">Sơ thích</string>
+
+    <string name="callStatus" translatable="false">Trạng thái cuộc gọi</string>
+    <string name="call" translatable="false">Gọi điện thoại</string>
+    <string name="all" translatable="false">Tất cả</string>
+    <string name="success" translatable="false">Thành công</string>
+    <string name="unsuccessful" translatable="false">Không thành công</string>
+    <string name="nickName" translatable="false">Tên nick</string>
+    <string name="pageName" translatable="false">Tên Page</string>
+    <string name="workPlan" translatable="false">Kế hoạch công việc</string>
+
+    <string name="addCart" translatable="false">Thêm giỏ hàng</string>
+    <string name="addCalendar" translatable="false">Đặt lịch ngay</string>
+    <string name="addCalendarServiceSuccessful" translatable="false">Đặt lich thành công</string>
+    <string name="cancelCalendarServiceSuccessful" translatable="false">Hủy lich thành công</string>
+    <string name="reportSuccessful" translatable="false">Báo cáo thành công</string>
+    <string name="addInToCart" translatable="false">Thêm vào Giỏ hàng</string>
+    <string name="addEdProductCart" translatable="false">Đã thêm vào giỏ</string>
+    <string name="saveEdProduct" translatable="false">Đã lưu sản phẩm</string>
+    <string name="saveEdService" translatable="false">Đã lưu dịch vụ</string>
+    <string name="dismissSaveEdProduct" translatable="false">Đã bỏ lưu sản phẩm</string>
+    <string name="dismissSaveEdService" translatable="false">Đã bỏ lưu dịch vụ</string>
+    <string name="pleaseEnterAddress" translatable="false">Vui lòng nhập địa chỉ nhận hàng!</string>
+    <string name="buyNow" translatable="false">Mua ngay</string>
+    <string name="paymentPage" translatable="false">Trang thanh toán</string>
+    <string name="country" translatable="false">Quốc gia</string>
+    <string name="province" translatable="false">Tỉnh thành</string>
+    <string name="district" translatable="false">Quận huyện</string>
+    <string name="wards" translatable="false">Phường xã</string>
+    <string name="callForm" translatable="false">Hình thức gọi</string>
+    <string name="totalIncome" translatable="false">Tổng thu</string>
+    <string name="totalPayment" translatable="false">Thành tiền</string>
+    <string name="totalValue" translatable="false">Tổng giá trị</string>
+    <string name="total" translatable="false">Tổng</string>
+    <string name="totalColon" translatable="false">Tổng:</string>
+    <string name="totalValueAdd" translatable="false">Tổng tiền:</string>
+    <string name="totalMoney" translatable="false">Tổng tiền</string>
+    <string name="totalCountMoney" translatable="false">Tổng số tiền</string>
+    <string name="totalCountMoneyPayment" translatable="false">Đã thanh toán</string>
+    <string name="originalPrice" translatable="false">Giá gốc</string>
+    <string name="priceDiscount" translatable="false">Chiết khấu</string>
+
+    <string name="totalMoneyTwoDots" translatable="false">Tổng tiền:</string>
+
+    <string name="paymentTotal" translatable="false">Tổng chi</string>
+
+
+    <string name="noReport" translatable="false">Chưa có dữ liệu báo cáo</string>
+    <string name="report" translatable="false">Báo cáo</string>
+    <string name="reportProduct" translatable="false">Báo cáo sản phẩm</string>
+    <string name="arrive" translatable="false">Đến</string>
+    <string name="timekeepingLocation" translatable="false">Đầu đọc</string>
+    <string name="reason" translatable="false">Lý do</string>
+    <string name="reasonOther" translatable="false">Lý do khác</string>
+    <string name="totalWorkBoard" translatable="false">Tổng công:</string>
+    <string name="manualInput" translatable="false">Nhập tay</string>
+    <string name="reasonCompensate" translatable="false">Lý do đi làm bù</string>
+    <string name="reasonApprove" translatable="false">Lý do duyệt</string>
+    <string name="forgotCheck" translatable="false">Quên quẹt thẻ</string>
+    <string name="nightShift" translatable="false">Ca đêm</string>
+    <string name="businessTravel" translatable="false">Đi công tác</string>
+    <string name="forgotToClockIn" translatable="false">Quên chấm công</string>
+    <string name="cardFilter" translatable="false">Quên chấm công</string>
+    <string name="reasonLeave" translatable="false">Lý do nghỉ</string>
+    <string name="yearNow" translatable="false">Năm này</string>
+    <string name="intoMoneyTwoDots" translatable="false">Thành tiền:</string>
+    <string name="actualRevenue" translatable="false">Doanh thu thực tế</string>
+    <string name="saleNumber" translatable="false">Doanh số</string>
+    <string name="saveImageSuccess" translatable="false">Lưu ảnh thành công!</string>
+    <string name="weekdays" translatable="false">Thứ </string>
+    <string name="informationSources" translatable="false">Nguồn thông tin</string>
+    <string name="informationPayment" translatable="false">Thông tin thanh toán</string>
+    <string name="projectManagement" translatable="false">Quản lý dự án</string>
+
+    <string name="noteCustomerCancel" translatable="false">Ghi chú khách hàng hủy lịch</string>
+    <string name="noteEmployeeCancel" translatable="false">Ghi chú nhân viên hủy lịch</string>
+    <string name="requestCustomer" translatable="false">Yêu cầu của khách</string>
+    <string name="noteBook" translatable="false">Lưu ý</string>
+    <string name="noteOder" translatable="false">Ghi chú đơn hàng</string>
+    <string name="numberContracts" translatable="false">Số hợp đồng</string>
+    <string name="noteWork" translatable="false">Ghi chú công việc</string>
+    <string name="accountBank" translatable="false">Tài khoản ngân hàng</string>
+    <string name="accountAffiliate" translatable="false">Tài khoản liên kết</string>
+    <string name="nameBank" translatable="false">Tên ngân hàng</string>
+    <string name="tax" translatable="false">Mã số thuế</string>
+    <string name="work" translatable="false">Công việc</string>
+    <string name="jobType" translatable="false">Kiểu công việc</string>
+    <string name="approved" translatable="false">Đã duyệt</string>
+    <string name="approveSuccessful" translatable="false">Duyệt thành công</string>
+    <string name="approveCancelSuccessful" translatable="false">Hủy duyệt thành công</string>
+    <string name="notApproveSuccessful" translatable="false">Không  duyệt thành công</string>
+    <string name="approveCancel" translatable="false">Hủy duyệt</string>
+    <string name="notApprove" translatable="false">Không duyệt</string>
+    <string name="pendingApproved" translatable="false">Chờ duyệt</string>
+    <string name="pendingApproveSalary" translatable="false">Chưa duyệt</string>
+    <string name="noDataRegister" translatable="false">Chưa có phiếu đăng ký</string>
+    <string name="shifts" translatable="false">Ca làm việc</string>
+    <string name="hour" translatable="false">Giờ</string>
+
+    <string name="salePointName" translatable="false">Tên cơ sở</string>
+
+    <string name="timekeepingLocationCheck" translatable="false">Chấm công theo vị trí</string>
+
+    <string name="viewAttendanceData" translatable="false">Chi tiết dữ liệu chấm công</string>
+    <string name="timekeepingReport" translatable="false">Báo cáo giờ chấm công</string>
+    <string name="timekeepingMonth" translatable="false">Xem công tháng</string>
+    <string name="timekeepingData" translatable="false">Dữ liệu chấm công</string>
+    <string name="totalWorkingHours" translatable="false">Tổng giờ công</string>
+    <string name="totalWorkingMinuteOverTime" translatable="false">Tổng phút làm thêm ngày thường</string>
+    <string name="totalMinuteLateForWork" translatable="false">Tổng phút đi muộn</string>
+    <string name="totalMinuteComeBackWork" translatable="false">Tổng phút về sớm</string>
+    <string name="totalTotalOvertimeMinutesOnHolidays" translatable="false">Tổng phút làm thêm ngày lễ</string>
+    <string name="totalWorkingMinuteOverTimeOnWeekends" translatable="false">Tổng phút làm thêm cuối tuần</string>
+    <string name="totalDaysOff" translatable="false">Tổng ngày nghỉ chế độ</string>
+    <string name="totalDaysOffNoSalary" translatable="false">Tổng ngày nghỉ không lương</string>
+    <string name="totalDaysOffHolidays" translatable="false">Tổng ngày nghỉ lễ</string>
+    <string name="totalLeaveDays" translatable="false">Tổng ngày nghỉ phép</string>
+
+    <string name="stt" translatable="false">STT</string>
+    <string name="comments" translatable="false">Ý kiến</string>
+    <string name="commentsOther" translatable="false">Ý kiến khác </string>
+    <string name="workBoard" translatable="false">Bảng công</string>
+    <string name="salary" translatable="false">Lương</string>
+    <string name="opiniontSalary" translatable="false">Ý kiến lương tháng</string>
+    <string name="opiniontWorkBoard" translatable="false">Ý kiến công tháng</string>
+    <string name="salaryApproved" translatable="false">Chính thức</string>
+    <string name="salaryBoard" translatable="false">Bảng lương</string>
+    <string name="totalSalary12Month" translatable="false">Tổng hợp lương 12 tháng</string>
+    <string name="salaryData" translatable="false">Dữ liệu lương</string>
+    <string name="salaryContract" translatable="false">Lương hợp đồng</string>
+    <string name="salaryNet" translatable="false">Lương thực tế</string>
+    <string name="detailWorkBoardMonth" translatable="false">Chi tiết công tháng</string>
+    <string name="detailSalaryMonth" translatable="false">Chi tiết lương tháng</string>
+    <string name="detailChangeShift" translatable="false">Chi tiết đổi ca</string>
+    <string name="detailApproveChangeShift" translatable="false">Chi tiết duyệt đổi ca</string>
+    <string name="detailTimekeepingDeclaration" translatable="false">Chi tiết khai báo chấm công</string>
+    <string name="detailApproveTimekeepingDeclaration" translatable="false">Chi tiết duyệt khai báo chấm công</string>
+    <string name="detailT" translatable="false">Chi duyệt tiết đổi ca</string>
+    <string name="timekeepingDeclaration" translatable="false">Khai báo chấm công</string>
+    <string name="addTimekeepingDeclaration" translatable="false">Thêm khai báo chấm công</string>
+    <string name="editTimekeepingDeclaration" translatable="false">Sửa khai báo chấm công</string>
+    <string name="addRegisterLeave" translatable="false">Thêm đăng ký nghỉ</string>
+    <string name="registerDependent" translatable="false">Đăng ký người phụ thuộc</string>
+    <string name="leave" translatable="false">Đăng ký nghỉ</string>
+    <string name="groupLeader" translatable="false">Nhóm trưởng</string>
+    <string name="groupLeaderApprove" translatable="false">Nhóm trưởng duyệt</string>
+    <string name="teamLeader" translatable="false">Tổ trưởng </string>
+    <string name="workName" translatable="false">Tên công việc</string>
+    <string name="workType" translatable="false">Loại công việc</string>
+    <string name="more" translatable="false">Xem thêm</string>
+    <string name="moreProduct" translatable="false">Xem thêm sản phẩm</string>
+    <string name="warehouse" translatable="false">Kho hàng</string>
+    <string name="exportWarehouse" translatable="false">Xuất kho</string>
+    <string name="exportWarehouseMyself" translatable="false">Xuất kho cá nhân</string>
+    <string name="departmentalWorkCompletionRate" translatable="false">Tỷ lệ hoàn thành công việc phòng ban</string>
+    <string name="workCompletionRate" translatable="false">Tỷ lệ hoàn thành công việc</string>
+    <string name="personInCharge" translatable="false">Người phụ trách</string>
+    <string name="personReceiver" translatable="false">Người nhận</string>
+    <string name="personCost" translatable="false">Người chi</string>
+    <string name="personImplement" translatable="false">Người thực hiện</string>
+    <string name="personInvolved" translatable="false">Người liên quan</string>
+    <string name="referralPerson" translatable="false">Người giới thiệu</string>
+    <string name="replyInbox" translatable="false">Trả lời inbox</string>
+
+    <string name="totalValueNotDiscount" translatable="false">Tổng tiền chưa khuyến mại</string>
+    <string name="totalAmountBeforeDiscount" translatable="false">Tổng tiền trước chiết khấu </string>
+    <string name="totalAmountAfterDiscount" translatable="false">Tổng tiền sau chiết khấu</string>
+    <string name="totalValueApplyDiscount" translatable="false">Tổng tiền sau khuyến mại</string>
+    <string name="totalMoneyCosted" translatable="false">Tổng tiền đã chi</string>
+
+    <string name="download" translatable="false">Tải về</string>
+
+    <string name="vatMoney" translatable="false"> Tiền VAT</string>
+    <string name="amountOfMoney" translatable="false">Số tiền</string>
+    <string name="amountOfMoneyTơDost" translatable="false">Số tiền:</string>
+    <string name="moneyFund" translatable="false">Quỹ tiền</string>
+    <string name="discountMoney" translatable="false">Tiền khuyến mại</string>
+    <string name="signDay" translatable="false">Ngày ký</string>
+    <string name="dateOfDelivery" translatable="false">Ngày bàn giao</string>
+    <string name="dateOfCost" translatable="false">Ngày chi </string>
+    <string name="dateOfAcceptance" translatable="false">Ngày nghiệm thu</string>
+    <string name="dateOfAttach" translatable="false">Ngày đính kèm:</string>
+    <string name="personOfCare" translatable="false">Người chăm sóc</string>
+
+    <string name="continueLogin" translatable="false">Tiếp tục</string>
+    <string name="registerAccount" translatable="false">Đăng ký tài khoản</string>
+    <string name="verificationCodes" translatable="false">Mã kết nối</string>
+    <string name="youCanNotAccount" translatable="false">Bạn chưa có tài khoản</string>
+
+    <string name="versionCode" translatable="false">Phiên bản</string>
+    <string name="enterVerificationCodes" translatable="false">Nhập mã xác thực</string>
+    <string name="verificationCodesNotFound" translatable="false">Mã kết nối không đúng vui lòng thử lại!</string>
+    <string name="unableToConnectToTheServerPleaseTryAgain" translatable="false">Không thể kết nối tới sever vui lòng thử lại!</string>
+    <string name="coldData" translatable="false">Data lạnh</string>
+    <string name="introducingAgent" translatable="false">Đại lý giới thiệu</string>
+    <string name="dayOfCare" translatable="false">Ngày chăm sóc</string>
+    <string name="dateOfIncorporation" translatable="false">Ngày thành lập </string>
+    <string name="dateOfBirth" translatable="false">Ngày sinh</string>
+    <string name="romotion" translatable="false">Khuyến mại</string>
+    <string name="discount" translatable="false">Chiết khấu</string>
+    <string name="discountColon" translatable="false">Chiết khấu:</string>
+    <string name="discountTwoDots" translatable="false">Chiết khấu:</string>
+    <string name="pause" translatable="false">Tạm dừng</string>
+    <string name="workCustomer" translatable="false">Tạo việc cho khách</string>
+    <string name="dateReminder" translatable="false">Ngày nhắc</string>
+    <string name="reminderDay" translatable="false">Nhắc hẹn</string>
+    <string name="numberOfPayments" translatable="false">Số lần thanh toán</string>
+    <string name="costLimit" translatable="false">Hạn mức chi phí (%)</string>
+    <string name="priorityLevel" translatable="false">Mức độ ưu tiên</string>
+    <string name="contactForm" translatable="false">Hình thức liên lạc</string>
+    <string name="updateTime" translatable="false">Ngày cập nhật</string>
+    <string name="dateRange" translatable="false">Ngày cấp</string>
+
+    <string name="personCreate" translatable="false">Người tạo</string>
+    <string name="complete" translatable="false">Hoàn thành(%)</string>
+    <string name="completeAddress" translatable="false">Hoàn thành</string>
+    <string name="dateComplete" translatable="false">Ngày hoàn thành</string>
+    <string name="completeWork" translatable="false">Hoàn thành</string>
+    <string name="unComplete" translatable="false">Chưa hoàn thành</string>
+    <string name="tooLimit" translatable="false">Quá hạn</string>
+    <string name="successRate" translatable="false">Tỷ lệ thành công (%)</string>
+    <string name="completeRate" translatable="false">Tỷ lệ hoàn thành</string>
+    <string name="completedNotBeen" translatable="false">Chưa hoàn thành</string>
+    <string name="workTotal" translatable="false">Tông công việc</string>
+    <string name="department" translatable="false">Phòng ban</string>
+    <string name="emplooyee" translatable="false">Nhân viên</string>
+    <string name="employeeSales" translatable="false">Nhân viên bán hàng</string>
+    <string name="title_activity_cost" translatable="false">CostActivity</string>
+    <string name="title_activity_detail_timekeeping" translatable="false">DetailTimekeepingActivity</string>
+    <string name="error_full_name_required" translatable="false">Vui lòng nhập họ tên</string>
+    <string name="error_phone_required" translatable="false">Vui lòng nhập số điện thoại</string>
+    <string name="error_password_required" translatable="false">Vui lòng nhập mật khẩu</string>
+    <string name="error_password_confirm_required" translatable="false">Vui lòng nhập lại mật khẩu</string>
+    <string name="error_password_not_match" translatable="false">Mật khẩu nhập lại không trùng khớp</string>
+
+    <string name="fullNamEx" translatable="false">vd: Nguyễn Phúc Phong</string>
+    <string name="jobEx" translatable="false">vd: Học sinh</string>
+    <string name="infoLogin" translatable="false">Thông tin đăng nhập</string>
+    <string name="infoAccount" translatable="false">Thông tin cá nhân</string>
+    <string name="infoAccountOther" translatable="false">Thông tin liên hệ khác</string>
+
+    <string name="note" translatable="false">Lưu ý:</string>
+    <string name="noNotification" translatable="false">Không có thông báo nào</string>
+    <string name="notification" translatable="false">Thông báo</string>
+    <string name="pleaseComBackCoupon" translatable="false">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
+    <string name="status" translatable="false">Trạng thái</string>
+    <string name="canNotChangeInfoAccount" translatable="false" tools:ignore="MissingTranslation">Bạn sẽ không thể thay đổi thông tin cá nhân  sinh nhật sau khi đăng ký thành công.\n \n
+
+Vì vậy, hãy chắc chắn các thông tin đã chính xác.</string>
+    <string name="birthdayNote" translatable="false">Contrast Coffee sẽ tặng bạn một món quà nhỏ trong dịp đặc biệt này 🥰</string>
+    <string name="confirmApp" translatable="false">Bằng việc nhấn “Xác nhận”, bạn đã đồng ý thực hiện mọi giao dịch theo Quy chế hoạt động và Chính sách bảo vệ thông tin khách hàng của Contrast Coffee</string>
+    <string name="confirm" translatable="false">Xác nhận</string>
+    <string name="createAccount" translatable="false">Tạo tài khoản</string>
+    <string name="dd" translatable="false">DD</string>
+    <string name="dmm" translatable="false">MM</string>
+    <string name="yyyy" translatable="false">YYYY</string>
+    <string name="sentBackOtp" translatable="false">Gửi lại</string>
+    <string name="youCanNotOtp" translatable="false">Bạn chưa nhận được mã?</string>
+    <string name="zeroToZero" translatable="false">00:00</string>
+    <string name="otpTimeOut" translatable="false">Có hiệu lực trong</string>
+    <string name="confirmOTP" translatable="false">Xác nhận OTP</string>
+    <string name="otpSentToPhone" translatable="false">Mã xác nhận đã được gửi vào số 091****678</string>
+    <string name="app_name" translatable="false">Contrast</string>
+    <string name="sendCode" translatable="false">Gửi mã xác nhận</string>
+    <string name="ch_o_m_ng_n" translatable="false">Chào mừng đến với Contrast Coffee</string>
+    <string name="slogan" translatable="false">Nơi động lực bắt đầu!</string>
+
+    <string name="changePassword" translatable="false">Thay đổi mật khẩu</string>
+    <string name="pleaseEnterNewPassWord" translatable="false">Vui lòng cài đặt mật khẩu mới</string>
+    <string name="register" translatable="false">Đăng ký</string>
+    <string name="phoneNumber" translatable="false">Số điện thoại</string>
+    <string name="job" translatable="false">Nghề nghiệp</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="newPassWord" translatable="false">Mật khẩu mới</string>
+    <string name="star" translatable="false">*</string>
+    <string name="enterPhoneNumber" translatable="false">Nhập số điện thoại</string>
+    <string name="enterNewPassWord" translatable="false">Nhập mật khẩu mới của bạn</string>
+    <string name="confirmNewPassWord" translatable="false">Xác nhận mật khẩu</string>
+    <string name="enterPhoneNumberItMe" translatable="false">Nhập số điện thoại của bạn</string>
+
+    <string name="enterPassword" translatable="false">Nhập mật khẩu</string>
+    <string name="forgotPassword" translatable="false">Quên mật khẩu?</string>
+    <string name="voucherFlashSale" translatable="false"># Tặng voucher</string>
+    <string name="confirmNewPassWordError" translatable="false">Xác nhận mật khẩu không chính xác</string>
+    <string name="phoneOrPasswordError" translatable="false">Số điện thoại hoặc mật khẩu không đúng</string>
+    <string name="pleaseEnterPhoneNumberRePassword" translatable="false">Vui lòng nhập số điện thoại đã đăng ký. Chúng tôi sẽ gửi SMS mã xác thực để bạn đặt lại mật khẩu</string>
+</resources>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="register_account">Register Account</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_placeholder">Enter phone number</string>
+    <string name="password">Password</string>
+    <string name="password_placeholder">Enter password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password_placeholder">Re-enter password</string>
+    <string name="info_account">Personal Information</string>
+    <string name="full_name">Full Name</string>
+    <string name="ex_full_name">Example: John Doe</string>
+    <string name="occupation">Occupation</string>
+    <string name="ex_occupation">Example: Software Engineer</string>
+    <string name="email">Email</string>
+    <string name="email_placeholder">Enter your email</string>
+    <string name="warning_title">Notice:</string>
+    <string name="warning_message">You will not be able to change personal information &amp; birthdate after registration is complete.\n\nTherefore, please make sure the information is correct.</string>
+    <string name="create_account_button">Create Account</string>
+    <string name="birthday">Birthday</string>
+    <string name="birthday_description">Contrast Coffee will give you a small gift on this special occasion 🥰</string>
+    <string name="day_placeholder">DD</string>
+    <string name="month_placeholder">MM</string>
+    <string name="year_placeholder">YY</string>
+    <string name="password_length">Must be 8 - 15 characters</string>
+    <string name="password_digit">At least 1 digit</string>
+    <string name="password_uppercase">At least 1 uppercase letter</string>
+    <string name="password_lowercase">At least 1 lowercase letter</string>
+    <string name="password_special">At least 1 special character (e.g.: !, @, #, $, %, ^)</string>
+    <string name="contact_info">Other contact information</string>
+    <string name="events_happening">Ongoing Events</string>
+    <string name="store_list">Store List</string>
+    <string name="see_all">SEE ALL</string>
+    <string name="feedback">Feedback</string>
+    <string name="greeting">Contrast says hello 👋</string>
+    <string name="add_money">+ Add Money</string>
+    <string name="onboarding_title_1">Perseverance Leads to Success</string>
+    <string name="onboarding_desc_1">Customers accumulate points with every purchase, upgrade their rank, and receive exclusive offers from Contrast.</string>
+
+    <string name="onboarding_title_2">Effort Brings Reward</string>
+    <string name="onboarding_desc_2">Use accumulated points to redeem attractive rewards such as vouchers and exclusive items.</string>
+
+    <string name="onboarding_title_3">Events</string>
+    <string name="onboarding_desc_3">Stay updated on events, promotions, and exclusive deals from Contrast.</string>
+
+    <string name="onboarding_title_4">Persistence and Discipline</string>
+    <string name="onboarding_desc_4">Contrast Coffee is proud to be a reliable companion on your journey to success.</string>
+
+    <string name="next_button">Next</string>
+    <string name="finish_button">Explore Now</string>
+    <string name="register_title">Create Account</string>
+    <string name="phone_label">Phone Number *</string>
+    <string name="phoneNumber">Phone Number</string>
+    <string name="login">Login</string>
+    <string name="location_permission_title">Allow Contrast to access your location</string>
+    <string name="location_permission_message">You need to enable location services to determine your current position.</string>
+    <string name="accept">Accept</string>
+
+    <string name="received_points">You have received an additional +20 🏆</string>
+    <string name="redeem_voucher">Redeem Voucher</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="voucher_redeem_success">You have successfully redeemed your voucher!</string>
+    <string name="view_vouchers">View your owned vouchers</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="policy_text">
+        By clicking "Confirm", you agree to perform all transactions in accordance with
+        <b>Operating Regulations</b> and <b>Customer Information Protection Policy</b> of Contrast Coffee.
+    </string>
+    <string name="password_reset_success">Password Reset Successful</string>
+    <string name="password_reset_message">Please log in again to continue!</string>
+    <string name="continue_button">Continue</string>
+    <string name="feedback_success_title">Feedback Sent Successfully</string>
+    <string name="feedback_success_message">Your feedback helps Contrast Coffee improve service quality.</string>
+    <string name="otp_sent">The verification code has been sent to %1$s</string>
+    <string name="otp_title">Verify OTP</string>
+    <string name="otp_timer">Valid for %1$d:%2$02d</string>
+    <string name="otp_resend_question">Didn\'t receive the code?</string>
+    <string name="otp_resend">Resend</string>
+    <string name="biometric_title">Enable Biometric Authentication?</string>
+    <string name="do_not_show_again">Do not show again</string>
+    <string name="activate_biometric">Activate Biometric</string>
+
+    <string name="notification_permission_title">App access denied</string>
+    <string name="notification_permission_message">To enable notifications, please go to Settings and enable notifications for this app.</string>
+
+    <!-- Points Policy -->
+    <string name="points_policy_title">POINTS POLICY</string>
+    <string name="what_is_kat">What is KAT?</string>
+    <string name="kat_definition">KAT is the reward point unit of KATINAT\n1 KAT = 10,000 VND.</string>
+
+    <string name="point_types">Types of Points (KAT)</string>
+    <string name="point_types_description">Currently, KATINAT has two types of points:</string>
+    <string name="point_types_accumulation">1. Membership Points\nFunction: Used for membership ranking.</string>
+    <string name="point_types_bonus">2. Accumulated Points: Used to redeem discount codes.</string>
+
+    <string name="rounding_rules">Rounding Rules</string>
+    <string name="rounding_rules_description">+ 0.5* rounds down [e.g., 74,000 VND = 7 KAT].\n+ ≥ 0.5 rounds up [e.g., 75,000 VND = 8 KAT].</string>
+
+    <string name="how_to_earn_points">How to Earn Points</string>
+    <string name="how_to_earn_points_description">Earn points through one of the following methods:</string>
+    <string name="how_to_earn_points_method1">1. Scan the QR code using Momo scanner at the store.</string>
+    <string name="how_to_earn_points_method2">2. Provide your registered phone number to the store staff, points will be credited within 30 minutes.</string>
+
+    <string name="point_accumulation_rules">Points Accumulation Rules</string>
+    <string name="point_accumulation_rules_description">KATINAT only supports retroactive point accumulation within 24 hours from the time of purchase.</string>
+
+    <!-- Ranking Policy -->
+    <string name="rank_policy_title">RANKING POLICY</string>
+    <string name="rank_policy_heading">RANKING POLICY</string>
+    <string name="rank_policy_description">Applicable to Silver, Gold, and Black Diamond members.\n* Black Diamond was previously called Platinum.</string>
+
+    <string name="rank_evaluation_time">Ranking Evaluation Period</string>
+    <string name="rank_evaluation_description">Within 03 months from the date you rank up or down.</string>
+    <string name="rank_evaluation_case">Case: If you were previously ranked Silver, Gold, or Platinum in the old system, your ranking evaluation period starts from the day you register your KATINAT APP account.</string>
+
+    <string name="how_to_keep_rank">How to Maintain Your Rank?</string>
+    <string name="how_to_keep_rank_description">During the 03-month period, members must make at least one transaction to maintain their rank.</string>
+
+    <string name="rank_drop_rules">Rules for Rank Demotion</string>
+    <string name="rank_drop_rules_keep_points">1. Accumulated points: Remain unaffected.</string>
+    <string name="rank_drop_rules_demote">2. Membership points: Will be reset to the highest point of the lower tier.</string>
+    <string name="rank_drop_rules_silver">+ If demoted from Silver, the account will reset to 99 points as a New Member.</string>
+    <string name="rank_drop_rules_gold">+ If demoted from Gold, the account will reset to 499 points as a Silver Member.</string>
+    <string name="rank_drop_rules_black_diamond">+ If demoted from Black Diamond, the account will reset to 999 points as a Gold Member.</string>
+
+    <string name="note">Note:</string>
+
+    <string name="membership_policy_title">Membership Policy</string>
+    <string name="membership_policy_heading">MEMBERSHIP POLICY</string>
+    <string name="membership_policy_points">POINT POLICY</string>
+    <string name="membership_policy_details">
+        KAT is the unit of KATINAT points. 1 KAT = 10,000 VND.
+
+        Types of points:
+        1. Accumulated points: Used to upgrade membership level.
+        2. Redeemable points: Used to exchange for discount codes.
+
+        Rounding rules:
+        - +0.5 rounds down (VD: 74.4000 → 7 KAT).
+        - -0.5 rounds up (VD: 75.0000 → 8 KAT).
+
+        How to earn points:
+        - Scan the Momo QR at the store.
+        - Accumulated points are updated within 30 minutes.
+    </string>
+
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Vietnamese</string>
+    <string name="faceid_title">Would you like to allow "Contrast" to use FaceID?</string>
+    <string name="faceid_message">Contrast requires FaceID access to allow you to log in quickly and securely.</string>
+    <string name="agree">Agree</string>
+    <string name="decline">Decline</string>
+    <string name="welcome_title">Welcome to Contrast Coffee</string>
+    <string name="welcome_subtitle">Where motivation begins!</string>
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_message">For security reasons, you will be logged out of your account. To create a new password, please log in again and go to Settings > Security.\n\nDo you want to continue?</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="alert_title">Notification</string>
+    <string name="ok">OK</string>
+    <string name="success_message">Saved successfully</string>
+    <string name="timeout_message">Request timed out, please try again!</string>
+    <string name="error_empty_password">Password cannot be empty!</string>
+    <string name="error_empty_phone">Phone cannot be empty!</string>
+    <string name="error_empty_fullname">FullName cannot be empty!</string>
+    <string name="error_unknown">Unknown</string>
+    <string name="registered_phone">Registered phone number!</string>
+    <string name="registered_email">Registered email!</string>
+    <string name="error_empty_re_password">Re-entered password cannot be empty!</string>
+
+    <string name="error_invalid_length">Password must be between 8 - 15 characters!</string>
+    <string name="error_missing_number">Password must contain at least one digit!</string>
+    <string name="error_missing_uppercase">Password must contain at least one uppercase letter!</string>
+    <string name="error_missing_lowercase">Password must contain at least one lowercase letter!</string>
+    <string name="error_missing_special_char">Password must contain at least one special character (e.g.: !, @, #, $, %)!</string>
+    <string name="error_password_mismatch">Re-entered password does not match!</string>
+
+
+    <!-- Error messages -->
+
+
+</resources>

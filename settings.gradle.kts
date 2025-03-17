@@ -1,0 +1,31 @@
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+
+    }
+}
+
+rootProject.name = "Contrast"
+include(":app")
+include(":swipe-reveal-layout")
+include(":refreshLayout")
+include(":singledateandtimepicker")
+include(":photoView")
+include(":compressor")
+include(":domain")
+include(":data")

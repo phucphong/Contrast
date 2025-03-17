@@ -36,11 +36,8 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.slider.ImageSlider
 import com.contrast.Contrast.presentation.components.text.CustomText
 
-@Preview(showBackground = true)
-
-@Preview(name = "Light Mode", showBackground = true)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Preview(name = "Galaxy S5", device = "spec:width=360dp,height=640dp")
+
 @Preview(name = "Tablet Mode", device = "spec:width=1280dp,height=800dp,dpi=240")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

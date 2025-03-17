@@ -31,7 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 @Preview(showBackground = true)
 @Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+
 @Composable
 fun OtpVerificationScreen(phoneNumber: String, onBackPress: () -> Unit, onOtpSubmit: (String) -> Unit, onResendOtp: () -> Unit) {
     var otpCode by remember { mutableStateOf("") }

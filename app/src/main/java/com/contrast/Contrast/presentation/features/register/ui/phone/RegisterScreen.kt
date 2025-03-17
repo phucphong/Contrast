@@ -1,6 +1,8 @@
 package com.contrast.Contrast.presentation.features.auth
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
 
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
 
@@ -29,20 +33,18 @@ fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .background(Color.White)
     ) {
 
         Spacer(modifier = Modifier.height(16.dp))
         // Nút quay lại
-        Image(
-            painter = painterResource(id = R.drawable.back),
-            contentDescription = stringResource(id = R.string.app_name),  // Example for app name or other description
-            modifier = Modifier
-                .size(30.dp)
-                .clickable(onClick = {
-                    // Your onClick logic goes here
-                })
-        )
 
+        CustomTopAppBar(
+            title = "",
+            Color.Red,
+            Color.White,
+            onBackClick = {  }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

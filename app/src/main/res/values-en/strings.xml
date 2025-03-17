@@ -34,6 +34,14 @@
     <string name="feedback">Feedback</string>
     <string name="greeting">Contrast says hello 👋</string>
     <string name="add_money">+ Add Money</string>
+    <string name="set_new_password">Please set a new password</string>
+    <string name="notification_title">Notifications</string>
+    <string name="no_notification">No notifications</string>
+    <string name="no_notification_desc">Please check back later for updates on offers and events</string>
+    <string name="delete">Delete</string>
+    <string name="forgot_password_desc">Please enter the registered phone number. We will send an SMS verification code to reset your password.</string>
+
+    <string name="send_code_button">Send Verification Code</string>
     <string name="onboarding_title_1">Perseverance Leads to Success</string>
     <string name="onboarding_desc_1">Customers accumulate points with every purchase, upgrade their rank, and receive exclusive offers from Contrast.</string>
 

@@ -1,7 +1,9 @@
 package com.contrast.Contrast.presentation.components.topAppBar
 
+import androidx.compose.foundation.background
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -15,7 +17,7 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(title: String, color: Color = Color.Black,onBackClick: () -> Unit) {
+fun CustomTopAppBar(title: String, color: Color = Color.Black,background : Color = Color.White,onBackClick: () -> Unit) {
     TopAppBar(
         title = {
             CustomText(
@@ -25,12 +27,13 @@ fun CustomTopAppBar(title: String, color: Color = Color.Black,onBackClick: () ->
                 color = color,
             )
         },
+        modifier = Modifier.background(background),
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "Back",
-                    tint = Color.Red
+                    tint = Color.Gray
                 )
             }
         },

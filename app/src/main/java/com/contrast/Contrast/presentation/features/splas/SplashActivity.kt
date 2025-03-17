@@ -8,9 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.features.account.changepassword.ChangePasswordActivity
+import com.contrast.Contrast.presentation.features.account.forgotPassword.ForgotPasswordActivity
 import com.contrast.Contrast.presentation.features.account.personalInfo.PersonalInfoActivity
 import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 import com.contrast.Contrast.presentation.features.membership.MembershipPolicyActivity
+import com.contrast.Contrast.presentation.features.notification.NotificationActivity
 import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountActivity
 
 
@@ -45,6 +48,6 @@ class SplashActivity : AppCompatActivity() {
 //        } else if (!TextUtils.isEmpty(token)) {
 //           startactivity(ContrastActivity::class.java)
 //        }
-        startactivity(LoginActivity::class.java)
+        startactivity(NotificationActivity::class.java)
     }
 }

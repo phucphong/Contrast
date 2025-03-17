@@ -20,7 +20,17 @@
     <string name="location_permission_title">Cho phép Contrast truy cập vị trí</string>
     <string name="location_permission_message">Bạn cần bật quyền truy xuất dịch vụ định vị để xác định vị trí hiện tại.</string>
     <string name="accept">Đồng ý</string>
+    <string name="notification_title">Thông báo</string>
+    <string name="no_notification">Không có thông báo nào</string>
+    <string name="no_notification_desc">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
+    <string name="delete">Xóa</string>
 
+    <string name="voucher"># Tặng voucher</string>
+    <string name="event"># Sự kiện</string>
+
+    <string name="forgot_password_desc">Vui lòng nhập số điện thoại đã đăng ký. Chúng tôi sẽ gửi SMS mã xác thực để bạn đặt lại mật khẩu.</string>
+    <string name="set_new_password">Vui lòng cài mật khẩu mới</string>
+    <string name="send_code_button">Gửi mã xác nhận</string>
     <string name="membership_policy_points">CHÍNH SÁCH ĐIỂM</string>
     <string name="membership_policy_details">
         KAT là gì?

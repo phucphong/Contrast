@@ -1,19 +1,22 @@
 package com.contrast.Contrast.presentation.features.payment.ui
 
-
-import androidx.compose.ui.tooling.preview.Preview
-import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldUpDown
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
 
 @Preview(showBackground = true)
 @Composable
@@ -24,9 +27,8 @@ fun PreviewTopUpScreen() {
 @Composable
 fun TopUpScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
     var selectedAmount by remember { mutableStateOf("50,000") }
-    val amountOptions = listOf("10,000", "50,000", "100,000", "500,000", "1,000,000")
 
-    Scaffold {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -37,17 +39,16 @@ fun TopUpScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
             Spacer(modifier = Modifier.height(40.dp))
             CustomTitleBar(
                 title = stringResource(R.string.top_up),
-                onBackPress = { onClose() }
+                onBackPress = { /* Xử lý quay lại */ }
             )
-            Spacer(modifier = Modifier.height(20.dp))
-
+            Spacer(modifier = Modifier.height(40.dp))
             // Hiển thị thông tin thẻ
             TopUpCard()
 
             Spacer(modifier = Modifier.height(20.dp))
 
             // Chọn số tiền nạp
-            AmountSelection(selectedAmount, amountOptions, onAmountSelected = { selectedAmount = it })
+            AmountSelection(selectedAmount, onAmountSelected = { selectedAmount = it })
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -60,13 +61,13 @@ fun TopUpScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
                     .fillMaxWidth(0.8f)
                     .height(48.dp)
             ) {
-                Text(text = stringResource(id = R.string.continue), color = Color.White)
+                Text(text = stringResource(id = R.string.continue_button), color = Color.White)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-}
+
 
 @Composable
 fun TopUpCard() {
@@ -77,26 +78,27 @@ fun TopUpCard() {
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFF453A)) // Màu đỏ
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text("Trailblazer", color = Color.White, style = MaterialTheme.typography.titleMedium)
+
+            Row {
+
+             
                 Text("0 - 99", color = Color.White, style = MaterialTheme.typography.bodySmall)
-                Text("Exclusive perks for high achievers", color = Color.White, style = MaterialTheme.typography.bodySmall)
             }
+            Text("Trailblazer", color = Color.White, style = MaterialTheme.typography.titleMedium)
+
+            Text("Exclusive perks for high achievers", color = Color.White, style = MaterialTheme.typography.bodySmall)
         }
     }
 }
 
 @Composable
-fun AmountSelection(selectedAmount: String, options: List<String>, onAmountSelected: (String) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-
+fun AmountSelection(selectedAmount: String, onAmountSelected: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth(0.9f)
@@ -107,34 +109,11 @@ fun AmountSelection(selectedAmount: String, options: List<String>, onAmountSelec
             color = Color.Black
         )
         Spacer(modifier = Modifier.height(8.dp))
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
-        ) {
-            OutlinedTextField(
-                value = selectedAmount,
-                onValueChange = {},
-                readOnly = true,
-                leadingIcon = { Text("đ", color = Color.Black) },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text("đ $option") },
-                        onClick = {
-                            onAmountSelected(option)
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
+
+        CustomTextFieldUpDown(
+            value = selectedAmount,
+            onValueChange = { onAmountSelected(it) },
+            placeholder = "50,000",
+        )
     }
 }

@@ -14,6 +14,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.features.account.changepassword.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.features.account.personalInfo.PersonalInfoActivity"
             android:exported="false" />
         <activity
@@ -28,7 +31,6 @@
         <activity
             android:name=".presentation.features.agency.AgencyActivity"
             android:exported="true" />
-
         <activity
             android:name=".presentation.features.register.ui.phone.RegisterPhoneActivity"
             android:exported="true" />
@@ -38,7 +40,6 @@
         <activity
             android:name=".presentation.features.register.ui.otp.OTPActivity"
             android:exported="true" />
-
         <activity
             android:name=".presentation.features.forgotPassword.ForgotPasswordActivity"
             android:exported="true" />

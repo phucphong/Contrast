@@ -55,7 +55,7 @@ retrofit-version = "2.11.0"
 compose-ui = "1.5.15"
 compose-preview = "1.5.15"
 
-accompanist = "0.31.2-alpha"
+accompanist = "0.33.2-alpha"
 compose = "1.8.0-rc01"
 ui = "1.0.1"
 paging-compose = "3.2.1"
@@ -163,7 +163,6 @@ androidx-pager = { group = "androidx.compose.foundation", name = "foundation", v
 paging-composer = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
 paging-runtime = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
-javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
 
 
 

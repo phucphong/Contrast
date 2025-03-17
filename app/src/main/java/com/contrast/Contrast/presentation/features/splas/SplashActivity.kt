@@ -14,6 +14,8 @@ import com.contrast.Contrast.presentation.features.account.personalInfo.Personal
 import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 import com.contrast.Contrast.presentation.features.membership.MembershipPolicyActivity
 import com.contrast.Contrast.presentation.features.notification.NotificationActivity
+import com.contrast.Contrast.presentation.features.payment.AmountInputActivity
+import com.contrast.Contrast.presentation.features.payment.TopUpActivity
 import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountActivity
 
 
@@ -48,6 +50,6 @@ class SplashActivity : AppCompatActivity() {
 //        } else if (!TextUtils.isEmpty(token)) {
 //           startactivity(ContrastActivity::class.java)
 //        }
-        startactivity(NotificationActivity::class.java)
+        startactivity(TopUpActivity::class.java)
     }
 }

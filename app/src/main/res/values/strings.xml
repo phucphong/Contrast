@@ -24,9 +24,15 @@
     <string name="no_notification">Không có thông báo nào</string>
     <string name="no_notification_desc">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
     <string name="delete">Xóa</string>
+    <string name="no_notifications">Không có thông báo nào</string>
+    <string name="check_later_for_updates">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
 
+    <string name="cart_empty_title">Giỏ hàng trống</string>
+    <string name="cart_empty_message">Bạn chưa thêm sản phẩm nào vào giỏ hàng</string>
     <string name="voucher"># Tặng voucher</string>
     <string name="event"># Sự kiện</string>
+    <string name="enter_amount">Nhập số tiền</string>
+    <string name="min_max_amount">Số tiền tối thiểu là đ10,000 và số dư tối đa mỗi thẻ được phép là đ5,000,000</string>
 
     <string name="forgot_password_desc">Vui lòng nhập số điện thoại đã đăng ký. Chúng tôi sẽ gửi SMS mã xác thực để bạn đặt lại mật khẩu.</string>
     <string name="set_new_password">Vui lòng cài mật khẩu mới</string>
@@ -127,6 +133,8 @@
     <string name="congratulations">Chúc mừng!</string>
     <string name="received_points">Bạn đã nhận thêm +20 🏆</string>
     <string name="redeem_voucher">Đổi voucher</string>
+    <string name="top_up">Nạp thêm tiền</string>
+    <string name="amount_label">Số tiền nạp thêm</string>
 
     <string name="voucher_redeem_success">Bạn đã đổi voucher thành công!</string>
     <string name="view_vouchers">Xem các voucher bạn đang sở hữu</string>
@@ -862,7 +870,7 @@
     <string name="dateRange" translatable="false">Ngày cấp</string>
 
     <string name="personCreate" translatable="false">Người tạo</string>
-    <string name="complete" translatable="false">Hoàn thành(%)</string>
+    <string name="complete" translatable="false">Hoàn thành</string>
     <string name="completeAddress" translatable="false">Hoàn thành</string>
     <string name="dateComplete" translatable="false">Ngày hoàn thành</string>
     <string name="completeWork" translatable="false">Hoàn thành</string>

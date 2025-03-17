@@ -40,7 +40,14 @@
     <string name="no_notification_desc">Please check back later for updates on offers and events</string>
     <string name="delete">Delete</string>
     <string name="forgot_password_desc">Please enter the registered phone number. We will send an SMS verification code to reset your password.</string>
-
+    <string name="no_notifications">No notifications</string>
+    <string name="check_later_for_updates">Please check back later for updates and events</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="min_max_amount">The minimum amount is ₫10,000 and the maximum balance per card is ₫5,000,000</string>
+    <string name="complete">Complete</string>
+    <string name="cart_empty_title">Your cart is empty</string>
+    <string name="top_up">Top Up</string>
+    <string name="amount_label">Top-up amount</string>
     <string name="send_code_button">Send Verification Code</string>
     <string name="onboarding_title_1">Perseverance Leads to Success</string>
     <string name="onboarding_desc_1">Customers accumulate points with every purchase, upgrade their rank, and receive exclusive offers from Contrast.</string>

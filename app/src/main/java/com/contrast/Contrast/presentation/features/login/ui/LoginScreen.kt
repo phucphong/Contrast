@@ -1,6 +1,7 @@
 package com.contrast.Contrast.presentation.features.login.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +12,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -108,24 +111,52 @@ fun LoginScreen(navController: NavController) {
         Spacer(modifier = Modifier.weight(1f)) // Đẩy nội dung lên trên
 
         // Nút đăng nhập
-        Button(
-            onClick = {
-//                if (phoneNumber.isEmpty() || password.isEmpty()) {
-//                    errorMessage = stringResource(id = R.string.error_invalid_login)
-//                } else {
-//                    errorMessage = "" // Xóa lỗi nếu hợp lệ
-//                    navController.navigate("home")
-//                }
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(16.dp)
+                .height(50.dp)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp) // Khoảng cách giữa hai nút
         ) {
-            Text(text = stringResource(id = R.string.login), color = Color.White, fontSize = 16.sp)
-        }
+            // Nút đăng nhập
+            Button(
+                onClick = {
+                    // Điều hướng hoặc xử lý đăng nhập
+                    navController.navigate("home")
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                modifier = Modifier
+                    .weight(1f) // Chiếm phần lớn chiều rộng
+                    .height(50.dp),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.login),
+                    color = Color.White,
+                    fontSize = 16.sp
+                )
+            }
 
+            // Nút Face ID
+            Box(
+                modifier = Modifier
+                    .size(50.dp) // Kích thước nhỏ hơn so với trước để phù hợp
+                    .clip(RoundedCornerShape(10.dp)) // Bo góc giống nút chính
+                    .background(Color.Red)
+                    .clickable {
+                        // Xử lý đăng nhập bằng Face ID
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.face_id), // Thay bằng icon Face ID của bạn
+                    contentDescription = "Face ID",
+
+                    modifier = Modifier.size(24.dp) // Nhỏ hơn để cân đối
+                )
+            }
+        }
         // Nút "Quên mật khẩu"
         Text(
             text = stringResource(id = R.string.forgot_password),

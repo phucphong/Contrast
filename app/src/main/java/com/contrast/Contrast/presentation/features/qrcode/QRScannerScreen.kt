@@ -1,13 +1,6 @@
-package com.contrast.Contrast.presentation.features.qrscanner.ui
+package com.contrast.Contrast.presentation.features.qrcode
 
 
-import android.content.Context
-
-import android.util.Log
-
-import androidx.annotation.OptIn
-import androidx.camera.core.ExperimentalGetImage
-import androidx.camera.core.ImageProxy
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,8 +23,6 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.core.Red18
 import com.contrast.Contrast.presentation.components.camera.CameraPreviewView
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTittle
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
 @kotlin.OptIn(ExperimentalMaterial3Api::class)
 @Composable

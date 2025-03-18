@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.qrscanner.ui
+package com.contrast.Contrast.presentation.features.qrcode
 
 
 import android.os.Bundle

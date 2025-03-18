@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.payment.transaction.ui.ConfirmTransactionActivity
-import com.contrast.Contrast.presentation.features.qrscanner.ui.QRScannerActivity
+import com.contrast.Contrast.presentation.features.voucher.VoucherActivity
 
 
 class SplashActivity : AppCompatActivity() {
@@ -43,6 +43,6 @@ class SplashActivity : AppCompatActivity() {
 //        } else if (!TextUtils.isEmpty(token)) {
 //           startactivity(ContrastActivity::class.java)
 //        }
-        startactivity(ConfirmTransactionActivity::class.java)
+        startactivity(VoucherActivity::class.java)
     }
 }

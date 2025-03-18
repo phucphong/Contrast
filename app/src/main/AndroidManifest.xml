@@ -19,13 +19,16 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.features.voucher.VoucherActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.features.payment.transaction.ui.ConfirmTransactionActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.features.qrscanner.ui.QRScannerActivity"
+            android:name=".presentation.features.qrcode.QRScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.features.wallet.ui.WalletActivity"
+            android:name=".presentation.features.wallets.WalletActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.payment.topup.ui.TopUpActivity"

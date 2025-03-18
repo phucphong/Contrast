@@ -9,7 +9,7 @@ val GrayD7 = Color(0xFFD7D7D7) // Màu xám nhạt
 val Green = Color(0xFF1E7D3A) //
 val Red18 = Color(0xFFD82018) //
 val WhiteFC = Color(0xFFD9D9D9) //
-
+val RedCustom = Color(0xFFD91E18)
 // Các màu hỗ trợ
 val BackgroundColor = Color(0xFFF8F8F8) // Màu nền sáng
 val TextColorPrimary = Color(0xFF333333) // Màu văn bản chính

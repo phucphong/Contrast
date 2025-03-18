@@ -43,7 +43,7 @@ import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDial
 
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
+
 
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
 import com.contrast.Contrast.utils.Common

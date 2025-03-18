@@ -17,6 +17,7 @@ import com.contrast.Contrast.R
 @Composable
 fun CustomTitleBar(
     title: String,
+    tint:Color = Color.Gray,
     onBackPress: () -> Unit
 ) {
     Row(
@@ -27,6 +28,7 @@ fun CustomTitleBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Tiêu đề màn hình
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = title,
             fontSize = 24.sp,
@@ -41,7 +43,7 @@ fun CustomTitleBar(
             Icon(
                 painter = painterResource(id = R.drawable.close_2),
                 contentDescription ="",
-                tint = Color.Gray
+                tint = tint
             )
         }
     }

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.core.GrayD7
 
 @Composable
 fun CustomText(
@@ -56,7 +57,7 @@ fun CustomText(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(Color.Gray.copy(alpha = 0.8f), shape = RoundedCornerShape(50))
+                    .background(GrayD7, shape = RoundedCornerShape(50))
             )
         }
     }

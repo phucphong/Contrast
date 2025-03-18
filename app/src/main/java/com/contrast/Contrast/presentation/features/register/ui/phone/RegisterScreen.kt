@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+
 
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
@@ -39,7 +40,7 @@ fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
         // Nút quay lại
 
-        CustomTopAppBar(
+        CustomTopAppBarTittleBack(
             title = "",
             Color.Red,
             Color.White,

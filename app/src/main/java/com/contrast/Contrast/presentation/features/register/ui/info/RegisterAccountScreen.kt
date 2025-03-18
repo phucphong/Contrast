@@ -40,7 +40,8 @@ import com.contrast.Contrast.presentation.components.PasswordRequirements
 import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
 
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
+
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
 import com.contrast.Contrast.utils.Common
@@ -98,7 +99,7 @@ fun RegisterAccountScreen(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomTopAppBar(
+        CustomTopAppBarTittleBack(
             title = "",
             Color.Red,
             onBackClick = { navController.popBackStack() }

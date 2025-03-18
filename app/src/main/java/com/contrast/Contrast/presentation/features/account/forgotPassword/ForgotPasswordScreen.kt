@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
+
 @Preview(showBackground = true)
 @Preview(name = "Light Mode", showBackground = true)
 @Composable

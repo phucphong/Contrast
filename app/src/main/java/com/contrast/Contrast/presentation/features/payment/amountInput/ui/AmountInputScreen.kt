@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.payment.ui
+package com.contrast.Contrast.presentation.features.payment.amountInput.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.ui.tooling.preview.Preview

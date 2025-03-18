@@ -74,9 +74,10 @@ dependencies {
 
     implementation(libs.sdp.android)
     implementation(libs.ssp.android)
-    implementation(libs.camera.camera2)
-    implementation(libs.camera.lifecycle)
-    implementation(libs.camera.view)
+    implementation(libs.camerax.core)
+    implementation(libs.camerax.camera2)
+    implementation(libs.camerax.lifecycle)
+    implementation(libs.camerax.view)
     implementation(libs.coil)
     implementation(libs.coil.svg)
     implementation(libs.activity.ktx)

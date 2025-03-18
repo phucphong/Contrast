@@ -28,7 +28,8 @@ import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+
 import com.contrast.Contrast.presentation.features.membership.MembershipPolicyScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +55,7 @@ fun PersonalInfoScreen( navController: NavController) {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        CustomTopAppBar(
+        CustomTopAppBarTittleBack (
             title = stringResource(id = R.string.membership_policy_title),
             Color.Red,
             onBackClick = { navController.popBackStack() }

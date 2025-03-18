@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.sp
@@ -17,7 +16,7 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(title: String, color: Color = Color.Black,background : Color = Color.White,onBackClick: () -> Unit) {
+fun CustomTopAppBarTextImage(title: String, color: Color = Color.Black,background : Color = Color.White,onBackClick: () -> Unit) {
     TopAppBar(
         title = {
             CustomText(

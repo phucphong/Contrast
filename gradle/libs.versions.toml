@@ -93,9 +93,11 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 
 sdp-android = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdp-version" }
 ssp-android = { group = "com.intuit.ssp", name = "ssp-android", version.ref = "ssp-version" }
-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax-version" }
-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax-version" }
-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax-version" }
+
+camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax-version" }
+camerax-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax-version" }
+camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax-version" }
+camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax-version" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil-version" }
 coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil-version" }
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx-version" }
@@ -145,7 +147,7 @@ security-crypto = { group = "androidx.security", name = "security-crypto", versi
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-version" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-version" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.2.0" }
-mlkit-barcode-scanning = { group = "com.google.mlkit", name = "barcode-scanning", version = "17.2.0" }
+mlkit-barcode-scanning = { group = "com.google.mlkit", name = "barcode-scanning", version = "17.3.0" }
 converter-gson= { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit-version" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version = "32.7.0" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }

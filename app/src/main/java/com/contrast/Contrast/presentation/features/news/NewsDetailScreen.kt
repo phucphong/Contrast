@@ -23,14 +23,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+
 import com.itechpro.domain.model.NewsDetail
 @Preview(showBackground = true)
 @Composable
 fun NewsDetailScreen(newsDetail: NewsDetail, onBackPress: () -> Unit) {
     Scaffold(
         topBar = {
-            CustomTopAppBar(
+            CustomTopAppBarTittleBack(
                 title = "",
                 Color.Red,
                 onBackClick = { onBackPress }

@@ -6,6 +6,9 @@ import androidx.compose.ui.graphics.Color
 val PrimaryColor = Color(0xFFDC143C) // Màu đỏ (Crimson)
 val SecondaryColor = Color(0xFFFFA500) // Màu cam (Orange)
 val GrayD7 = Color(0xFFD7D7D7) // Màu xám nhạt
+val Green = Color(0xFF1E7D3A) //
+val Red18 = Color(0xFFD82018) //
+val WhiteFC = Color(0xFFD9D9D9) //
 
 // Các màu hỗ trợ
 val BackgroundColor = Color(0xFFF8F8F8) // Màu nền sáng

@@ -34,7 +34,7 @@ fun CustomTextField(
     placeholder: String,  // Placeholder cho TextField
     keyboardType: KeyboardType = KeyboardType.Text,  // Kiểu bàn phím mặc định là Text
     padding: Dp = 0.dp,  // Padding mặc định
-    isPasswordField: Boolean = false  // Kiểm tra nếu đây là trường mật khẩu
+    isShowIcon: Boolean = false  // Kiểm tra nếu đây là trường mật khẩu
 ) {
 
     // Khai báo fontFamily
@@ -64,7 +64,7 @@ fun CustomTextField(
                 placeholder = { Text(placeholder,
                     color = Color(0xFFD7D7D7)) }, // Placeholder cho TextField
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType), // Kiểu bàn phím
-                visualTransformation = if (isPasswordField) PasswordVisualTransformation() else VisualTransformation.None, // Mã hóa nhập liệu nếu là mật khẩu
+                visualTransformation = if (isShowIcon) PasswordVisualTransformation() else VisualTransformation.None, // Mã hóa nhập liệu nếu là mật khẩu
                 modifier = Modifier
                     .fillMaxWidth()
 

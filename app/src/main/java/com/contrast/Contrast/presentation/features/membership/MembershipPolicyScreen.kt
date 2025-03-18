@@ -21,7 +21,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+
 
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
@@ -40,7 +41,7 @@ fun MembershipPolicyScreen(navController: NavController) {
     ) {
 
 
-        CustomTopAppBar(
+        CustomTopAppBarTittleBack(
             title = stringResource(id = R.string.membership_policy_title),
             Color.Red,
             onBackClick = { navController.popBackStack() }

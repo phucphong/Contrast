@@ -20,7 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.core.FFFCFCFC
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
+import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 
 
@@ -30,92 +32,97 @@ fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
 
     var phoneNumber by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .background(Color.White)
-    ) {
+  Column (
+      modifier = Modifier
+          .fillMaxSize()
 
-        Spacer(modifier = Modifier.height(16.dp))
-        // Nút quay lại
+          .background(FFFCFCFC)
+  ){   Column(
+      modifier = Modifier
+          .fillMaxSize()
+          .padding(16.dp)
+          .background(FFFCFCFC)
+  ) {
 
-        CustomTopAppBarTittleBack(
-            title = "",
-            Color.Red,
-            Color.White,
-            onBackClick = {  }
-        )
+      Spacer(modifier = Modifier.height(16.dp))
+      // Nút quay lại
 
-        Spacer(modifier = Modifier.height(16.dp))
+      CustomTopAppBarTittleBack(
+          title = "",
+          Color.Red,
+          Color.White,
+          onBackClick = {  }
+      )
 
-        // Tiêu đề
-        Text(
-            text = stringResource(R.string.register_title),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Start)
-        )
+      Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(30.dp))
+      // Tiêu đề
+      Text(
+          text = stringResource(R.string.register_title),
+          fontSize = 24.sp,
+          fontWeight = FontWeight.Bold,
+          modifier = Modifier.align(Alignment.Start)
+      )
 
-        // Nhập số điện thoại
-        Text(
-            text = stringResource(R.string.phone_label),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(30.dp))
 
+      // Nhập số điện thoại
+      CustomText(
+          text = stringResource(R.string.phone_label),
+          fontSize = 16.sp,
+          fontWeight = FontWeight.Medium,
 
-        // CustomTextField with phone number
-        CustomTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            placeholder = stringResource(id = R.string.phone_placeholder),  // Use string resource for placeholders
-            keyboardType = KeyboardType.Phone
-        )
+          )
+      Spacer(modifier = Modifier.height(8.dp))
 
 
+      // CustomTextField with phone number
+      CustomTextField(
+          value = phoneNumber,
+          onValueChange = { phoneNumber = it },
+          placeholder = stringResource(id = R.string.phone_placeholder),  // Use string resource for placeholders
+          keyboardType = KeyboardType.Phone
+      )
 
-        // Spacer để đẩy nút xuống cuối
-        Spacer(modifier = Modifier.weight(1f))
 
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Ghi chú chính sách
-            Text(
-                text = stringResource(R.string.policy_text),
-                fontSize = 12.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+      // Spacer để đẩy nút xuống cuối
+      Spacer(modifier = Modifier.weight(1f))
 
-            // Nút xác nhận
-            Button(
-                onClick = { onConfirm(phoneNumber) },
-                enabled = phoneNumber.isNotEmpty(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (phoneNumber.isNotEmpty()) Color.Red else Color(0xFFFFC0C0),
-                    disabledBackgroundColor = Color(0xFFFFC0C0)
-                ),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text(text = stringResource(R.string.confirm_button), color = Color.White, fontSize = 16.sp)
-            }
+      Column(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalAlignment = Alignment.CenterHorizontally
+      ) {
+          // Ghi chú chính sách
+          Text(
+              text = stringResource(R.string.policy_text),
+              fontSize = 12.sp,
+              color = Color.Gray,
+              textAlign = TextAlign.Center,
+              modifier = Modifier.padding(horizontal = 16.dp)
+          )
 
-            Spacer(modifier = Modifier.height(16.dp)) // Khoảng cách để tránh che nút với navigation bar
-        }
-    }
+          Spacer(modifier = Modifier.height(16.dp))
+
+          // Nút xác nhận
+          Button(
+              onClick = { onConfirm(phoneNumber) },
+              enabled = phoneNumber.isNotEmpty(),
+              modifier = Modifier
+                  .fillMaxWidth()
+                  .height(50.dp),
+              colors = ButtonDefaults.buttonColors(
+                  backgroundColor = if (phoneNumber.isNotEmpty()) Color.Red else Color(0xFFFFC0C0),
+                  disabledBackgroundColor = Color(0xFFFFC0C0)
+              ),
+              shape = RoundedCornerShape(8.dp)
+          ) {
+              Text(text = stringResource(R.string.confirm_button), color = Color.White, fontSize = 16.sp)
+          }
+
+          Spacer(modifier = Modifier.height(16.dp)) // Khoảng cách để tránh che nút với navigation bar
+      }
+  } }
 }
 
 @Preview(showBackground = true)

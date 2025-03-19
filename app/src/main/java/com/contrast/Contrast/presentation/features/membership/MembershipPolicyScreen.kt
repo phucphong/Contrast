@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
+import com.contrast.Contrast.core.FFFCFCFC
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 
@@ -37,7 +38,7 @@ fun MembershipPolicyScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(FFFCFCFC)
     ) {
 
 

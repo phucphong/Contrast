@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.core.FFFCFCFC
 import com.contrast.Contrast.presentation.components.alertDialog.MoneySelectionDialog
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldUpDown
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
@@ -31,14 +32,14 @@ fun TopUpScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
 Column(  modifier = Modifier
     .fillMaxSize()
 
-    .background(Color.White),
+    .background(FFFCFCFC),
     horizontalAlignment = Alignment.CenterHorizontally) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(Color.White),
+           ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))

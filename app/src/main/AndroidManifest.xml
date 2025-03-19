@@ -19,7 +19,13 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.features.voucher.VoucherActivity"
+            android:name=".presentation.features.news.detail.NewsDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.features.payment.ui.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.features.voucher.ui.VoucherActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.payment.transaction.ui.ConfirmTransactionActivity"
@@ -28,13 +34,13 @@
             android:name=".presentation.features.qrcode.QRScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.features.wallets.WalletActivity"
+            android:name=".presentation.features.wallets.ui.WalletActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.payment.topup.ui.TopUpActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.features.payment.AmountInputActivity"
+            android:name=".presentation.features.payment.amountInput.ui.AmountInputActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.notification.NotificationActivity"

@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.wallets
+package com.contrast.Contrast.presentation.features.wallets.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

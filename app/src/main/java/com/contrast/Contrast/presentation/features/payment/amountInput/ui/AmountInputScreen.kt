@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.contrast.Contrast.core.FFFCFCFC
 
 @Preview(name = "Light Mode", showBackground = true)
 
@@ -31,13 +32,14 @@ fun PreviewAmountInputScreen() {
 @Composable
 fun AmountInputScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
     var amount by remember { mutableStateOf("") }
-    Scaffold(
+    Column(
+        modifier = Modifier .background(FFFCFCFC)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .background(Color.White),
+                .background(FFFCFCFC),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(40.dp))

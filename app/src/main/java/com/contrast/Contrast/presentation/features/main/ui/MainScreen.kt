@@ -1,6 +1,5 @@
 package com.contrast.Contrast.presentation.features.main.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,22 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.features.main.OnboardingScreen
+import com.contrast.Contrast.presentation.features.main.home.ui.HomePage
 
 @Preview(showBackground = true)
-
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Preview(name = "Galaxy S5", device = "spec:width=360dp,height=640dp")
-//@Preview(name = "Phone Mode", device = "spec:width=411dp,height=891dp")
-//@Preview(name = "Pixel 5", device = "spec:width=393dp,height=851dp")
-//@Preview(name = "Galaxy S20", device = "spec:width=412dp,height=915dp")
-//@Preview(name = "OnePlus 9 Pro", device = "spec:width=412dp,height=915dp")
-//@Preview(name = "Pixel 4", device = "spec:width=393dp,height=851dp")
-
-@Preview(name = "Tablet Mode", device = "spec:width=1280dp,height=800dp,dpi=240")
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {

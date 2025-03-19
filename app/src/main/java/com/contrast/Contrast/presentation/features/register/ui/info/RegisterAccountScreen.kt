@@ -32,6 +32,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.contrast.Contrast.core.FFFCFCFC
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
@@ -90,306 +91,312 @@ fun RegisterAccountScreen(
 
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-            .padding(18.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
+   Column(
+       modifier = Modifier
+           .fillMaxSize()
+           .background(FFFCFCFC)
 
-        CustomTopAppBarTittleBack(
-            title = "",
-            Color.Red,
-            onBackClick = { navController.popBackStack() }
-        )
+   )
+   {  Column(
+       modifier = Modifier
+           .fillMaxSize()
+           .background(FFFCFCFC)
+           .padding(18.dp)
+           .verticalScroll(rememberScrollState())
+   ) {
+       Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+       CustomTopAppBarTittleBack(
+           title = "",
+           Color.Red,
+           onBackClick = { navController.popBackStack() }
+       )
 
-        // Tiêu đề
-        Text(
-            text = stringResource(id = R.string.register_account),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
-        )
+       Spacer(modifier = Modifier.height(16.dp))
 
-
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Thông tin đăng nhập
-        CustomText(text = stringResource(id = R.string.phone_number))
-
-
-        // CustomTextField with phone number
-        CustomTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            placeholder = stringResource(id = R.string.phone_placeholder),  // Use string resource for placeholders
-            keyboardType = KeyboardType.Phone
-        )
+       // Tiêu đề
+       Text(
+           text = stringResource(id = R.string.register_account),
+           style = MaterialTheme.typography.titleLarge,
+           fontWeight = FontWeight.Bold
+       )
 
 
 
-        // Mật khẩu mới
-        CustomText(
-            text = buildAnnotatedString {
-                append(stringResource(id = R.string.password_new))
-                withStyle(style = SpanStyle(color = Color.Red)) {
-                    append("*")
-                }
-            }.toString()
-        )
+       Spacer(modifier = Modifier.height(16.dp))
 
-        CustomTextFieldPassword(
-            value = password,
-            onValueChange = { password = it },
-            placeholder = stringResource(id = R.string.password_placeholder),
-            keyboardType = KeyboardType.Password
-        )
-
-        // Chỉ hiển thị điều kiện mật khẩu khi có dữ liệu nhập vào
-        if (password.isNotEmpty()) {
-            PasswordRequirements(password = password)
-        }
-
-        // Xác nhận mật khẩu mới
-        CustomText(
-            text = buildAnnotatedString {
-                append(stringResource(id = R.string.confirm_password))
-                withStyle(style = SpanStyle(color = Color.Red)) {
-                    append("*")
-                }
-            }.toString()
-        )
-
-        CustomTextFieldPassword(
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it },
-            placeholder = stringResource(id = R.string.confirm_password_placeholder),
-            keyboardType = KeyboardType.Password
-        )
+       // Thông tin đăng nhập
+       CustomText(text = stringResource(id = R.string.phone_number))
 
 
-        Spacer(modifier = Modifier.height(10.dp))
-        // Thông tin cá nhân
-
-        Text(
-            text = stringResource(id = R.string.info_account),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // họ tên
-        CustomText(text = stringResource(id = R.string.full_name))
-
-        CustomTextField(
-            value = fullName,
-            onValueChange = { fullName = it },
-            placeholder = stringResource(id = R.string.ex_full_name),
-            keyboardType = KeyboardType.Text
-        )
-
-
-        // Nghề nghiệp
-        CustomText(text = stringResource(id = R.string.occupation))
-
-        CustomTextField(
-            value = occupation,
-            onValueChange = { occupation = it },
-            placeholder = stringResource(id = R.string.ex_occupation),
-            keyboardType = KeyboardType.Text
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // Tiêu đề "Sinh nhật"
-        Text(
-            text = stringResource(id = R.string.birthday), // Hỗ trợ đa ngôn ngữ
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        // Mô tả sinh nhật
-        Text(
-            text = stringResource(id = R.string.birthday_description), // Hỗ trợ đa ngôn ngữ
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Row chứa Dropdown ngày, tháng, năm
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            CustomDropdown(
-                options = (1..31).map { it.toString() },
-                selectedOption = selectedDay,
-                onOptionSelected = { selectedDay = it },
-                placeholder = stringResource(id = R.string.day_placeholder), // Hỗ trợ đa ngôn ngữ
-                modifier = Modifier.weight(1f)
-            )
-
-            CustomDropdown(
-                options = (1..12).map { it.toString() },
-                selectedOption = selectedMonth,
-                onOptionSelected = { selectedMonth = it },
-                placeholder = stringResource(id = R.string.month_placeholder),
-                        modifier = Modifier.weight(1f)// Hỗ trợ đa ngôn ngữ
-            )
-
-            CustomDropdown(
-                options = (1950..2024).map { it.toString() },
-                selectedOption = selectedYear,
-                onOptionSelected = { selectedYear = it },
-                placeholder = stringResource(id = R.string.year_placeholder), // Hỗ trợ đa ngôn ngữ
-                modifier = Modifier.weight(1f)
-            )
-        }
+       // CustomTextField with phone number
+       CustomTextField(
+           value = phoneNumber,
+           onValueChange = { phoneNumber = it },
+           placeholder = stringResource(id = R.string.phone_placeholder),  // Use string resource for placeholders
+           keyboardType = KeyboardType.Phone
+       )
 
 
 
+       // Mật khẩu mới
+       CustomText(
+           text = buildAnnotatedString {
+               append(stringResource(id = R.string.password_new))
+               withStyle(style = SpanStyle(color = Color.Red)) {
+                   append("*")
+               }
+           }.toString()
+       )
+
+       CustomTextFieldPassword(
+           value = password,
+           onValueChange = { password = it },
+           placeholder = stringResource(id = R.string.password_placeholder),
+           keyboardType = KeyboardType.Password
+       )
+
+       // Chỉ hiển thị điều kiện mật khẩu khi có dữ liệu nhập vào
+       if (password.isNotEmpty()) {
+           PasswordRequirements(password = password)
+       }
+
+       // Xác nhận mật khẩu mới
+       CustomText(
+           text = buildAnnotatedString {
+               append(stringResource(id = R.string.confirm_password))
+               withStyle(style = SpanStyle(color = Color.Red)) {
+                   append("*")
+               }
+           }.toString()
+       )
+
+       CustomTextFieldPassword(
+           value = confirmPassword,
+           onValueChange = { confirmPassword = it },
+           placeholder = stringResource(id = R.string.confirm_password_placeholder),
+           keyboardType = KeyboardType.Password
+       )
 
 
-        // Tiêu đề "Thông tin liên hệ khác"
-        Text(
-            text =  stringResource(id = R.string.contact_info),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-        )
+       Spacer(modifier = Modifier.height(10.dp))
+       // Thông tin cá nhân
 
-        // Email
-        CustomText(text = stringResource(id = R.string.email))
+       Text(
+           text = stringResource(id = R.string.info_account),
+           style = MaterialTheme.typography.titleMedium,
+           fontWeight = FontWeight.Bold
+       )
+       Spacer(modifier = Modifier.height(10.dp))
 
-        CustomTextField(
-            value = email,
-            onValueChange = { email = it },
-            placeholder =  stringResource(id = R.string.email_placeholder),
-            keyboardType = KeyboardType.Email
-        )
+       // họ tên
+       CustomText(text = stringResource(id = R.string.full_name))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Hộp cảnh báo màu đỏ
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFFFEBEE), shape = RoundedCornerShape(8.dp))
-                .padding(16.dp)
-        ) {
-            Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.warning), // Thay bằng ảnh trong drawable
-                        contentDescription = "Warning",
-                        modifier = Modifier.size(20.dp) // Điều chỉnh kích thước
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Lưu ý:",
-                        color = Color.Red,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "Bạn sẽ không thể thay đổi thông tin cá nhân & sinh nhật sau khi đăng ký thành công.\n\nVì vậy, hãy chắc chắn các thông tin đã chính xác.",
-                    color = Color.Red,
-                    fontSize = 14.sp
-                )
-            }
-        }
+       CustomTextField(
+           value = fullName,
+           onValueChange = { fullName = it },
+           placeholder = stringResource(id = R.string.ex_full_name),
+           keyboardType = KeyboardType.Text
+       )
 
 
+       // Nghề nghiệp
+       CustomText(text = stringResource(id = R.string.occupation))
 
-        Spacer(modifier = Modifier.height(24.dp))
+       CustomTextField(
+           value = occupation,
+           onValueChange = { occupation = it },
+           placeholder = stringResource(id = R.string.ex_occupation),
+           keyboardType = KeyboardType.Text
+       )
+       Spacer(modifier = Modifier.height(10.dp))
 
-        // Nút tạo tài khoản
-        Button(
-            onClick = {
+       // Tiêu đề "Sinh nhật"
+       Text(
+           text = stringResource(id = R.string.birthday), // Hỗ trợ đa ngôn ngữ
+           style = MaterialTheme.typography.titleMedium,
+           fontWeight = FontWeight.Bold
+       )
 
-                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email)
-                showLoadingDialog = true
+       Spacer(modifier = Modifier.height(4.dp))
 
+       // Mô tả sinh nhật
+       Text(
+           text = stringResource(id = R.string.birthday_description), // Hỗ trợ đa ngôn ngữ
+           style = MaterialTheme.typography.bodyMedium,
+           color = Color.Gray
+       )
 
-            },
+       Spacer(modifier = Modifier.height(12.dp))
 
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
+       // Row chứa Dropdown ngày, tháng, năm
+       Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+           CustomDropdown(
+               options = (1..31).map { it.toString() },
+               selectedOption = selectedDay,
+               onOptionSelected = { selectedDay = it },
+               placeholder = stringResource(id = R.string.day_placeholder), // Hỗ trợ đa ngôn ngữ
+               modifier = Modifier.weight(1f)
+           )
 
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(text = stringResource(id = R.string.create_account_button), color = Color.White, fontSize = 16.sp)
-        }
+           CustomDropdown(
+               options = (1..12).map { it.toString() },
+               selectedOption = selectedMonth,
+               onOptionSelected = { selectedMonth = it },
+               placeholder = stringResource(id = R.string.month_placeholder),
+               modifier = Modifier.weight(1f)// Hỗ trợ đa ngôn ngữ
+           )
+
+           CustomDropdown(
+               options = (1950..2024).map { it.toString() },
+               selectedOption = selectedYear,
+               onOptionSelected = { selectedYear = it },
+               placeholder = stringResource(id = R.string.year_placeholder), // Hỗ trợ đa ngôn ngữ
+               modifier = Modifier.weight(1f)
+           )
+       }
 
 
 
 
-        // ✅ Hiển thị Dialog nếu có lỗi
-        if (validationError != null ) {
 
-            CustomAlertDialog(
-                message = validationError!!,
-                onDismiss = { } // ✅ Đóng Dialog khi bấm OK
-            )
-            showLoadingDialog = false
-        }else{
-            val account = Account(
-                id = "0",
-                ido = "0",
-                hoten = fullName,
-                dienthoai = phoneNumber,
-                email = email,
-                username = phoneNumber,
-                password = password,
-                key = Common.key,
-                mamenu = "dangkytaikhoan",
-                hanhdong = "$phoneNumber - $fullName",
-                noidungchinh = "add",
-                device = viewModel.deviceActive,
-            )
+       // Tiêu đề "Thông tin liên hệ khác"
+       Text(
+           text =  stringResource(id = R.string.contact_info),
+           style = MaterialTheme.typography.titleMedium,
+           fontWeight = FontWeight.Bold,
+           modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+       )
+
+       // Email
+       CustomText(text = stringResource(id = R.string.email))
+
+       CustomTextField(
+           value = email,
+           onValueChange = { email = it },
+           placeholder =  stringResource(id = R.string.email_placeholder),
+           keyboardType = KeyboardType.Email
+       )
+
+       Spacer(modifier = Modifier.height(16.dp))
+
+       // Hộp cảnh báo màu đỏ
+       Box(
+           modifier = Modifier
+               .fillMaxWidth()
+               .background(Color(0xFFFFEBEE), shape = RoundedCornerShape(8.dp))
+               .padding(16.dp)
+       ) {
+           Column {
+               Row(verticalAlignment = Alignment.CenterVertically) {
+                   Image(
+                       painter = painterResource(id = R.drawable.warning), // Thay bằng ảnh trong drawable
+                       contentDescription = "Warning",
+                       modifier = Modifier.size(20.dp) // Điều chỉnh kích thước
+                   )
+
+                   Spacer(modifier = Modifier.width(8.dp))
+                   Text(
+                       text = "Lưu ý:",
+                       color = Color.Red,
+                       fontWeight = FontWeight.Bold,
+                       style = MaterialTheme.typography.titleMedium
+                   )
+               }
+
+               Spacer(modifier = Modifier.height(4.dp))
+
+               Text(
+                   text = "Bạn sẽ không thể thay đổi thông tin cá nhân & sinh nhật sau khi đăng ký thành công.\n\nVì vậy, hãy chắc chắn các thông tin đã chính xác.",
+                   color = Color.Red,
+                   fontSize = 14.sp
+               )
+           }
+       }
 
 
 
-            // Giả định có constructor phù hợp
+       Spacer(modifier = Modifier.height(24.dp))
+
+       // Nút tạo tài khoản
+       Button(
+           onClick = {
+
+               viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email)
+               showLoadingDialog = true
+
+
+           },
+
+           colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+           modifier = Modifier
+               .fillMaxWidth()
+               .height(50.dp),
+
+           shape = RoundedCornerShape(16.dp)
+       ) {
+           Text(text = stringResource(id = R.string.create_account_button), color = Color.White, fontSize = 16.sp)
+       }
+
+
+
+
+       // ✅ Hiển thị Dialog nếu có lỗi
+       if (validationError != null ) {
+
+           CustomAlertDialog(
+               message = validationError!!,
+               onDismiss = { } // ✅ Đóng Dialog khi bấm OK
+           )
+           showLoadingDialog = false
+       }else{
+           val account = Account(
+               id = "0",
+               ido = "0",
+               hoten = fullName,
+               dienthoai = phoneNumber,
+               email = email,
+               username = phoneNumber,
+               password = password,
+               key = Common.key,
+               mamenu = "dangkytaikhoan",
+               hanhdong = "$phoneNumber - $fullName",
+               noidungchinh = "add",
+               device = viewModel.deviceActive,
+           )
+
+
+
+           // Giả định có constructor phù hợp
 //            viewModel.registerNewAccount("/ex/apiaffiliate/dangkytaikhoan", account)
-        }
+       }
 
-        LaunchedEffect(registerState) {
-            when (registerState) {
-                is NetworkResponse.Success->{
+       LaunchedEffect(registerState) {
+           when (registerState) {
+               is NetworkResponse.Success->{
 
-                }
-                is NetworkResponse.Error -> {
+               }
+               is NetworkResponse.Error -> {
 
-                }
-                is NetworkResponse.Loading -> {
+               }
+               is NetworkResponse.Loading -> {
 
-                }
-            }
-        }
-        // ✅ Hiển thị Dialog khi đang tải
-        if(showLoadingDialog){
-        CustomCircularProgressIndicatorDialog(
-            networkState = registerState,
-            onDismiss = {  showLoadingDialog = false}
-        )
+               }
+           }
+       }
+       // ✅ Hiển thị Dialog khi đang tải
+       if(showLoadingDialog){
+           CustomCircularProgressIndicatorDialog(
+               networkState = registerState,
+               onDismiss = {  showLoadingDialog = false}
+           )
 
-    }
-        Spacer(modifier = Modifier.height(24.dp))
-        // Hiển thị trạng thái đăng ký
+       }
+       Spacer(modifier = Modifier.height(24.dp))
+       // Hiển thị trạng thái đăng ký
 
 
-    }
+   } }
 }
 
 @Composable

@@ -8,8 +8,13 @@ val SecondaryColor = Color(0xFFFFA500) // Màu cam (Orange)
 val GrayD7 = Color(0xFFD7D7D7) // Màu xám nhạt
 val Green = Color(0xFF1E7D3A) //
 val Red18 = Color(0xFFD82018) //
-val WhiteFC = Color(0xFFD9D9D9) //
-val RedCustom = Color(0xFFD91E18)
+val FFD9D9D9 = Color(0xFFD9D9D9) //
+val FFAFAFAF = Color(0xFFAFAFAF) //
+val FFFEF4F4 = Color(0xFFFEF4F4) //
+val FF7C7C7C = Color(0xFF7C7C7C) //
+val FFD91E18 = Color(0xFFD91E18) //
+
+val FFFCFCFC = Color(0xFFFCFCFC)
 // Các màu hỗ trợ
 val BackgroundColor = Color(0xFFF8F8F8) // Màu nền sáng
 val TextColorPrimary = Color(0xFF333333) // Màu văn bản chính

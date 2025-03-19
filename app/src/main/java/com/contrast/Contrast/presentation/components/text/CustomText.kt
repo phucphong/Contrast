@@ -25,7 +25,7 @@ fun CustomText(
     fontSize: TextUnit = 14.sp,
     color: Color = Color.Black,
     textAlign: TextAlign = TextAlign.Left,
-    showUnderline: Boolean = false // Thêm tùy chọn hiển thị gạch chân
+    showUnderline: Boolean = false ,// Thêm tùy chọn hiển thị gạch chân
 ) {
     // Khai báo fontFamily
     val customFontFamily = FontFamily(

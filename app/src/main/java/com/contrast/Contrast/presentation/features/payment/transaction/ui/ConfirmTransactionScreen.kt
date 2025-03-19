@@ -24,13 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.GrayD7
-import com.contrast.Contrast.core.Red18
-import com.contrast.Contrast.core.WhiteFC
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTittle
+import com.contrast.Contrast.core.FFD9D9D9
 
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.core.GrayD7
+
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
+
 
 @Preview(showBackground = true)
 @Composable
@@ -45,7 +44,7 @@ fun ConfirmTransactionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(WhiteFC), // Nền xám nhẹ
+            .background(FFD9D9D9), // Nền xám nhẹ
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

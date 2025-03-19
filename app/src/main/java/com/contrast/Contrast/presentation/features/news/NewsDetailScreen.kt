@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.features.news
 
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -23,10 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.contrast.Contrast.R
+import com.contrast.Contrast.core.FFFCFCFC
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 
 import com.itechpro.domain.model.NewsDetail
-@Preview(showBackground = true)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun NewsDetailScreen(newsDetail: NewsDetail, onBackPress: () -> Unit) {
     Scaffold(
@@ -38,7 +40,7 @@ fun NewsDetailScreen(newsDetail: NewsDetail, onBackPress: () -> Unit) {
             )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(modifier = Modifier.padding(paddingValues) .background(FFFCFCFC)) {
             HeaderImage(newsDetail.imageRes)
             NewsInfoSection(newsDetail)
             WebViewContent(newsDetail.contentHtml)

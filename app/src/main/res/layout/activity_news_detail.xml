@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.features.voucher.ui.VoucherActivity">
+    tools:context=".presentation.features.news.detail.NewsDetailActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

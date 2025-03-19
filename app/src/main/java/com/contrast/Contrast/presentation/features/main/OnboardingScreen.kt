@@ -21,7 +21,7 @@ import com.contrast.Contrast.R
 import kotlinx.coroutines.launch
 
 @Preview(showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+
 @Composable
 fun OnboardingScreen(onFinish: () -> Unit = {}) {
     val pagerState = rememberPagerState { 4 } // Số trang là cố định (4 trang)

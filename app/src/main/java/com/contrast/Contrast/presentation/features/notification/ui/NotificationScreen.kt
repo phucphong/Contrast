@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.core.FFFCFCFC
 import com.contrast.Contrast.core.GrayD7
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 
@@ -39,8 +40,8 @@ fun NotificationScreen(onBackPress: () -> Unit) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues).
-                background(GrayD7),
+                .padding(paddingValues)
+                .background(FFFCFCFC),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {

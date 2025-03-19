@@ -3,6 +3,7 @@ package com.contrast.Contrast.presentation.features.register.ui.otp
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.core.FFFCFCFC
 import com.contrast.Contrast.presentation.components.text.CustomText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -46,121 +48,129 @@ fun OtpVerificationScreen(phoneNumber: String, onBackPress: () -> Unit, onOtpSub
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Nút quay lại
-        Spacer(modifier = Modifier.height(40.dp))
-        Image(
-            painter = painterResource(id = R.drawable.back),
-            contentDescription = stringResource(id = R.string.app_name),  // Example for app name or other description
-            modifier = Modifier
-                .size(30.dp)
-                .clickable(onClick = {
-                    // Your onClick logic goes here
-                })
-        )
+  Column (
+      modifier = Modifier
+          .fillMaxSize()
 
-        Spacer(modifier = Modifier.height(32.dp))
+          .background(FFFCFCFC)
+  ){
+      Column(
+          modifier = Modifier
+              .fillMaxSize()
+              .padding(16.dp)
+              .background(FFFCFCFC)
+      ) {
+          // Nút quay lại
+          Spacer(modifier = Modifier.height(40.dp))
+          Image(
+              painter = painterResource(id = R.drawable.back),
+              contentDescription = stringResource(id = R.string.app_name),  // Example for app name or other description
+              modifier = Modifier
+                  .size(30.dp)
+                  .clickable(onClick = {
+                      // Your onClick logic goes here
+                  })
+          )
 
-        // Thông báo mã OTP đã gửi
-        CustomText(
-            text = "Mã xác nhận đã được gửi vào số $phoneNumber",
-            fontSize = 14.sp,
-            color = Color.Gray,
-            textAlign = TextAlign.Center,
+          Spacer(modifier = Modifier.height(32.dp))
 
-        )
+          // Thông báo mã OTP đã gửi
+          CustomText(
+              text = "Mã xác nhận đã được gửi vào số $phoneNumber",
+              fontSize = 14.sp,
+              color = Color.Gray,
+              textAlign = TextAlign.Center,
 
-        Spacer(modifier = Modifier.height(16.dp))
+              )
 
-        // Tiêu đề "Xác nhận OTP"
-        CustomText(
-            text = "Xác nhận OTP",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
+          Spacer(modifier = Modifier.height(16.dp))
 
-        )
+          // Tiêu đề "Xác nhận OTP"
+          CustomText(
+              text = "Xác nhận OTP",
+              fontSize = 24.sp,
+              fontWeight = FontWeight.Bold,
 
-        Spacer(modifier = Modifier.height(24.dp))
+              )
 
-        // Nhập OTP (6 ô nhập)
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            repeat(6) { index ->
-                TextField(
-                    value = otpCode.getOrNull(index)?.toString() ?: "",
-                    onValueChange = {
-                        if (it.length <= 1) {
-                            otpCode = otpCode.take(index) + it + otpCode.drop(index + 1)
-                        }
-                    },
-                    textStyle = TextStyle(fontSize = 20.sp, textAlign = TextAlign.Center),
-                    modifier = Modifier
-                        .width(50.dp)
-                        .height(50.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    visualTransformation = VisualTransformation.None,
-                    singleLine = true,
-                    shape = RoundedCornerShape(bottomStart = 5.dp, bottomEnd = 5.dp), // Bo góc chỉ ở cạnh dưới
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color(0xFFFCFCFC), // Đặt màu nền cho giống OutlinedTextField
-                        focusedIndicatorColor = Color.Gray, // Màu viền khi chọn
-                        unfocusedIndicatorColor = Color.Gray, // Màu viền khi chưa chọn
-                        cursorColor = Color.Gray, // Màu con trỏ nhập liệu
-                        textColor = Color.Black // Màu chữ nhập vào
-                    )
-                )
-            }
-        }
+          Spacer(modifier = Modifier.height(24.dp))
+
+          // Nhập OTP (6 ô nhập)
+          Row(
+              modifier = Modifier.fillMaxWidth(),
+              horizontalArrangement = Arrangement.SpaceEvenly
+          ) {
+              repeat(6) { index ->
+                  TextField(
+                      value = otpCode.getOrNull(index)?.toString() ?: "",
+                      onValueChange = {
+                          if (it.length <= 1) {
+                              otpCode = otpCode.take(index) + it + otpCode.drop(index + 1)
+                          }
+                      },
+                      textStyle = TextStyle(fontSize = 20.sp, textAlign = TextAlign.Center),
+                      modifier = Modifier
+                          .width(50.dp)
+                          .height(50.dp),
+                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                      visualTransformation = VisualTransformation.None,
+                      singleLine = true,
+                      shape = RoundedCornerShape(bottomStart = 5.dp, bottomEnd = 5.dp), // Bo góc chỉ ở cạnh dưới
+                      colors = TextFieldDefaults.textFieldColors(
+                          backgroundColor = Color(0xFFFCFCFC), // Đặt màu nền cho giống OutlinedTextField
+                          focusedIndicatorColor = Color.Gray, // Màu viền khi chọn
+                          unfocusedIndicatorColor = Color.Gray, // Màu viền khi chưa chọn
+                          cursorColor = Color.Gray, // Màu con trỏ nhập liệu
+                          textColor = Color.Black // Màu chữ nhập vào
+                      )
+                  )
+              }
+          }
 
 
 
-        Spacer(modifier = Modifier.height(30.dp))
+          Spacer(modifier = Modifier.height(30.dp))
 
-        // Bộ đếm thời gian
-        Text(
-            text = "Có hiệu lực trong ${timeLeft / 60}:${String.format("%02d", timeLeft % 60)}",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
+          // Bộ đếm thời gian
+          Text(
+              text = "Có hiệu lực trong ${timeLeft / 60}:${String.format("%02d", timeLeft % 60)}",
+              fontSize = 14.sp,
+              fontWeight = FontWeight.Bold,
+              color = Color.Black
+          )
 
-        Spacer(modifier = Modifier.height(16.dp))
+          Spacer(modifier = Modifier.height(16.dp))
 
-        // Nút "Gửi lại" mã OTP
-        Row {
-            Text(
-                text = "Bạn chưa nhận được mã?",
-                fontSize = 14.sp,
+          // Nút "Gửi lại" mã OTP
+          Row {
+              Text(
+                  text = "Bạn chưa nhận được mã?",
+                  fontSize = 14.sp,
 
-                color =  Color.Gray,
+                  color =  Color.Gray,
 
-            )
-            Text(
-                text = " Gửi lại",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (timeLeft == 0) Color.Red else Color.Black,
-                modifier = Modifier.clickable(enabled = timeLeft == 0) {
-                    if (timeLeft == 0) {
-                        onResendOtp()
-                        timeLeft = 60
-                        coroutineScope.launch {
-                            while (timeLeft > 0) {
-                                delay(1000L)
-                                timeLeft--
-                            }
-                        }
-                    }
-                }
-            )
-        }
-    }
+                  )
+              Text(
+                  text = " Gửi lại",
+                  fontSize = 14.sp,
+                  fontWeight = FontWeight.Bold,
+                  color = if (timeLeft == 0) Color.Red else Color.Black,
+                  modifier = Modifier.clickable(enabled = timeLeft == 0) {
+                      if (timeLeft == 0) {
+                          onResendOtp()
+                          timeLeft = 60
+                          coroutineScope.launch {
+                              while (timeLeft > 0) {
+                                  delay(1000L)
+                                  timeLeft--
+                              }
+                          }
+                      }
+                  }
+              )
+          }
+      }
+  }
 }
 
 @Preview(showBackground = true)

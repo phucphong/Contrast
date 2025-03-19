@@ -8,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.features.payment.transaction.ui.ConfirmTransactionActivity
-import com.contrast.Contrast.presentation.features.voucher.VoucherActivity
+import com.contrast.Contrast.presentation.features.main.ContrastActivity
+import com.contrast.Contrast.presentation.features.payment.ui.PaymentActivity
+import com.contrast.Contrast.presentation.features.voucher.ui.VoucherActivity
 
 
 class SplashActivity : AppCompatActivity() {
@@ -43,6 +44,6 @@ class SplashActivity : AppCompatActivity() {
 //        } else if (!TextUtils.isEmpty(token)) {
 //           startactivity(ContrastActivity::class.java)
 //        }
-        startactivity(VoucherActivity::class.java)
+        startactivity(ContrastActivity::class.java)
     }
 }

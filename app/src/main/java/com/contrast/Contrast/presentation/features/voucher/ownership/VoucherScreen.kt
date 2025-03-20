@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.voucher.ui
+package com.contrast.Contrast.presentation.features.voucher.ownership.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

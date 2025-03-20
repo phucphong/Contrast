@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.main.ui
+package com.contrast.Contrast.presentation.features.main.store.ui
 
 
 import androidx.compose.foundation.background

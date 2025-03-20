@@ -16,7 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.features.main.box.BoxPage
+
 import com.contrast.Contrast.presentation.features.main.home.ui.HomePage
+import com.contrast.Contrast.presentation.features.main.location.ui.LocationScreen
+
+import com.contrast.Contrast.presentation.features.main.membership.ui.MembershipPage
+import com.contrast.Contrast.presentation.features.main.store.ui.StoreListScreen
+
 
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,10 +58,10 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int) {
     ) {
         when (selectedIndex) {
             0 -> HomePage()
-            1 -> StorePage()
-            2 -> ScanPage()
-            3 -> LocationPage()
-            4 -> MembershipPage()
+            1 -> LocationScreen()
+            2 -> StoreListScreen()
+            3 -> MembershipPage()
+            4 -> BoxPage()
             else -> HomePage() // Mặc định hiển thị trang Home nếu có lỗi
         }
     }
@@ -65,10 +72,11 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int) {
 fun BottomNavigationBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
     val items = listOf(
         BottomNavItem("Trang chủ", R.drawable.ic_home, true),
-        BottomNavItem("Cửa hàng", R.drawable.ic_store, true),
-        BottomNavItem("", R.drawable.ic_scan, false, isCenter = true), // Trung tâm
         BottomNavItem("Địa điểm", R.drawable.ic_location, true),
-        BottomNavItem("Membership", R.drawable.ic_membership, true)
+        BottomNavItem("Cửa hàng", R.drawable.ic_store, true),
+        BottomNavItem("Membership", R.drawable.ic_membership, true),
+        BottomNavItem("Contrast Box", R.drawable.contrast_box, true),
+
     )
 
     NavigationBar(

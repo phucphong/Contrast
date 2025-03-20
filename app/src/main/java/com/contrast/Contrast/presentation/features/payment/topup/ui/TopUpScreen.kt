@@ -14,10 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FFFCFCFC
+import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.components.alertDialog.MoneySelectionDialog
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldUpDown
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
+import com.contrast.Contrast.presentation.theme.FFD91E18
 
 @Preview(showBackground = true)
 @Composable
@@ -32,7 +33,7 @@ fun TopUpScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
 Column(  modifier = Modifier
     .fillMaxSize()
 
-    .background(FFFCFCFC),
+    .background(FCFCFC),
     horizontalAlignment = Alignment.CenterHorizontally) {
 
     Column(
@@ -43,7 +44,7 @@ Column(  modifier = Modifier
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))
-        CustomTitleBar(
+        CustomTitleBack(
             title = stringResource(R.string.top_up),
             onBackPress = { /* Xử lý quay lại */ }
         )
@@ -69,7 +70,7 @@ Column(  modifier = Modifier
             onClick = { onConfirm(selectedAmount)
                 showDialog = true
                       },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+            colors = ButtonDefaults.buttonColors(containerColor = FFD91E18),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
                 .fillMaxWidth(0.8f)

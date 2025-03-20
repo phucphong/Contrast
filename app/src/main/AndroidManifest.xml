@@ -19,13 +19,16 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.features.onboarding.OnboardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.features.news.detail.NewsDetailActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.payment.ui.PaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.features.voucher.ui.VoucherActivity"
+            android:name=".presentation.features.voucher.ownership.VoucherActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.payment.transaction.ui.ConfirmTransactionActivity"
@@ -56,13 +59,10 @@
             android:exported="false" />
         <activity
             android:name=".presentation.features.login.ui.LoginActivity"
+            android:exported="true" />    <activity
+            android:name=".presentation.features.voucher.redeem.VoucherRedeemActivity"
             android:exported="true" />
-        <activity
-            android:name=".base.BaseActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.features.agency.AgencyActivity"
-            android:exported="true" />
+
         <activity
             android:name=".presentation.features.register.ui.phone.RegisterPhoneActivity"
             android:exported="true" />

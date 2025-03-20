@@ -19,8 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.GrayD7
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
 import com.contrast.Contrast.presentation.components.text.CustomText
+import com.contrast.Contrast.presentation.theme.FFD32F2F
 
 @Preview(showBackground = true)
 @Composable
@@ -37,7 +38,7 @@ fun WalletScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFD32F2F)),
+            .background(FFD32F2F),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
@@ -198,7 +199,7 @@ fun WalletScreen(
                CustomText(
                    text = stringResource(id = R.string.quick_payment_message),
                    fontWeight = FontWeight.Normal,
-                   fontSize = 16.sp, GrayD7 ,
+                   fontSize = 16.sp, FFD7D7D7 ,
                    TextAlign.Center,
 
 

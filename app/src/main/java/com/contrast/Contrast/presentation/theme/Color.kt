@@ -1,4 +1,4 @@
-package com.contrast.Contrast.core
+package com.contrast.Contrast.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -6,6 +6,13 @@ import androidx.compose.ui.graphics.Color
 val FFDC143C = Color(0xFFDC143C) // 🔴 Đỏ tươi (Crimson Red)
 val FFD82018 = Color(0xFFD82018)    // 🔴 Đỏ sậm (Dark Red)
 val FFD91E18 = Color(0xFFD91E18) // 🔴 Đỏ đậm (Deep Red)
+val FFFB8B87 = Color(0xFFFB8B87) // 🔴 Đỏ đậm (Deep Red)
+val FFD32F2F = Color(0xFFD32F2F) // 🔴 Đỏ đậm (Deep Red)
+val FFFF6961 = Color(0xFFFF6961) // 🔴 Đỏ nhat (Deep Red)
+val AFFFFFF = Color(0x1AFFFFFF) // 🔴 Đỏ nhat (Deep Red)
+
+
+
 val FFFFA500 = Color(0xFFFFA500) // 🟠 Cam (Orange)
 
 val FF1E7D3A = Color(0xFF1E7D3A) // 🟢 Xanh lá cây đậm (Dark Green)
@@ -16,14 +23,20 @@ val FF888888 = Color(0xFF888888) // ⚪ Xám vừa (Medium Gray)
 val FFD9D9D9 = Color(0xFFD9D9D9) // ⚪ Xám trung bình (Medium Gray)
 
 val FF333333 = Color(0xFF333333) // ⚫ Xám đậm (Dark Gray)
-
 val FF7C7C7C = Color(0xFF7C7C7C) // ⚫ Xám tối (Dark Gray)
+
+val FFA7D2C0 = Color(0xFFA7D2C0) // ⚫
+val FFF9CB8C = Color(0xFFF9CB8C) // ⚫
+val B2FFFFFF = Color(0xB2FFFFFF) // ⚫
+
+
 
 val FF2D2D2D = Color(0xFF2D2D2D) // ⚫ Xám đen (Blackish Gray)
 val FF151515 = Color(0xFF151515) // ⚫ Đen (Black)
 val FF87B5FB = Color(0xFF87B5FB) // 🔵 Xanh dương nhạt (Light Blue)
 
 val FFFCFCFC = Color(0xFFFCFCFC) // ⚪ Trắng gần như tuyệt đối (Almost White)
+val FCFCFC = Color(0xFCFCFC) // ⚪ Trắng gần như tuyệt đối (Almost White)
 
 // 🎨 Các màu hỗ trợ
 val FFF8F8F8 = Color(0xFFF8F8F8) // ⚪ Trắng xám (Grayish White)

@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FFFCFCFC
-import com.contrast.Contrast.core.GrayD7
+import com.contrast.Contrast.presentation.theme.FCFCFC
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 
 
@@ -31,7 +31,7 @@ fun NotificationScreen(onBackPress: () -> Unit) {
             CustomTopAppBarTittleBack(
                 title = stringResource(id = R.string.notification_title),
                 Color.Red,
-                GrayD7,
+                FFD7D7D7,
                 onBackClick = { onBackPress }
             )
         }
@@ -41,7 +41,7 @@ fun NotificationScreen(onBackPress: () -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(FFFCFCFC),
+                .background(FCFCFC),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {

@@ -9,8 +9,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.main.ContrastActivity
-import com.contrast.Contrast.presentation.features.payment.ui.PaymentActivity
-import com.contrast.Contrast.presentation.features.voucher.ui.VoucherActivity
+import com.contrast.Contrast.presentation.features.voucher.ownership.VoucherActivity
+import com.contrast.Contrast.presentation.features.voucher.redeem.VoucherRedeemActivity
 
 
 class SplashActivity : AppCompatActivity() {

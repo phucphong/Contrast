@@ -1,19 +1,14 @@
 package com.contrast.Contrast.presentation.features.register.ui.otp
 
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -27,12 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FFFCFCFC
+import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.components.text.CustomText
+import com.contrast.Contrast.presentation.theme.FFD91E18
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 @Preview(showBackground = true)
-@Preview(name = "Light Mode", showBackground = true)
+
 
 @Composable
 fun OtpVerificationScreen(phoneNumber: String, onBackPress: () -> Unit, onOtpSubmit: (String) -> Unit, onResendOtp: () -> Unit) {
@@ -52,13 +48,13 @@ fun OtpVerificationScreen(phoneNumber: String, onBackPress: () -> Unit, onOtpSub
       modifier = Modifier
           .fillMaxSize()
 
-          .background(FFFCFCFC)
+          .background(FCFCFC)
   ){
       Column(
           modifier = Modifier
               .fillMaxSize()
               .padding(16.dp)
-              .background(FFFCFCFC)
+              .background(FCFCFC)
       ) {
           // Nút quay lại
           Spacer(modifier = Modifier.height(40.dp))
@@ -117,7 +113,7 @@ fun OtpVerificationScreen(phoneNumber: String, onBackPress: () -> Unit, onOtpSub
                       singleLine = true,
                       shape = RoundedCornerShape(bottomStart = 5.dp, bottomEnd = 5.dp), // Bo góc chỉ ở cạnh dưới
                       colors = TextFieldDefaults.textFieldColors(
-                          backgroundColor = Color(0xFFFCFCFC), // Đặt màu nền cho giống OutlinedTextField
+                          backgroundColor = Color(0xFCFCFC), // Đặt màu nền cho giống OutlinedTextField
                           focusedIndicatorColor = Color.Gray, // Màu viền khi chọn
                           unfocusedIndicatorColor = Color.Gray, // Màu viền khi chưa chọn
                           cursorColor = Color.Gray, // Màu con trỏ nhập liệu
@@ -154,7 +150,7 @@ fun OtpVerificationScreen(phoneNumber: String, onBackPress: () -> Unit, onOtpSub
                   text = " Gửi lại",
                   fontSize = 14.sp,
                   fontWeight = FontWeight.Bold,
-                  color = if (timeLeft == 0) Color.Red else Color.Black,
+                  color = if (timeLeft == 0) FFD91E18 else Color.Black,
                   modifier = Modifier.clickable(enabled = timeLeft == 0) {
                       if (timeLeft == 0) {
                           onResendOtp()

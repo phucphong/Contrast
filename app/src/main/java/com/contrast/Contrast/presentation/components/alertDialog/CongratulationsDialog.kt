@@ -26,6 +26,7 @@ fun CongratulationsDialog(
         onDismissRequest = { onDismiss() },
         shape = RoundedCornerShape(16.dp),
         containerColor = Color.White,
+        modifier = Modifier.fillMaxWidth(),
         title = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,7 +69,7 @@ fun CongratulationsDialog(
                     color = Color.Black,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 ElevatedButton(
                     onClick = { onRedeem() },
                     modifier = Modifier.fillMaxWidth(),

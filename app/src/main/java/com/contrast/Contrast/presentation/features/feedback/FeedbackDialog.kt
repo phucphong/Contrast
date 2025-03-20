@@ -26,9 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FFAFAFAF
-import com.contrast.Contrast.core.FFD9D9D9
-import com.contrast.Contrast.core.FFFCFCFC
+import com.contrast.Contrast.presentation.theme.FFAFAFAF
+import com.contrast.Contrast.presentation.theme.FCFCFC
 
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
@@ -37,7 +36,7 @@ fun FeedbackDialog( showDialog: Boolean, onDismiss: () -> Unit, onContinue: (Str
     if (showDialog) {
         AlertDialog(
             onDismissRequest = onDismiss,
-            backgroundColor = FFFCFCFC,
+            backgroundColor = FCFCFC,
             shape = RoundedCornerShape(12.dp),
             buttons = {
                 Column(

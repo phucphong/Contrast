@@ -1,8 +1,6 @@
 package com.contrast.Contrast.presentation.components.text
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,7 +14,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.GrayD7
+import com.contrast.Contrast.presentation.components.line.CustomDivider
 
 @Composable
 fun CustomText(
@@ -53,12 +51,7 @@ fun CustomText(
         // Hiển thị dòng gạch chân bên dưới nếu `showUnderline` = true
 
         if (showUnderline) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(GrayD7, shape = RoundedCornerShape(50))
-            )
+            CustomDivider()
         }
     }
 }

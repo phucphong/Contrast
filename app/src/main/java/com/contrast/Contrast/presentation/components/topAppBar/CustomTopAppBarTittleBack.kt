@@ -21,7 +21,8 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBarTittleBack(title: String, titleColor: Color = Color.Black,
-                              backgroundColor : Color = Color.White, fontWeight :FontWeight= FontWeight.Bold,iconTint:Color = Color.Gray,onBackClick: () -> Unit) {
+                              backgroundColor : Color = Color.White, fontWeight :FontWeight= FontWeight.Bold,
+                              iconTint:Color = Color.Gray,onBackClick: () -> Unit) {
     TopAppBar(
         title = {
             CustomText(
@@ -37,11 +38,12 @@ fun CustomTopAppBarTittleBack(title: String, titleColor: Color = Color.Black,
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "Back",
-                    tint =iconTint, modifier = Modifier.padding(end = 10.dp)
+                    tint =iconTint, modifier = Modifier.padding(vertical = 16.dp)
                 )
             }
         },
 
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor)
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
+
     )
 }

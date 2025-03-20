@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="register_account">Register Account</string>
     <string name="phone_number">Phone Number</string>
     <string name="phone_placeholder">Enter phone number</string>
@@ -117,7 +169,12 @@
     <string name="location_permission_title">Allow Contrast to access your location</string>
     <string name="location_permission_message">You need to enable location services to determine your current position.</string>
     <string name="accept">Accept</string>
+    <string name="voucher_list">Voucher List</string>
+    <string name="your_point_fund">Your Point Fund</string>
+    <string name="cup_exchange_history">Cup Exchange History</string>
 
+    <string name="near_me">Near Me</string>
+    <string name="current_location">Current Location</string>
     <string name="received_points">You have received an additional +20 🏆</string>
     <string name="redeem_voucher">Redeem Voucher</string>
     <string name="congratulations">Congratulations!</string>

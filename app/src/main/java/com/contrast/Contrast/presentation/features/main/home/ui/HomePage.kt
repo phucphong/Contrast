@@ -26,9 +26,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.alertDialog.FaceIDAuthDialog
+import com.contrast.Contrast.presentation.components.alertDialog.FaceIDPermissionDialog
+import com.contrast.Contrast.presentation.components.alertDialog.FeedbackSuccessDialog
 import com.contrast.Contrast.presentation.components.slider.ImageSlider
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.features.feedback.FeedbackDialog
+import com.contrast.Contrast.presentation.features.payment.ui.LockVerificationDialog
+
 @Preview(showBackground = true)
 @Composable
 fun HomePage() {
@@ -196,16 +201,55 @@ fun HomePage() {
             }
         }
 
-        FeedbackDialog(
-            showDialog = showDialog,
-            onDismiss = { showDialog = false },
-            onContinue = { selectedBranch ->
-                showDialog = false
-                println("Người dùng chọn cơ sở: $selectedBranch")
-            }
-        )
+//        FeedbackDialog(
+//            showDialog = showDialog,
+//            onDismiss = { showDialog = false },
+//            onContinue = { selectedBranch ->
+//                showDialog = false
+//                println("Người dùng chọn cơ sở: $selectedBranch")
+//            }
+//        )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+
+        // yêu cầu vân tay
+//        BiometricDisableDialog(
+//            onDisableBiometric = { showDialog = false },
+//            onDismiss = { showDialog = false }
+//        )
+
+//        CongratulationsDialog(
+//            onDismiss = { showDialog = false },
+//            onRedeem = { showDialog = false }
+//        )
+//
+//        CustomAlertDialog(
+//            "Thành công",
+//            onDismiss = { showDialog = false }
+//        )
+
+
+//        LockVerificationDialog(
+//            showDialog = true,
+//            onDismiss = { showDialog = false }
+//        )
+
+//        FaceIDAuthDialog(
+//            onDismiss = { showDialog = false }
+//        )
+
+
+//        FaceIDPermissionDialog(
+//            onConfirm = { showDialog = false },
+//            onDismiss = { showDialog = false }
+//        )
+
+        // thoong bao phản hồi thành công
+//        FeedbackSuccessDialog(
+//            onDismiss = { showDialog = false }
+//        )
+
     }
 }
 @Composable

@@ -1,12 +1,6 @@
 package com.contrast.Contrast.presentation.features.payment.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.features.voucher.ui.VoucherScreen
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

@@ -13,6 +13,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
 
+
+// thông báo  yêu cầu bật sinh trắc học
 @Composable
 fun BiometricDisableDialog(
     onDisableBiometric: () -> Unit,

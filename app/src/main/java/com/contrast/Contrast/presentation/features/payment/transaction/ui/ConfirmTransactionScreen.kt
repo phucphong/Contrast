@@ -15,20 +15,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FFD9D9D9
+import com.contrast.Contrast.presentation.theme.FFD9D9D9
 
-import com.contrast.Contrast.core.GrayD7
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
 
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
+import com.contrast.Contrast.presentation.theme.FFD91E18
 
 
 @Preview(showBackground = true)
@@ -50,7 +49,7 @@ fun ConfirmTransactionScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        CustomTitleBar(
+        CustomTitleBack(
             title = "Xác nhận giao dịch",
             Color.White,
             onBackPress = { /* Xử lý quay lại */ }
@@ -110,7 +109,7 @@ fun ConfirmTransactionScreen(
                                .fillMaxWidth()
                                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 0.dp)
                                .height(1.dp)
-                               .background(GrayD7, shape = RoundedCornerShape(50))
+                               .background(FFD7D7D7, shape = RoundedCornerShape(50))
                        )
                        Spacer(modifier = Modifier.height(30.dp))
                        // Thông tin chi tiết giao dịch
@@ -140,7 +139,7 @@ fun ConfirmTransactionScreen(
                                text = "₫150,000",
                                fontSize = 16.sp,
                                fontWeight = FontWeight.Bold,
-                               color = Color.Red
+                               color = FFD91E18
                            )
                        }
 
@@ -215,7 +214,7 @@ fun ConfirmTransactionScreen(
     // Nút xác nhận
     Button(
         onClick = { onConfirm() },
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+        colors = ButtonDefaults.buttonColors(backgroundColor = FFD91E18),
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth(0.9f)

@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.theme.FF2D2D2D
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,12 +27,12 @@ fun FaceIDAuthDialog(
     AlertDialog(
         onDismissRequest = { onDismiss() },
         shape = RoundedCornerShape(16.dp),
-        containerColor = Color(0xFF2D2D2D), // Dark background
+        containerColor = FF2D2D2D, // Dark background
         text = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(30.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
@@ -39,7 +40,7 @@ fun FaceIDAuthDialog(
                     contentDescription = "Face ID Icon",
                     modifier = Modifier.size(60.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(id = R.string.faceid),
                     color = Color.White,

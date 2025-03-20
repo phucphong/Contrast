@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.Red18
+import com.contrast.Contrast.presentation.theme.FFD82018
 import com.contrast.Contrast.presentation.components.camera.CameraPreviewView
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTittle
 import java.util.concurrent.Executors
@@ -39,7 +39,7 @@ fun QRScannerScreen(onBackPress: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Red18), // Nền đỏ
+            .background(FFD82018), // Nền đỏ
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(40.dp))
@@ -47,7 +47,7 @@ fun QRScannerScreen(onBackPress: () -> Unit) {
         CustomTopAppBarBackTittle(
             title = "Quét mã QR",
             Color.White,
-            Red18,
+            FFD82018,
             FontWeight.Medium,
             Color.White,
             onBackClick = { onBackPress() }

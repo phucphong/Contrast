@@ -34,8 +34,6 @@ import com.contrast.Contrast.presentation.features.membership.MembershipPolicySc
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 
 
 @Composable

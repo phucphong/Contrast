@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 
 @Preview(showBackground = true)
 @Preview(name = "Light Mode", showBackground = true)
@@ -40,7 +40,7 @@ fun ForgotPasswordScreen(onBackPress: () -> Unit, onSendCode: (String) -> Unit) 
         Spacer(modifier = Modifier.height(30.dp))
 
         // Thanh tiêu đề với nút đóng
-        CustomTitleBar(
+        CustomTitleBack(
             title = stringResource(R.string.forgot_password_title),
             onBackPress = { /* Xử lý quay lại */ }
         )

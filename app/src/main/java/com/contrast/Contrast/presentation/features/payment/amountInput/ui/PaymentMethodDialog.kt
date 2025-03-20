@@ -24,8 +24,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.GrayD7
-import com.contrast.Contrast.core.Green
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
+import com.contrast.Contrast.presentation.theme.FF1E7D3A
+import com.contrast.Contrast.presentation.components.line.CustomDivider
 import com.contrast.Contrast.presentation.components.text.CustomText
 
 @Preview(showBackground = true)
@@ -51,10 +52,11 @@ fun PaymentMethodDialog(
                     .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)) // Bo tròn góc trên
             ) {
 
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Green),
+                        .background(FF1E7D3A),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = { onDismiss() }) {
@@ -112,7 +114,7 @@ fun PaymentMethodDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(1.dp)
-                            .background(GrayD7, shape = RoundedCornerShape(50))
+                            .background(FFD7D7D7, shape = RoundedCornerShape(50))
                     )
                     // Footer
                     Row(
@@ -196,12 +198,7 @@ fun PaymentMethodItem(icon: Int, title: String, subtitle: String) {
             )
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(GrayD7, shape = RoundedCornerShape(50))
-        )
+        CustomDivider()
     }
 }
 

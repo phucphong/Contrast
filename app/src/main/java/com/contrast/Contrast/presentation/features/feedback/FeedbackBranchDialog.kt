@@ -25,9 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FF7C7C7C
-import com.contrast.Contrast.core.FFFEF4F4
-import java.time.format.TextStyle
+import com.contrast.Contrast.presentation.theme.FF7C7C7C
+import com.contrast.Contrast.presentation.theme.FFFEF4F4
 
 @Composable
 fun FeedbackBranchDialog(showDialog: Boolean, branchName: String, onDismiss: () -> Unit, onSendFeedback: (String) -> Unit) {

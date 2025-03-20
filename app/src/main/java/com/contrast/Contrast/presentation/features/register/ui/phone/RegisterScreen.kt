@@ -1,9 +1,7 @@
 package com.contrast.Contrast.presentation.features.auth
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,10 +17,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FFFCFCFC
+import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.theme.FFD91E18
 
 
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
@@ -36,12 +34,12 @@ fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
       modifier = Modifier
           .fillMaxSize()
 
-          .background(FFFCFCFC)
+          .background(FCFCFC)
   ){   Column(
       modifier = Modifier
           .fillMaxSize()
           .padding(16.dp)
-          .background(FFFCFCFC)
+          .background(FCFCFC)
   ) {
 
       Spacer(modifier = Modifier.height(16.dp))
@@ -49,7 +47,7 @@ fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
 
       CustomTopAppBarTittleBack(
           title = "",
-          Color.Red,
+          FFD91E18,
           Color.White,
           onBackClick = {  }
       )
@@ -112,7 +110,7 @@ fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
                   .fillMaxWidth()
                   .height(50.dp),
               colors = ButtonDefaults.buttonColors(
-                  backgroundColor = if (phoneNumber.isNotEmpty()) Color.Red else Color(0xFFFFC0C0),
+                  backgroundColor = if (phoneNumber.isNotEmpty()) FFD91E18 else Color(0xFFFFC0C0),
                   disabledBackgroundColor = Color(0xFFFFC0C0)
               ),
               shape = RoundedCornerShape(8.dp)

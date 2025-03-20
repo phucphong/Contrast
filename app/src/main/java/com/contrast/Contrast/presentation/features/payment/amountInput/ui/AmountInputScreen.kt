@@ -3,7 +3,7 @@ package com.contrast.Contrast.presentation.features.payment.amountInput.ui
 import android.annotation.SuppressLint
 import androidx.compose.ui.tooling.preview.Preview
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,12 +18,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.contrast.Contrast.core.FFFCFCFC
+import com.contrast.Contrast.presentation.theme.FCFCFC
+import com.contrast.Contrast.presentation.theme.FFFF6961
 
 @Preview(name = "Light Mode", showBackground = true)
-
-
-@Preview(showBackground = true)
 @Composable
 fun PreviewAmountInputScreen() {
     AmountInputScreen(onClose = {}, onConfirm = {})
@@ -33,17 +31,17 @@ fun PreviewAmountInputScreen() {
 fun AmountInputScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
     var amount by remember { mutableStateOf("") }
     Column(
-        modifier = Modifier .background(FFFCFCFC)
+        modifier = Modifier .background(FCFCFC)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .background(FFFCFCFC),
+                .background(FCFCFC),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(40.dp))
-            CustomTitleBar(
+            CustomTitleBack(
                 title = stringResource(R.string.enter_amount),
                 onBackPress = { /* Xử lý quay lại */ }
             )
@@ -91,7 +89,7 @@ fun AmountInputScreen(onClose: () -> Unit, onConfirm: (String) -> Unit) {
             // Nút hoàn tất
             Button(
                 onClick = { onConfirm(amount) },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6961)), // Màu hồng nhạt giống UI
+                colors = ButtonDefaults.buttonColors(containerColor = FFFF6961), // Màu hồng nhạt giống UI
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
                     .fillMaxWidth(0.6f)

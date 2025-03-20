@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.core.FFFCFCFC
+import com.contrast.Contrast.presentation.theme.FCFCFC
 
 @Preview(showBackground = true)
 @Preview(name = "Light Mode", showBackground = true)
@@ -32,7 +32,7 @@ fun WelcomeScreen(
   Column(
       modifier = Modifier
           .fillMaxSize()
-           .background(FFFCFCFC),
+           .background(FCFCFC),
 
 
   )  {
@@ -40,7 +40,7 @@ fun WelcomeScreen(
       Column(
           modifier = Modifier
               .fillMaxSize()
-              .padding(16.dp)  .background(FFFCFCFC),
+              .padding(16.dp)  .background(FCFCFC),
 
           horizontalAlignment = Alignment.CenterHorizontally
       ) {

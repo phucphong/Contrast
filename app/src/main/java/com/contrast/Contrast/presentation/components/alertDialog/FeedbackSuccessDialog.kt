@@ -33,6 +33,21 @@ fun FeedbackSuccessDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    IconButton(
+                        onClick = { onDismiss() }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_close),
+                            contentDescription = "Close Icon",
+                            tint = Color.Gray
+                        )
+                    }
+                }
+
                 Image(
                     painter = painterResource(id = R.drawable.ic_feedback_success),
                     contentDescription = "Feedback Success Icon",
@@ -58,20 +73,7 @@ fun FeedbackSuccessDialog(
         },
         confirmButton = {},
         dismissButton = {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                IconButton(
-                    onClick = { onDismiss() }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_close),
-                        contentDescription = "Close Icon",
-                        tint = Color.Gray
-                    )
-                }
-            }
+
         }
         ,
         modifier = Modifier.padding(horizontal = 20.dp)

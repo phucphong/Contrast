@@ -42,7 +42,7 @@ import com.contrast.Contrast.presentation.components.PasswordRequirements
 import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
 
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBar
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 
 
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
@@ -51,8 +51,7 @@ import com.contrast.Contrast.utils.Common
 import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.NetworkResponse
 
-@Preview(showBackground = true)
-@Preview(name = "Light Mode", showBackground = true)
+
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 
 
@@ -102,7 +101,7 @@ fun ChangePasswordScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Thanh tiêu đề với nút đóng
-        CustomTitleBar(
+        CustomTitleBack(
             title = stringResource(R.string.forgot_password_title),
             onBackPress = { /* Xử lý quay lại */ }
         )

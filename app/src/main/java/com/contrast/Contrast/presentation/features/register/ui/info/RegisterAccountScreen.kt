@@ -3,7 +3,6 @@ package com.contrast.Contrast.presentation.features.register.ui.info
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +31,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.contrast.Contrast.core.FFFCFCFC
+import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
@@ -45,6 +44,7 @@ import com.contrast.Contrast.presentation.components.circularProgressIndicatorCe
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
+import com.contrast.Contrast.presentation.theme.FFD91E18
 import com.contrast.Contrast.utils.Common
 
 import com.itechpro.domain.model.Account
@@ -52,7 +52,7 @@ import com.itechpro.domain.model.NetworkResponse
 
 @Preview(showBackground = true)
 @Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+
 
 
 //@Preview(name = "Tablet", device = "spec:width=1280dp,height=800dp,dpi=240")
@@ -94,13 +94,13 @@ fun RegisterAccountScreen(
    Column(
        modifier = Modifier
            .fillMaxSize()
-           .background(FFFCFCFC)
+           .background(FCFCFC)
 
    )
    {  Column(
        modifier = Modifier
            .fillMaxSize()
-           .background(FFFCFCFC)
+           .background(FCFCFC)
            .padding(18.dp)
            .verticalScroll(rememberScrollState())
    ) {
@@ -108,7 +108,7 @@ fun RegisterAccountScreen(
 
        CustomTopAppBarTittleBack(
            title = "",
-           Color.Red,
+           FFD91E18,
            onBackClick = { navController.popBackStack() }
        )
 
@@ -143,7 +143,7 @@ fun RegisterAccountScreen(
        CustomText(
            text = buildAnnotatedString {
                append(stringResource(id = R.string.password_new))
-               withStyle(style = SpanStyle(color = Color.Red)) {
+               withStyle(style = SpanStyle(color = FFD91E18)) {
                    append("*")
                }
            }.toString()
@@ -165,7 +165,7 @@ fun RegisterAccountScreen(
        CustomText(
            text = buildAnnotatedString {
                append(stringResource(id = R.string.confirm_password))
-               withStyle(style = SpanStyle(color = Color.Red)) {
+               withStyle(style = SpanStyle(color = FFD91E18)) {
                    append("*")
                }
            }.toString()
@@ -298,7 +298,7 @@ fun RegisterAccountScreen(
                    Spacer(modifier = Modifier.width(8.dp))
                    Text(
                        text = "Lưu ý:",
-                       color = Color.Red,
+                       color = FFD91E18,
                        fontWeight = FontWeight.Bold,
                        style = MaterialTheme.typography.titleMedium
                    )
@@ -308,7 +308,7 @@ fun RegisterAccountScreen(
 
                Text(
                    text = "Bạn sẽ không thể thay đổi thông tin cá nhân & sinh nhật sau khi đăng ký thành công.\n\nVì vậy, hãy chắc chắn các thông tin đã chính xác.",
-                   color = Color.Red,
+                   color = FFD91E18,
                    fontSize = 14.sp
                )
            }
@@ -328,7 +328,7 @@ fun RegisterAccountScreen(
 
            },
 
-           colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+           colors = ButtonDefaults.buttonColors(containerColor = FFD91E18),
            modifier = Modifier
                .fillMaxWidth()
                .height(50.dp),

@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.components.topAppBar
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 
 import androidx.compose.ui.unit.sp
 
@@ -27,19 +29,20 @@ fun CustomTopAppBarBackTittle(title: String, textColor: Color = Color.Black,
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "Back",
-                    tint =tint
+
                 )
             }
         },
         title = {
             CustomText(
                 text = title,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 fontWeight = fontWeight,
                 color = textColor,
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = background)
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = background),
+        modifier = Modifier.padding(top = 16.dp)
     )
 
 

@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.main.ui
+package com.contrast.Contrast.presentation.features.main.membership.ui
 
 
 import androidx.compose.foundation.background
@@ -12,21 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.contrast.Contrast.presentation.features.voucher.redeem.VoucherRedeemScreen
 
 @Composable
 fun MembershipPage(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = Color.White),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Settings Page",
-            fontSize = 40.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.White
-        )
-    }
+    VoucherRedeemScreen()
 }

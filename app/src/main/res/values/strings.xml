@@ -97,7 +97,14 @@
     <string name="voucher_condition_1">Voucher không có giá trị quy đổi thành tiền mặt</string>
     <string name="voucher_condition_2">Voucher được áp dụng tại toàn bộ hệ thống cửa hàng Contrast Coffee</string>
     <string name="voucher_condition_3">Voucher chỉ áp dụng với đơn hàng tại cửa hàng</string>
-
+    <string name="store_image">Hình ảnh cửa hàng</string>
+    <string name="store_name">Contrast Văn Chương</string>
+    <string name="store_address">264 Ngô Văn Chương, Khâm Thiên, Đống Đa, Hà Nội</string>
+    <string name="store_note">Hôm nay đông khách quá! Gọi điện check bàn trước để có chỗ ngồi lý tưởng bạn nha 🥰</string>
+    <string name="store_open">Contrast Coffee</string>
+    <string name="store_open_24">Luôn mở cửa - 24 giờ</string>
+    <string name="report">Phản hồi</string>
+    <string name="share">Chia sẻ</string>
 
 
     <string name="owned_voucher">Voucher đang sở hữu</string>

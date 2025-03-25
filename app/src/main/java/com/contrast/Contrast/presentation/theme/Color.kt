@@ -30,6 +30,7 @@ val FFF9CB8C = Color(0xFFF9CB8C) // ⚫
 val B2FFFFFF = Color(0xB2FFFFFF) // ⚫
 val FFFFF6F6 = Color(0xFFFFF6F6) // ⚫
 val FFF5F5F5 = Color(0xFFF5F5F5) // ⚫
+val F6F6F6 = Color(0x80F6F6F6) // ⚫
 
 
 

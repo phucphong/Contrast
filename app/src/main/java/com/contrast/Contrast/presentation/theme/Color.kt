@@ -28,6 +28,8 @@ val FF7C7C7C = Color(0xFF7C7C7C) // ⚫ Xám tối (Dark Gray)
 val FFA7D2C0 = Color(0xFFA7D2C0) // ⚫
 val FFF9CB8C = Color(0xFFF9CB8C) // ⚫
 val B2FFFFFF = Color(0xB2FFFFFF) // ⚫
+val FFFFF6F6 = Color(0xFFFFF6F6) // ⚫
+val FFF5F5F5 = Color(0xFFF5F5F5) // ⚫
 
 
 
@@ -36,7 +38,7 @@ val FF151515 = Color(0xFF151515) // ⚫ Đen (Black)
 val FF87B5FB = Color(0xFF87B5FB) // 🔵 Xanh dương nhạt (Light Blue)
 
 val FFFCFCFC = Color(0xFFFCFCFC) // ⚪ Trắng gần như tuyệt đối (Almost White)
-val FCFCFC = Color(0xFCFCFC) // ⚪ Trắng gần như tuyệt đối (Almost White)
+val FCFCFC = Color(0xFCFCFC) // ⚪ background chung
 
 // 🎨 Các màu hỗ trợ
 val FFF8F8F8 = Color(0xFFF8F8F8) // ⚪ Trắng xám (Grayish White)

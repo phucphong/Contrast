@@ -33,6 +33,8 @@ import com.contrast.Contrast.presentation.components.slider.ImageSlider
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.features.feedback.FeedbackDialog
 import com.contrast.Contrast.presentation.features.payment.ui.LockVerificationDialog
+import com.contrast.Contrast.presentation.theme.FCFCFC
+import com.contrast.Contrast.presentation.theme.FFFCFCFC
 
 @Preview(showBackground = true)
 @Composable
@@ -41,7 +43,7 @@ fun HomePage() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFCFCFC))
+            .background(FCFCFC)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp)
     ) {
@@ -95,7 +97,7 @@ fun HomePage() {
         Spacer(modifier = Modifier.height(16.dp))
 
         /** 🔹 BANNER QUẢNG CÁO */
-        ImageSlider()
+        ImageSlider(10.dp)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -197,7 +199,16 @@ fun HomePage() {
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                Text("Phản hồi", color = Color.Black, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "Phản hồi",
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        lineHeight = 16.8.sp,
+                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontWeight = FontWeight(400),
+                        color = Color(0xFF1D1D1D),
+                    )
+                )
             }
         }
 

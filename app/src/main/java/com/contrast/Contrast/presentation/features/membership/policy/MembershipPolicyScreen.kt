@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.membership
+package com.contrast.Contrast.presentation.features.membership.policy
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background

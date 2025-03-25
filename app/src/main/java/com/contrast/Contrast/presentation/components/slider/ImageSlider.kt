@@ -20,10 +20,11 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import com.contrast.Contrast.R
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.Dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ImageSlider() {
+fun ImageSlider(clip: Dp) {
     val images = listOf(
         R.drawable.slider_1,
         R.drawable.slider_2,
@@ -48,7 +49,7 @@ fun ImageSlider() {
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
-            .clip(RoundedCornerShape(10.dp)) // ✅ Bo tròn 4 góc 10dp
+            .clip(RoundedCornerShape(clip)) // ✅ Bo tròn 4 góc 10dp
     ) {
         /** 🔹 HorizontalPager (Slider) */
         HorizontalPager(

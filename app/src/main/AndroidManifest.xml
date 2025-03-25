@@ -19,6 +19,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.features.main.store.detail.StoreDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.features.onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
@@ -55,14 +58,14 @@
             android:name=".presentation.features.account.personalInfo.PersonalInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.features.membership.MembershipPolicyActivity"
+            android:name=".presentation.features.membership.policy.MembershipPolicyActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.login.ui.LoginActivity"
-            android:exported="true" />    <activity
+            android:exported="true" />
+        <activity
             android:name=".presentation.features.voucher.redeem.VoucherRedeemActivity"
             android:exported="true" />
-
         <activity
             android:name=".presentation.features.register.ui.phone.RegisterPhoneActivity"
             android:exported="true" />

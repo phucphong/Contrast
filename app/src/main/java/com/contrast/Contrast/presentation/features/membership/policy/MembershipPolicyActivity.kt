@@ -1,15 +1,15 @@
-package com.contrast.Contrast.presentation.features.news.detail
+package com.contrast.Contrast.presentation.features.membership.policy
+
+
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.contrast.Contrast.presentation.features.membership.policy.MembershipPolicyScreenPreview
+
 import dagger.hilt.android.AndroidEntryPoint
 
-
-
 @AndroidEntryPoint // ✅ Bắt buộc nếu Activity cần inject ViewModel
-class NewsDetailActivity : ComponentActivity() {
+class MembershipPolicyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

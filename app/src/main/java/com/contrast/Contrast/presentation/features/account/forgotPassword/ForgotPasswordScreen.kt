@@ -26,7 +26,7 @@ import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 
 @Preview(showBackground = true)
-@Preview(name = "Light Mode", showBackground = true)
+
 @Composable
 fun ForgotPasswordScreen(onBackPress: () -> Unit, onSendCode: (String) -> Unit) {
     var phoneNumber by remember { mutableStateOf("") }

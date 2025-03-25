@@ -23,6 +23,7 @@ import com.contrast.Contrast.presentation.features.main.location.ui.LocationScre
 
 import com.contrast.Contrast.presentation.features.main.membership.ui.MembershipPage
 import com.contrast.Contrast.presentation.features.main.store.ui.StoreListScreen
+import com.contrast.Contrast.presentation.features.membership.rewards.ContrastRewardsScreen
 
 
 @Preview(showBackground = true)
@@ -60,7 +61,7 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int) {
             0 -> HomePage()
             1 -> LocationScreen()
             2 -> StoreListScreen()
-            3 -> MembershipPage()
+            3 -> ContrastRewardsScreen()
             4 -> BoxPage()
             else -> HomePage() // Mặc định hiển thị trang Home nếu có lỗi
         }

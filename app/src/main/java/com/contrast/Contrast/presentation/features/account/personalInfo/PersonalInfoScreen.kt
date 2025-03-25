@@ -1,6 +1,5 @@
 package com.contrast.Contrast.presentation.features.account.personalInfo
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -29,8 +28,6 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
-
-import com.contrast.Contrast.presentation.features.membership.MembershipPolicyScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)

@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,9 +48,9 @@ import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.features.main.home.ui.StoreCard
 import com.contrast.Contrast.presentation.theme.AFFFFFF
 import com.contrast.Contrast.presentation.theme.B2FFFFFF
 import com.contrast.Contrast.presentation.theme.FF151515
@@ -59,7 +58,7 @@ import com.contrast.Contrast.presentation.theme.FFD91E18
 
 @Preview(showBackground = true)
 @Composable
-fun LocationScreen() {
+fun LocationScreen( navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -156,7 +155,7 @@ fun StoreTabs() {
                         style = TextStyle(
                             fontSize = 14.sp,
                             lineHeight = 21.sp,
-                            fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                            fontFamily = FontFamily(Font(R.font.inter)),
                             fontWeight = if (selectedTab == index) FontWeight(500) else FontWeight(
                                 400
                             ),
@@ -241,7 +240,7 @@ fun StoreItem(name: String, address: String) {
                         style = TextStyle(
                             fontSize = 14.sp,
                             lineHeight = 21.sp,
-                            fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                            fontFamily = FontFamily(Font(R.font.inter)),
                             fontWeight = FontWeight(500),
                             color = FF151515,
                         ),
@@ -320,7 +319,7 @@ fun StoreItem(name: String, address: String) {
                         style = TextStyle(
                             fontSize = 12.sp,
                             lineHeight = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                            fontFamily = FontFamily(Font(R.font.inter)),
                             fontWeight = FontWeight(700),
                             color = Color(0xFFFFFFFF),
 
@@ -342,7 +341,7 @@ fun StoreItem(name: String, address: String) {
                             style = TextStyle(
                                 fontSize = 10.sp,
                                 lineHeight = 15.sp,
-                                fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                fontFamily = FontFamily(Font(R.font.inter)),
                                 fontWeight = FontWeight(400),
                                 color = Color(0xFFD7D7D7),
                             ),

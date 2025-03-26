@@ -31,6 +31,14 @@ val B2FFFFFF = Color(0xB2FFFFFF) // ⚫
 val FFFFF6F6 = Color(0xFFFFF6F6) // ⚫
 val FFF5F5F5 = Color(0xFFF5F5F5) // ⚫
 val F6F6F6 = Color(0x80F6F6F6) // ⚫
+val FF000000 = Color(0xFF000000) // ⚫
+val AEA1F27 = Color(0xAEA1F27) // ⚫
+val FFE40000 = Color(0xFFE40000) // ⚫
+val EEA1F27 = Color(0x2EEA1F27) // ⚫
+val A00407D = Color(0x1A00407D) // ⚫
+val EFFFFFF = Color(0x2EFFFFFF) // ⚫
+val FFFFFFFF = Color(0xFFFFFFFF) // ⚫
+val D292D32 = Color(0x0D292D32) // ⚫
 
 
 

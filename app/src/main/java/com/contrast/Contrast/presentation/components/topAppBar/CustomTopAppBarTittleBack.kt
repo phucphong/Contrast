@@ -38,7 +38,7 @@ fun CustomTopAppBarTittleBack(title: String, titleColor: Color = Color.Black,
                 Icon(
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "Back",
-                    tint =iconTint, modifier = Modifier.padding(vertical = 16.dp)
+                    modifier = Modifier.padding(vertical = 5.dp)
                 )
             }
         },

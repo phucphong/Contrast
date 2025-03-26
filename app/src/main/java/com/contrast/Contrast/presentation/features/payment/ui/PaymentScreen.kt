@@ -153,7 +153,7 @@ fun PaymentScreen() {
                     style = TextStyle(
                         fontSize = 10.sp,
                         lineHeight = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         fontWeight = FontWeight(400),
                         color = Color(0x80000000),
                     )
@@ -271,7 +271,7 @@ fun VoucherItem(voucher: Voucher) {
                         text = "Áp dụng",
                         style = TextStyle(
                             fontSize = 9.sp,
-                            fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                            fontFamily = FontFamily(Font(R.font.inter)),
                             fontWeight = FontWeight(500),
                             color = Color.White,
                             textAlign = TextAlign.Center,

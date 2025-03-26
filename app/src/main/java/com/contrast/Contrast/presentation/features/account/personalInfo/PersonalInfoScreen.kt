@@ -31,20 +31,8 @@ import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
-
-
 @Composable
-fun PersonalInfoScreenPreview() {
-    val navController = rememberNavController()  // Tạo NavController giả lập cho Preview
-    PersonalInfoScreen(
-        navController = navController,
-
-        )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PersonalInfoScreen( navController: NavController) {
+fun PersonalInfoScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()

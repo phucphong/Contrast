@@ -110,7 +110,7 @@ fun VoucherItem(voucher: Voucher, isVisible :Boolean) {
                             text = "Áp dụng",
                             style = TextStyle(
                                 fontSize = 9.sp,
-                                fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                fontFamily = FontFamily(Font(R.font.inter)),
                                 fontWeight = FontWeight(500),
                                 color = Color.White,
                                 textAlign = TextAlign.Center,

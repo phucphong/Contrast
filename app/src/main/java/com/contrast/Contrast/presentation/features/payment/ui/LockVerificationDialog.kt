@@ -141,7 +141,7 @@ fun LockVerificationDialog(
                         text = stringResource(id = R.string.pin_description),
                         fontSize = 14.sp,
                         color = FFAFAFAF,
-                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )

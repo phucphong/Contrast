@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.theme.FFD82018
 import com.contrast.Contrast.presentation.components.camera.CameraPreviewView
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTittle
+import com.contrast.Contrast.presentation.components.topAppBar.CustomAppBarBackTitleSave
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
 import java.util.concurrent.Executors
 @kotlin.OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,12 +45,11 @@ fun QRScannerScreen(onBackPress: () -> Unit) {
     ) {
         Spacer(modifier = Modifier.height(40.dp))
 
-        CustomTopAppBarBackTittle(
+
+
+        CustomTopAppBarTittleBack (
             title = "Quét mã QR",
-            Color.White,
-            FFD82018,
-            FontWeight.Medium,
-            Color.White,
+            Color.Red,
             onBackClick = { onBackPress() }
         )
         Spacer(modifier = Modifier.height(16.dp))

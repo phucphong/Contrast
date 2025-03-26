@@ -1,7 +1,6 @@
 package com.contrast.Contrast.presentation.components.topAppBar
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -19,7 +18,7 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBarBackTittle(title: String, textColor: Color = Color.Black,
+fun CustomAppBarBackTitleSave(title: String, textColor: Color = Color.Black,
                               background : Color = Color.White, fontWeight :FontWeight= FontWeight.Bold,tint:Color = Color.Gray,onBackClick: () -> Unit) {
     TopAppBar(
 

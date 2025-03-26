@@ -25,20 +25,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.alertDialog.FaceIDAuthDialog
-import com.contrast.Contrast.presentation.components.alertDialog.FaceIDPermissionDialog
-import com.contrast.Contrast.presentation.components.alertDialog.FeedbackSuccessDialog
 import com.contrast.Contrast.presentation.components.slider.ImageSlider
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.features.feedback.FeedbackDialog
-import com.contrast.Contrast.presentation.features.payment.ui.LockVerificationDialog
 import com.contrast.Contrast.presentation.theme.FCFCFC
-import com.contrast.Contrast.presentation.theme.FFFCFCFC
 
 @Preview(showBackground = true)
 @Composable
-fun HomePage() {
+fun HomePage( navController: NavController) {
     var showDialog by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
@@ -109,7 +104,7 @@ fun HomePage() {
             style = TextStyle(
                 fontSize = 14.sp,
                 lineHeight = 24.sp,
-                fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                fontFamily = FontFamily(Font(R.font.inter)),
                 fontWeight = FontWeight(500),
                 color = Color(0xFF151515),
             )
@@ -141,7 +136,7 @@ fun HomePage() {
                 text = "Danh sách cửa hàng",
                 style = TextStyle(
                     fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                    fontFamily = FontFamily(Font(R.font.inter)),
                     fontWeight = FontWeight(500),
                     color = Color(0xFF151515),
                     textAlign = TextAlign.Center,
@@ -204,7 +199,7 @@ fun HomePage() {
                     style = TextStyle(
                         fontSize = 12.sp,
                         lineHeight = 16.8.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         fontWeight = FontWeight(400),
                         color = Color(0xFF1D1D1D),
                     )

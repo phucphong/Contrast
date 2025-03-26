@@ -2,16 +2,12 @@ package com.contrast.Contrast.presentation.features.voucher.redeem
 
 
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -38,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.voucher.redeem.ui.PointsAndVoucherCard
 import com.contrast.Contrast.presentation.theme.FF151515
-import com.contrast.Contrast.presentation.theme.FFDC143C
 import com.contrast.Contrast.presentation.features.voucher.ui.VoucherItem
 import com.contrast.Contrast.presentation.theme.AFFFFFF
 import com.contrast.Contrast.presentation.theme.FF87B5FB
@@ -198,7 +193,7 @@ fun VoucherRedeemScreen() {
                                       text = stringResource(R.string.voucher_list),
                                       style = TextStyle(
                                           fontSize = 14.sp,
-                                          fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                          fontFamily = FontFamily(Font(R.font.inter)),
                                           fontWeight = FontWeight(500),
                                           color = FF151515,
                                           textAlign = TextAlign.Left,

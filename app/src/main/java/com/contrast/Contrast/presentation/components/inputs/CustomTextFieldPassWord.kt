@@ -38,7 +38,7 @@ fun CustomTextFieldPassword(
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     val customFontFamily = FontFamily(
-        Font(R.font.inter_18pt_medium), // Font thường
+        Font(R.font.inter), // Font thường
         Font(R.font.inter_18pt_bold, FontWeight.Bold),
     )
 

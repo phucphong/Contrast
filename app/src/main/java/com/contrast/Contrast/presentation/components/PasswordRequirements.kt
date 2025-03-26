@@ -41,7 +41,7 @@ fun PasswordRequirements(password: String) {
 
 
     val customFontFamily = FontFamily(
-        Font(R.font.inter_18pt_medium), // Font thường
+        Font(R.font.inter), // Font thường
         Font(R.font.inter_18pt_bold, FontWeight.Bold),
     )
     Column(modifier = Modifier.padding(10.dp)) {

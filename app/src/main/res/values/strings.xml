@@ -81,7 +81,39 @@
     <string name="voucher_list">Danh sách voucher</string>
     <string name="your_point_fund">Quỹ điểm của bạn</string>
     <string name="cup_exchange_history">Lịch sử đổi Cup</string>
+    <!-- Titles -->
+    <string name="contrast_rewards">CONTRAST\nREWARDS</string>
 
+    <string name="account_details">Chi tiết tài khoản</string>
+    <string name="personal_info">Thông tin cá nhân</string>
+    <string name="membership">Quyền lợi hạng thành viên</string>
+    <string name="transaction_history">Lịch sử giao dịch</string>
+
+    <string name="settings">Cài đặt</string>
+    <string name="preferences">Tùy chọn</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="security">Bảo mật</string>
+
+    <string name="support">Hỗ trợ</string>
+    <string name="faq">Các câu hỏi thường gặp</string>
+
+    <string name="policy">Chính sách</string>
+    <string name="terms_of_use">Điều khoản sử dụng</string>
+    <string name="privacy_policy">Chính sách bảo mật thông tin</string>
+
+
+    <!-- Menu Items -->
+    <string name="membership_benefits">Quyền lợi hạng thành viên</string>
+    <string name="membership_policy">Chính sách thành viên</string>
+    <string name="your_voucher">Voucher của bạn</string>
+    <string name="exchange_cup_voucher">Đổi cup lấy voucher</string>
+
+
+    <!-- Card Text -->
+    <string name="points_needed">• Cần phát sinh tối thiểu 01 đơn hàng trong 03 tháng để giữ hạng\n• 1 cup = 10.000 VND</string>
+    <string name="rank_trailblazer">Trailblazer</string>
+    <string name="rank_achiever">Achiever</string>
+    <string name="exchange_voucher">Đổi voucher</string>
     <string name="near_me">Gần tôi</string>
     <string name="current_location">Vị trí hiện tại</string>
     <string name="voucher_detail">Chi tiết voucher</string>

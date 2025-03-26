@@ -38,7 +38,6 @@ import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FF151515
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
 import com.contrast.Contrast.presentation.theme.FFD91E18
-import com.contrast.Contrast.presentation.theme.FFF5F5F5
 import com.contrast.Contrast.presentation.theme.FFFFF6F6
 
 @Preview(device = Devices.PHONE)
@@ -72,7 +71,7 @@ fun StoreDetailScreen() {
                     style = TextStyle(
                         fontSize = 20.sp,
                         lineHeight = 30.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         fontWeight = FontWeight(600),
                         color = FFD91E18,
                         textAlign = TextAlign.Center,
@@ -86,7 +85,7 @@ fun StoreDetailScreen() {
                     style = TextStyle(
                         fontSize = 13.sp,
                         lineHeight = 12.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         fontWeight = FontWeight(500),
                         color = Color(0xFF7C7C7C),
                     ),
@@ -116,7 +115,7 @@ fun StoreDetailScreen() {
                     style = TextStyle(
                         fontSize = 13.sp,
                         lineHeight = 12.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         fontWeight = FontWeight(500),
                         color = Color(0xFF7C7C7C),
                     )
@@ -155,7 +154,7 @@ fun StoreDetailScreen() {
                     style = TextStyle(
                         fontSize = 13.sp,
                         lineHeight = 23.sp,
-                        fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         fontWeight = FontWeight(500),
                         color = Color(0xFF7C7C7C),
                     )
@@ -179,7 +178,7 @@ fun StoreDetailScreen() {
                                 style = TextStyle(
                                     fontSize = 16.sp,
                                     lineHeight = 32.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                    fontFamily = FontFamily(Font(R.font.inter)),
                                     fontWeight = FontWeight(700),
                                     color = Color(0xFFD91E18),
                                 )
@@ -190,7 +189,7 @@ fun StoreDetailScreen() {
                                 style = TextStyle(
                                     fontSize = 14.sp,
                                     lineHeight = 28.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                    fontFamily = FontFamily(Font(R.font.inter)),
                                     fontWeight = FontWeight(400),
                                     color = FFD91E18,
                                 ),
@@ -206,7 +205,7 @@ fun StoreDetailScreen() {
                             style = TextStyle(
                                 fontSize = 30.sp,
                                 lineHeight = 46.sp,
-                                fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                fontFamily = FontFamily(Font(R.font.inter)),
                                 fontWeight = FontWeight(800),
                                 color = FFD91E18,
                             ),
@@ -218,7 +217,7 @@ fun StoreDetailScreen() {
                             style = TextStyle(
                                 fontSize = 13.sp,
                                 lineHeight = 20.sp,
-                                fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                fontFamily = FontFamily(Font(R.font.inter)),
                                 fontWeight = FontWeight(700),
                                 color = FFD91E18,
                             ),
@@ -285,7 +284,7 @@ fun StoreDetailScreen() {
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                     lineHeight = 16.8.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                    fontFamily = FontFamily(Font(R.font.inter)),
                                     fontWeight = FontWeight(400),
                                     color = Color(0xFF1D1D1D),
                                 )
@@ -326,7 +325,7 @@ fun StoreDetailScreen() {
                                 style = TextStyle(
                                     fontSize = 12.sp,
                                     lineHeight = 16.8.sp,
-                                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                                    fontFamily = FontFamily(Font(R.font.inter)),
                                     fontWeight = FontWeight(400),
                                     color = Color(0xFF1D1D1D),
                                 )

@@ -15,23 +15,26 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.features.main.box.BoxPage
-
+import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.main.home.ui.HomePage
 import com.contrast.Contrast.presentation.features.main.location.ui.LocationScreen
 
-import com.contrast.Contrast.presentation.features.main.membership.ui.MembershipPage
 import com.contrast.Contrast.presentation.features.main.store.ui.StoreListScreen
-import com.contrast.Contrast.presentation.features.membership.rewards.ContrastRewardsScreen
+import com.contrast.Contrast.presentation.features.membership.rewards.RewardsScreen
+import com.contrast.Contrast.presentation.features.navigato.AppNavHost
 
 
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen() {
 
+    val navController = rememberNavController() // Khởi tạo navController
 
+    AppNavHost(navController = navController)
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
@@ -47,23 +50,25 @@ fun MainScreen(modifier: Modifier = Modifier) {
     ) { innerPadding ->
         ContentScreen(
             modifier = Modifier.padding(innerPadding),
-            selectedIndex = selectedIndex
+            selectedIndex = selectedIndex,
+            navController = navController // Truyền navController xuống
         )
     }
 }
+
 @Composable
-fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int) {
+fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, navController: NavController) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         when (selectedIndex) {
-            0 -> HomePage()
-            1 -> LocationScreen()
-            2 -> StoreListScreen()
-            3 -> ContrastRewardsScreen()
-            4 -> BoxPage()
-            else -> HomePage() // Mặc định hiển thị trang Home nếu có lỗi
+            0 -> HomePage(navController) // Truyền navController xuống
+            1 -> LocationScreen(navController)
+            2 -> StoreListScreen(navController)
+            3 -> RewardsScreen(navController)
+            4 -> AccountScreen(navController) // Truyền navController để AccountScreen điều hướng
+            else -> HomePage(navController)
         }
     }
 }

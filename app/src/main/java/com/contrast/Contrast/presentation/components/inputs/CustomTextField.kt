@@ -39,7 +39,7 @@ fun CustomTextField(
 
     // Khai báo fontFamily
     val customFontFamily = FontFamily(
-        Font(R.font.inter_18pt_medium), // Font thường
+        Font(R.font.inter), // Font thường
         Font(R.font.inter_18pt_bold, FontWeight.Bold),
     )
     Box(

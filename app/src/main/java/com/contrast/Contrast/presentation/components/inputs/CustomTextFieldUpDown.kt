@@ -20,8 +20,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +33,7 @@ fun CustomTextFieldUpDown(
     padding: Dp = 0.dp  // Padding mặc định
 ) {
     val customFontFamily = FontFamily(
-        Font(R.font.inter_18pt_medium), // Font thường
+        Font(R.font.inter), // Font thường
         Font(R.font.inter_18pt_bold, FontWeight.Bold),
     )
 

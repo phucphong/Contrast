@@ -90,7 +90,7 @@ fun EventCard(date: String, month: String, title: String, description: String) {
                 style = TextStyle(
                     fontSize = 12.sp,
                     lineHeight = 14.4.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                    fontFamily = FontFamily(Font(R.font.inter)),
                     fontWeight = FontWeight(600),
                     color = Color(0xFF000000),
                 ), modifier = Modifier.padding(horizontal = 10.dp)
@@ -104,7 +104,7 @@ fun EventCard(date: String, month: String, title: String, description: String) {
                 style = TextStyle(
                     fontSize = 10.sp,
                     lineHeight = 15.sp,
-                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                    fontFamily = FontFamily(Font(R.font.inter)),
                     fontWeight = FontWeight(400),
                     color = Color(0xFF7C7C7C),
                 )
@@ -120,7 +120,7 @@ fun EventCard(date: String, month: String, title: String, description: String) {
                     fontSize = 10.sp,
                     lineHeight = 16.sp,
 
-                    fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                    fontFamily = FontFamily(Font(R.font.inter)),
                     fontWeight = FontWeight(400),
                     color = Color(0xFF7C7C7C),
                     textDecoration = TextDecoration.Underline,

@@ -84,7 +84,7 @@ fun FeedbackDialog( showDialog: Boolean, onDismiss: () -> Unit, onContinue: (Str
                         text = stringResource(R.string.choose_branch),
                         style = TextStyle(
                             fontSize = 14.sp,
-                            fontFamily = FontFamily(Font(R.font.inter_18pt_medium)),
+                            fontFamily = FontFamily(Font(R.font.inter)),
                             fontWeight = FontWeight(600),
                             color = Color(0xFF1E1E1E),
                         )

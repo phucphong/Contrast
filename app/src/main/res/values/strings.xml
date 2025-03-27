@@ -23,9 +23,15 @@
     <string name="warning_title">Lưu ý:</string>
     <string name="warning_message">Bạn sẽ không thể thay đổi thông tin cá nhân &amp; sinh nhật sau khi đăng ký thành công.\n\nVì vậy, hãy chắc chắn các thông tin đã chính xác.</string>
     <string name="location_permission_title">Cho phép Contrast truy cập vị trí</string>
+    <string name="choose_store_pickup">Chọn cửa hàng tới lấy</string>
     <string name="location_permission_message">Bạn cần bật quyền truy xuất dịch vụ định vị để xác định vị trí hiện tại.</string>
     <string name="accept">Đồng ý</string>
     <string name="notification_title">Thông báo</string>
+    <string name="choose_language">Chọn ngôn ngữ</string>
+    <string name="security_title">Bảo mật</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="lock_with_face_id">Khóa bằng Face ID</string>
+    <string name="optional_title">Tùy chọn</string>
     <string name="no_notification">Không có thông báo nào</string>
     <string name="no_notification_desc">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
     <string name="delete">Xóa</string>
@@ -47,6 +53,10 @@
     <string name="international_card">Thẻ quốc tế</string>
     <string name="international_banks">Visa, MasterCard, JCB, Amex</string>
     <string name="e_wallet">Ví điện tử</string>
+
+
+    <string name="forgot_password_question">Bạn có muốn tiếp tục?</string>
+
     <string name="wallet_payment">Thanh toán bằng Ví</string>
     <string name="pci_dss">PCI DSS</string>
     <string name="powered_by_payoo">Powered by Payoo</string>
@@ -244,7 +254,9 @@
     <string name="biometric_title">Kích hoạt xác thực sinh trắc học?</string>
     <string name="do_not_show_again">Không hiện lần nữa</string>
     <string name="activate_biometric">Kích hoạt sinh trắc học</string>
-
+    <string name="biometric_setup_description">
+        Việc thiết lập sẽ giúp bạn đăng nhập dễ dàng và bảo mật thông tin tuyệt đối
+    </string>
     <string name="faceid_title">Bạn có muốn cho phép "Contrast" sử dụng FaceID không?</string>
     <string name="faceid_message">Contrast yêu cầu quyền truy cập FaceID để cho phép bạn truy cập nhanh chóng và bảo mật thông tin.</string>
     <string name="agree">Đồng ý</string>

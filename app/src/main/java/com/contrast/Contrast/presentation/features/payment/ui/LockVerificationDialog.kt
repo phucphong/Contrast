@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,6 @@ import com.contrast.Contrast.presentation.theme.FFAFAFAF
 import com.contrast.Contrast.presentation.theme.FFD91E18
 import com.contrast.Contrast.presentation.theme.FCFCFC
 
-@Preview(showBackground = true)
 @Composable
 fun LockVerificationDialog(
     showDialog: Boolean,
@@ -51,7 +51,7 @@ fun LockVerificationDialog(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.9f)
+                    .fillMaxHeight()
                     .background(
                         FCFCFC,
                         shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
@@ -137,6 +137,19 @@ fun LockVerificationDialog(
 
 
                     Spacer(modifier = Modifier.height(60.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.forgot_password_title),
+
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.inter)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF31C440),
+                            textAlign = TextAlign.Center,
+                            textDecoration = TextDecoration.Underline,
+                        )
+                    )
                     Text(
                         text = stringResource(id = R.string.pin_description),
                         fontSize = 14.sp,

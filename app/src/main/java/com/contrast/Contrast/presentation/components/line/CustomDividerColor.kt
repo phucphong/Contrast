@@ -9,12 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.contrast.Contrast.presentation.theme.FF7C7C7C
+import com.contrast.Contrast.presentation.theme.AEA1F27
+
 
 
 
 @Composable
-fun CustomDividerColor (color: Color){
+fun CustomDividerColor (color: Color= AEA1F27){
 
     Box(
         modifier = Modifier

@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.account.forgotPassword
+package com.contrast.Contrast.presentation.features.forgotPassword
 
 
 

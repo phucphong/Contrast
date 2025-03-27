@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Contrast" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.YourApp"  parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Không khai báo splash -->
+    </style>
+
+
 </resources>

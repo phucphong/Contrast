@@ -25,6 +25,7 @@ import com.contrast.Contrast.presentation.features.main.location.ui.LocationScre
 import com.contrast.Contrast.presentation.features.main.store.ui.StoreListScreen
 import com.contrast.Contrast.presentation.features.membership.rewards.RewardsScreen
 import com.contrast.Contrast.presentation.features.navigato.AppNavHost
+import com.contrast.Contrast.presentation.features.security.SecurityScreen
 
 
 @Preview(showBackground = true)
@@ -63,7 +64,7 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, navControll
         contentAlignment = Alignment.Center
     ) {
         when (selectedIndex) {
-            0 -> HomePage(navController) // Truyền navController xuống
+            0 -> StoreListScreen(navController) // Truyền navController xuống
             1 -> LocationScreen(navController)
             2 -> StoreListScreen(navController)
             3 -> RewardsScreen(navController)

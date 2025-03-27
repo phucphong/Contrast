@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.alertDialog.LocationPermissionDialog
 import com.contrast.Contrast.presentation.components.slider.ImageSlider
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.FCFCFC
@@ -253,6 +254,11 @@ fun HomePage( navController: NavController) {
 
         // thoong bao phản hồi thành công
 //        FeedbackSuccessDialog(
+//            onDismiss = { showDialog = false }
+//        )
+    // cho phép  truy cập vị trí
+//        LocationPermissionDialog(
+//            onAccept = { showDialog = false },
 //            onDismiss = { showDialog = false }
 //        )
 

@@ -109,7 +109,6 @@ fun AccountScreen( navController: NavController) {
         }
 
         LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 10.dp).weight(1f)) {
-
             item {
                 Image(
                     painter = painterResource(R.drawable.rewards),
@@ -117,7 +116,6 @@ fun AccountScreen( navController: NavController) {
                     modifier = Modifier
                         .height(230.dp)
                         .fillMaxWidth().padding( vertical = 6.dp, horizontal = 8.dp),
-
                     contentScale = ContentScale.FillBounds
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -135,6 +133,9 @@ fun AccountScreen( navController: NavController) {
             item { SectionHeader(title = stringResource(R.string.policy)) }
             items(policyItems) { (titleRes, icon) -> MenuItem(title = stringResource(titleRes), icon = icon) }
         }
+
+
+
 
         Button(
             onClick = { /* TODO: Logout */ },

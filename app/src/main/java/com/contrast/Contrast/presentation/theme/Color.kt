@@ -1,7 +1,7 @@
 package com.contrast.Contrast.presentation.theme
 
 import androidx.compose.ui.graphics.Color
-
+val FCFCFC = Color(0xFCFCFC) // ⚪ background chung
 // 🌟 Màu chính của ứng dụng
 val FFDC143C = Color(0xFFDC143C) // 🔴 Đỏ tươi (Crimson Red)
 val FFD82018 = Color(0xFFD82018)    // 🔴 Đỏ sậm (Dark Red)
@@ -47,7 +47,7 @@ val FF151515 = Color(0xFF151515) // ⚫ Đen (Black)
 val FF87B5FB = Color(0xFF87B5FB) // 🔵 Xanh dương nhạt (Light Blue)
 
 val FFFCFCFC = Color(0xFFFCFCFC) // ⚪ Trắng gần như tuyệt đối (Almost White)
-val FCFCFC = Color(0xFCFCFC) // ⚪ background chung
+
 
 // 🎨 Các màu hỗ trợ
 val FFF8F8F8 = Color(0xFFF8F8F8) // ⚪ Trắng xám (Grayish White)

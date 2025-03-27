@@ -27,7 +27,7 @@ fun CustomTopAppBarTittleBack(title: String, titleColor: Color = Color.Black,
         title = {
             CustomText(
                 text = title,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 fontWeight = fontWeight,
                 color = titleColor,
             )

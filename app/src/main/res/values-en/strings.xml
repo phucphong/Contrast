@@ -173,7 +173,17 @@
     <string name="your_point_fund">Your Point Fund</string>
     <string name="cup_exchange_history">Cup Exchange History</string>
     <string name="contrast_rewards">CONTRAST\nREWARDS</string>
+    <string name="optional_title">Optional</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="security_title">Security</string>
+    <string name="change_password">Change Password</string>
+    <string name="lock_with_face_id">Lock with Face ID</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_store_pickup">Choose store for pickup</string>
 
+    <string name="biometric_setup_description">
+        Enabling this feature helps you log in easily and ensures maximum security of your information
+    </string>
     <!-- Menu Items -->
     <string name="membership_benefits">Membership Benefits</string>
     <string name="membership_policy">Membership Policy</string>

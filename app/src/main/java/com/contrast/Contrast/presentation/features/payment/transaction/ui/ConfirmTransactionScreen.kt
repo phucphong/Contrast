@@ -80,7 +80,7 @@ fun ConfirmTransactionScreen(
                        Image(
                            painter = painterResource(id = R.drawable.clock),
                            contentDescription = "Loading",
-                           modifier = Modifier.size(40.dp)
+                           modifier = Modifier.size(30.dp)
                        )
 
                        Spacer(modifier = Modifier.height(8.dp))

@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.register.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.di.qualifier.IoDispatcher
@@ -17,6 +18,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import com.contrast.Contrast.utils.StringProvider
 import com.contrast.Contrast.R
+import com.contrast.Contrast.utils.Common
 import com.itechpro.domain.model.Column1
 import com.itechpro.domain.usecase.checkphoneEmail.CheckEmailUseCase
 import com.itechpro.domain.usecase.checkphoneEmail.CheckPhoneUseCase
@@ -30,7 +32,8 @@ class RegisterAccountViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
     @Named("deviceActive") var deviceActive: String,
     @Named("authen") private val authen: String,
-    @Named("idEmployee") var idEmployee: String
+    @Named("idEmployee") var idEmployee: String,
+    @Named("isOffLine") var isOffLine: Boolean
 ) : ViewModel() {
 
     private val _registerState = MutableStateFlow<NetworkResponse<List<Account>>>(NetworkResponse.Loading)
@@ -43,34 +46,42 @@ class RegisterAccountViewModel @Inject constructor(
     /**
      * ✅ 1. Kiểm tra validate đầu vào, nếu hợp lệ thì tiếp tục kiểm tra số điện thoại
      */
-    fun validateAndRegister(phone: String, fullName: String, password: String, confirmPassword: String, email: String?) {
+    fun validateAndRegister(phone: String, fullName: String, password: String, confirmPassword: String, email: String?, typeCheck: String) {
         val error = validateInputs(phone, fullName, password, confirmPassword)
         if (error != null) {
             _validationError.value = error
             return
         }
-        checkPhone(phone, email, fullName, password)
+        checkPhone(phone, email, fullName, password,typeCheck)
     }
 
     /**
      * ✅ 2. Kiểm tra số điện thoại
      */
-    private fun checkPhone(phone: String, email: String?, fullName: String, password: String) {
+    private fun checkPhone(phone: String, email: String?, fullName: String, password: String, typeCheck: String) {
         viewModelScope.launch(dispatcher) {
-
             try {
-                checkPhoneUseCase.execute("dailyaf", "checkphone", phone, idEmployee, authen, "on")
-                    .collect { result ->
+                val token = if (!isOffLine) Common.key else authen
 
-                        if (result is NetworkResponse.Success) {
-                            if (!result.data) {
-                                if (!email.isNullOrEmpty()) {
-                                    checkEmail(email, fullName, phone, password)
+                checkPhoneUseCase.execute("dailyaf", "checkdt", phone, idEmployee, token, typeCheck)
+                    .collect { result ->
+                        when (result) {
+                            is NetworkResponse.Success -> {
+                                if (!result.data) {
+                                    if (!email.isNullOrEmpty()) {
+                                        checkEmail(email, fullName, phone, password, typeCheck)
+                                    }
                                 } else {
-                                    registerAccount(fullName, phone, email, password)
+                                    _validationError.value = stringProvider.getString(R.string.registered_phone)
                                 }
-                            } else {
-                                _validationError.value = stringProvider.getString(R.string.registered_phone)
+                            }
+                            is NetworkResponse.Error -> {
+                                _validationError.value = result.message
+                                Log.e("_validationError", result.message)
+                            }
+
+                            NetworkResponse.Loading -> {
+
                             }
                         }
                     }
@@ -80,21 +91,30 @@ class RegisterAccountViewModel @Inject constructor(
         }
     }
 
+
     /**
      * ✅ 3. Kiểm tra email (nếu có)
      */
-    private fun checkEmail(email: String, fullName: String, phone: String, password: String) {
+    private fun checkEmail(email: String, fullName: String, phone: String, password: String, typeCheck: String) {
         viewModelScope.launch(dispatcher) {
 
             try {
-                checkEmailUseCase.execute("dailyaf", "checkemail", email, idEmployee, authen, "on")
+                val token = if (!isOffLine) Common.key else authen
+                checkEmailUseCase.execute("dailyaf", "checkemail", email, idEmployee, token, typeCheck)
                     .collect { result ->
+                        when (result) {
+                            is NetworkResponse.Success -> {
+                                if (!result.data) {
+                                } else {
+                                    _validationError.value = stringProvider.getString(R.string.registered_email)
+                                }
+                            }
+                            is NetworkResponse.Error -> {
+                                _validationError.value = result.message
+                                Log.e("_validationError", result.message)
+                            }
+                            NetworkResponse.Loading -> {
 
-                        if (result is NetworkResponse.Success) {
-                            if (!result.data) {
-                                registerAccount(fullName, phone, email, password)
-                            } else {
-                                _validationError.value = stringProvider.getString(R.string.registered_email)
                             }
                         }
                     }
@@ -107,7 +127,7 @@ class RegisterAccountViewModel @Inject constructor(
     /**
      * ✅ 4. Gửi yêu cầu đăng ký tài khoản
      */
-    private fun registerAccount(fullName: String, phone: String, email: String?, password: String) {
+    fun registerAccount(fullName: String, phone: String, email: String?, password: String) {
         viewModelScope.launch(dispatcher) {
             _registerState.value = NetworkResponse.Loading
             try {
@@ -119,7 +139,7 @@ class RegisterAccountViewModel @Inject constructor(
                     email = email ?: "",
                     username = phone,
                     password = password,
-                    key = "some_key",
+                    key = Common.key,
                     mamenu = "dangkytaikhoan",
                     hanhdong = "$phone - $fullName",
                     noidungchinh = "add",

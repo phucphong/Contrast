@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.main.ContrastActivity
 import com.contrast.Contrast.presentation.features.main.store.detail.StoreDetailActivity
+import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountActivity
 
 
 class SplashActivity : AppCompatActivity() {
@@ -43,6 +44,6 @@ class SplashActivity : AppCompatActivity() {
 //        } else if (!TextUtils.isEmpty(token)) {
 //           startactivity(ContrastActivity::class.java)
 //        }
-        startactivity(ContrastActivity::class.java)
+        startactivity(RegisterAccountActivity::class.java)
     }
 }

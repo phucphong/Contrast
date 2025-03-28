@@ -164,7 +164,7 @@ fun ChangePasswordScreen(
         Button(
             onClick = {
 
-                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email)
+                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email,"on")
                 showLoadingDialog = true
 
 
@@ -210,7 +210,7 @@ fun ChangePasswordScreen(
 
 
             // Giả định có constructor phù hợp
-//            viewModel.registerNewAccount("/ex/apiaffiliate/dangkytaikhoan", account)
+//            viewModel.registerAccount("/ex/apiaffiliate/dangkytaikhoan", account)
         }
 
         LaunchedEffect(registerState) {

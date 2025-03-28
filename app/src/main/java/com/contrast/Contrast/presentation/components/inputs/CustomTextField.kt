@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.extensions.capitalizeEachWord
 
 @Composable
 fun CustomTextField(
@@ -60,9 +61,17 @@ fun CustomTextField(
         Row(modifier = Modifier.fillMaxWidth()) {
             TextField(
                 value = value, // Giá trị của TextField
-                onValueChange = onValueChange, // Cập nhật giá trị khi người dùng nhập dữ liệu
-                placeholder = { Text(placeholder,
-                    color = Color(0xFFD7D7D7)) }, // Placeholder cho TextField
+                onValueChange = { onValueChange(it.capitalizeEachWord()) }, // Áp dụng viết hoa chữ cái đầu
+                placeholder = {
+                    Text(placeholder,
+                    color = Color(0xFFD7D7D7),  style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 21.sp,
+                            fontFamily = FontFamily(Font(R.font.inter)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF151515),
+
+                            ),) }, // Placeholder cho TextField
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType), // Kiểu bàn phím
                 visualTransformation = if (isShowIcon) PasswordVisualTransformation() else VisualTransformation.None, // Mã hóa nhập liệu nếu là mật khẩu
                 modifier = Modifier
@@ -70,7 +79,14 @@ fun CustomTextField(
 
                     .height(50.dp) // Đặt chiều cao của TextField là 50dp
                     .padding(padding), // Padding
-                textStyle = TextStyle(color = Color.Black, fontSize = 14.sp,fontFamily = customFontFamily),
+                textStyle = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 21.sp,
+                    fontFamily = FontFamily(Font(R.font.inter)),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFF151515),
+
+                    ),
 
 
                 // Màu văn bản là đen

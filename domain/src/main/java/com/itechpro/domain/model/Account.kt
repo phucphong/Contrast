@@ -4,21 +4,30 @@ package com.itechpro.domain.model
 // ✅ Account kế thừa BaseModel
 data class Account(
 
-
-    val noicap: String? = null,
-    val id: String? = null,
-    val ido: String? = null,
-    val hoten: String? = null,
-    val dienthoai: String? = null,
-    val email: String? = null,
-
-    val username: String? = null,
-    val password: String? = null,
-    val key: String? = null,
-    val mamenu: String? = null,
-    val hanhdong: String? = null,
-    val noidungchinh: String? = null,
-    val device: String? = null,
     val os: String? = "android",
+
+    var hoten: String? = null,
+    var id: String? = null,
+    var ido: String? = null,
+    var mamenu: String? = null,
+
+    var device: String? = null,
+    var hanhdong: String? = null,
+    var noidungchinh: String? = null,
+    var maduthuong: String? = null,
+    var tenchuongtrinh: String? = null,
+    var thoigian: String? = null,
+
+    var dienthoai: String? = null,
+    var email: String? = null,
+    var ngaysinh: String? = null,
+
+
+    var username: String? = null,
+    var diachi: String? = null,
+    var password: String? = null,
+    var idnguoigioithieu: String? = null,
+
+    var key: String? = null
 
 )

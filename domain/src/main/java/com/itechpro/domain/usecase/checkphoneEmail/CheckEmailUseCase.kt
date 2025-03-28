@@ -30,7 +30,7 @@ class CheckEmailUseCase(
         val response = when (type) {
             "on" -> repository.checkEmail(obj, mode, email, idEmployee, authen)
             "off" -> repository.checkEmailOff(obj, mode, email, idEmployee, authen)
-            else -> NetworkResponse.Error("Loại kiểm tra không hợp lệ")
+            else -> NetworkResponse.Error("Error")
         }
 
         when (response) {

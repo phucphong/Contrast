@@ -1,6 +1,7 @@
 package com.contrast.Contrast.presentation.features.main.store.ui
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,15 +21,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.theme.FFFCFCFC
+
 @Composable
 fun ProductSection(title: String, products: List<Product>) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).background(FFFCFCFC)) {
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = title, style = TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            fontFamily = FontFamily(Font(R.font.inter)),
+            fontWeight = FontWeight(600),
+            color = Color(0xFFD91E18),
+
+            ),
+
+        )
         Spacer(modifier = Modifier.height(8.dp))
 
         // ✅ Giới hạn chiều cao

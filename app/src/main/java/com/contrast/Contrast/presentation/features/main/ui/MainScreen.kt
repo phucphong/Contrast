@@ -64,7 +64,7 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, navControll
         contentAlignment = Alignment.Center
     ) {
         when (selectedIndex) {
-            0 -> StoreListScreen(navController) // Truyền navController xuống
+            0 -> HomePage(navController) // Truyền navController xuống
             1 -> LocationScreen(navController)
             2 -> StoreListScreen(navController)
             3 -> RewardsScreen(navController)

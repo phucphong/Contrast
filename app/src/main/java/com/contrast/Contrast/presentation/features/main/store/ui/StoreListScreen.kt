@@ -64,7 +64,7 @@ fun StoreListScreen(navController: NavController? = null) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
-        contentPadding = PaddingValues(bottom = 80.dp)
+
     ) {
         item {
             HeaderSection("Cơ sở Khâm Thiên")

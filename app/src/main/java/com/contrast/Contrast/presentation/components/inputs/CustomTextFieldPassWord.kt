@@ -62,14 +62,28 @@ fun CustomTextFieldPassword(
                 value = value,  // Giá trị của TextField
                 onValueChange = onValueChange,  // Cập nhật giá trị khi người dùng nhập dữ liệu
                 placeholder = { Text(placeholder,
-                    color = Color(0xFFD7D7D7)) }, // Placeholder cho TextField
+                    color = Color(0xFFD7D7D7),  style = TextStyle(
+                        fontSize = 14.sp,
+                        lineHeight = 21.sp,
+                        fontFamily = FontFamily(Font(R.font.inter)),
+                        fontWeight = FontWeight(400),
+                        color = Color(0xFF151515),
+
+                        ),) }, // Placeholder cho TextField
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),  // Kiểu bàn phím
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),  // Hiển thị hoặc ẩn mật khẩu
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp) // Chiều cao của TextField
                     .padding(padding),  // Padding
-                textStyle = TextStyle(color = Color.Black, fontSize = 14.sp,fontFamily = customFontFamily), // Màu văn bản là đen
+                textStyle = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 21.sp,
+                    fontFamily = FontFamily(Font(R.font.inter)),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFF151515),
+
+                    ),
                 singleLine = true,  // Đảm bảo chỉ một dòng văn bản
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White,  // Màu nền của TextField

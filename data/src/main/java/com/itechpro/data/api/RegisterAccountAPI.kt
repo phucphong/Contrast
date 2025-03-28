@@ -62,4 +62,5 @@ interface RegisterAccountAPI {
         @Url url: String,
         @Body body: Account,
     ): Response<List<Account>>
+
 }

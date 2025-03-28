@@ -253,13 +253,13 @@ object AppConfig {
             .apply()
     }
 
-    fun setLogin(context: Context, value: Boolean) {
+    fun setOffLine(context: Context, value: Boolean) {
         getSharedPreferences(context).edit()
             .putBoolean(KEY_LOGIN, value)
             .apply()
     }
 
-    fun getLogin(context: Context): Boolean {
+    fun getOffLine(context: Context): Boolean {
         return getSharedPreferences(context)
             .getBoolean(KEY_LOGIN, false) ?: false
     }
@@ -325,7 +325,7 @@ object AppConfig {
 
     fun getIdEmployee(context: Context): String {
         return getSharedPreferences(context)
-            .getString(KEY_ID_EMPLOYEE, "") ?: ""
+            .getString(KEY_ID_EMPLOYEE, "0") ?: "0"
     }
 
 

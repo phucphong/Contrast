@@ -49,7 +49,7 @@ object AppModule {
     }
 
     @Volatile
-    private var currentBaseUrl: String = "https://spa.ezmax.vn"
+    private var currentBaseUrl: String = "http://192.168.1.119:910"
 
     @Provides
     @Singleton

@@ -184,9 +184,9 @@ class LocalModule {
     }
 
     @Provides
-    @Named("isLogin")
+    @Named("isOffLine")
     fun provideIsLogin(@ApplicationContext context: Context): Boolean {
-        return AppConfig.getLogin(context)
+        return AppConfig.getOffLine(context)
     }
 
 

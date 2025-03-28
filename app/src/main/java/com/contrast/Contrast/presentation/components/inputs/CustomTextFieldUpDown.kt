@@ -62,19 +62,27 @@ fun CustomTextFieldUpDown(
                 placeholder = {
                     Text(
                         placeholder,
-                        color = Color(0xFFD7D7D7)
-                    )
-                }, // Placeholder cho TextField
+                        color = Color(0xFFD7D7D7),  style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 21.sp,
+                            fontFamily = FontFamily(Font(R.font.inter)),
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFF151515),
+
+                            ),) }, // Placeholder cho TextField
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),  // Mặc định là số
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp) // Chiều cao của TextField
                     .padding(padding),  // Padding
                 textStyle = TextStyle(
-                    color = Color.Black,
                     fontSize = 14.sp,
-                    fontFamily = customFontFamily
-                ), // Màu văn bản là đen
+                    lineHeight = 21.sp,
+                    fontFamily = FontFamily(Font(R.font.inter)),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFF151515),
+
+                    ),
                 singleLine = true,  // Đảm bảo chỉ một dòng văn bản
                 colors = TextFieldDefaults.textFieldColors(
                      Color.White,  // Màu nền của TextField

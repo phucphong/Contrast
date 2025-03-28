@@ -36,6 +36,8 @@ import com.contrast.Contrast.presentation.theme.FCFCFC
 @Composable
 fun HomePage( navController: NavController) {
     var showDialog by remember { mutableStateOf(false) }
+    var showDialogFeedbackSuccessDialog by remember { mutableStateOf(false) }
+    var showDialogLocationPermissionDialog by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -261,6 +263,21 @@ fun HomePage( navController: NavController) {
 //            onAccept = { showDialog = false },
 //            onDismiss = { showDialog = false }
 //        )
+
+
+        // hiện dialog thông báo
+
+        if (showDialog) {
+            LocationPermissionDialog(
+                onAccept = {
+                    showDialog = false
+
+                },
+                onDismiss = {
+                    showDialog = false
+                }
+            )
+        }
 
     }
 }

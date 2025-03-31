@@ -20,7 +20,7 @@
         android:theme="@style/Theme.YourApp"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.features.main.store.detail.StoreDetailActivity"
+            android:name=".presentation.features.store.detail.StoreDetailActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.features.onboarding.OnboardingActivity"

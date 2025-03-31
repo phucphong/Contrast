@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.main.store.ui
+package com.contrast.Contrast.presentation.features.store.ui
 
 
 import androidx.compose.foundation.Image
@@ -60,6 +60,8 @@ fun StoreListScreen(navController: NavController? = null) {
         Product("Nhẫn Hoa Mộc Tê", "55.000 đ", R.drawable.product_image)
     )
 
+
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -85,6 +87,10 @@ fun StoreListScreen(navController: NavController? = null) {
             ProductSection(title = "CÀ PHÊ", products = coffeeProducts)
         }
     }
+
+
+
+
 }
 
 

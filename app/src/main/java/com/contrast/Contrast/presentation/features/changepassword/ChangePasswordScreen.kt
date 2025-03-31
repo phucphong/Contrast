@@ -164,7 +164,7 @@ fun ChangePasswordScreen(
         Button(
             onClick = {
 
-                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email,"on")
+                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email,"","on")
                 showLoadingDialog = true
 
 

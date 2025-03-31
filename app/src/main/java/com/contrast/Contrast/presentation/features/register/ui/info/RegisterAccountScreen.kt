@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.register.ui.info
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.*
 import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
+import com.contrast.Contrast.presentation.components.button.ButtonRed
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
@@ -41,6 +43,7 @@ import com.contrast.Contrast.utils.Common
 import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.NetworkResponse
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun RegisterAccountScreen(
     navController: NavController,
@@ -63,31 +66,56 @@ fun RegisterAccountScreen(
     var selectedMonth by remember { mutableStateOf("") }
     var selectedYear by remember { mutableStateOf("") }
 
+    val dateOfBirth: String? by derivedStateOf {
+        if (selectedDay.isNotBlank() && selectedMonth.isNotBlank() && selectedYear.isNotBlank()) {
+            val day = selectedDay.trim().toIntOrNull()
+            val month = selectedMonth.trim().toIntOrNull()
+            val year = selectedYear.trim()
+
+            if (day != null && month != null) {
+                "%02d/%02d/%s".format(day, month, year)
+            } else {
+                null
+            }
+        } else {
+            null
+        }
+    }
+
+
+
+
     LaunchedEffect(registerState) {
         when (registerState) {
             is NetworkResponse.Success -> {
-            }
-            is NetworkResponse.Error -> {
-            } is NetworkResponse.Loading -> {
-            isAlertDialogVisible = true
+                isAlertDialogVisible = false
+                isRegisterButton = false
+                // 👉 Hiển thị Toast hoặc chuyển màn hình:
+                // navController.navigate("login") hoặc hiển thị thông báo thành công
             }
 
+            is NetworkResponse.Error -> {
+                isAlertDialogVisible = false
+                isRegisterButton = false
+            }
+
+            is NetworkResponse.Loading -> {
+                isAlertDialogVisible = true
+            }
         }
     }
-    LaunchedEffect(validationError) {
-        if (validationError == null) {
-            viewModel. registerAccount(fullName, phoneNumber, email, password)
-        }
-    }
+
 
     if (validationError != null) {
         CustomAlertDialog(
             message = validationError!!,
             onDismiss = { viewModel.clearValidationError()
+                isAlertDialogVisible = false
+                isRegisterButton = false
             }
         )
     }
-    if (isAlertDialogVisible&&isRegisterButton&&validationError==null) {
+    if (isAlertDialogVisible && isRegisterButton && validationError == null) {
 
         CustomCircularProgressIndicatorDialog(
             networkState = registerState,
@@ -121,9 +149,9 @@ fun RegisterAccountScreen(
                 selectedYear, { selectedYear = it }
             )
             RegisterWarningBox()
-            RegisterButton(onClick = {
+            ButtonRed( stringResource(id = R.string.create_account_button),onClick = {
                 isRegisterButton = true;
-                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email,"off")
+                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email,dateOfBirth,"off")
             })
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -237,6 +265,7 @@ private fun RegisterInputFields(
             onOptionSelected = onDayChange,
             placeholder = stringResource(id = R.string.day_placeholder),
             modifier = Modifier.weight(1f)
+            ,
         )
         CustomDropdown(
             options = (1..12).map { it.toString() },
@@ -301,24 +330,4 @@ private fun RegisterWarningBox() {
             )
         }
     }
-}
-
-@Composable
-private fun RegisterButton(onClick: () -> Unit) {
-    Spacer(modifier = Modifier.height(24.dp))
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = FFD91E18),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.create_account_button),
-            color = Color.White,
-            fontSize = 16.sp
-        )
-    }
-    Spacer(modifier = Modifier.height(24.dp))
 }

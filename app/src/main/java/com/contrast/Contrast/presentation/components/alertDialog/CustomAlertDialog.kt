@@ -13,11 +13,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 
 @Preview(showBackground = true)
-@Preview(name = "Light Mode", showBackground = true)
+
 @Composable
 fun CustomAlertDialog(
     message: String,
@@ -31,15 +35,33 @@ fun CustomAlertDialog(
             Text(
                 text = stringResource(id = R.string.alert_title), // ✅ Hỗ trợ đa ngôn ngữ
                 fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                textAlign = TextAlign.Center,
+
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    lineHeight = 21.sp,
+                    fontFamily = FontFamily(Font(R.font.inter)),
+                    fontWeight = FontWeight(600),
+                    color = Color(0xFF151515),
+
+                    textAlign = TextAlign.Center,
+                    letterSpacing = 0.1.sp,
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
         },
         text = {
             Text(
                 text = message,
-                textAlign = TextAlign.Center, // ✅ Căn giữa nội dung
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    lineHeight = 21.sp,
+                    fontFamily = FontFamily(Font(R.font.inter)),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFF151515),
+
+                    textAlign = TextAlign.Center,
+                    letterSpacing = 0.1.sp,
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
         },

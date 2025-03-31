@@ -10,7 +10,7 @@ import com.contrast.Contrast.presentation.features.account.personalInfo.Personal
 import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.main.home.ui.HomePage
 import com.contrast.Contrast.presentation.features.main.location.ui.LocationScreen
-import com.contrast.Contrast.presentation.features.main.store.ui.StoreListScreen
+import com.contrast.Contrast.presentation.features.store.ui.StoreListScreen
 import com.contrast.Contrast.presentation.features.membership.rewards.RewardsScreen
 
 @Composable

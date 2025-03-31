@@ -14,8 +14,12 @@
     <string name="info_account" translatable="false">Thông tin cá nhân</string>
     <string name="full_name" translatable="false">Họ và tên</string>
     <string name="occupation" translatable="false">Nghề nghiệp</string>
+    <string name="addcart" translatable="false">Thêm vào giỏ hàng</string>
     <string name="ex_occupation" translatable="false">vd: Học sinh</string>
     <string name="ex_full_name" translatable="false">vd: Nguyễn Phúc Phong</string>
+    <string name="error_empty_dob">Vui lòng chọn ngày sinh</string>
+    <string name="error_invalid_dob_format">Định dạng ngày sinh không hợp lệ (dd/MM/yyyy)</string>
+
     <string name="cancel">Huỷ</string>
     <string name="notification_permission_title">Ứng dụng bị từ chối truy cập</string>
     <string name="notification_permission_message">Để bật thông báo, vui lòng vào Cài đặt và cho phép thông báo cho ứng dụng này.</string>

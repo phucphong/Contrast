@@ -61,4 +61,18 @@ class ValidateRegisterUseCase {
         return ValidationResult(true) // ✅ Hợp lệ
     }
 
+    fun validateDateOfBirth(date: String?): ValidationResult {
+        if (date.isNullOrBlank()) {
+            return ValidationResult(false, "EMPTY_DATE")
+        }
+
+        val regex = Regex("""\d{2}/\d{2}/\d{4}""")
+        if (!regex.matches(date)) {
+            return ValidationResult(false, "INVALID_DATE_FORMAT")
+        }
+
+        return ValidationResult(true)
+    }
+
+
 }

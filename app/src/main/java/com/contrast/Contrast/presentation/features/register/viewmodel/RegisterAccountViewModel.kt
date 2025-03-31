@@ -46,8 +46,8 @@ class RegisterAccountViewModel @Inject constructor(
     /**
      * ✅ 1. Kiểm tra validate đầu vào, nếu hợp lệ thì tiếp tục kiểm tra số điện thoại
      */
-    fun validateAndRegister(phone: String, fullName: String, password: String, confirmPassword: String, email: String?, typeCheck: String) {
-        val error = validateInputs(phone, fullName, password, confirmPassword)
+    fun validateAndRegister(phone: String, fullName: String, password: String, confirmPassword: String, email: String?, dateOfBirth: String?, typeCheck: String) {
+        val error = validateInputs(phone, fullName, password, confirmPassword,dateOfBirth)
         if (error != null) {
             _validationError.value = error
             return
@@ -70,10 +70,14 @@ class RegisterAccountViewModel @Inject constructor(
                                 if (!result.data) {
                                     if (!email.isNullOrEmpty()) {
                                         checkEmail(email, fullName, phone, password, typeCheck)
+                                    }else{
+                                        registerAccount(fullName, phone, null, password)
                                     }
                                 } else {
                                     _validationError.value = stringProvider.getString(R.string.registered_phone)
                                 }
+
+
                             }
                             is NetworkResponse.Error -> {
                                 _validationError.value = result.message
@@ -105,6 +109,7 @@ class RegisterAccountViewModel @Inject constructor(
                         when (result) {
                             is NetworkResponse.Success -> {
                                 if (!result.data) {
+                                    registerAccount(fullName, phone, null, password)
                                 } else {
                                     _validationError.value = stringProvider.getString(R.string.registered_email)
                                 }
@@ -161,7 +166,7 @@ class RegisterAccountViewModel @Inject constructor(
     fun clearValidationError() {
         _validationError.value = null
     }
-    fun validateInputs(phone: String, fullName: String, password: String, confirmPassword: String): String? {
+    fun validateInputs(phone: String, fullName: String, password: String, confirmPassword: String, dateOfBirth: String?): String? {
         // ✅ Kiểm tra số điện thoại
         val phoneValidation = validateRegisterUseCase.validatePhone(phone)
         if (!phoneValidation.success) {
@@ -212,6 +217,19 @@ class RegisterAccountViewModel @Inject constructor(
                 else -> stringProvider.getString(R.string.error_unknown)
             }
         }
+
+        // ✅ Validate ngày sinh
+        if (dateOfBirth!!.isNotBlank()) {
+        val dobValidation = validateRegisterUseCase.validateDateOfBirth(dateOfBirth)
+        if (!dobValidation.success) {
+            return when (dobValidation.message) {
+                "EMPTY_DATE" -> stringProvider.getString(R.string.error_empty_dob)
+                "INVALID_DATE_FORMAT" -> stringProvider.getString(R.string.error_invalid_dob_format)
+                else -> stringProvider.getString(R.string.error_unknown)
+            }
+        }
+        }
+
 
         return null // ✅ Nếu tất cả đều hợp lệ, trả về `null`
     }

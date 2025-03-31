@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.main.store.detail
+package com.contrast.Contrast.presentation.features.store.detail
 
 import android.content.Intent
 import android.net.Uri

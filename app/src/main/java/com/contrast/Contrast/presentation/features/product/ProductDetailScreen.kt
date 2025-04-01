@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatCurrency
-import com.contrast.Contrast.presentation.components.button.ButtonRed
+import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.checkbox.CheckBoxGray
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
@@ -369,7 +369,7 @@ fun ProductDetailScreen(viewModel: ProductDetailViewModel = viewModel()) {
                 }
             }
 
-            ButtonRed(stringResource(id = R.string.addcart), onClick = {
+            CustomButton(stringResource(id = R.string.addcart), onClick = {
 //                    isRegisterButton = true;
 //                    viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email,"off")
 //

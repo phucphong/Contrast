@@ -111,6 +111,11 @@ fun CustomerScreen(
                 title = stringResource(id = key.labelResId),
                 options = dialogOptions,
                 onOptionSelected = { selected ->
+                    Log.e("selected",selected)
+                    fieldValues[key] = selected
+                },
+                onOptionSelectedName = { selected ->
+                    Log.e("selected",selected)
                     fieldValues[key] = selected
                 },
                 onDismiss = { showDialogForKey = null }

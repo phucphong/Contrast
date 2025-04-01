@@ -35,6 +35,7 @@ import com.contrast.Contrast.R
 @Composable
 fun SearchBar(
     searchText: String,
+    placeholder: String="",
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -71,7 +72,7 @@ fun SearchBar(
                 onValueChange = onTextChange,
                 placeholder = {
                     Text(
-                        text = "Tìm kiếm sản phẩm",
+                        text = placeholder,
                         color = Color(0xFFD7D7D7),
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.inter)),

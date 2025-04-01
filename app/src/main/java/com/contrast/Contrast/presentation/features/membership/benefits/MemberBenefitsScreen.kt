@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.theme.AEA1F27
 import com.contrast.Contrast.presentation.theme.D292D32
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
@@ -51,7 +51,7 @@ fun MemberBenefitsScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         // Header
-        CustomTopAppBarTittleBack(
+        CustomTopAppBarBackTitle(
             title = "Quyền lợi hàng thẻ thành viên",
             Color.Red,
             onBackClick = { }

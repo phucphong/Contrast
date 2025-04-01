@@ -46,6 +46,7 @@ val FF637875 = Color(0xFF637875) // ⚫
 
 
 
+
 val FF2D2D2D = Color(0xFF2D2D2D) // ⚫ Xám đen (Blackish Gray)
 val FF151515 = Color(0xFF151515) // ⚫ Đen (Black)
 val FF87B5FB = Color(0xFF87B5FB) // 🔵 Xanh dương nhạt (Light Blue)

@@ -38,7 +38,7 @@ import com.contrast.Contrast.presentation.components.button.ButtonRed
 import com.contrast.Contrast.presentation.components.checkbox.CheckBoxGray
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.features.product.viewmodel.ProductDetailViewModel
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FF637875

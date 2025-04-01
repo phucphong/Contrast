@@ -20,7 +20,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.FCFCFC
 
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.features.voucher.ui.VoucherItem
 import com.contrast.Contrast.presentation.theme.FF151515
 import com.contrast.Contrast.presentation.theme.FFD91E18
@@ -62,7 +62,7 @@ Column(
 ) {
     Spacer(modifier = Modifier.height(30.dp))
 
-    CustomTopAppBarTittleBack(
+    CustomTopAppBarBackTitle(
         title =stringResource(R.string.owned_voucher),
         FFD91E18,
         FCFCFC,

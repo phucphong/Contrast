@@ -21,6 +21,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,13 +35,12 @@ import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FFD91E18
 import com.itechpro.domain.model.NetworkResponse
-
-@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
 @Composable
 fun RegisterAccountScreen(
     navController: NavController,
@@ -192,7 +192,7 @@ fun RegisterWarningBox() {
 @Composable
 private fun RegisterHeader(navController: NavController) {
     Spacer(modifier = Modifier.height(16.dp))
-    CustomTopAppBarTittleBack(
+    CustomTopAppBarBackTitle(
         title = stringResource(id = R.string.register_account),
         titleColor = FFD91E18,
         onBackClick = { navController.popBackStack() }
@@ -223,9 +223,9 @@ private fun RegisterInputFields(
 
     CustomText(
         text = buildAnnotatedString {
-            append(stringResource(id = R.string.password_new))
-            withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
-        }.toString()
+        append(stringResource(id = R.string.password_new))
+        withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
+    }
     )
     CustomTextFieldPassword(
         value = password,
@@ -239,9 +239,9 @@ private fun RegisterInputFields(
 
     CustomText(
         text = buildAnnotatedString {
-            append(stringResource(id = R.string.confirm_password))
-            withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
-        }.toString()
+        append(stringResource(id = R.string.password_new))
+        withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
+    }
     )
     CustomTextFieldPassword(
         value = confirmPassword,

@@ -1,4 +1,4 @@
-package com.itechpro.domain.model.validation
+package com.itechpro.domain.enumApp
 
 // domain.model.validation
 enum class ValidationErrorType {

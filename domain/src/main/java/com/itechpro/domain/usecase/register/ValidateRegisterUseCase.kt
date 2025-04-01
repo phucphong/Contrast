@@ -1,8 +1,7 @@
 package com.itechpro.domain.usecase.register
 
-import android.util.Log
 import com.itechpro.domain.model.ValidationResult
-import com.itechpro.domain.model.validation.ValidationErrorType
+import com.itechpro.domain.enumApp.ValidationErrorType
 
 class ValidateRegisterUseCase {
 
@@ -70,8 +69,6 @@ class ValidateRegisterUseCase {
 
     fun validateMonthOfBirth(date: String?): ValidationResult {
         return if (date.isNullOrBlank()) {
-
-            Log.e("ValidationErrorType", ValidationErrorType.EMPTY_MONTH.name)
             ValidationResult(false, ValidationErrorType.EMPTY_MONTH.name)
         } else {
             ValidationResult(true)

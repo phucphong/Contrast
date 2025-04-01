@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.tab.TabBar
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.FFD91E18
 
@@ -45,7 +45,7 @@ fun TransactionHistoryScreen() {
     Column(modifier = Modifier.fillMaxSize().background(Color.White).padding(vertical = 16.dp)
         , horizontalAlignment = Alignment.CenterHorizontally) {
 
-        CustomTopAppBarTittleBack(
+        CustomTopAppBarBackTitle(
             title = "Lịch sử giao dịch",
             FFD91E18,
             onBackClick = { }

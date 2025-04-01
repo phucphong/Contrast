@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.switch_custom.IOSSwitch
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FFD91E18
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
@@ -32,7 +32,7 @@ fun OptionalScreen(
     Column(modifier = Modifier.fillMaxSize().background(FCFCFC).padding(top = 30.dp)) {
         // Top Bar
 
-        CustomTopAppBarTittleBack(
+        CustomTopAppBarBackTitle(
             title = stringResource(R.string.optional_title),
             FFD91E18,
             onBackClick = { }

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FF151515
 import com.contrast.Contrast.presentation.theme.FFD91E18
@@ -46,7 +46,7 @@ fun VoucherDetailScreen(onBackClick: () -> Unit) {
 
     ) {
 
-        CustomTopAppBarTittleBack(
+        CustomTopAppBarBackTitle(
             title = stringResource(id = R.string.voucher_detail),
             FFD91E18,
             FCFCFC,

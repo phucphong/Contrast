@@ -28,7 +28,7 @@ import com.contrast.Contrast.R
 
 import com.contrast.Contrast.presentation.components.text.CustomText
 
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 
 import com.contrast.Contrast.presentation.features.voucher.ownership.vouchers
 import com.contrast.Contrast.presentation.theme.FFD91E18
@@ -43,7 +43,7 @@ fun PaymentScreen() {
             .verticalScroll(rememberScrollState())
     ) {
         // Thanh tiêu đề
-        CustomTopAppBarTittleBack(
+        CustomTopAppBarBackTitle(
             title = stringResource(R.string.payment_screen_title),
            Color.Black,
              Color.White,

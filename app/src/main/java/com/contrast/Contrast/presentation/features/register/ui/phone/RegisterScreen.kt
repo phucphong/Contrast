@@ -20,7 +20,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.theme.FFD91E18
 
 
@@ -45,7 +45,7 @@ fun RegisterScreen(onBackPress: () -> Unit, onConfirm: (String) -> Unit) {
       Spacer(modifier = Modifier.height(16.dp))
       // Nút quay lại
 
-      CustomTopAppBarTittleBack(
+      CustomTopAppBarBackTitle(
           title = "",
           FFD91E18,
           Color.White,

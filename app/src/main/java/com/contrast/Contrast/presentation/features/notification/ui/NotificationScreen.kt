@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FFD7D7D7
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 
 
 import com.itechpro.domain.model.sampleNotifications
@@ -28,7 +28,7 @@ fun NotificationScreen(onBackPress: () -> Unit) {
 
     Scaffold(
         topBar = {
-            CustomTopAppBarTittleBack(
+            CustomTopAppBarBackTitle(
                 title = stringResource(id = R.string.notification_title),
                 Color.Red,
                 FFD7D7D7,

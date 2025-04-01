@@ -82,7 +82,7 @@ fun CustomDropdown(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.background(Color.White)
+            modifier = Modifier.background(Color.White).fillMaxWidth().padding(horizontal = 10.dp)
         ) {
             options.forEach { option ->
                 DropdownMenuItem(

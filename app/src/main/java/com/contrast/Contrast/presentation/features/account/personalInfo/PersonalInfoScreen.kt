@@ -27,7 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -38,7 +38,7 @@ fun PersonalInfoScreen(navController: NavController) {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        CustomTopAppBarTittleBack (
+        CustomTopAppBarBackTitle (
             title = stringResource(id = R.string.membership_policy_title),
             Color.Red,
             onBackClick = { navController.popBackStack() }

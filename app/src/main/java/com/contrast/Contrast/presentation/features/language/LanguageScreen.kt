@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.alertDialog.LanguageSelectionDialog
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTittleBack
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.theme.FFD91E18
 
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
@@ -43,7 +43,7 @@ fun LanguageScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         // Top bar
         Spacer(modifier = Modifier.height(30.dp))
-        CustomTopAppBarTittleBack(
+        CustomTopAppBarBackTitle(
             title = stringResource(R.string.language),
             FFD91E18,
             onBackClick = { }

@@ -1,10 +1,11 @@
 package com.contrast.Contrast.presentation.features.register.ui.info
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.*
 import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
@@ -38,9 +38,6 @@ import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarTi
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FFD91E18
-import com.contrast.Contrast.presentation.theme.FFFCFCFC
-import com.contrast.Contrast.utils.Common
-import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.NetworkResponse
 
 @SuppressLint("UnrememberedMutableState")
@@ -52,7 +49,6 @@ fun RegisterAccountScreen(
     val registerState by viewModel.registerState.collectAsState()
     val validationError by viewModel.validationError.collectAsState()
 
-    // Thêm trạng thái để kiểm soát khi nào dialog hiển thị
     var isAlertDialogVisible by remember { mutableStateOf(false) }
     var isRegisterButton by remember { mutableStateOf(false) }
 
@@ -66,23 +62,6 @@ fun RegisterAccountScreen(
     var selectedMonth by remember { mutableStateOf("") }
     var selectedYear by remember { mutableStateOf("") }
 
-    val dateOfBirth: String? by derivedStateOf {
-        if (selectedDay.isNotBlank() && selectedMonth.isNotBlank() && selectedYear.isNotBlank()) {
-            val day = selectedDay.trim().toIntOrNull()
-            val month = selectedMonth.trim().toIntOrNull()
-            val year = selectedYear.trim()
-
-            if (day != null && month != null) {
-                "%02d/%02d/%s".format(day, month, year)
-            } else {
-                null
-            }
-        } else {
-            null
-        }
-    }
-
-
 
 
     LaunchedEffect(registerState) {
@@ -90,53 +69,50 @@ fun RegisterAccountScreen(
             is NetworkResponse.Success -> {
                 isAlertDialogVisible = false
                 isRegisterButton = false
-                // 👉 Hiển thị Toast hoặc chuyển màn hình:
-                // navController.navigate("login") hoặc hiển thị thông báo thành công
             }
-
             is NetworkResponse.Error -> {
                 isAlertDialogVisible = false
                 isRegisterButton = false
             }
-
             is NetworkResponse.Loading -> {
                 isAlertDialogVisible = true
             }
         }
     }
 
-
     if (validationError != null) {
         CustomAlertDialog(
             message = validationError!!,
-            onDismiss = { viewModel.clearValidationError()
+            onDismiss = {
+                viewModel.clearValidationError()
                 isAlertDialogVisible = false
                 isRegisterButton = false
             }
         )
     }
-    if (isAlertDialogVisible && isRegisterButton && validationError == null) {
 
+    if (isAlertDialogVisible && isRegisterButton && validationError == null) {
         CustomCircularProgressIndicatorDialog(
             networkState = registerState,
-            onDismiss = { isAlertDialogVisible =false
-                isRegisterButton =false }
+            onDismiss = {
+                isAlertDialogVisible = false
+                isRegisterButton = false
+            }
         )
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(FCFCFC)
+            .padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(FCFCFC)
-                .padding(18.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
+        item {
             RegisterHeader(navController)
+        }
+
+        item {
             RegisterInputFields(
                 phoneNumber, { phoneNumber = it },
                 password, { password = it },
@@ -148,16 +124,70 @@ fun RegisterAccountScreen(
                 selectedMonth, { selectedMonth = it },
                 selectedYear, { selectedYear = it }
             )
-            RegisterWarningBox()
-            ButtonRed( stringResource(id = R.string.create_account_button),onClick = {
-                isRegisterButton = true;
-                viewModel.validateAndRegister(phoneNumber, fullName, password, confirmPassword, email,dateOfBirth,"off")
-            })
+        }
 
+        item {
+            RegisterWarningBox()
+        }
+
+        item {
+            ButtonRed(
+                text = stringResource(id = R.string.create_account_button),
+                onClick = {
+                    isRegisterButton = true
+                    viewModel.validateAndRegister(
+                        phoneNumber,
+                        fullName,
+                        password,
+                        confirmPassword,
+                        email,
+                        selectedDay,selectedMonth,selectedYear,
+                        "off"
+                    )
+                }
+            )
+        }
+
+        item {
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
+
+
+@Composable
+fun RegisterWarningBox() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFFFEBEE), shape = RoundedCornerShape(8.dp))
+            .padding(16.dp)
+    ) {
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.warning),
+                    contentDescription = "Warning",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Lưu ý:",
+                    color = FFD91E18,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Bạn sẽ không thể thay đổi thông tin cá nhân & sinh nhật sau khi đăng ký thành công.\n\nVì vậy, hãy chắc chắn các thông tin đã chính xác.",
+                color = FFD91E18,
+                fontSize = 14.sp
+            )
+        }
+    }
+}
+
 
 @Composable
 private fun RegisterHeader(navController: NavController) {
@@ -298,36 +328,3 @@ private fun RegisterInputFields(
     )
 }
 
-@Composable
-private fun RegisterWarningBox() {
-    Spacer(modifier = Modifier.height(16.dp))
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFFFEBEE), shape = RoundedCornerShape(8.dp))
-            .padding(16.dp)
-    ) {
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.warning),
-                    contentDescription = "Warning",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Lưu ý:",
-                    color = FFD91E18,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Bạn sẽ không thể thay đổi thông tin cá nhân & sinh nhật sau khi đăng ký thành công.\n\nVì vậy, hãy chắc chắn các thông tin đã chính xác.",
-                color = FFD91E18,
-                fontSize = 14.sp
-            )
-        }
-    }
-}

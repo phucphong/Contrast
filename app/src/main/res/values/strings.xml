@@ -19,7 +19,10 @@
     <string name="ex_full_name" translatable="false">vd: Nguyễn Phúc Phong</string>
     <string name="error_empty_dob">Vui lòng chọn ngày sinh</string>
     <string name="error_invalid_dob_format">Định dạng ngày sinh không hợp lệ (dd/MM/yyyy)</string>
-
+    <string name="error_empty_dob_day">Vui lòng chọn ngày sinh</string>
+    <string name="error_empty_dob_month">Vui lòng chọn tháng sinh</string>
+    <string name="error_empty_dob_year">Vui lòng chọn năm sinh</string>
+    <string name="unknown_error">Không xác định</string>
     <string name="cancel">Huỷ</string>
     <string name="notification_permission_title">Ứng dụng bị từ chối truy cập</string>
     <string name="notification_permission_message">Để bật thông báo, vui lòng vào Cài đặt và cho phép thông báo cho ứng dụng này.</string>

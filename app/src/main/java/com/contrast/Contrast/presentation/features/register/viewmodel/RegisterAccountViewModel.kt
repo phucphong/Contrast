@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.ValidationResult
 import com.itechpro.domain.usecase.register.RegisterAccountUseCase
 import com.itechpro.domain.usecase.register.ValidateRegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +18,7 @@ import javax.inject.Named
 import com.contrast.Contrast.utils.StringProvider
 import com.contrast.Contrast.R
 import com.contrast.Contrast.utils.Common
-import com.itechpro.domain.model.Column1
+import com.itechpro.domain.model.validation.ValidationErrorType
 import com.itechpro.domain.usecase.checkphoneEmail.CheckEmailUseCase
 import com.itechpro.domain.usecase.checkphoneEmail.CheckPhoneUseCase
 @HiltViewModel
@@ -42,16 +41,21 @@ class RegisterAccountViewModel @Inject constructor(
 
     private val _validationError = MutableStateFlow<String?>(null)
     val validationError: StateFlow<String?> = _validationError
+    var  dateOfBirtday = ""
 
     /**
      * ✅ 1. Kiểm tra validate đầu vào, nếu hợp lệ thì tiếp tục kiểm tra số điện thoại
      */
-    fun validateAndRegister(phone: String, fullName: String, password: String, confirmPassword: String, email: String?, dateOfBirth: String?, typeCheck: String) {
-        val error = validateInputs(phone, fullName, password, confirmPassword,dateOfBirth)
+    fun validateAndRegister(phone: String, fullName: String, password: String, confirmPassword: String, email: String?,
+
+                            selectedDay: String,  selectedMonth: String,  selectedYear: String, typeCheck: String) {
+        val error = validateInputs(phone, fullName, password, confirmPassword,selectedDay,selectedMonth,selectedYear)
         if (error != null) {
             _validationError.value = error
             return
         }
+
+          dateOfBirtday = "$selectedYear-$selectedMonth-$selectedDay"
         checkPhone(phone, email, fullName, password,typeCheck)
     }
 
@@ -71,7 +75,8 @@ class RegisterAccountViewModel @Inject constructor(
                                     if (!email.isNullOrEmpty()) {
                                         checkEmail(email, fullName, phone, password, typeCheck)
                                     }else{
-                                        registerAccount(fullName, phone, null, password)
+
+                                        registerAccount(fullName, phone, null, password,dateOfBirtday)
                                     }
                                 } else {
                                     _validationError.value = stringProvider.getString(R.string.registered_phone)
@@ -90,7 +95,7 @@ class RegisterAccountViewModel @Inject constructor(
                         }
                     }
             } catch (e: Exception) {
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: "Không xác định"}"
+                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
         }
     }
@@ -109,14 +114,14 @@ class RegisterAccountViewModel @Inject constructor(
                         when (result) {
                             is NetworkResponse.Success -> {
                                 if (!result.data) {
-                                    registerAccount(fullName, phone, null, password)
+                                    registerAccount(fullName, phone, null, password,dateOfBirtday)
                                 } else {
                                     _validationError.value = stringProvider.getString(R.string.registered_email)
                                 }
                             }
                             is NetworkResponse.Error -> {
                                 _validationError.value = result.message
-                                Log.e("_validationError", result.message)
+
                             }
                             NetworkResponse.Loading -> {
 
@@ -124,7 +129,7 @@ class RegisterAccountViewModel @Inject constructor(
                         }
                     }
             } catch (e: Exception) {
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: "Không xác định"}"
+                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
         }
     }
@@ -132,7 +137,9 @@ class RegisterAccountViewModel @Inject constructor(
     /**
      * ✅ 4. Gửi yêu cầu đăng ký tài khoản
      */
-    fun registerAccount(fullName: String, phone: String, email: String?, password: String) {
+    fun registerAccount(fullName: String, phone: String, email: String?, password: String,dateOfBirtday:String) {
+
+
         viewModelScope.launch(dispatcher) {
             _registerState.value = NetworkResponse.Loading
             try {
@@ -144,6 +151,7 @@ class RegisterAccountViewModel @Inject constructor(
                     email = email ?: "",
                     username = phone,
                     password = password,
+                    ngaysinh = dateOfBirtday,
                     key = Common.key,
                     mamenu = "dangkytaikhoan",
                     hanhdong = "$phone - $fullName",
@@ -155,7 +163,7 @@ class RegisterAccountViewModel @Inject constructor(
                 _registerState.value = result
 
             } catch (e: Exception) {
-                _registerState.value = NetworkResponse.Error(stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: "Không xác định"}")
+                _registerState.value = NetworkResponse.Error(stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}")
             }
         }
     }
@@ -166,68 +174,94 @@ class RegisterAccountViewModel @Inject constructor(
     fun clearValidationError() {
         _validationError.value = null
     }
-    fun validateInputs(phone: String, fullName: String, password: String, confirmPassword: String, dateOfBirth: String?): String? {
+
+    private fun getValidationErrorMessage(error: ValidationErrorType): String {
+        return stringProvider.getString(
+            when (error) {
+                ValidationErrorType.EMPTY_PHONE -> R.string.error_empty_phone
+                ValidationErrorType.INVALID_PHONE -> R.string.error_invalid_phone
+                ValidationErrorType.EMPTY_NAME -> R.string.error_empty_fullname
+                ValidationErrorType.EMPTY_PASSWORD -> R.string.error_empty_password
+                ValidationErrorType.EMPTY_RE_PASSWORD -> R.string.error_empty_re_password
+                ValidationErrorType.INVALID_LENGTH -> R.string.error_invalid_length
+                ValidationErrorType.MISSING_NUMBER -> R.string.error_missing_number
+                ValidationErrorType.MISSING_UPPERCASE -> R.string.error_missing_uppercase
+                ValidationErrorType.MISSING_LOWERCASE -> R.string.error_missing_lowercase
+                ValidationErrorType.MISSING_SPECIAL_CHAR -> R.string.error_missing_special_char
+                ValidationErrorType.PASSWORD_MISMATCH -> R.string.error_password_mismatch
+                ValidationErrorType.EMPTY_DAY -> R.string.error_empty_dob_day
+                ValidationErrorType.EMPTY_MONTH -> R.string.error_empty_dob_month
+                ValidationErrorType.EMPTY_YEAR -> R.string.error_empty_dob_year
+                ValidationErrorType.UNKNOWN -> R.string.error_unknown
+            }
+        )
+    }
+
+
+    fun validateInputs(phone: String, fullName: String, password: String, confirmPassword: String,
+                       selectedDay: String, selectedMonth: String, selectedYear: String): String? {
         // ✅ Kiểm tra số điện thoại
+        // ✅ Validate phone
         val phoneValidation = validateRegisterUseCase.validatePhone(phone)
         if (!phoneValidation.success) {
-            return when (phoneValidation.message) {
-                "EMPTY_PHONE" -> stringProvider.getString(R.string.error_empty_phone)
-                "INVALID_PHONE" -> stringProvider.getString(R.string.error_invalid_phone)
-                else -> stringProvider.getString(R.string.error_unknown)
-            }
+            val error = ValidationErrorType.fromCode(phoneValidation.message)
+            return getValidationErrorMessage(error)
         }
 
-        // ✅ Kiểm tra họ tên
+        // ✅ Validate full name
         val nameValidation = validateRegisterUseCase.validateFullName(fullName)
         if (!nameValidation.success) {
-            return when (nameValidation.message) {
-                "EMPTY_NAME" -> stringProvider.getString(R.string.error_empty_fullname)
-                else -> stringProvider.getString(R.string.error_unknown)
-            }
+            val error = ValidationErrorType.fromCode(nameValidation.message)
+            return getValidationErrorMessage(error)
         }
 
-        // ✅ Kiểm tra mật khẩu
+        // ✅ Validate password
         val passwordValidation = validateRegisterUseCase.validateNewPassWord(password)
         if (!passwordValidation.success) {
-            return when (passwordValidation.message) {
-                "EMPTY_PASSWORD" -> stringProvider.getString(R.string.error_empty_password)
-                else -> stringProvider.getString(R.string.error_unknown)
-            }
+            val error = ValidationErrorType.fromCode(passwordValidation.message)
+            return getValidationErrorMessage(error)
         }
 
-        // ✅ Kiểm tra nhập lại mật khẩu
+        // ✅ Validate re-password
         val rePassWordValidation = validateRegisterUseCase.validateRePassWord(confirmPassword)
         if (!rePassWordValidation.success) {
-            return when (rePassWordValidation.message) {
-                "EMPTY_RE_PASSWORD" -> stringProvider.getString(R.string.error_empty_re_password)
-                else -> stringProvider.getString(R.string.error_empty_phone)
-            }
+            val error = ValidationErrorType.fromCode(rePassWordValidation.message)
+            return getValidationErrorMessage(error)
         }
 
         // ✅ Kiểm tra mật khẩu có đủ mạnh không và có khớp với `confirmPassword` không
         val finalPasswordValidation = validateRegisterUseCase.validatePassword(password, confirmPassword)
         if (!finalPasswordValidation.success) {
-            return when (finalPasswordValidation.message) {
-                "INVALID_LENGTH" -> stringProvider.getString(R.string.error_invalid_length)
-                "MISSING_NUMBER" -> stringProvider.getString(R.string.error_missing_number)
-                "MISSING_UPPERCASE" -> stringProvider.getString(R.string.error_missing_uppercase)
-                "MISSING_LOWERCASE" -> stringProvider.getString(R.string.error_missing_lowercase)
-                "MISSING_SPECIAL_CHAR" -> stringProvider.getString(R.string.error_missing_special_char)
-                "PASSWORD_MISMATCH" -> stringProvider.getString(R.string.error_password_mismatch)
-                else -> stringProvider.getString(R.string.error_unknown)
-            }
+            val error = ValidationErrorType.fromCode(finalPasswordValidation.message)
+            return getValidationErrorMessage(error)
         }
 
+
         // ✅ Validate ngày sinh
-        if (dateOfBirth!!.isNotBlank()) {
-        val dobValidation = validateRegisterUseCase.validateDateOfBirth(dateOfBirth)
-        if (!dobValidation.success) {
-            return when (dobValidation.message) {
-                "EMPTY_DATE" -> stringProvider.getString(R.string.error_empty_dob)
-                "INVALID_DATE_FORMAT" -> stringProvider.getString(R.string.error_invalid_dob_format)
-                else -> stringProvider.getString(R.string.error_unknown)
+        if (selectedDay.isNotEmpty() ||selectedMonth.isNotEmpty()||selectedYear.isNotEmpty()) {
+        val selectedDayValidation = validateRegisterUseCase.validateDayOfBirth(selectedDay)
+            if (!selectedDayValidation.success) {
+                val error = ValidationErrorType.fromCode(selectedDayValidation.message)
+                return getValidationErrorMessage(error)
             }
-        }
+
+            val selectedMonthValidation = validateRegisterUseCase.validateMonthOfBirth(selectedMonth)
+            if (!selectedMonthValidation.success) {
+                val error = ValidationErrorType.fromCode(selectedMonthValidation.message) // ✅ fix chỗ này
+                return getValidationErrorMessage(error)
+            }
+
+            val selectedYearValidation = validateRegisterUseCase.validateYearOfBirth(selectedYear)
+            if (!selectedYearValidation.success) {
+                val error = ValidationErrorType.fromCode(selectedYearValidation.message)
+                return getValidationErrorMessage(error)
+            }
+
+
+
+
+
+
         }
 
 

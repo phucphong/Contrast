@@ -40,6 +40,7 @@ fun CustomTextField(
     padding: Dp = 0.dp,
     isShowIcon: Boolean = false,
     readOnly: Boolean = false,
+    isRequired: Boolean = false, // ✅ thêm flag bắt buộc
     modifier: Modifier = Modifier,
     onClickReadOnly: (() -> Unit)? = null
 ) {
@@ -49,7 +50,6 @@ fun CustomTextField(
     )
 
     if (readOnly) {
-        // 👉 Nếu readOnly, thì show Text + click
         Box(
             modifier = modifier
                 .padding(vertical = 5.dp)
@@ -72,62 +72,61 @@ fun CustomTextField(
             )
         }
     } else {
-        // 👉 Nếu không readOnly, dùng TextField như bình thường
         Box(
             modifier = modifier
                 .padding(vertical = 5.dp)
                 .height(50.dp)
                 .background(Color.White, shape = RoundedCornerShape(8.dp))
                 .border(1.dp, Color(0xFFD7D7D7), shape = RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-              ,
+                .fillMaxWidth(),
             contentAlignment = Alignment.CenterStart
         ) {
-        TextField(
-            value = value,
-            onValueChange = { onValueChange(it.capitalizeEachWord()) },
-            placeholder = {
-                Text(
-                    placeholder,
-                    color = Color(0xFFD7D7D7),
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 21.sp,
-                        fontFamily = customFontFamily,
-                        fontWeight = FontWeight.Normal
-                    )
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-            visualTransformation = if (isShowIcon) PasswordVisualTransformation() else VisualTransformation.None,
-            modifier = modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .padding(padding),
-            textStyle = TextStyle(
-                fontSize = 14.sp,
-                lineHeight = 21.sp,
-                fontFamily = customFontFamily,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF151515),
-            ),
-            singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            trailingIcon = {
-                if (value.isNotEmpty()) {
-                    IconButton(onClick = { onValueChange("") }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.close),
-                            contentDescription = "Clear",
-                            modifier = Modifier.size(18.dp)
+            TextField(
+                value = value,
+                onValueChange = { onValueChange(it.capitalizeEachWord()) },
+                placeholder = {
+                    Text(
+                        placeholder,
+                        color = Color(0xFFD7D7D7),
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 21.sp,
+                            fontFamily = customFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+                visualTransformation = if (isShowIcon) PasswordVisualTransformation() else VisualTransformation.None,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .padding(padding),
+                textStyle = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 21.sp,
+                    fontFamily = customFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFF151515),
+                ),
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                trailingIcon = {
+                    if (!isRequired && value.isNotEmpty()) {
+                        IconButton(onClick = { onValueChange("") }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.close),
+                                contentDescription = "Clear",
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
                     }
                 }
-            }
-        )
-    }}
+            )
+        }
+    }
 }

@@ -1,14 +1,11 @@
 package com.contrast.Contrast.di.module
-
-
-
 import com.itechpro.data.api.AccountAPI
-import com.itechpro.data.api.RegisterAccountAPI
+
 import com.itechpro.data.repository.AccountRepositoryImpl
 import com.itechpro.domain.repository.AccountRepository
-import com.itechpro.domain.repository.RegisterAccountRepository
+
 import com.itechpro.domain.usecase.account.AccountUseCase
-import com.itechpro.domain.usecase.register.RegisterAccountUseCase
+
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

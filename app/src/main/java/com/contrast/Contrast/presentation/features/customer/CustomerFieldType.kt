@@ -1,30 +1,111 @@
 package com.contrast.Contrast.presentation.features.customer
 
 import com.contrast.Contrast.R
+import com.itechpro.domain.model.FieldMeta
+import com.itechpro.domain.enumApp.CategoryType
+import com.itechpro.domain.model.FieldMetaData
+
+
+
 
 enum class CustomerFieldType(
-    val labelResId: Int,
-    val required: Boolean = false,
-    val isDialogPicker: Boolean = false
-) {
-    CUSTOMER_TYPE(R.string.customer_type, required = true),                       // Cá nhân / Tổ chức (Dropdown)
-    CUSTOMER_NAME(R.string.customer_name, required = true),                      // Tên khách hàng
-    CONTACT_PERSON(R.string.contact_person, required = true, isDialogPicker = true),  // Người phụ trách (Dialog)
-    INTRODUCER(R.string.introducer, isDialogPicker = true),                      // Người giới thiệu (Dialog)
-    ESTABLISH_DATE(R.string.establish_date),                                     // Ngày thành lập
-    STATUS(R.string.status, isDialogPicker = true),                              // Trạng thái (Dialog)
-    INDUSTRY(R.string.industry_group, isDialogPicker = true),                    // Nhóm ngành nghề (Dialog)
-    POLICY_GROUP(R.string.policy_group, isDialogPicker = true),                  // Nhóm chính sách (Dialog)
-    INFO_SOURCE(R.string.info_source, isDialogPicker = true),                    // Nguồn thông tin (Dialog)
-    NOTE(R.string.note),                                                         // Ghi chú
-    LEVEL(R.string.level, isDialogPicker = true),                                // Cấp độ (Dialog)
-    REPRESENTATIVE(R.string.representative, isDialogPicker = true),              // Người đại diện (Dialog)
-    POSITION(R.string.position),                                                 // Chức vụ
-    TAX_CODE(R.string.tax_code),                                                 // Mã số thuế
-    BANK_ACCOUNT(R.string.bank_account),                                         // Tài khoản ngân hàng
-    BANK_NAME(R.string.bank_name),                                               // Tên ngân hàng
-    CARE_DATE(R.string.care_date),                                               // Ngày chăm sóc
-    CARE_STAFF(R.string.care_staff, isDialogPicker = true),                      // Người chăm sóc (Dialog)
-    FACEBOOK(R.string.facebook),                                                 // Facebook
-    MAP_LINK(R.string.map)                                                       // Link bản đồ
+    private val meta: FieldMetaData,
+    val categoryType: CategoryType? = null
+) : FieldMeta by meta {
+
+    CUSTOMER_TYPE(FieldMetaData(R.string.customer_type, required = true)),
+
+    CUSTOMER_NAME(FieldMetaData(R.string.customer_name, required = true)),
+
+    CONTACT_PERSON(
+        FieldMetaData(
+            labelResId = R.string.contact_person,
+            required = true,
+            isDialogPicker = true,
+//                    isMultiSelect = true// chọn nhiều  dữ liệu
+
+        ),
+        categoryType = CategoryType.CONTACT_PERSON
+    ),
+
+    INTRODUCER(
+        FieldMetaData(
+            labelResId = R.string.introducer,
+            isDialogPicker = true
+        ),
+        categoryType = CategoryType.EMPLOYEE
+    ),
+
+    ESTABLISH_DATE(FieldMetaData(R.string.establish_date)),
+
+    STATUS(
+        FieldMetaData(
+            labelResId = R.string.status,
+            isDialogPicker = true
+        ),
+        categoryType = CategoryType.OPPORTUNITY
+    ),
+
+    INDUSTRY(
+        FieldMetaData(
+            labelResId = R.string.industry_group,
+            isDialogPicker = true
+        ),
+        categoryType = CategoryType.LOOKUP_INDUSTRY
+    ),
+
+    POLICY_GROUP(
+        FieldMetaData(
+            labelResId = R.string.policy_group,
+            isDialogPicker = true
+        ),
+        categoryType = CategoryType.LOOKUP_POLICY
+    ),
+
+    INFO_SOURCE(
+        FieldMetaData(
+            labelResId = R.string.info_source,
+            isDialogPicker = true
+        ),
+        categoryType = CategoryType.LOOKUP_INFO_SOURCE
+    ),
+
+    NOTE(FieldMetaData(R.string.note)),
+
+    LEVEL(
+        FieldMetaData(
+            labelResId = R.string.level,
+            isDialogPicker = true
+        ),
+        categoryType = CategoryType.LOOKUP_LEVEL
+    ),
+
+    REPRESENTATIVE(
+        FieldMetaData(
+            labelResId = R.string.representative,
+            isDialogPicker = true
+        ),
+        categoryType = CategoryType.RESPONSIBLE_PERSON
+    ),
+
+    POSITION(FieldMetaData(R.string.position)),
+    TAX_CODE(FieldMetaData(R.string.tax_code)),
+    BANK_ACCOUNT(FieldMetaData(R.string.bank_account)),
+    BANK_NAME(FieldMetaData(R.string.bank_name)),
+    CARE_DATE(FieldMetaData(R.string.care_date)),
+
+    CARE_STAFF(
+        FieldMetaData(
+            labelResId = R.string.care_staff,
+            isDialogPicker = true,
+            isMultiSelect = true
+        ),
+        categoryType = CategoryType.EMPLOYEE
+    ),
+
+    FACEBOOK(FieldMetaData(R.string.facebook)),
+    MAP_LINK(FieldMetaData(R.string.map))
+}
+fun CustomerFieldType.isReadOnlyField(): Boolean {
+    return isDialogPicker || this == CustomerFieldType.ESTABLISH_DATE
 }

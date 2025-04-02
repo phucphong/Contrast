@@ -44,7 +44,7 @@ val D292D32 = Color(0x0D292D32) // ⚫
 val FF637875 = Color(0xFF637875) // ⚫
 
 
-
+val FF0967DF = Color(0xFF0967DF)
 
 
 val FF2D2D2D = Color(0xFF2D2D2D) // ⚫ Xám đen (Blackish Gray)

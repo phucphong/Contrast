@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
+        maven("https://jitpack.io") // 🔥 phải có cái này!
     }
 }
 

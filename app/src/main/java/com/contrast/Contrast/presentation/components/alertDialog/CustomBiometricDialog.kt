@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckbox
+import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckBox
 
 @Preview(showBackground = true)
 // thông báo đăng nhập faceid
@@ -91,7 +91,7 @@ fun CustomBiometricDialog(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    BorderedCheckbox(
+                    BorderedCheckBox(
                         checked = doNotShowAgain,
                         onCheckedChange = { doNotShowAgain = it }
                     )

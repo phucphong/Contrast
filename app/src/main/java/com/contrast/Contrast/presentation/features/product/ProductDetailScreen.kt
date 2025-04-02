@@ -35,7 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.presentation.components.button.CustomButton
-import com.contrast.Contrast.presentation.components.checkbox.CheckBoxGray
+import com.contrast.Contrast.presentation.components.checkbox.CheckBoxColor
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
@@ -419,7 +419,7 @@ fun OptionGroup(
 
                         )
                 )
-                CheckBoxGray(checked = selected == item, onCheckedChange = { onSelected(item) })
+                CheckBoxColor(checked = selected == item, onCheckedChange = { onSelected(item) })
 
             }
         }
@@ -485,7 +485,7 @@ fun ToppingGroup(
                 }
 
 
-                CheckBoxGray(checked = isChecked, onCheckedChange = { null })
+                CheckBoxColor(checked = isChecked, onCheckedChange = { null })
 
 
             }

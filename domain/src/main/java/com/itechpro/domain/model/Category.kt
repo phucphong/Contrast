@@ -1,8 +1,12 @@
 package com.itechpro.domain.model
 
 data class Category(
-    val id: Int,
-    val name: String,
-    val code: String?,
-    val description: String?
+    var id: String? = "",
+    var idnhanvien: String? = "",
+    var name: String? = "",
+    val code: String? = "",
+    val description: String? = "",
+    val ten: String? = "",
+    val hoten: String? = "",
+    val idcohoi: String? = ""
 )

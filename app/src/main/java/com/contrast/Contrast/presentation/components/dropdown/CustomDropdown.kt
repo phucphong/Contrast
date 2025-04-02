@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.components.dropdown
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
 
 @Composable
 fun CustomDropdown(
@@ -35,62 +38,74 @@ fun CustomDropdown(
     selectedOption: String,
     onOptionSelected: (String) -> Unit,
     placeholder: String,
-    modifier: Modifier = Modifier
+    textAlign:TextAlign = TextAlign.Center,
+    modifier: Modifier = Modifier,
+    showUnderline: Boolean = true // ✅ Thêm biến để điều khiển underline
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .then(
+                if (!showUnderline) Modifier
+                    .background(Color.White, shape = RoundedCornerShape(10.dp)).border(1.dp,FFD7D7D7,  shape = RoundedCornerShape(10.dp))
+                else Modifier
+            )
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { expanded = true }
-                .padding(vertical = 12.dp), // Giữ padding phù hợp với TextField
+                .padding(vertical = 12.dp),
             contentAlignment = Alignment.Center
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center // Căn giữa toàn bộ nội dung
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = if (selectedOption.isNotEmpty()) selectedOption else placeholder,
                     color = if (selectedOption.isNotEmpty()) Color.Black else Color.Gray,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center // Căn giữa chữ
+                    modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
+                    textAlign =textAlign
                 )
                 Image(
-                    painter =  painterResource(id = R.drawable.arrowdown), // Thay bằng ảnh trong drawable
+                    painter = if(expanded)painterResource(id = R.drawable.up)else painterResource(id = R.drawable.arrowdown),
                     contentDescription = "Dropdown Icon",
                     modifier = Modifier
                         .size(25.dp)
                         .padding(end = 10.dp)
                 )
-
             }
         }
 
-        // Line màu xám phía dưới
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .padding(horizontal = 8.dp) // Chỉnh padding để line không sát mép
-                .background(
-                    color = Color(0xFFD7D7D7)) // Đường màu xám
-        )
+        // ✅ Nếu showUnderline thì mới hiện line
+        if (showUnderline) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .padding(horizontal = 8.dp)
+                    .background(color = FFD7D7D7)
+            )
+        }
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.background(Color.White).fillMaxWidth().padding(horizontal = 10.dp)
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
         ) {
             options.forEach { option ->
-                DropdownMenuItem(
+                DropdownMenuItem(modifier = Modifier.fillMaxWidth(),
                     text = {
                         Text(
                             text = option,
-                            textAlign = TextAlign.Center, // Căn giữa nội dung
-                            modifier = Modifier.fillMaxWidth() // Bắt Text chiếm toàn bộ chiều rộng để căn giữa
+                            textAlign = textAlign,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     },
                     onClick = {
@@ -98,7 +113,6 @@ fun CustomDropdown(
                         expanded = false
                     }
                 )
-
             }
         }
     }

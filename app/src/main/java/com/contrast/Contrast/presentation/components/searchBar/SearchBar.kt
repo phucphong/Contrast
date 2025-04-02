@@ -32,10 +32,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
+import com.contrast.Contrast.presentation.theme.FFFFFFFF
+
 @Composable
 fun SearchBar(
     searchText: String,
     placeholder: String="",
+    backgroundColor: Color= FFFFFFFF,
+    borderColor: Color=FFD7D7D7,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -44,12 +49,12 @@ fun SearchBar(
             .fillMaxWidth()
 
             .background(
-                color = Color.White,
+                color =backgroundColor,
                 shape = RoundedCornerShape(8.dp)
             )
             .border(
                 width = 1.dp,
-                color = Color(0xFFD7D7D7),
+                color = borderColor,
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(horizontal = 10.dp) // Padding cho content trong Box
@@ -65,7 +70,7 @@ fun SearchBar(
                     .size(20.dp)
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(4.dp))
 
             TextField(
                 value = searchText,

@@ -3,10 +3,10 @@ package com.contrast.Contrast.presentation.features.work
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxSize
 
 import androidx.compose.runtime.*
 
-import com.contrast.Contrast.presentation.components.calendar.HorizontalCalendar
 
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.*
@@ -59,5 +59,10 @@ fun WorkScreen() {
 //        }
 //    )
 
-    CalendarTimelineScreen()
+//    CalendarTimelineScreen()
+
+    CalendarTimelineScreen(
+
+    )
+
 }

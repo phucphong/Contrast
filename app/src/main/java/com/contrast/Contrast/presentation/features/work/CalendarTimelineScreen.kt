@@ -8,46 +8,90 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 import com.contrast.Contrast.presentation.components.calendar.CalendarEvent
-import com.contrast.Contrast.presentation.components.calendar.TimelineDayView
-import java.time.LocalTime
+import com.contrast.Contrast.presentation.components.calendar.CalendarScreen
+
+import com.contrast.Contrast.presentation.components.calendar.VerticalCalendarDayView
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarTimelineScreen() {
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+
     val sampleEvents = listOf(
         CalendarEvent(
             id = "1",
-            title = "WWDC",
+            title = "Dung",
             location = "Moscone West",
-            startTime = LocalTime.of(10, 0),
-            endTime = LocalTime.of(12, 0),
-            color = Color(0xFF81C784)
+            startTime = "03/04/2025 08:00",
+            endTime = "03/04/2025 10:00",
+            color = Color(0xFF81C784),
+            startTimeParsed = LocalDateTime.parse("03/04/2025 08:00", formatter),
+            endTimeParsed = LocalDateTime.parse("03/04/2025 10:00", formatter)
         ),
         CalendarEvent(
             id = "2",
-            title = "Dev Meeting",
+            title = "Phong",
             location = "Room 202",
-            startTime = LocalTime.of(14, 0),
-            endTime = LocalTime.of(15, 0),
-            color = Color(0xFF64B5F6)
+            startTime = "03/04/2025 08:00",
+            endTime = "03/04/2025 12:00",
+            color = Color(0xFF64B5F6),
+            startTimeParsed = LocalDateTime.parse("03/04/2025 08:00", formatter),
+            endTimeParsed = LocalDateTime.parse("03/04/2025 12:00", formatter)
+        ),  CalendarEvent(
+            id = "7",
+            title = "Hang",
+            location = "Moscone West",
+            startTime = "03/04/2025 20:00",
+            endTime = "03/04/2025 21:00",
+            color = Color(0xFF81C784),
+            startTimeParsed = LocalDateTime.parse("03/04/2025 20:00", formatter),
+            endTimeParsed = LocalDateTime.parse("03/04/2025 21:00", formatter)
         ),
         CalendarEvent(
-            id = "3",
-            title = "Night Coding",
-            location = "Worldwide",
-            startTime = LocalTime.of(21, 49),
-            endTime = LocalTime.of(22, 15),
-            color = Color(0xFFE57373)
+            id = "8",
+            title = "Dev Meeting",
+            location = "Room 202",
+            startTime = "03/04/2025 11:00",
+            endTime = "03/04/2025 12:00",
+            color = Color(0xFF64B5F6),
+            startTimeParsed = LocalDateTime.parse("03/04/2025 11:00", formatter),
+            endTimeParsed = LocalDateTime.parse("03/04/2025 12:00", formatter)
         )
+            ,  CalendarEvent(
+            id = "9",
+            title = "WWDC",
+            location = "Moscone West",
+            startTime = "03/04/2025 13:00",
+            endTime = "03/04/2025 15:00",
+            color = Color(0xFF81C784),
+            startTimeParsed = LocalDateTime.parse("03/04/2025 13:00", formatter),
+            endTimeParsed = LocalDateTime.parse("03/04/2025 15:00", formatter)
+        ),
+        CalendarEvent(
+            id = "10",
+            title = "Dev Meeting",
+            location = "Room 202",
+            startTime = "03/04/2025 08:00",
+            endTime = "04/04/2025 12:00",
+            color = Color(0xFF64B5F6),
+            startTimeParsed = LocalDateTime.parse("03/04/2025 08:00", formatter),
+            endTimeParsed = LocalDateTime.parse("04/04/2025 12:00", formatter)
+        )
+
     )
 
-    TimelineDayView (
+    CalendarScreen(
+
         events = sampleEvents,
-        modifier = Modifier.fillMaxSize(),
-        onEventClick = { event: CalendarEvent ->
-            println("Clicked event: ${event.title}")
-        }
 
+        onEventClick = { event ->
+            println("Clicked: ${event.title}")
+        }
     )
+
+
 }
 

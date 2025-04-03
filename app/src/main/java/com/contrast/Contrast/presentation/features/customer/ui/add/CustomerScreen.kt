@@ -12,16 +12,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.bottomSheet.DatePickerBottomSheet
+import com.contrast.Contrast.presentation.components.dateTimePicker.CustomDateTimePickerDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialogMultiSelect
+import com.contrast.Contrast.presentation.components.datePicker.CustomDatePickerDialog 
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.text.CustomText
@@ -29,8 +29,6 @@ import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBa
 import com.contrast.Contrast.presentation.features.customer.CustomerFieldType
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
-import com.itechpro.domain.enumApp.CategoryType
-import com.itechpro.domain.model.Category
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +38,7 @@ fun CustomerScreen(
     ido: String,
     viewModel: RegisterAccountViewModel = hiltViewModel()
 ) {
+    var selectedDateBirtDay = remember {  (String) }
     val fieldValues = remember { mutableStateMapOf<CustomerFieldType, String>() }
     val fieldNames = remember { mutableStateMapOf<CustomerFieldType, String>() }
     val fieldIds = remember { mutableStateMapOf<CustomerFieldType, String>() }
@@ -149,8 +148,12 @@ fun CustomerScreen(
         }
 
         if (showDatePicker && datePickerTargetField != null) {
-            DatePickerBottomSheet(
-                sheetState = sheetState,
+
+
+            CustomDatePickerDialog (
+                initialDate = fieldNames[CustomerFieldType.ESTABLISH_DATE],
+                minDate="01/01/2024",
+
                 onDismiss = {
                     coroutineScope.launch { sheetState.hide() }
                     showDatePicker = false
@@ -162,6 +165,21 @@ fun CustomerScreen(
                     }
                 }
             )
+//            CustomDateTimePickerDialog(
+//                initialDateTime = fieldNames[CustomerFieldType.ESTABLISH_DATE],
+//                minDateTime="01/01/2024 00:00",
+//
+//                onDismiss = {
+//                    coroutineScope.launch { sheetState.hide() }
+//                    showDatePicker = false
+//                    datePickerTargetField = null
+//                },
+//                onDateTimeSelected = { selectedDate ->
+//                    datePickerTargetField?.let {
+//                        fieldNames[it] = selectedDate
+//                    }
+//                }
+//            )
         }
     }
 }

@@ -119,8 +119,9 @@ dependencies {
     implementation(libs.paging.composer)
     implementation(libs.paging.runtime)
     implementation(libs.androidx.foundation.layout)
-    implementation(libs.datepicker)
-    implementation(libs.wheelview)
+
+    implementation(libs.calendar)
+    implementation(libs.androidx.foundation.layout)
 
 
     annotationProcessor(libs.glideCompiler)

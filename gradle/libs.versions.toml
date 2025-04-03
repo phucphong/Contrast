@@ -58,7 +58,8 @@ compose = "1.8.0-rc01"
 ui = "1.0.1"
 paging-compose = "3.2.1"
 foundationLayout = "1.0.1"
-datepicker = "2.0.7"
+calendar = "2.6.2"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -150,8 +151,7 @@ androidx-pager = { group = "androidx.compose.foundation", name = "foundation", v
 paging-composer = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
 paging-runtime = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
-datepicker = { group = "com.github.ozcanalasalvar.picker", name = "datepicker", version.ref = "datepicker" }
-wheelview = { group = "com.github.ozcanalasalvar.picker", name = "wheelview", version.ref = "datepicker" }
+calendar = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "calendar" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

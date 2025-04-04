@@ -9,9 +9,9 @@ data class CalendarEvent(
     val id: String,
     val title: String,
     val location: String,
-    val startTime: String,
-    val endTime: String,
+
     val color: Color,
-    val startTimeParsed: LocalDateTime,
-    val endTimeParsed: LocalDateTime
+    val startTime: LocalDateTime,
+    val endTime: LocalDateTime,
+    val isAllDay: Boolean = true // 👈 THÊM VÀO
 )

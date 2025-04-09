@@ -96,100 +96,219 @@ fun CalendarScreen(
             val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
             val today = LocalDate.now()
-            val sampleEvents = mapOf(
-                today to listOf( // <-- dùng hôm nay
-                    DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 1",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 2",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 3",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 4",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 5",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 6",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 7",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 8",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 9",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 10",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 1",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(9, 0),
-                        endTime = LocalTime.of(23, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 0002",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(6, 0),
-                        endTime = LocalTime.of(9, 59)
-                    ), DailyCalendarEvent(
-                        id = "1",
-                        title = "Cuộc họp 0005",
-                        color = Color(0xFF81C784),
-                        startTime = LocalTime.of(10, 0),
-                        endTime = LocalTime.of(12, 59)
-                    )
+//            val sampleEvents = mapOf(
+//                today to listOf( // <-- dùng hôm nay
+//                    DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 1",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(9, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 2",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 3",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0 ,0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 4",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 5",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 6",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 7",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 8",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 9",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 10",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 11",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 12",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(9, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 13",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(12, 0),
+//                        endTime = LocalTime.of(22, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 14",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(14, 0),
+//                        endTime = LocalTime.of(14, 59)
+//                    ),DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 11",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(9, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 21",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 31",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0 ,0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 41",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 51",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 61",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 71",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 81",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 91",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 101",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 111",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(0, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 121",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(9, 0),
+//                        endTime = LocalTime.of(23, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 113",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(12, 0),
+//                        endTime = LocalTime.of(22, 59)
+//                    ), DailyCalendarEvent(
+//                        id = "1",
+//                        title = "CV 114",
+//                        color = Color(0xFF81C784),
+//                        startTime = LocalTime.of(14, 0),
+//                        endTime = LocalTime.of(14, 59)
+//                    )
+//
+//                )
+//            )
 
+            val sampleEvents = mapOf(
+                today to listOf(
+                    DailyCalendarEvent("1", "Họp dự án EZMAX", Color(0xFFEF5350), LocalDateTime.of(today, LocalTime.of(9, 0)), LocalDateTime.of(today, LocalTime.of(10, 30))),
+                    DailyCalendarEvent("2", "Gọi khách hàng tiềm năng", Color(0xFF42A5F5), LocalDateTime.of(today, LocalTime.of(10, 0)), LocalDateTime.of(today, LocalTime.of(11, 0))),
+                    DailyCalendarEvent("3", "Ăn trưa với team", Color(0xFF66BB6A), LocalDateTime.of(today, LocalTime.of(12, 0)), LocalDateTime.of(today, LocalTime.of(13, 0))),
+                    DailyCalendarEvent("4", "Code tính năng chia sẻ link", Color(0xFFFFCA28), LocalDateTime.of(today, LocalTime.of(13, 0)), LocalDateTime.of(today, LocalTime.of(15, 30))),
+                    DailyCalendarEvent("5", "Review pull request", Color(0xFFAB47BC), LocalDateTime.of(today, LocalTime.of(15, 0)), LocalDateTime.of(today, LocalTime.of(16, 0))),
+                    DailyCalendarEvent("6", "Đi tập gym", Color(0xFF26C6DA), LocalDateTime.of(today, LocalTime.of(17, 30)), LocalDateTime.of(today, LocalTime.of(18, 30))),
+                    DailyCalendarEvent("7", "Dọn dẹp hộp thư đến", Color(0xFF8D6E63), LocalDateTime.of(today, LocalTime.of(8, 0)), LocalDateTime.of(today, LocalTime.of(8, 45))),
+                    DailyCalendarEvent("8", "Cuộc gọi với đối tác", Color(0xFF5C6BC0), LocalDateTime.of(today, LocalTime.of(10, 15)), LocalDateTime.of(today, LocalTime.of(11, 0))),
+                    DailyCalendarEvent("9", "Viết tài liệu kỹ thuật", Color(0xFFFF7043), LocalDateTime.of(today, LocalTime.of(14, 0)), LocalDateTime.of(today, LocalTime.of(16, 30))),
+                    DailyCalendarEvent("10", "Chạy bộ buổi tối", Color(0xFF26A69A), LocalDateTime.of(today, LocalTime.of(19, 0)), LocalDateTime.of(today, LocalTime.of(20, 0))),
+                    DailyCalendarEvent("11", "Event full ngày", Color(0xFF9CCC65), LocalDateTime.of(today, LocalTime.of(0, 0)), LocalDateTime.of(today, LocalTime.of(23, 59))),
+                    DailyCalendarEvent("12", "Sự kiện song song A", Color(0xFFBA68C8), LocalDateTime.of(today, LocalTime.of(13, 30)), LocalDateTime.of(today, LocalTime.of(15, 0))),
+                    DailyCalendarEvent("13", "Sự kiện song song B", Color(0xFFFFA726), LocalDateTime.of(today, LocalTime.of(13, 45)), LocalDateTime.of(today, LocalTime.of(15, 15))),
+                    DailyCalendarEvent("14", "Họp nhanh 15p", Color(0xFF78909C), LocalDateTime.of(today, LocalTime.of(16, 45)), LocalDateTime.of(today, LocalTime.of(17, 0))),
+                    DailyCalendarEvent("15", "Phỏng vấn ứng viên", Color(0xFFD4E157), LocalDateTime.of(today, LocalTime.of(10, 30)), LocalDateTime.of(today, LocalTime.of(11, 30))),
+                    DailyCalendarEvent("16", "Lên kế hoạch tuần tới", Color(0xFF7986CB), LocalDateTime.of(today, LocalTime.of(9, 30)), LocalDateTime.of(today, LocalTime.of(10, 0))),
+                    DailyCalendarEvent("17", "Kiểm thử giao diện mobile", Color(0xFF4DB6AC), LocalDateTime.of(today, LocalTime.of(11, 0)), LocalDateTime.of(today, LocalTime.of(12, 0))),
+                    DailyCalendarEvent("18", "Check email khách hàng", Color(0xFFFF8A65), LocalDateTime.of(today, LocalTime.of(8, 30)), LocalDateTime.of(today, LocalTime.of(9, 0))),
+                    DailyCalendarEvent("19", "Trả lời bình luận app", Color(0xFF9575CD), LocalDateTime.of(today, LocalTime.of(16, 0)), LocalDateTime.of(today, LocalTime.of(16, 45))),
+                    DailyCalendarEvent("20", "Gặp mặt đối tác nước ngoài", Color(0xFFA1887F), LocalDateTime.of(today, LocalTime.of(10, 0)), LocalDateTime.of(today, LocalTime.of(12, 0))),
+                    DailyCalendarEvent("21", "Chỉnh sửa báo cáo tháng", Color(0xFF90A4AE), LocalDateTime.of(today, LocalTime.of(14, 30)), LocalDateTime.of(today, LocalTime.of(15, 30))),
+                    DailyCalendarEvent("22", "Brainstorm sản phẩm mới", Color(0xFF81C784), LocalDateTime.of(today, LocalTime.of(13, 0)), LocalDateTime.of(today, LocalTime.of(14, 30))),
+                    DailyCalendarEvent("23", "Họp team design", Color(0xFF4FC3F7), LocalDateTime.of(today, LocalTime.of(15, 30)), LocalDateTime.of(today, LocalTime.of(16, 30))),
+                    DailyCalendarEvent("24", "Backup dữ liệu server", Color(0xFFF06292), LocalDateTime.of(today, LocalTime.of(18, 0)), LocalDateTime.of(today, LocalTime.of(18, 45))),
+                    DailyCalendarEvent("25", "Nghiên cứu Flutter Web", Color(0xFF7986CB), LocalDateTime.of(today, LocalTime.of(8, 0)), LocalDateTime.of(today, LocalTime.of(9, 0))),
+                    DailyCalendarEvent("26", "Test API mới triển khai", Color(0xFF64B5F6), LocalDateTime.of(today, LocalTime.of(9, 0)), LocalDateTime.of(today, LocalTime.of(10, 0))),
+                    DailyCalendarEvent("27", "Giao lưu với dev team khác", Color(0xFFDCE775), LocalDateTime.of(today, LocalTime.of(14, 0)), LocalDateTime.of(today, LocalTime.of(15, 0))),
+                    DailyCalendarEvent("28", "Hướng dẫn nhân sự mới", Color(0xFF4DD0E1), LocalDateTime.of(today, LocalTime.of(11, 30)), LocalDateTime.of(today, LocalTime.of(12, 30))),
+                    DailyCalendarEvent("29", "Nâng cấp hệ thống backend", Color(0xFFBA68C8), LocalDateTime.of(today, LocalTime.of(16, 0)), LocalDateTime.of(today, LocalTime.of(17, 30))),
+                    DailyCalendarEvent("30", "Tối ưu database", Color(0xFFFFB74D), LocalDateTime.of(today, LocalTime.of(10, 0)), LocalDateTime.of(today, LocalTime.of(11, 15))),
+                    DailyCalendarEvent("31", "Xem lại roadmap quý 2", Color(0xFFAED581), LocalDateTime.of(today, LocalTime.of(15, 45)), LocalDateTime.of(today, LocalTime.of(17, 0))),
+                    DailyCalendarEvent("32", "Cập nhật Jira task", Color(0xFF90CAF9), LocalDateTime.of(today, LocalTime.of(9, 15)), LocalDateTime.of(today, LocalTime.of(10, 0))),
+                    DailyCalendarEvent("33", "Báo cáo kết quả tuần", Color(0xFFFF8A65), LocalDateTime.of(today, LocalTime.of(17, 0)), LocalDateTime.of(today, LocalTime.of(17, 30))),
+                    DailyCalendarEvent("34", "Làm form khảo sát khách hàng", Color(0xFFCE93D8), LocalDateTime.of(today, LocalTime.of(13, 0)), LocalDateTime.of(today, LocalTime.of(14, 0))),
+                    DailyCalendarEvent("35", "Cập nhật release note", Color(0xFFFFD54F), LocalDateTime.of(today, LocalTime.of(16, 0)), LocalDateTime.of(today, LocalTime.of(16, 45))),
+                    DailyCalendarEvent("36", "Gặp mặt ban giám đốc", Color(0xFF26A69A), LocalDateTime.of(today, LocalTime.of(8, 0)), LocalDateTime.of(today, LocalTime.of(9, 0)))
                 )
             )
 

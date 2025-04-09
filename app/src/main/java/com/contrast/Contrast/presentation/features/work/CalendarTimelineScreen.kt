@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 
 import com.contrast.Contrast.presentation.components.calendar.CalendarEvent
 import com.contrast.Contrast.presentation.components.calendar.CalendarScreen
+import com.contrast.Contrast.presentation.components.calendarMore.CalendarScreenMore
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -23,7 +24,7 @@ fun CalendarTimelineScreen() {
             title = "Dev 1",
             location = "Moscone West",
             color = Color(0xFF81C784),
-            startTime = LocalDateTime.parse("04/04/2025 08:00", formatter),
+            startTime = LocalDateTime.parse("04/04/2025 00:00", formatter),
             endTime = LocalDateTime.parse("04/04/2025 10:00", formatter)
         ),
         CalendarEvent(
@@ -31,14 +32,14 @@ fun CalendarTimelineScreen() {
             title = "Dev 2",
             location = "Room 202",
             color = Color(0xFF64B5F6),
-            startTime = LocalDateTime.parse("04/04/2025 08:00", formatter),
+            startTime = LocalDateTime.parse("04/04/2025 00:00", formatter),
             endTime = LocalDateTime.parse("04/04/2025 12:00", formatter)
         ),  CalendarEvent(
             id = "7",
             title = "Dev 7",
             location = "Moscone West",
             color = Color(0xFF81C784),
-            startTime = LocalDateTime.parse("04/04/2025 20:00", formatter),
+            startTime = LocalDateTime.parse("04/04/2025 00:00", formatter),
             endTime = LocalDateTime.parse("04/04/2025 21:00", formatter)
         ),
         CalendarEvent(
@@ -46,7 +47,7 @@ fun CalendarTimelineScreen() {
             title = "Dev 8",
             location = "Room 202",
             color = Color(0xFF64B5F6),
-            startTime = LocalDateTime.parse("04/04/2025 11:00", formatter),
+            startTime = LocalDateTime.parse("04/04/2025 00:00", formatter),
             endTime = LocalDateTime.parse("04/04/2025 12:00", formatter)
         )
             ,  CalendarEvent(
@@ -54,7 +55,7 @@ fun CalendarTimelineScreen() {
             title = "Dev 9",
             location = "Moscone West",
             color = Color(0xFF81C784),
-            startTime = LocalDateTime.parse("04/04/2025 13:00", formatter),
+            startTime = LocalDateTime.parse("04/04/2025 00:00", formatter),
             endTime = LocalDateTime.parse("04/04/2025 15:00", formatter)
         ),
         CalendarEvent(
@@ -62,12 +63,18 @@ fun CalendarTimelineScreen() {
             title = "Dev 10",
             location = "Room 202",
             color = Color(0xFF64B5F6),
-            startTime = LocalDateTime.parse("04/04/2025 08:00", formatter),
+            startTime = LocalDateTime.parse("04/04/2025 00:00", formatter),
             endTime = LocalDateTime.parse("05/04/2025 12:00", formatter)
         )
 
     )
-    CalendarScreen(
+//    CalendarScreen(
+//        events = sampleEvents,
+//        onEventClick = { event ->
+//            println("Clicked: ${event.title}")
+//        }
+//    )
+    CalendarScreenMore(
         events = sampleEvents,
         onEventClick = { event ->
             println("Clicked: ${event.title}")

@@ -15,8 +15,8 @@ enum class CustomerFieldType(
 
     CUSTOMER_TYPE(FieldMetaData(R.string.customer_type, required = true)),
 
-    CUSTOMER_NAME(FieldMetaData(R.string.customer_name, required = true)),
 
+    CUSTOMER_NAME(FieldMetaData(R.string.customer_name, required = true)),
     CONTACT_PERSON(
         FieldMetaData(
             labelResId = R.string.contact_person,
@@ -33,17 +33,21 @@ enum class CustomerFieldType(
             labelResId = R.string.introducer,
             isDialogPicker = true
         ),
-        categoryType = CategoryType.EMPLOYEE
+        categoryType = CategoryType.INTRODUCER
     ),
-
+    PHONE_NUMBER(FieldMetaData(R.string.phoneNumber)),
     ESTABLISH_DATE(FieldMetaData(R.string.establish_date)),
+    ADDRESS(FieldMetaData(R.string.address)),
+    EMAIL(FieldMetaData(R.string.email)),
+    WEBSITE(FieldMetaData(R.string.website)),
+    TYPE(FieldMetaData(R.string.customer_type)),
 
-    STATUS(
+    STATUS_CUSTOMER(
         FieldMetaData(
             labelResId = R.string.status,
             isDialogPicker = true
         ),
-        categoryType = CategoryType.OPPORTUNITY
+        categoryType = CategoryType.STATUS_CUSTOMER
     ),
 
     INDUSTRY(
@@ -71,6 +75,7 @@ enum class CustomerFieldType(
     ),
 
     NOTE(FieldMetaData(R.string.note)),
+//    NOTEWORK(FieldMetaData(R.string.note_work)),
 
     LEVEL(
         FieldMetaData(
@@ -82,30 +87,26 @@ enum class CustomerFieldType(
 
     REPRESENTATIVE(
         FieldMetaData(
-            labelResId = R.string.representative,
-            isDialogPicker = true
-        ),
-        categoryType = CategoryType.RESPONSIBLE_PERSON
-    ),
+            labelResId = R.string.representative
 
+        )
+    ),
     POSITION(FieldMetaData(R.string.position)),
+
     TAX_CODE(FieldMetaData(R.string.tax_code)),
+
     BANK_ACCOUNT(FieldMetaData(R.string.bank_account)),
     BANK_NAME(FieldMetaData(R.string.bank_name)),
     CARE_DATE(FieldMetaData(R.string.care_date)),
-
     CARE_STAFF(
         FieldMetaData(
             labelResId = R.string.care_staff,
             isDialogPicker = true,
-            isMultiSelect = true
+
         ),
         categoryType = CategoryType.EMPLOYEE
     ),
-
     FACEBOOK(FieldMetaData(R.string.facebook)),
+    ZALO(FieldMetaData(R.string.facebook)),
     MAP_LINK(FieldMetaData(R.string.map))
-}
-fun CustomerFieldType.isReadOnlyField(): Boolean {
-    return isDialogPicker || this == CustomerFieldType.ESTABLISH_DATE
 }

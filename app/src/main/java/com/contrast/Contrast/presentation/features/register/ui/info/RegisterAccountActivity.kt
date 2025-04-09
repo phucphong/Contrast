@@ -16,10 +16,10 @@ class RegisterAccountActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            val navController = rememberNavController()
-//            CustomerScreen(navController = navController,"0")
+            val navController = rememberNavController()
+            CustomerScreen(navController = navController,"0")
 
-            WorkScreen()
+//            WorkScreen()
         }
     }
 }

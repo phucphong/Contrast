@@ -5,6 +5,7 @@
     <string name="enter_unlock_code">Nhập mã mở khóa để xác thực</string>
     <string name="pin_description">Mã PIN này do bạn cài đặt và ghi nhớ để mở ứng dụng Contrast. Nếu quên, cần phải cài đặt lại ứng dụng và thiết lập lại.</string>
     <string name="note" translatable="false">Lưu ý:</string>
+    <string name="note_work" translatable="false">Lưu ý:</string>
     <string name="phoneNumber" translatable="false">Số điện thoại</string>
     <string name="register_account" translatable="false">Tạo tài khoản</string>
     <string name="phone_number" translatable="false">Số điện thoại</string>
@@ -38,6 +39,7 @@
     <string name="responsible_person">Người phụ trách</string>
     <string name="referrer">Người giới thiệu</string>
     <string name="established_date">Ngày thành lập</string>
+    <string name="date_of_birtd">Ngày sinh</string>
     <string name="customer_category">Loại khách hàng</string>
     <string name="status">Trạng thái</string>
     <string name="industry_group">Nhóm ngành nghề</string>
@@ -52,8 +54,21 @@
     <string name="care_date">Ngày chăm sóc</string>
     <string name="care_staff">Người chăm sóc</string>
     <string name="search_placeholder">Nhập từ khóa tìm kiếm</string>
-
+    <string name="save">Lưu</string>
+    <string name="pronoun">Xưng hô</string>
+    <string name="pronoun_mr">Anh</string>
+    <string name="pronoun_ms">Chị</string>
+    <string name="pronoun_junior">Em</string>
+    <string name="pronoun_madam">Cô</string>
+    <string name="pronoun_uncle">Chú</string>
+    <string name="pronoun_senior">Bác</string>
+    <string name="pronoun_grandpa">Ông</string>
+    <string name="pronoun_grandma">Bà</string>
+    <string name="pronoun_i">Tôi</string>
+    <string name="pronoun_you">Bạn</string>
+    <string name="pronoun_valued_customer">Quý khách</string>
     <string name="facebook">Facebook</string>
+    <string name="zalo">Zalo</string>
     <string name="map">Bản đồ</string>
     <string name="get_map_address">Lấy địa chỉ map</string>
     <string name="cancel">Huỷ</string>
@@ -183,6 +198,7 @@
     <string name="store_image">Hình ảnh cửa hàng</string>
     <string name="store_name">Contrast Văn Chương</string>
     <string name="store_address">264 Ngô Văn Chương, Khâm Thiên, Đống Đa, Hà Nội</string>
+    <string name="address">Địa chỉ</string>
     <string name="store_note">Hôm nay đông khách quá! Gọi điện check bàn trước để có chỗ ngồi lý tưởng bạn nha 🥰</string>
     <string name="store_open">Contrast Coffee</string>
     <string name="store_open_24">Luôn mở cửa - 24 giờ</string>
@@ -206,6 +222,7 @@
     <string name="feedback_note">Phản hồi của bạn giúp Contrast Coffee nâng cao chất lượng dịch vụ tốt hơn.</string>
     <string name="send_feedback">Gửi đi</string>
     <string name="email" translatable="false">Email</string>
+    <string name="website" translatable="false">Website</string>
     <string name="news" translatable="false">Tin tức</string>
     <string name="balance">Số dư</string>
     <string name="login">Đăng nhập</string>
@@ -369,6 +386,9 @@
     <string name="error_empty_password">Mật khẩu không được để trống!</string>
     <string name="error_empty_re_password">Nhập lại mật khẩu không được để trống!</string>
     <string name="error_unknown">Không xác định</string>
+    <string name="CONTACT_PERSON">Không xác định</string>
+    <string name="error_empty_contact_person">Vui lòng chọn người phụ trách</string>
+    <string name="error_email">Email chưa đúng định dạng</string>
     <string name="registered_phone">Số điện thoại đã đăng ký!</string>
     <string name="registered_email">Email đã đăng ký!</string>
     <string name="create_account_button" translatable="false">Tạo tài khoản</string>

@@ -6,7 +6,7 @@ import com.itechpro.domain.repository.RegisterAccountRepository
 import com.itechpro.domain.usecase.checkphoneEmail.CheckEmailUseCase
 import com.itechpro.domain.usecase.checkphoneEmail.CheckPhoneUseCase
 import com.itechpro.domain.usecase.register.RegisterAccountUseCase
-import com.itechpro.domain.usecase.register.ValidateRegisterUseCase
+
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

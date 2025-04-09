@@ -62,8 +62,7 @@ class CategoryViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
 
             try {
-                val token = if (!isOffLine) Common.key else authen
-                categoryUseCase.getCategory(typeCheck, key, authen, ).collect { result ->
+                categoryUseCase.getCategory(typeCheck, key.trim(), authen, ).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
                             setData(result.data)

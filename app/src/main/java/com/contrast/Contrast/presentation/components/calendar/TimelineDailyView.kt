@@ -1,19 +1,12 @@
-// TimelineDailyView.kt - Jetpack Compose (Updated with Auto Scroll + Tap/Long-Press Add Event)
-
+// TimelineDailyViewMore.kt - Compose CalendarKit-style (fix che giờ)
 package com.contrast.Contrast.presentation.components.calendar
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -23,27 +16,40 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-
+import com.squareup.moshi.Json
+import java.time.LocalDateTime
 // Data
 
 data class DailyCalendarEvent(
     val id: String,
     val title: String,
     val color: Color,
-    val startTime: LocalTime,
-    val endTime: LocalTime
+    val startTime: LocalDateTime,
+    val endTime: LocalDateTime
 )
+
+
+
+//data class DailyCalendarEvent(
+//    @Json(name = "id") val id: Long,
+//    @Json(name = "loaicongviec") val type: Long,
+//    @Json(name = "mauloaicongviec") val color: Color,
+//    @Json(name = "tieude") val title: String,
+//    @Json(name = "mauloaicongviec") val colorHex: String,
+//    @Json(name = "tugio") val startTime: LocalDateTime,
+//    @Json(name = "dengio") val endTime: LocalDateTime
+//)
+
 
 interface TimelineDailyListener {
     fun onAddEvent(time: LocalTime)
@@ -53,12 +59,11 @@ interface TimelineDailyListener {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TimelineDailyView(
-    events: Map<LocalDate, List<DailyCalendarEvent>>, // Group by day
+    events: Map<LocalDate, List<DailyCalendarEvent>>,
     modifier: Modifier = Modifier,
     listener: TimelineDailyListener? = null
 ) {
     val hourHeight = 80.dp
-    val userColumnWidth = 320.dp
     val currentWeekStart = remember { getStartOfWeek(LocalDate.now()) }
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     val daysOfWeek = remember(currentWeekStart) { (0..6).map { currentWeekStart.plusDays(it.toLong()) } }
@@ -72,24 +77,16 @@ fun TimelineDailyView(
     }
 
     Column(modifier = modifier.fillMaxSize()) {
-        // Header
         val dateFormatter = DateTimeFormatter.ofPattern("dd")
 
-// Cố định tiêu đề thứ
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             daysOfWeek.forEach { date ->
-                Box(
-                    modifier = Modifier
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
                     Text(
-                        text = date.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale("vi")),
+                        text = date.dayOfWeek.name.take(2),
                         fontWeight = FontWeight.Medium,
                         fontSize = 12.sp
                     )
@@ -97,12 +94,8 @@ fun TimelineDailyView(
             }
         }
 
-// Scroll phần ngày (hiển thị ngày trong tháng)
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .padding(bottom = 8.dp),
+            modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             daysOfWeek.forEach { date ->
@@ -126,26 +119,15 @@ fun TimelineDailyView(
             }
         }
 
-        // TimelineView
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectHorizontalDragGestures { _, dragAmount ->
-                        if (dragAmount > 20) selectedDate = selectedDate.minusDays(1)
-                        if (dragAmount < -20) selectedDate = selectedDate.plusDays(1)
-                    }
-                }
-        ) {
-            TimelineSingleDayContent(
-                date = selectedDate,
-                events = events[selectedDate].orEmpty(),
-                now = nowTime.value,
-                hourHeight = hourHeight,
-                columnWidth = userColumnWidth,
-                listener = listener
-            )
-        }
+        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+        TimelineSingleDayContent(
+            date = selectedDate,
+            events = events[selectedDate].orEmpty(),
+            now = nowTime.value,
+            hourHeight = hourHeight,
+            screenWidth = screenWidth,
+            listener = listener
+        )
     }
 }
 
@@ -156,152 +138,144 @@ fun TimelineSingleDayContent(
     events: List<DailyCalendarEvent>,
     now: LocalTime,
     hourHeight: Dp,
-    columnWidth: Dp,
+    screenWidth: Dp,
     listener: TimelineDailyListener? = null
 ) {
     val scrollState = rememberScrollState()
     val totalHours = 24
-    val coroutineScope = rememberCoroutineScope()
 
-    // Auto scroll to now
     LaunchedEffect(Unit) {
         val offset = ((now.hour * 60 + now.minute) / 60f) * hourHeight.value
         scrollState.scrollTo(offset.toInt())
     }
 
-    Box(
-        Modifier
-            .verticalScroll(scrollState)
-            .pointerInput(Unit) {
+    val groups = calculateOverlapsByGroup(events)
+
+    Row(modifier = Modifier.fillMaxSize()) {
+        // Left Hour Column
+        Column(
+            modifier = Modifier.width(60.dp).verticalScroll(scrollState)
+        ) {
+            repeat(totalHours) { hour ->
+                Box(
+                    modifier = Modifier.height(hourHeight).padding(start = 4.dp),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    Text("%02d:00".format(hour), fontSize = 12.sp, color = Color.Gray)
+                }
+            }
+        }
+
+        // Main Timeline Content
+        Box(
+            modifier = Modifier.fillMaxSize().verticalScroll(scrollState).pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { offset ->
-                        val y = offset.y
-                        val hour = (y / hourHeight.toPx()).toInt()
-                        val minute = (((y % hourHeight.toPx()) / hourHeight.toPx()) * 60).toInt()
-                        listener?.onAddEvent(LocalTime.of(hour.coerceIn(0, 23), minute.coerceIn(0, 59)))
+                        val hour = (offset.y / hourHeight.toPx()).toInt()
+                        val minute = (((offset.y % hourHeight.toPx()) / hourHeight.toPx()) * 60).toInt()
+                        listener?.onAddEvent(LocalTime.of(hour, minute))
                     },
                     onLongPress = { offset ->
-                        val y = offset.y
-                        val hour = (y / hourHeight.toPx()).toInt()
-                        val minute = (((y % hourHeight.toPx()) / hourHeight.toPx()) * 60).toInt()
-                        listener?.onLongPress(LocalTime.of(hour.coerceIn(0, 23), minute.coerceIn(0, 59)))
+                        val hour = (offset.y / hourHeight.toPx()).toInt()
+                        val minute = (((offset.y % hourHeight.toPx()) / hourHeight.toPx()) * 60).toInt()
+                        listener?.onLongPress(LocalTime.of(hour, minute))
                     }
                 )
             }
-    ) {
-        Box(Modifier.height(hourHeight * totalHours)) {
-            // Hour Lines
-            Column {
-                repeat(totalHours) { hour ->
-                    Box(Modifier.height(hourHeight)) {
-                        Divider(
-                            color = Color.LightGray,
-                            modifier = Modifier.align(Alignment.BottomCenter)
-                        )
-                        Text(
-                            text = "%02d:00".format(hour),
-                            fontSize = 12.sp,
-                            modifier = Modifier.align(Alignment.TopStart).padding(start = 4.dp)
-                        )
+        ) {
+            Box(Modifier.height(hourHeight * totalHours)) {
+                // Timeline Grid Lines (cover full width incl. time col)
+                Canvas(modifier = Modifier.fillMaxSize().zIndex(0f)) {
+                    val fullWidth = size.width
+                    for (i in 0..totalHours) {
+                        val y = i * hourHeight.toPx()
+                        drawLine(Color.LightGray, Offset(0f, y), Offset(fullWidth, y), 1f)
                     }
                 }
-            }
 
-            // Now line
-            if (date == LocalDate.now()) {
-                val nowMinutes = now.hour * 60 + now.minute
-                val nowOffset = (nowMinutes / 60f) * hourHeight.value
+                // Red now line
+                if (date == LocalDate.now()) {
+                    val nowMinutes = now.hour * 60 + now.minute
+                    val nowOffset = (nowMinutes / 60f) * hourHeight.value
 
-                Canvas(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .absoluteOffset(y = nowOffset.dp)
-                        .zIndex(2f)
-                ) {
-                    drawLine(
-                        color = Color.Red,
-                        start = Offset(0f, 0f),
-                        end = Offset(size.width, 0f),
-                        strokeWidth = 2f
-                    )
+                    Row(
+                        modifier = Modifier
+                            .absoluteOffset(y = nowOffset.dp)
+                            .fillMaxWidth()
+                            .zIndex(2f)
+                            .padding(start = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(now.format(DateTimeFormatter.ofPattern("HH:mm")), color = Color.Red, fontSize = 12.sp)
+                        Canvas(modifier = Modifier.fillMaxWidth().height(1.dp)) {
+                            drawLine(Color.Red, Offset(0f, 0f), Offset(size.width, 0f), strokeWidth = 2f)
+                        }
+                    }
                 }
-            }
 
-            // Events
-            val positioned = calculateDailyOverlaps(events)
-            positioned.forEach { (event, column, totalCols) ->
-                val startMinutes = event.startTime.toSecondOfDay() / 60
-                val endMinutes = event.endTime.toSecondOfDay() / 60
-                val topOffset = (startMinutes / 60f) * hourHeight.value
-                val height = ((endMinutes - startMinutes) / 60f) * hourHeight.value
-                val colWidth = if (totalCols == 1) columnWidth else columnWidth / totalCols
-                val offsetX = if (totalCols == 1) 0.dp else colWidth * column
+                // Render events
+                groups.forEach { group ->
+                    val totalCols = group.size
+                    val spacing = 2.dp
+                    val availableWidth = screenWidth - 60.dp - spacing * (totalCols - 1)
+                    val columnWidth = availableWidth / totalCols
 
-                Box(
-                    modifier = Modifier
-                        .absoluteOffset(x = offsetX, y = topOffset.dp)
-                        .width(colWidth - 4.dp)
-                        .padding(2.dp)
-                        .height(height.dp)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(event.color)
-                        .zIndex(1f),
-                    contentAlignment = Alignment.TopStart
-                ) {
-                    Text(
-                        text = event.title,
-                        modifier = Modifier.padding(4.dp),
-                        fontSize = 12.sp,
-                        color = Color.White
-                    )
+                    group.sortedBy { it.startTime }.forEachIndexed { index, event ->
+                        // Chuyển LocalDateTime -> LocalTime để lấy thời gian trong ngày
+                        val startMin = event.startTime.toLocalTime().toSecondOfDay() / 60
+                        val endMin = event.endTime.toLocalTime().toSecondOfDay() / 60
+
+                        val top = (startMin / 60f) * hourHeight.value
+                        val height = ((endMin - startMin) / 60f) * hourHeight.value
+                        val offsetX = (columnWidth + spacing) * index
+
+                        Box(
+                            modifier = Modifier
+                                .absoluteOffset(x = offsetX, y = top.dp)
+                                .width(columnWidth)
+                                .height(height.dp)
+                                .padding(1.dp)
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(event.color.copy(alpha = 0.7f))
+                                .border(1.dp, Color.White, RoundedCornerShape(4.dp))
+                                .zIndex(1f),
+                            contentAlignment = Alignment.TopStart
+                        ) {
+                            Text(
+                                text = event.title,
+                                modifier = Modifier.padding(4.dp),
+                                fontSize = 12.sp,
+                                color = Color.White
+                            )
+                        }
+                    }
                 }
+
             }
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun calculateDailyOverlaps(events: List<DailyCalendarEvent>): List<Triple<DailyCalendarEvent, Int, Int>> {
+fun calculateOverlapsByGroup(events: List<DailyCalendarEvent>): List<List<DailyCalendarEvent>> {
     val sorted = events.sortedBy { it.startTime }
     val groups = mutableListOf<MutableList<DailyCalendarEvent>>()
 
     for (event in sorted) {
-        var placed = false
-        for (group in groups) {
-            if (group.any { it.startTime < event.endTime && event.startTime < it.endTime }) {
-                group.add(event)
-                placed = true
-                break
-            }
+        val overlappingGroup = groups.find { group ->
+            group.any { it.startTime < event.endTime && event.startTime < it.endTime }
         }
-        if (!placed) groups.add(mutableListOf(event))
-    }
-
-    val result = mutableListOf<Triple<DailyCalendarEvent, Int, Int>>()
-    for (group in groups) {
-        val total = group.size
-        group.sortedBy { it.startTime }.forEachIndexed { idx, e ->
-            result.add(Triple(e, idx, total))
+        if (overlappingGroup != null) {
+            overlappingGroup.add(event)
+        } else {
+            groups.add(mutableListOf(event))
         }
     }
-    return result
+    return groups
 }
-
-//@RequiresApi(Build.VERSION_CODES.O)
-//fun getStartOfWeek(today: LocalDate): LocalDate {
-//    val diff = (today.dayOfWeek.value % 7) // Chủ Nhật là 0
-//    return today.minusDays(diff.toLong())
-//}
-//@RequiresApi(Build.VERSION_CODES.O)
-//fun getStartOfWeek(today: LocalDate): LocalDate {
-//    val dayOfWeek = today.dayOfWeek
-//    val diff = if (dayOfWeek == DayOfWeek.SUNDAY) 0 else dayOfWeek.value
-//    return today.minusDays(diff.toLong())
-//}
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun getStartOfWeek(today: LocalDate): LocalDate {
-    val dayOfWeek = today.dayOfWeek.value // Thứ Hai = 1, Chủ Nhật = 7
-    return today.minusDays((dayOfWeek - 1).toLong()) // Trừ đi để về Thứ Hai
+    val dayOfWeek = today.dayOfWeek.value
+    return today.minusDays((dayOfWeek - 1).toLong())
 }

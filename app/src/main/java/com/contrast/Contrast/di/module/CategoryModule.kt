@@ -7,10 +7,7 @@ import com.itechpro.data.repository.CategoryRepositoryImpl
 import com.itechpro.domain.repository.CategoryRepository
 import com.itechpro.domain.repository.RegisterAccountRepository
 import com.itechpro.domain.usecase.category.CategoryUseCase
-import com.itechpro.domain.usecase.checkphoneEmail.CheckEmailUseCase
-import com.itechpro.domain.usecase.checkphoneEmail.CheckPhoneUseCase
-import com.itechpro.domain.usecase.register.RegisterAccountUseCase
-import com.itechpro.domain.usecase.register.ValidateRegisterUseCase
+
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

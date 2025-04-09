@@ -8,5 +8,6 @@ data class Category(
     val description: String? = "",
     val ten: String? = "",
     val hoten: String? = "",
+    val dienthoai1: String? = "",
     val idcohoi: String? = ""
 )

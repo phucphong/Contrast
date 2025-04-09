@@ -10,41 +10,50 @@ enum class CategoryType(
     val extractId: (Category) -> String?, // function trích ID phù hợp
     val extractName: (Category) -> String? // function trích tên
 ) {
+    //người phụ trách
+
     CONTACT_PERSON(
         endpoint = "/ex/api/getobj",
         obj = "nguoiphutrach",
         mode = "getallbyidcongty",
-        extractId = { it.idnhanvien },
+        extractId = { it.idnhanvien ?.replace(".0","")},
         extractName = { it.hoten }
     ),
+
+    // nhân viên
     EMPLOYEE(
         endpoint = "/ex/api/getobj",
         obj = "nhanvien",
         mode = "getallbyidcongty",
-        extractId = { it.idnhanvien?.toString() },
+        extractId = { it.idnhanvien ?.replace(".0","")},
         extractName = { it.hoten }
     ),
+
+    // nguòi giới thiệu
+    INTRODUCER(
+        endpoint = "/ex/api/getobj",
+        obj = "lienhe",
+        mode = "getallbyidcongty",
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.hoten }
+    ),
+    // cơ hội kinh doanh
+
     OPPORTUNITY(
         endpoint = "/ex/apiaffiliate/getobj",
         obj = "cohoi",
         mode = "getallbyidcongty",
-        extractId = { it.idcohoi },
+        extractId = { it.idcohoi?.replace(".0","") },
         extractName = { it.hoten }
     ),
-    PROJECT(
-        endpoint = "/ex/apiaffiliate/getobj",
-        obj = "duan",
-        mode = "getallbyidcongty",
-        extractId = { it.id }, // fallback nếu cần
-        extractName = { it.hoten }
-    ),
+
     // cấp độ
     LOOKUP_LEVEL(
         endpoint = "/ex/apiaffiliate/getobj",
         obj = "duan",
         mode = "getallbyidcongty",
-        extractId = { it.id }, // fallback nếu cần
-        extractName = { it.hoten }
+        extractId = { it.id ?.replace(".0","")},
+        extractName = { it.ten }
     ),
 
     // chính sách
@@ -52,33 +61,53 @@ enum class CategoryType(
         endpoint = "/ex/api/getobj",
         obj = "khachhang",
         mode = "getlistnhomchinhsach",
-        extractId = { it.id }, // fallback nếu cần
-        extractName = { it.hoten }
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
     ),
-    // cNhóm ngành nghề
+    // Nhóm ngành nghề
     LOOKUP_INDUSTRY(
         endpoint = "/ex/api/getobj",
         obj = "nguonkhachhang",
         mode = "getallbyidcongty",
-        extractId = { it.id }, // fallback nếu cần
-        extractName = { it.hoten }
-    ),    // nguồn thông tin
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
+    ),
+    // nguồn thông tin
     LOOKUP_INFO_SOURCE(
         endpoint = "/ex/api/getobj",
         obj = "nguonkhachhang",
         mode = "getallbyidcongty",
-        extractId = { it.id }, // fallback nếu cần
-        extractName = { it.hoten }
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
     ),
 
 
-    RESPONSIBLE_PERSON(
+    STATUS_CUSTOMER(
+        endpoint = "/ex/api/getobj",
+        obj = "khachhang",
+        mode = "laytrangthai",
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
+    ),
+
+    //dự án
+    PROJECT(
         endpoint = "/ex/apiaffiliate/getobj",
         obj = "duan",
         mode = "getallbyidcongty",
-        extractId = { it.id }, // fallback nếu cần
+        extractId = { it.id ?.replace(".0","")},
+        extractName = { it.ten }
+    ),
+    // thạng thái dự án
+    STATUS_PROJECT(
+        endpoint = "/ex/api/getobj",
+        obj = "danhmuctrangthai",
+        mode = "getallbyidcongtybyloai",
+        extractId = { it.id?.replace(".0","") },
         extractName = { it.hoten }
     ),
+
+
 
 
 }

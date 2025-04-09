@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -40,7 +41,9 @@ fun CustomDropdown(
     placeholder: String,
     textAlign:TextAlign = TextAlign.Center,
     modifier: Modifier = Modifier,
-    showUnderline: Boolean = true // ✅ Thêm biến để điều khiển underline
+    showUnderline: Boolean = true,
+    fullWith: Boolean = true,
+
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -94,10 +97,17 @@ fun CustomDropdown(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .background(Color.White)
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
+            modifier = if(fullWith){
+                Modifier
+                    .background(Color.White)
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            }else{
+                Modifier
+                    .background(Color.White)
+                    .wrapContentWidth()
+                    .padding(horizontal = 20.dp)
+            }
         ) {
             options.forEach { option ->
                 DropdownMenuItem(modifier = Modifier.fillMaxWidth(),

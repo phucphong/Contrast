@@ -2,6 +2,8 @@ package com.contrast.Contrast.di.module.app
 
 import android.app.Application
 import android.content.Context
+import com.contrast.Contrast.extensions.ColorAdapter
+import com.contrast.Contrast.extensions.LocalDateTimeAdapter
 import com.contrast.Contrast.utils.AppConfig
 
 
@@ -44,7 +46,14 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMoshiConverterFactory(): MoshiConverterFactory {
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+//        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
+        val moshi = Moshi.Builder()
+            .add(LocalDateTimeAdapter()) // 👈 Thêm custom adapter
+            .add(ColorAdapter()) // 👈 Thêm custom adapter
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+
         return MoshiConverterFactory.create(moshi)
     }
 

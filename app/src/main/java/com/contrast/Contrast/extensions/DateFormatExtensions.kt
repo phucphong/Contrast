@@ -6,6 +6,21 @@ fun formatDateYYYYMMDD(day: Int, month: Int, year: Int): String {
 }
 
 
+fun convertDateToYYYYMMDD(dateStr: String): String {
+    return try {
+        val parts = dateStr.split("/")
+        if (parts.size == 3) {
+            val day = parts[0].padStart(2, '0')
+            val month = parts[1].padStart(2, '0')
+            val year = parts[2]
+            "$year/$month/$day"
+        } else {
+            ""
+        }
+    } catch (e: Exception) {
+        ""
+    }
+}
 
 
 fun formatDateTimeDDMMYYYY(day: Int, month: Int, year: Int): String {

@@ -5,6 +5,8 @@ enum class ValidationErrorType {
     EMPTY_PHONE,
     INVALID_PHONE,
     EMPTY_NAME,
+    CONTACT_PERSON,
+
     EMPTY_PASSWORD,
     EMPTY_RE_PASSWORD,
     EMPTY_DAY,
@@ -16,6 +18,7 @@ enum class ValidationErrorType {
     MISSING_LOWERCASE,
     MISSING_SPECIAL_CHAR,
     PASSWORD_MISMATCH,
+    INVALID_EMAIL,
     UNKNOWN;
 
     companion object {

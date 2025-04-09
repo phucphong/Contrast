@@ -8,30 +8,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.text.CustomText
+import com.contrast.Contrast.presentation.theme.TealGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBarBackTitleSave(
     title: String,
+    fontSize: TextUnit = 14.sp,
     titleColor: Color = Color.Black,
     backgroundColor: Color = Color.White,
     fontWeight: FontWeight = FontWeight.Bold,
     iconTint: Color = Color.Gray,
     onBackClick: () -> Unit,
-    onSaveClick: (() -> Unit)? = null // 👈 Thêm action Save
+    onSaveClick: (() -> Unit)? = null
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             CustomText(
                 text = title,
-                fontSize = 20.sp,
+                fontSize = fontSize,
                 fontWeight = fontWeight,
-                color = titleColor,
+                color = titleColor, textAlign = TextAlign.Center
             )
         },
         navigationIcon = {
@@ -48,16 +53,15 @@ fun CustomTopAppBarBackTitleSave(
             onSaveClick?.let {
                 TextButton(onClick = it) {
                     Text(
-                        text = "Lưu",
-                        color = MaterialTheme.colorScheme.primary,
+                        text = stringResource(R.string.save),
+                        color = TealGreen,
                         fontWeight = FontWeight.Medium
                     )
                 }
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = backgroundColor
         )
     )
 }
-

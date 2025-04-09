@@ -1,9 +1,7 @@
-package com.itechpro.domain.usecase.register.validation
+package com.itechpro.domain.usecase.register
 
 
 import com.itechpro.domain.model.ValidationResult
-
-import com.itechpro.domain.usecase.register.ValidateRegisterUseCase
 
 class UserInputValidator(private val validate: ValidateRegisterUseCase) {
 

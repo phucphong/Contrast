@@ -26,7 +26,7 @@ class CategoryRepositoryImpl @Inject constructor(
         authen: String?
     ): NetworkResponse<List<Category>> {
         return try {
-            val response = api.getCategory(endpoint,obj, mode, key, authen)
+            val response = api.getCategory(endpoint,obj, mode,"0","", key, authen)
             if (response.isSuccessful) {
                 response.body()?.let {
                     NetworkResponse.Success(it)

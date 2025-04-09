@@ -42,7 +42,7 @@ val EFFFFFF = Color(0x2EFFFFFF) // ⚫
 val FFFFFFFF = Color(0xFFFFFFFF) // ⚫
 val D292D32 = Color(0x0D292D32) // ⚫
 val FF637875 = Color(0xFF637875) // ⚫
-
+val TealGreen = Color(0xFF00B3A1) // #00b3a1
 
 val FF0967DF = Color(0xFF0967DF)
 val FF037BFF = Color(0xFF037BFF)

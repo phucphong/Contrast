@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 import com.contrast.Contrast.R
-import com.itechpro.domain.usecase.register.validation.UserInputValidator
+import com.itechpro.domain.usecase.register.UserInputValidator
 import com.itechpro.domain.enumApp.ValidationErrorType
 
 @HiltViewModel

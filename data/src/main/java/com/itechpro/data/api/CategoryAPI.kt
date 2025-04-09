@@ -20,6 +20,8 @@ interface CategoryAPI {
         @Path("endpoint") endpoint: String?,
         @Query("obj") nguoiphutrach: String?,
         @Query("mode") getallbyidcongty: String?,
+        @Query("sotrang") page: String?,
+        @Query("sodong") lineCount: String?,
         @Query("tukhoa") key: String?,
         @Header("Authorization") authen: String?
     ): Response<List<Category>>

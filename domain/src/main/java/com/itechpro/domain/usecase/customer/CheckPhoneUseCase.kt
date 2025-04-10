@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class CheckPhoneUseCase(
+class CheckPhoneUseCase @Inject constructor(
     private val repository: CustomerRepository
 ) {
     fun execute(

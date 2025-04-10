@@ -6,12 +6,13 @@ import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.repository.CustomerRepository
 import com.itechpro.domain.repository.RegisterAccountRepository
+import javax.inject.Inject
 
-class CustomerUseCase(
+class CustomerUseCase @Inject constructor(
     private val repository: CustomerRepository
 ) {
 
-    suspend operator fun invoke(url: String,authen: String, account: Customer): NetworkResponse<List<Customer>> {
-        return repository.addEditCustomer(url,authen, account,)
+    suspend operator fun invoke(url: String, account: Customer,authen: String,): NetworkResponse<List<Customer>> {
+        return repository.addEditCustomer(url, account,authen)
     }
 }

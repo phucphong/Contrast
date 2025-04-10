@@ -34,7 +34,7 @@ object CategoryNetworkModule {
 
     @Provides
     @Singleton
-    fun provideCategoryAPI(@Named("CustomDomain") retrofit: Retrofit): CategoryAPI {
+    fun provideCategoryAPI(retrofit: Retrofit): CategoryAPI {
         return retrofit.create(CategoryAPI::class.java)
     }
 

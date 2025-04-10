@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.contrast.Contrast.extensions.ColorAdapter
 import com.contrast.Contrast.extensions.LocalDateTimeAdapter
-import com.contrast.Contrast.utils.AppConfig
+import com.itechpro.data.config.AppConfig
 
 
 import com.squareup.moshi.Moshi
@@ -62,14 +62,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    @Named("CustomDomain")
     fun provideRetrofitCustomDomain(
         okHttpClient: OkHttpClient,
         moshiConverterFactory: MoshiConverterFactory, @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
             .baseUrl(currentBaseUrl)
-
             .client(okHttpClient)
             .build()
     }
@@ -79,28 +77,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    @Named("DomainITP")
-    fun provideRetrofitITP(
-        okHttpClient: OkHttpClient,
-        moshiConverterFactory: MoshiConverterFactory
-    ): Retrofit {
-        val domain = "https://itp.ezmax.vn"
-        return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
-            .baseUrl(currentBaseUrl)
-            .client(okHttpClient)
-            .build()
+    fun provideAppConfig(@ApplicationContext context: Context): AppConfig {
+        return AppConfig(context)
     }
+
 
     @Provides
     fun provideContext(application: Application): Context {
         return application
-    }
-
-    @Provides
-    @Singleton
-    @Named("deviceActive")
-    fun provideDevice(@ApplicationContext context: Context): String {
-        return AppConfig.getDevice(context)
     }
 
 

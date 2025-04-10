@@ -192,20 +192,20 @@ fun ChangePasswordScreen(
             )
             showLoadingDialog = false
         }else{
-            val account = Account(
-                id = "0",
-                ido = "0",
-                hoten = fullName,
-                dienthoai = phoneNumber,
-                email = email,
-                username = phoneNumber,
-                password = password,
-                key = Common.key,
-                mamenu = "dangkytaikhoan",
-                hanhdong = "$phoneNumber - $fullName",
-                noidungchinh = "add",
-                device = viewModel.deviceActive,
-            )
+//            val account = Account(
+//                id = "0",
+//                ido = "0",
+//                hoten = fullName,
+//                dienthoai = phoneNumber,
+//                email = email,
+//                username = phoneNumber,
+//                password = password,
+//                key = Common.key,
+//                mamenu = "dangkytaikhoan",
+//                hanhdong = "$phoneNumber - $fullName",
+//                noidungchinh = "add",
+//                device = viewModel.device,
+//            )
 
 
 

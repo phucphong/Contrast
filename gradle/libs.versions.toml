@@ -18,7 +18,6 @@ ksp-version = "2.1.0-1.0.29"
 hilt-version = "2.51.1"
 sdp-version = "1.0.6"
 ssp-version = "1.0.6"
-javax-inject = "1"
 cardview-version = "28.0.0"
 camerax-version = "1.4.1"
 coil-version = "2.6.0"
@@ -59,6 +58,7 @@ ui = "1.0.1"
 paging-compose = "3.2.1"
 foundationLayout = "1.0.1"
 calendar = "2.6.2"
+javaxInject  = "1"
 
 
 [libraries]
@@ -152,6 +152,9 @@ paging-composer = { group = "androidx.paging", name = "paging-compose", version.
 paging-runtime = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 calendar = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "calendar" }
+javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

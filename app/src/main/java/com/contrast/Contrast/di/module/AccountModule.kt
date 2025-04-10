@@ -32,7 +32,7 @@ object AccountNetworkModule {
 
     @Provides
     @Singleton
-    fun provideAccountAPI(@Named("CustomDomain") retrofit: Retrofit): AccountAPI {
+    fun provideAccountAPI( retrofit: Retrofit): AccountAPI {
         return retrofit.create(AccountAPI::class.java)
     }
 

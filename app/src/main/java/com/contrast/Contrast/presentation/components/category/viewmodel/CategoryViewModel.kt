@@ -13,6 +13,7 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.enumApp.CategoryType
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.preferences.PreferencesManager
 import com.itechpro.domain.usecase.category.CategoryUseCase
 import com.itechpro.domain.usecase.catogory.FilterCategoryUseCase
 import com.itechpro.domain.usecase.register.RegisterAccountUseCase
@@ -30,10 +31,7 @@ class CategoryViewModel @Inject constructor(
     private val categoryUseCase: CategoryUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val stringProvider: StringProvider,
-    @Named("deviceActive") var deviceActive: String,
-    @Named("authen") private val authen: String,
-    @Named("idEmployee") var idEmployee: String,
-    @Named("isOffLine") var isOffLine: Boolean
+    private val preferencesManager: PreferencesManager,
 ) : ViewModel() {
 
 
@@ -46,7 +44,7 @@ class CategoryViewModel @Inject constructor(
     var searchText by mutableStateOf("")
     val filteredCategories: StateFlow<List<Category>>
         get() = filterCategoryUseCase(_categories, searchText)
-
+    private val authen: String = preferencesManager.getToken()
     fun setSearch(text: String) {
         searchText = text
     }

@@ -2,7 +2,7 @@ package com.contrast.Contrast.di.module.app
 
 
 import android.content.Context
-import com.contrast.Contrast.utils.AppConfig
+import com.itechpro.data.config.AppConfig
 
 
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -14,15 +14,15 @@ import javax.inject.Singleton
 //
 
 
-@Singleton
 @Named("CustomDomain")
+@Singleton
 class DynamicBaseUrlInterceptor @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val appConfig: AppConfig
 ) : Interceptor {
-
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        val newUrl = AppConfig.getDomain(context) // Fallback URL
+        val newUrl = appConfig.getDomain() // ✅ Sửa ở đây
 
 
         val newHttpUrl = newUrl.toHttpUrlOrNull()

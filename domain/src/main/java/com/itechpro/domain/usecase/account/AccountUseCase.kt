@@ -5,8 +5,9 @@ package com.itechpro.domain.usecase.account
 import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.repository.AccountRepository
+import javax.inject.Inject
 
-class AccountUseCase(
+class AccountUseCase @Inject constructor( // ✅ thêm @Inject
     private val repository: AccountRepository
 ) {
     suspend fun execute(account: Account, authToken: String?, type: String): NetworkResponse<List<Account>> {

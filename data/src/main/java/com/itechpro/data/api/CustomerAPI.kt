@@ -43,9 +43,8 @@ interface CustomerAPI {
     @POST
     suspend fun addEditCustomer(
         @Url url: String,
-        @Header("Authorization") authen: String?,
         @Body body: Customer,
-
+        @Header("Authorization") authen: String?,
     ): Response<List<Customer>>
 
 }

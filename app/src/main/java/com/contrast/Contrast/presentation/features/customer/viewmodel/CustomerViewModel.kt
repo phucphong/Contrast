@@ -24,6 +24,9 @@ import com.contrast.Contrast.extensions.convertDateToYYYYMMDD
 import com.contrast.Contrast.extensions.formatDateTimeDDMMYYYY
 
 import com.itechpro.domain.enumApp.ValidationErrorType
+import com.itechpro.domain.model.UserModel
+import com.itechpro.domain.preferences.PreferencesManager
+import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.customer.CheckEmailUseCase
 import com.itechpro.domain.usecase.customer.CheckPhoneUseCase
 import com.itechpro.domain.usecase.customer.CustomerInputValidator
@@ -31,16 +34,15 @@ import com.itechpro.domain.usecase.customer.CustomerUseCase
 
 @HiltViewModel
 class CustomerViewModel @Inject constructor(
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val addEditCustomerUseCase: CustomerUseCase,
     private val checkPhoneUseCase: CheckPhoneUseCase,
     private val checkEmailUseCase: CheckEmailUseCase,
     private val validator: CustomerInputValidator,
     private val stringProvider: StringProvider,
+    private val preferencesManager: PreferencesManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    @Named("deviceActive") var deviceActive: String,
-    @Named("authen") private val authen: String,
-    @Named("idEmployee") var idEmployee: String,
-    @Named("isOffLine") var isOffLine: Boolean
+  
 ) : ViewModel() {
 
     private val _registerState = MutableStateFlow<NetworkResponse<List<Customer>>>(NetworkResponse.Loading)
@@ -49,6 +51,17 @@ class CustomerViewModel @Inject constructor(
     private val _validationError = MutableStateFlow<String?>(null)
     val validationError: StateFlow<String?> = _validationError
     var dateOfBirtday = ""
+
+    private val _currentUser = MutableStateFlow<UserModel?>(null)
+    val currentUser: StateFlow<UserModel?> = _currentUser
+    private val device: String = preferencesManager.getDevice()
+    private val authen: String = preferencesManager.getToken()
+    private val idEmployee: String = preferencesManager.getEmployeeId()
+    init {
+        viewModelScope.launch {
+            _currentUser.value = getCurrentUserUseCase()
+        }
+    }
 
     fun validateAndRegister(
 
@@ -87,6 +100,8 @@ class CustomerViewModel @Inject constructor(
         noteWork: String,
         partnerId1: String,
         partnerId2: String,
+        handoverData: String,
+        isReferralAgent: String,
         createTask: Boolean,
         type: Boolean,
     ) {
@@ -114,12 +129,10 @@ class CustomerViewModel @Inject constructor(
             id = customerId,
             ido = customerId,
             loai = typeData,
-
             idquocgia = countryId,
             idtinhthanh = provinceId,
             idquanhuyen = districtId,
             idphuongxa = wardId,
-
             idtrangthai = statusId,
             idnguonthongtin = infoSourceId,
             idnguoiphutrach = contactPersonId,
@@ -129,7 +142,6 @@ class CustomerViewModel @Inject constructor(
             idnguoichamsoc = careStaffId,
             idnhomchinhsach = policyGroupId,
             idnhomnganhnghe = industryGroupId,
-
             ma = code,
             xungho = salutation,
             ten = fullName,
@@ -148,18 +160,18 @@ class CustomerViewModel @Inject constructor(
             facebook = facebook,
             zalo = zalo,
             ggmap = ggmap,
+//            datalanh = handoverData,
+//            isdailygioithieu =isReferralAgent,
 
             ghichu = note,
             ghichucongviec = noteWork,
-
             taocongviec = createTask,
             iddoitac1 = partnerId1,
             iddoitac2 = partnerId2,
-
             mamenu = mamenu,
             hanhdong = "$phone - $fullName",
             noidungchinh = content,
-            device = deviceActive
+            device = device
         )
 
 
@@ -243,8 +255,7 @@ class CustomerViewModel @Inject constructor(
                     url = "/ex/api/editkhachhang"
                 }
 
-               
-                val result = addEditCustomerUseCase.invoke(url,authen, obj)
+                val result = addEditCustomerUseCase.invoke(url, obj,authen)
                 _registerState.value = result
             } catch (e: Exception) {
                 _registerState.value = NetworkResponse.Error(stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}")

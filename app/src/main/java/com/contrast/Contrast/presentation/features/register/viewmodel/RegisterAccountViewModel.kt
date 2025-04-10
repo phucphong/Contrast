@@ -23,6 +23,7 @@ import javax.inject.Named
 import com.contrast.Contrast.R
 import com.itechpro.domain.usecase.register.UserInputValidator
 import com.itechpro.domain.enumApp.ValidationErrorType
+import com.itechpro.domain.preferences.PreferencesManager
 
 @HiltViewModel
 class RegisterAccountViewModel @Inject constructor(
@@ -32,10 +33,10 @@ class RegisterAccountViewModel @Inject constructor(
     private val validator: UserInputValidator,
     private val stringProvider: StringProvider,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    @Named("deviceActive") var deviceActive: String,
-    @Named("authen") private val authen: String,
-    @Named("idEmployee") var idEmployee: String,
-    @Named("isOffLine") var isOffLine: Boolean
+
+
+
+    private val preferencesManager: PreferencesManager,
 ) : ViewModel() {
 
     private val _registerState = MutableStateFlow<NetworkResponse<List<Account>>>(NetworkResponse.Loading)
@@ -44,7 +45,10 @@ class RegisterAccountViewModel @Inject constructor(
     private val _validationError = MutableStateFlow<String?>(null)
     val validationError: StateFlow<String?> = _validationError
     var dateOfBirtday = ""
-
+    private val device: String = preferencesManager.getDevice()
+    private val authen: String = preferencesManager.getToken()
+    private val idEmployee: String = preferencesManager.getEmployeeId()
+    private val isOffLine: Boolean = preferencesManager.isOfflineMode()
     fun validateAndRegister(
         phone: String, fullName: String, password: String, confirmPassword: String,
         email: String?, selectedDay: String, selectedMonth: String, selectedYear: String,
@@ -127,7 +131,7 @@ class RegisterAccountViewModel @Inject constructor(
                     mamenu = "dangkytaikhoan",
                     hanhdong = "$phone - $fullName",
                     noidungchinh = "add",
-                    device = deviceActive
+                    device = device
                 )
                 val result = registerAccountUseCase.invoke("/ex/apiaffiliate/dangkytaikhoan", account)
                 _registerState.value = result

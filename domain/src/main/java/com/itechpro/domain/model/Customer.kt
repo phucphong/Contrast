@@ -47,6 +47,7 @@ data class Customer(
     var ngayxacnhan_khmt: String? = null,
     var fax: String? = null,
     var loai: String? = null,
+    var isdailygioithieu: String? = null,
 
     var iddailygioithieu: String? = null,
     var idnguoiphutrach: String? = null,
@@ -63,7 +64,7 @@ data class Customer(
     var idquanhuyen: String? = null,
     var idphuongxa: String? = null,
     var taocongviec: Boolean? = false,
-    var isdailygioithieu: Boolean? = false,
+
 
     var key: String? = null
 

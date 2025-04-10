@@ -10,7 +10,7 @@ import com.itechpro.domain.model.NetworkResponse
 
 interface CustomerRepository {
 
-    suspend fun addEditCustomer(url: String,authen: String, account: Customer): NetworkResponse<List<Customer>>
+    suspend fun addEditCustomer(url: String, obj: Customer,authen: String): NetworkResponse<List<Customer>>
 
     suspend fun checkPhone(
         obj: String?,

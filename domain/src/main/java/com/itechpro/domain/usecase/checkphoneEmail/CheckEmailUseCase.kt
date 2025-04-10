@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class CheckEmailUseCase(
+class CheckEmailUseCase @Inject constructor(
     private val repository: RegisterAccountRepository
 ) {
     fun execute(

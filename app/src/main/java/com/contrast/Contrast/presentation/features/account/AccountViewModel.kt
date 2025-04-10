@@ -17,6 +17,7 @@ import javax.inject.Inject
 import javax.inject.Named
 import com.contrast.Contrast.utils.StringProvider
 import com.contrast.Contrast.R
+import com.itechpro.domain.preferences.PreferencesManager
 import com.itechpro.domain.usecase.account.AccountUseCase
 import com.itechpro.domain.usecase.account.ValidateAccountUseCase
 
@@ -26,14 +27,14 @@ class AccountViewModel @Inject constructor(
     private val accountUseCase: AccountUseCase,
     private val stringProvider: StringProvider, // ✅ Inject StringProvider để lấy string từ resource
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    @Named("deviceActive") var deviceActive: String
+    private val preferencesManager: PreferencesManager,
 ) : ViewModel() {
 
     private val _registerState = MutableStateFlow<NetworkResponse<List<Account>>>(NetworkResponse.Loading)
     val registerState: StateFlow<NetworkResponse<List<Account>>> = _registerState
 
 
-
+    private val deviceActive: String = preferencesManager.getDevice()
     fun updateAccount(account: Account, authToken: String?, type: String) {
         viewModelScope.launch(dispatcher) {
             _registerState.value = NetworkResponse.Loading

@@ -79,7 +79,7 @@ fun CustomTextField(
 
                         )
                 }
-                if (value.isNotEmpty()) {
+                if (value.isNotEmpty()&&!isRequired) {
                     Image(
                         painter = painterResource(R.drawable.close), contentDescription = "",
                         modifier = Modifier

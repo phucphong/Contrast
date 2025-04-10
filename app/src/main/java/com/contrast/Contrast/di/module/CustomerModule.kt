@@ -35,7 +35,7 @@ object CustomerNetworkModule {
 
     @Provides
     @Singleton
-    fun provideCustomerAPI(@Named("CustomDomain") retrofit: Retrofit): CustomerAPI {
+    fun provideCustomerAPI( retrofit: Retrofit): CustomerAPI {
         return retrofit.create(CustomerAPI::class.java)
     }
 

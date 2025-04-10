@@ -21,27 +21,6 @@ object DomainModule {
     fun provideFilterCategoryUseCase(): FilterCategoryUseCase {
         return FilterCategoryUseCase()
     }
-    // ---------------   đăng ký tài khoản ------------------
-    @Provides
-    @Singleton
-    fun provideValidateRegisterUseCase(): ValidateRegisterUseCase {
-        return ValidateRegisterUseCase()
-    }
-
-    @Provides
-    @Singleton
-    fun provideValidateAccountUseCase(): ValidateAccountUseCase {
-        return ValidateAccountUseCase()
-    }
-
-
-    @Provides
-    @Singleton
-    fun provideUserInputValidator(
-        validateRegisterUseCase: ValidateRegisterUseCase
-    ): UserInputValidator {
-        return UserInputValidator(validateRegisterUseCase)
-    }
 
     // ---------------   khách hàng ------------------
     @Provides

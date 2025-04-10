@@ -4,6 +4,7 @@ package com.itechpro.data.repository
 
 
 
+import android.util.Log
 import com.itechpro.data.api.CustomerAPI
 
 import com.itechpro.domain.model.Account
@@ -20,9 +21,9 @@ class CustomerRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun addEditCustomer(url: String,authen: String, account:Customer): NetworkResponse<List<Customer>> {
+    override suspend fun addEditCustomer(url: String, obj:Customer,authen: String): NetworkResponse<List<Customer>> {
         return try {
-            val response = api.addEditCustomer(url,authen, account)
+            val response = api.addEditCustomer(url, obj,authen)
             if (response.isSuccessful) {
                 NetworkResponse.Success(response.body() ?: emptyList())
             } else {
@@ -30,6 +31,8 @@ class CustomerRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             NetworkResponse.Error("Exception: ${e.message}")
+
+
         }
     }
 

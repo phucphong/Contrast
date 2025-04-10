@@ -85,6 +85,18 @@ fun CustomerScreen(
         }
     }
 
+    val currentUser by viewModel.currentUser.collectAsState()
+
+    LaunchedEffect(currentUser) {
+        currentUser?.let {
+            if (fieldIds[CustomerFieldType.CONTACT_PERSON].isNullOrEmpty()) {
+                fieldIds[CustomerFieldType.CONTACT_PERSON] = it.id
+                fieldNames[CustomerFieldType.CONTACT_PERSON] = it.name
+            }
+        }
+    }
+
+
     LaunchedEffect(registerState) {
         when (registerState) {
             is NetworkResponse.Success -> {
@@ -179,7 +191,10 @@ fun CustomerScreen(
                     fieldNames[CustomerFieldType.NOTE]?: "",
                     fieldNames[CustomerFieldType.NOTE]?: "",
                     "",
-                    "", false,
+                    "",
+                    "",
+                    "",
+                    createTask,
                     isPersonalCustomer
                 )
             })

@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.line.CustomDivider
+import com.contrast.Contrast.presentation.components.line.CustomDividerColor
+import com.contrast.Contrast.presentation.theme.PlaceholderGray
 
 @Composable
 fun CustomText(
@@ -24,6 +26,7 @@ fun CustomText(
     fontWeight: FontWeight =  FontWeight(400),
     fontSize: TextUnit = 14.sp,
     color: Color = Color.Black,
+    colorUnderline: Color = Color.Black,
     textAlign: TextAlign = TextAlign.Left,
     showUnderline: Boolean = false
 ) {
@@ -47,11 +50,11 @@ fun CustomText(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 4.dp)
+                .padding(bottom = 5.dp)
         )
 
         if (showUnderline) {
-            CustomDivider()
+            CustomDividerColor(PlaceholderGray)
         }
     }
 }

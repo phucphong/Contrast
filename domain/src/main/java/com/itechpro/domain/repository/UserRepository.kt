@@ -1,8 +1,7 @@
 package com.itechpro.domain.repository
 
-import com.itechpro.domain.model.UserModel
-
+import com.itechpro.domain.model.CurrentUserInfo
 
 interface UserRepository {
-    suspend fun getCurrentUser(): UserModel
+    suspend fun getCurrentUser(): CurrentUserInfo
 }

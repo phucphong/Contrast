@@ -79,7 +79,7 @@
     <string name="password_uppercase">At least 1 uppercase letter</string>
     <string name="password_lowercase">At least 1 lowercase letter</string>
     <string name="password_special">At least 1 special character (e.g.: !, @, #, $, %, ^)</string>
-    <string name="contact_info">Other contact information</string>
+    <string name="contact"> contact </string>
     <string name="events_happening">Ongoing Events</string>
     <string name="store_list">Store List</string>
     <string name="see_all">SEE ALL</string>

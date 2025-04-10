@@ -27,6 +27,7 @@ fun CustomTopAppBarBackTitleSave(
     backgroundColor: Color = Color.White,
     fontWeight: FontWeight = FontWeight.Bold,
     iconTint: Color = Color.Gray,
+    isSave:Boolean =true,
     onBackClick: () -> Unit,
     onSaveClick: (() -> Unit)? = null
 ) {
@@ -50,8 +51,8 @@ fun CustomTopAppBarBackTitleSave(
             }
         },
         actions = {
-            onSaveClick?.let {
-                TextButton(onClick = it) {
+            if (isSave && onSaveClick != null) {
+                TextButton(onClick = onSaveClick) {
                     Text(
                         text = stringResource(R.string.save),
                         color = TealGreen,
@@ -59,7 +60,8 @@ fun CustomTopAppBarBackTitleSave(
                     )
                 }
             }
-        },
+        }
+        ,
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = backgroundColor
         )

@@ -8,7 +8,7 @@ package com.itechpro.domain.model
 data class Customer(
 
     val os: String? = "android",
-
+//    String tenquocgia,tentinhthanh,tenquanhuyen,tenphuongxa;
     var ma: String? = null,
     var xungho: String? = null,
     var ten: String? = null,
@@ -16,6 +16,11 @@ data class Customer(
     var id: String? = null,
     var ido: String? = null,
     var mamenu: String? = null,
+    var tenquocgia: String? = null,
+    var tentinhthanh: String? = null,
+    var tenquanhuyen: String? = null,
+    var tenphuongxa: String? = null,
+    var loaikhachhangtudong: String? = null,
 
     var device: String? = null,
     var hanhdong: String? = null,
@@ -30,8 +35,15 @@ data class Customer(
     var ghichucongviec: String? = null,
     var iddoitac1: String? = null,
     var iddoitac2: String? = null,
+    var tentrangthai: String? = null,
+    var tennhomnganhghe: String? = null,
+    var tennhomchinhsach: String? = null,
+    var tencapdo: String? = null,
+    var gmap: String? = null,
+    var ngaychamsoctxt: String? = null,
 
     var dienthoai: String? = null,
+    var dienthoai1: String? = null,
     var diachi: String? = null,
     var email: String? = null,
     var website: String? = null,
@@ -39,8 +51,11 @@ data class Customer(
     var ngaythanhlapcongty: String? = null,
     var nguoidaidien: String? = null,
     var tennganhang: String? = null,
+    var tennguonthongtin: String? = null,
     var taikhoannganhang: String? = null,
+    var tennguoigioithieu: String? = null,
     var ngaychamsoc: String? = null,
+    var tennguoichamsoc: String? = null,
     var datalanh: String? = null,
     var chucvunguoidaidien: String? = null,
     var masothue: String? = null,

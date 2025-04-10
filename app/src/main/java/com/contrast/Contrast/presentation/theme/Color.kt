@@ -22,11 +22,17 @@ val FF1E7D3A = Color(0xFF1E7D3A) // 🟢 Xanh lá cây đậm (Dark Green)
 val FFD7D7D7 = Color(0xFFD7D7D7) // ⚪ Xám nhạt (Light Gray)
 val FFAFAFAF = Color(0xFFAFAFAF) // ⚪ Xám nhạt (Light Gray)
 val FF888888 = Color(0xFF888888) // ⚪ Xám vừa (Medium Gray)
+val FF9E9E9E = Color(0xFF9E9E9E) // ⚪ Xám vừa (Medium Gray)
 val FFD9D9D9 = Color(0xFFD9D9D9) // ⚪ Xám trung bình (Medium Gray)
-
+val F2F2F7 = Color(0xFFF2F2F7) // Nền tổng thể
+val FAFAFA = Color(0xFFFAFAFA) // Nền tổng thể
+val EEEEEF = Color(0xFFEEEEEF) // Nền segment tab
 val FF333333 = Color(0xFF333333) // ⚫ Xám đậm (Dark Gray)
 val FF7C7C7C = Color(0xFF7C7C7C) // ⚫ Xám tối (Dark Gray)
+val PlaceholderGray = Color(0xFFC6C6CD)
+val iOSUnderlineGray = Color(0xFFD1D1D6)
 
+val FFE0E0E0 = Color(0xFFE0E0E0) // ⚫
 val FFA7D2C0 = Color(0xFFA7D2C0) // ⚫
 val FFF9CB8C = Color(0xFFF9CB8C) // ⚫
 val B2FFFFFF = Color(0xB2FFFFFF) // ⚫

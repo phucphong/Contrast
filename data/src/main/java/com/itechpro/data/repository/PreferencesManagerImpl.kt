@@ -24,6 +24,7 @@ class PreferencesManagerImpl @Inject constructor(
     override fun getFullName(): String = appConfig.getFullName()
     override fun getPermissionMobile(): String = appConfig.getPermissionMobile()
     override fun getDomain(): String = appConfig.getDomain()
+    override fun getDomainCustomer(): String =appConfig.getDomainCustomer()
     override fun getDevice(): String = appConfig.getDevice()
     override fun getDiscountAgency(): String = appConfig.getDiscountAgency()
     override fun getPaySalary(): String = appConfig.getPaySalary()

@@ -24,6 +24,7 @@
     <string name="error_empty_dob_month">Vui lòng chọn tháng sinh</string>
     <string name="error_empty_dob_year">Vui lòng chọn năm sinh</string>
     <string name="unknown_error">Không xác định</string>
+    <string name="custom_detail">Chi tiết khách hàng</string>
     <string name="customType">Kiểu khách hàng</string>
     <string name="customFullName">Tên khách hàng</string>
     <string name="contact_person">Người phụ trách</string>
@@ -32,7 +33,7 @@
     <string name="customer_kind">Loại khách hàng</string>
     <string name="info_source">Nguồn thông tin</string>
     <string name="customer_add">Thêm khách hàng</string>
-    <string name="customer_edit">Sửa khách hàng</string>
+    <string name="edit">Sửa</string>
     <string name="customer_type">Kiểu khách hàng</string>
     <string name="confirm">Đồng ý</string>
     <string name="customer_name">Tên khách hàng</string>
@@ -104,13 +105,33 @@
     <string name="balance_label">Số dư</string>
     <string name="payment_methods">Hình Thức Thanh Toán</string>
     <string name="close">Đóng</string>
+    <string name="save_work">Lưu và tạo việc</string>
     <string name="domestic_card">Thẻ nội địa</string>
     <string name="domestic_banks">Vietcombank, BIDV, Vietinbank, Sacombank</string>
     <string name="international_card">Thẻ quốc tế</string>
     <string name="international_banks">Visa, MasterCard, JCB, Amex</string>
     <string name="e_wallet">Ví điện tử</string>
 
+    <string name="customer_code">Mã khách hàng</string>
+    <string name="phone_number_label">Điện thoại</string>
 
+    <string name="email_label">Email</string>
+    <string name="website_label">Website</string>
+    <string name="level_label">Cấp độ</string>
+    <string name="policy_group_label">Nhóm chính sách</string>
+    <string name="industry_group_label">Nhóm ngành nghề</string>
+    <string name="status_label">Trạng thái</string>
+    <string name="country">Quốc gia</string>
+    <string name="province">Tỉnh thành</string>
+    <string name="district">Quận huyện</string>
+    <string name="ward">Phường xã</string>
+    <string name="customer_type_label">Loại khách hàng</string>
+    <string name="auto_type">Loại tự động</string>
+    <string name="info_source_label">Nguồn thông tin</string>
+    <string name="introducer_label">Người giới thiệu</string>
+    <string name="care_date_label">Ngày chăm sóc</string>
+    <string name="care_staff_label">Người chăm sóc</string>
+    <string name="note_label">Ghi chú</string>
     <string name="forgot_password_question">Bạn có muốn tiếp tục?</string>
 
     <string name="wallet_payment">Thanh toán bằng Ví</string>
@@ -344,7 +365,15 @@
     <string name="password_uppercase">Có ít nhất 1 chữ in hoa</string>
     <string name="password_lowercase">Có ít nhất 1 chữ thường</string>
     <string name="password_special">Có ít nhất 1 ký tự đặc biệt (vd: !, @, #, $, %, ^)</string>
-    <string name="contact_info">Thông tin liên hệ khác</string>
+    <string name="contact">Liên hệ</string>
+    <string name="contact_info">Thông tin liên hệ</string>
+    <string name="business_opportunity">CHKD</string>
+    <string name="more">Khác</string>
+    <string name="info">Thông tin</string>
+    <string name="other">Khác</string>
+    <string name="timeline">Timeline</string>
+    <string name="exchange">Trao đổi</string>
+    <string name="task">Công việc</string>
     <string name="events_happening">Sự kiện đang diễn ra</string>
     <string name="store_list">Danh sách cửa hàng</string>
     <string name="see_all">XEM TẤT CẢ</string>

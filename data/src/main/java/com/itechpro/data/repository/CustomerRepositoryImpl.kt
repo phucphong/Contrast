@@ -36,6 +36,15 @@ class CustomerRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun customerDetail(
+        obj: String?,
+        mode: String?,
+        ido: String?,
+        authen: String?
+    ): NetworkResponse<List<Customer>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun checkPhone(
         obj: String?,
         mode: String?,

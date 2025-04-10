@@ -1,14 +1,13 @@
-
 package com.itechpro.domain.usecase.account
 
-import com.itechpro.domain.model.UserModel
+import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.repository.UserRepository
-import javax.inject.Inject // ✅ Thêm import này
+import javax.inject.Inject
 
-class GetCurrentUserUseCase @Inject constructor( // ✅ Thêm @Inject
+class GetCurrentUserUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    suspend operator fun invoke(): UserModel {
+    suspend operator fun invoke(): CurrentUserInfo {
         return repository.getCurrentUser()
     }
 }

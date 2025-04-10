@@ -59,6 +59,8 @@ paging-compose = "3.2.1"
 foundationLayout = "1.0.1"
 calendar = "2.6.2"
 javaxInject  = "1"
+swiperefresh  = "0.33.2-alpha"
+
 
 
 [libraries]
@@ -153,6 +155,8 @@ paging-runtime = { group = "androidx.paging", name = "paging-compose", version.r
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 calendar = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "calendar" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
+accompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
+
 
 
 

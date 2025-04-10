@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
+import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.dateTimePicker.CustomDateTimePickerDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialogMultiSelect
@@ -32,6 +33,9 @@ import com.contrast.Contrast.presentation.features.customer.CustomerFieldType
 import com.contrast.Contrast.presentation.features.customer.viewmodel.CustomerViewModel
 import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
+import com.contrast.Contrast.presentation.theme.FFAFAFAF
+import com.contrast.Contrast.presentation.theme.TealGreen
+import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
 import kotlinx.coroutines.launch
 
@@ -63,6 +67,7 @@ fun CustomerScreen(
     var provinceId by remember { mutableStateOf("0") }
     var districtId by remember { mutableStateOf("0") }
     var wardId by remember { mutableStateOf("0") }
+    var customer by remember { mutableStateOf("") }
 
     var createTask by remember { mutableStateOf(false) }
 
@@ -85,13 +90,28 @@ fun CustomerScreen(
         }
     }
 
+    val domainCustomer by viewModel.domainCustomer.collectAsState()
+
     val currentUser by viewModel.currentUser.collectAsState()
+    val obj by viewModel.obj.collectAsState()
+
+
 
     LaunchedEffect(currentUser) {
         currentUser?.let {
             if (fieldIds[CustomerFieldType.CONTACT_PERSON].isNullOrEmpty()) {
                 fieldIds[CustomerFieldType.CONTACT_PERSON] = it.id
                 fieldNames[CustomerFieldType.CONTACT_PERSON] = it.name
+            }
+        }
+    }
+    LaunchedEffect(ido) {
+        if (ido != "0") {
+            viewModel.customerDetail(ido)
+            viewModel.obj.collect { customer ->
+                customer?.let {
+                    fillFieldsFromCustomer(it, fieldNames, fieldIds, fieldTypeValues)
+                }
             }
         }
     }
@@ -200,7 +220,7 @@ fun CustomerScreen(
             })
 
         LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp).weight(1f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
              isPersonalCustomer = fieldTypeValues[CustomerFieldType.CUSTOMER_TYPE] == "Cá nhân"
@@ -295,6 +315,18 @@ fun CustomerScreen(
             }
         }
 
+        if(domainCustomer=="dcheery"){
+            CustomButton(
+                text = stringResource(id = R.string.save_work),
+                textColor = Color.White,
+                containerColor = TealGreen,
+                roundedCornerShape = 10.dp,
+                onClick = {
+
+                }
+            )
+        }
+
         showDialogForKey?.let { key ->
             key.categoryType?.let { categoryType ->
                 if (key.isMultiSelect) {
@@ -356,4 +388,38 @@ fun CustomerScreen(
 //            )
         }
     }
+}
+private fun fillFieldsFromCustomer(
+    customer: Customer,
+    fieldNames: MutableMap<CustomerFieldType, String>,
+    fieldIds: MutableMap<CustomerFieldType, String>,
+    fieldTypeValues: MutableMap<CustomerFieldType, String>
+) {
+    // Field name values
+    fieldNames[CustomerFieldType.CUSTOMER_NAME] = customer.ten?:""
+    fieldNames[CustomerFieldType.PHONE_NUMBER] = customer.dienthoai?:""
+    fieldNames[CustomerFieldType.EMAIL] = customer.email?:""
+    fieldNames[CustomerFieldType.ADDRESS] = customer.diachi?:""
+    fieldNames[CustomerFieldType.WEBSITE] = customer.website?:""
+    fieldNames[CustomerFieldType.BANK_NAME] = customer.taikhoannganhang?:""
+    fieldNames[CustomerFieldType.BANK_ACCOUNT] = customer.tennganhang?:""
+    fieldNames[CustomerFieldType.ESTABLISH_DATE] = customer.ngaythanhlapcongty?:""
+    fieldNames[CustomerFieldType.CARE_DATE] = customer.ngaychamsoc?:""
+    fieldNames[CustomerFieldType.FACEBOOK] = customer.facebook?:""
+    fieldNames[CustomerFieldType.ZALO] = customer.zalo?:""
+    fieldNames[CustomerFieldType.MAP_LINK] = customer.ggmap?:""
+    fieldNames[CustomerFieldType.NOTE] = customer.ghichu?:""
+
+    // Type
+    fieldTypeValues[CustomerFieldType.CUSTOMER_TYPE] = if (customer.loai == "canhan") "Cá nhân" else "Tổ chức"
+
+    // Field ID values
+    fieldIds[CustomerFieldType.STATUS_CUSTOMER] = customer.idtrangthai?:""
+    fieldIds[CustomerFieldType.CONTACT_PERSON] = customer.idnguoiphutrach?:""
+    fieldIds[CustomerFieldType.INTRODUCER] = customer.idnguoigioithieu?:""
+    fieldIds[CustomerFieldType.LEVEL] = customer.idcapdo?:""
+    fieldIds[CustomerFieldType.INDUSTRY] = customer.idnhomnganhnghe?:""
+    fieldIds[CustomerFieldType.POLICY_GROUP] = customer.idnhomchinhsach?:""
+    fieldIds[CustomerFieldType.INFO_SOURCE] = customer.idnguonthongtin?:""
+    fieldIds[CustomerFieldType.CARE_STAFF] = customer.idnguoichamsoc?:""
 }

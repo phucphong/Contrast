@@ -22,7 +22,7 @@ fun BorderedCheckBox(
 ) {
     Box(
         modifier = Modifier
-            .size(24.dp)
+            .size(22.dp)
             .border(
                 width = 1.5.dp,
                 color = bordercolor,

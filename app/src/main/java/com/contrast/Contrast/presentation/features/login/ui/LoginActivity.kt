@@ -22,7 +22,7 @@ class LoginActivity : ComponentActivity() {
 //                LoginScreenPreview()
 //            }
 
-            MainScreen()
+            LoginScreenPreview()
 
         }
     }

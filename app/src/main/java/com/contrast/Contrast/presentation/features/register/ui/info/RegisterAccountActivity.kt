@@ -23,6 +23,7 @@ class RegisterAccountActivity : ComponentActivity() {
 //            WorkScreen()
 
             CustomerDetailScreen(
+                ido="",
                 onEditClick = {
                     navController.navigate("edit_customer")
                 },

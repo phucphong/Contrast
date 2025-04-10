@@ -32,12 +32,43 @@ class AppConfig(context: Context) {
     fun getDisplayPriority(): String = prefs.getString(KEY_DISPLAY_PRIORITY, "") ?: ""
     fun getCategory(): String = prefs.getString(KEY_CATEGORY, "") ?: ""
     fun getTypeAccount(): String = prefs.getString(KEY_TYPE_ACCOUNT, "") ?: ""
-    fun getShowPhoneKH(): Boolean = prefs.getBoolean(KEY_SHOW_PHONE, false)
-    fun getShowEmailKH(): Boolean = prefs.getBoolean(KEY_SHOW_EMAIL, false)
-    fun getShowAddressKH(): Boolean = prefs.getBoolean(KEY_SHOW_ADDRESS, false)
+    fun getShowPhoneKH(): String = prefs.getString(KEY_SHOW_PHONE, "") ?: ""
+    fun getShowEmailKH(): String = prefs.getString(KEY_SHOW_EMAIL, "") ?: ""
+    fun getShowAddressKH(): String = prefs.getString(KEY_SHOW_ADDRESS, "") ?: ""
     fun isOfflineMode(): Boolean = prefs.getBoolean(KEY_LOGIN, false)
     fun getAdmin(): String = prefs.getString(KEY_ADMIN, "") ?: ""
     fun getAdminRoot(): String = prefs.getString(KEY_ADMIN_ROOT, "") ?: ""
+
+
+    fun setIdEmployee(value: String) = prefs.edit().putString(KEY_ID_EMPLOYEE, value).apply()
+    fun setEmployeeName(value: String) = prefs.edit().putString(KEY_EMPLOYEE_NAME, value).apply()
+    fun setToken(value: String) = prefs.edit().putString(KEY_TOKEN, value).apply()
+    fun setIdCompany(value: String) = prefs.edit().putString(KEY_ID_COMPANY, value).apply()
+    fun setIdCompanyParent(value: String) = prefs.edit().putString(KEY_ID_COMPANY_PARENT, value).apply()
+    fun setAppType(value: String) = prefs.edit().putString(KEY_APP_TYPE, value).apply()
+    fun setEmail(value: String) = prefs.edit().putString(KEY_EMAIL, value).apply()
+    fun setPhone(value: String) = prefs.edit().putString(KEY_PHONE, value).apply()
+    fun setSalesPointId(value: String) = prefs.edit().putString(KEY_ID_SALE_POINT, value).apply()
+    fun setSalesPointName(value: String) = prefs.edit().putString(KEY_SALE_POINT_NAME, value).apply()
+    fun setFullName(value: String) = prefs.edit().putString(KEY_ID_FULL_NAME, value).apply()
+    fun setPermissionMobile(value: String) = prefs.edit().putString(KEY_PERMISSION, value).apply()
+    fun setDomain(value: String) = prefs.edit().putString(KEY_DOMAIN, value).apply()
+    fun setDomainCustomer(value: String) = prefs.edit().putString(KEY_DOMAIN_CUSTOMER, value).apply()
+    fun setDevice(value: String) = prefs.edit().putString(KEY_DEVICE, value).apply()
+    fun setDiscountAgency(value: String) = prefs.edit().putString(KEY_DISCOUNT_AGENCY, value).apply()
+    fun setPaySalary(value: String) = prefs.edit().putString(KEY_PAY_SALARY, value).apply()
+    fun setDisplayService(value: String) = prefs.edit().putString(KEY_DISPLAY_SERVICE, value).apply()
+    fun setDisplayProduct(value: String) = prefs.edit().putString(KEY_DISPLAY_PRODUCT, value).apply()
+    fun setDisplayPriority(value: String) = prefs.edit().putString(KEY_DISPLAY_PRIORITY, value).apply()
+    fun setCategory(value: String) = prefs.edit().putString(KEY_CATEGORY, value).apply()
+    fun setTypeAccount(value: String) = prefs.edit().putString(KEY_TYPE_ACCOUNT, value).apply()
+    fun setShowPhoneKH(value: String) = prefs.edit().putString(KEY_SHOW_PHONE, value).apply()
+    fun setShowEmailKH(value: String) = prefs.edit().putString(KEY_SHOW_EMAIL, value).apply()
+    fun setShowAddressKH(value: String) = prefs.edit().putString(KEY_SHOW_ADDRESS, value).apply()
+    fun setOfflineMode(value: Boolean) = prefs.edit().putBoolean(KEY_LOGIN, value).apply()
+    fun setAdmin(value: Boolean) = prefs.edit().putBoolean(KEY_ADMIN, value).apply()
+    fun setAdminRoot(value: Boolean) = prefs.edit().putBoolean(KEY_ADMIN_ROOT, value).apply()
+
 
     companion object {
         private const val SHARED_PREFERENCES_NAME = "Phucphong"

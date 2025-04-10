@@ -24,6 +24,22 @@
     <string name="error_empty_dob_month">Vui lòng chọn tháng sinh</string>
     <string name="error_empty_dob_year">Vui lòng chọn năm sinh</string>
     <string name="unknown_error">Không xác định</string>
+    <string name="slogan">making business easier</string>
+    <string name="username_label">Tài khoản</string>
+    <string name="username_placeholder">admin@itechpro.vn</string>
+    <string name="password_label">Mật khẩu</string>
+    <string name="connect_code_label">Mã kết nối</string>
+    <string name="connect_code_placeholder">https://spa.ezmax.vn</string>
+
+    <string name="register_qr">Đăng ký trở thành đại lý với Qr Code</string>
+
+    <string name="remember_me">Lưu mật khẩu</string>
+
+    <string name="register">Đăng ký tài khoản</string>
+    <string name="connect_code">Mã kết nối</string>
+    <string name="copyright">Copyright © 2025 by ITECHPRO</string>
+    <string name="version">Phiên bản: 5.4</string>
+
     <string name="custom_detail">Chi tiết khách hàng</string>
     <string name="customType">Kiểu khách hàng</string>
     <string name="customFullName">Tên khách hàng</string>

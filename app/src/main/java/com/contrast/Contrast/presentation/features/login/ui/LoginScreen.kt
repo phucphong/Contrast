@@ -1,6 +1,6 @@
 package com.contrast.Contrast.presentation.features.login.ui
 
-import android.content.res.Configuration
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,6 +33,11 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
 import com.contrast.Contrast.presentation.components.PasswordRequirements
+import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckBox
+import com.contrast.Contrast.presentation.components.line.CustomDividerColor
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.theme.FF000000
+import com.contrast.Contrast.presentation.theme.PlaceholderGray
 
 @Preview(showBackground = true)
 @Composable
@@ -42,133 +48,146 @@ fun LoginScreenPreview() {
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    var phoneNumber by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") } // Thông báo lỗi
+    var rememberMe by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
-            .padding(18.dp)
-            .verticalScroll(rememberScrollState())
+            .background(Color.White)
+            .padding(horizontal = 24.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
-        Spacer(modifier = Modifier.height(100.dp))
-
-        // Tiêu đề
-        Text(
-            text = stringResource(id = R.string.login),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-        CustomText(
-            stringResource(id = R.string.phoneNumber)
-        )
-        // Ô nhập số điện thoại
-        CustomTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            placeholder = stringResource(id = R.string.phone_placeholder),
-            keyboardType = KeyboardType.Phone
-        )
-
-        // Mật khẩu
-        CustomText(
-            text = buildAnnotatedString {
-                append(stringResource(id = R.string.password))
-                withStyle(style = SpanStyle(color = Color.Red)) {
-                    append("*")
-                }
-            }.toString()
-        )
-
-        CustomTextFieldPassword(
-            value = password,
-            onValueChange = { password = it },
-            placeholder = stringResource(id = R.string.password_placeholder),
-            keyboardType = KeyboardType.Password
-        )
-
-        // Hiển thị điều kiện mật khẩu nếu có nhập
-        if (password.isNotEmpty()) {
-            PasswordRequirements(password = password)
-        }
-
-        // Hiển thị lỗi nếu có
-        if (errorMessage.isNotEmpty()) {
-            Text(
-                text = errorMessage,
-                color = Color.Red,
-                fontSize = 14.sp,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.weight(1f)) // Đẩy nội dung lên trên
-
-        // Nút đăng nhập
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp) // Khoảng cách giữa hai nút
+                .weight(1f)
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Nút đăng nhập
-            Button(
-                onClick = {
-                    // Điều hướng hoặc xử lý đăng nhập
-                    navController.navigate("home")
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+            Spacer(modifier = Modifier.height(48.dp))
+          Row {
+
+              Box(Modifier.weight(1f))
+              Image(
+                  painter = painterResource(id = R.drawable.close),
+                  contentDescription = "close",
+                  modifier = Modifier
+                      .size(30.dp).noRippleClickableComposable {
+
+                      }
+
+
+              )
+
+          }
+
+
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "EZMAX Logo",
                 modifier = Modifier
-                    .weight(1f) // Chiếm phần lớn chiều rộng
+                    .height(100.dp)
+                    .scale(2f).padding(top = 20.dp)
+
+            )
+
+
+            Spacer(modifier = Modifier.height(36.dp))
+
+            CustomText(text = stringResource(R.string.username_label))
+            CustomTextField(
+                value = username,
+                onValueChange = { username = it },
+                placeholder = stringResource(R.string.username_placeholder),
+                keyboardType = KeyboardType.Email
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CustomText(text = stringResource(R.string.password_label))
+            CustomTextFieldPassword(
+                value = password,
+                onValueChange = { password = it },
+                placeholder = stringResource(R.string.password_placeholder),
+                keyboardType = KeyboardType.Password
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = { /* login logic */ },
+                modifier = Modifier
+                    .fillMaxWidth()
                     .height(50.dp),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00AA88))
+            ) {
+                Text(text = stringResource(R.string.login), fontSize = 16.sp, color = Color.White)
+            }
+
+            Spacer(modifier = Modifier.size(20.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                BorderedCheckBox(
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it }
+                )
+                Text(text = stringResource(R.string.remember_me),
+                        color = FF000000,
+                     modifier = Modifier.padding(5.dp))
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Text(
+                    text = stringResource(R.string.forgot_password),
+                    color = FF000000,
+                    modifier = Modifier.padding(5.dp,5.dp,0.dp,5.dp).clickable {
+                        navController.navigate("forgotPassword")
+                    }
+                )
+            }
+            Spacer(modifier = Modifier.size(10.dp))
+            CustomDividerColor()
+            Spacer(modifier = Modifier.size(10.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(id = R.string.login),
-                    color = Color.White,
-                    fontSize = 16.sp
+                    text = stringResource(R.string.register),
+                    color = Color(0xFF00AA88),
+                    modifier = Modifier.clickable { navController.navigate("register") }
+                )
+                Text(
+                    text = stringResource(R.string.connect_code),
+                    color = Color(0xFF00AA88),
+                    modifier = Modifier.clickable { navController.navigate("connectCode") }
                 )
             }
 
-            // Nút Face ID
-            Box(
-                modifier = Modifier
-                    .size(50.dp) // Kích thước nhỏ hơn so với trước để phù hợp
-                    .clip(RoundedCornerShape(10.dp)) // Bo góc giống nút chính
-                    .background(Color.Red)
-                    .clickable {
-                        // Xử lý đăng nhập bằng Face ID
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.face_id), // Thay bằng icon Face ID của bạn
-                    contentDescription = "Face ID",
-
-                    modifier = Modifier.size(24.dp) // Nhỏ hơn để cân đối
-                )
-            }
+            Spacer(modifier = Modifier.height(48.dp))
         }
-        // Nút "Quên mật khẩu"
+
         Text(
-            text = stringResource(id = R.string.forgot_password),
-            color = Color.Gray,
-            fontSize = 14.sp,
-            textDecoration = TextDecoration.Underline, // Thêm gạch chân
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 15.dp, bottom = 90.dp)
-                .clickable {
-                    navController.navigate("forgotPassword")
-                }
+            text = stringResource(R.string.copyright),
+            color = Color(0xFF00AA88),
+            fontSize = 13.sp
         )
+        Spacer(modifier = Modifier.size(10.dp))
+        Text(
+            text = stringResource(R.string.version),
+            color = Color.Gray,
+            fontSize = 13.sp
+        )
+        Spacer(modifier = Modifier.size(10.dp))
     }
 }

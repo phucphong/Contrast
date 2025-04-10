@@ -5,7 +5,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,6 +17,7 @@ import com.contrast.Contrast.presentation.components.bottomAction.BottomAction
 import com.contrast.Contrast.presentation.components.header.HeaderImageTitle
 import com.contrast.Contrast.presentation.components.tab.SegmentTab
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
+import com.contrast.Contrast.presentation.features.chat.ChatInputBox
 import com.contrast.Contrast.presentation.features.customer.viewmodel.CustomerViewModel
 import com.contrast.Contrast.presentation.features.detail.InfoItemDetail
 import com.contrast.Contrast.presentation.theme.FAFAFA
@@ -27,6 +27,7 @@ import com.itechpro.domain.model.InfoDetail
 
 @Composable
 fun CustomerDetailScreen(
+    ido: String,
     onEditClick: () -> Unit = {},
     onContactClick: () -> Unit = {},
     onBusinessClick: () -> Unit = {},
@@ -45,6 +46,24 @@ fun CustomerDetailScreen(
     val customerInfoList by viewModel.customerInfo.collectAsState()
     val customerInfoOtherList  by viewModel.customerOther.collectAsState()
     val timelineList = getCustomerInfoList()
+
+    LaunchedEffect(ido) {
+        if (ido != "0") {
+            viewModel.customerDetail(ido)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { selectedTabIndex }
+            .collect { index ->
+                when (index) {
+                    2 -> viewModel.loadTimelineData(ido)  // API load timeline
+                    3 -> viewModel.loadExchangeData(ido)  // API load exchange
+                }
+            }
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -110,7 +129,17 @@ fun CustomerDetailScreen(
                     }
                     if (infoList != null) {
                         infoList.forEach { info ->
-                            InfoItemDetail(info = info)
+
+                            when (selectedTabIndex) {
+                                0 -> InfoItemDetail(info = info)
+                                1 ->InfoItemDetail(info = info)
+                                2 -> TimelineCustomer(info = info)
+                                3 -> ExchangeCustomer(info = info)
+                                else ->{
+
+                                }
+                            }
+
                         }
                     }
                 }
@@ -125,10 +154,19 @@ fun CustomerDetailScreen(
         ) {
             BottomAction(icon = R.drawable.ic_edit, label = stringResource(R.string.edit), onClick = onEditClick)
             BottomAction(icon = R.drawable.ic_contact, label = stringResource(R.string.contact), onClick = onContactClick)
-            BottomAction(icon = R.drawable.ic_opportunitie, label = stringResource(R.string.business_opportunity), onClick = onBusinessClick)
+            BottomAction(icon = R.drawable.ic_opportunity, label = stringResource(R.string.business_opportunity), onClick = onBusinessClick)
             BottomAction(icon = R.drawable.ic_task, label = stringResource(R.string.task), onClick = onTaskClick)
             BottomAction(icon = R.drawable.ic_more, label = stringResource(R.string.more), onClick = onMoreClick)
         }
+    }
+
+    if(selectedTabIndex==3){
+        ChatInputBox(
+            text = "",
+            onTextChange = {},
+            onSendClick = {},
+            onAttachClick = {}
+        )
     }
 }
 

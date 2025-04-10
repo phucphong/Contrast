@@ -21,6 +21,21 @@ interface CustomerRepository {
         authen: String?
     ): NetworkResponse<List<Customer>>
 
+    suspend fun loadTimelineData (
+        obj: String?,
+        mode: String?,
+        ido: String?,
+        authen: String?
+    ): NetworkResponse<List<Customer>>
+
+
+    suspend fun loadExchangeData (
+        obj: String?,
+        mode: String?,
+        ido: String?,
+        authen: String?
+    ): NetworkResponse<List<Customer>>
+
 
     suspend fun checkPhone(
         obj: String?,

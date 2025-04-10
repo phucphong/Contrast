@@ -47,6 +47,54 @@ class CustomerUseCase @Inject constructor(
 
     }.flowOn(Dispatchers.IO)
 
+    fun loadExchangeData(
+        ido: String?,
+        authen: String?
+    ): Flow<NetworkResponse<List<Customer>>> = flow {
+        emit(NetworkResponse.Loading)
+
+        val response = repository.loadExchangeData("khachhang","gettraodoi",ido,authen)
+
+        when (response) {
+            is NetworkResponse.Success -> {
+                val customer = response.data
+                if (customer != null) {
+                    emit(NetworkResponse.Success(customer))
+                } else {
+                    emit(NetworkResponse.Error("Không có dữ liệu chi tiết khách hàng"))
+                }
+            }
+
+            is NetworkResponse.Error -> emit(NetworkResponse.Error(response.message))
+            is NetworkResponse.Loading -> {} // No-op
+        }
+
+    }.flowOn(Dispatchers.IO)
+
+    fun loadTimelineData(
+        ido: String?,
+        authen: String?
+    ): Flow<NetworkResponse<List<Customer>>> = flow {
+        emit(NetworkResponse.Loading)
+
+        val response = repository.loadTimelineData("khachhang","gettimeline",ido,authen)
+
+        when (response) {
+            is NetworkResponse.Success -> {
+                val customer = response.data
+                if (customer != null) {
+                    emit(NetworkResponse.Success(customer))
+                } else {
+                    emit(NetworkResponse.Error("Không có dữ liệu chi tiết khách hàng"))
+                }
+            }
+
+            is NetworkResponse.Error -> emit(NetworkResponse.Error(response.message))
+            is NetworkResponse.Loading -> {} // No-op
+        }
+
+    }.flowOn(Dispatchers.IO)
+
 
 
 

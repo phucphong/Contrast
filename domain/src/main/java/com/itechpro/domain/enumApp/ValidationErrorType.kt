@@ -7,6 +7,7 @@ enum class ValidationErrorType {
     EMPTY_NAME,
     CONTACT_PERSON,
 
+    EMPTY_ACCOUNT,
     EMPTY_PASSWORD,
     EMPTY_RE_PASSWORD,
     EMPTY_DAY,

@@ -52,6 +52,10 @@ class CustomerViewModel @Inject constructor(
     val customerInfo: StateFlow<List<InfoDetail>?> = _customerInfo
     private val _customerOther = MutableStateFlow<List<InfoDetail>?>(null)
     val customerOther: StateFlow<List<InfoDetail>?> = _customerOther
+  private val _timelineData = MutableStateFlow<List<Customer>?>(null)
+    val timelineData: StateFlow<List<Customer>?> = _timelineData
+  private val _exchangeData = MutableStateFlow<List<Customer>?>(null)
+    val exchangeData: StateFlow<List<Customer>?> = _exchangeData
 
     private val _domainCustomer = MutableStateFlow("")
     val domainCustomer: StateFlow<String> = _domainCustomer
@@ -300,6 +304,60 @@ class CustomerViewModel @Inject constructor(
                             _obj.value = result.data
                             _customerInfo.value = mapToInfoDetail(result.data)
                             _customerOther.value = mapToCustomerInfoOtherList(result.data)
+                        }
+                        is NetworkResponse.Error -> {
+                            _validationError.value = result.message
+
+                        }
+                        NetworkResponse.Loading -> {
+
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            } finally {
+
+            }
+        }
+    }
+    fun loadExchangeData( ido: String) {
+        viewModelScope.launch(dispatcher) {
+
+            try {
+                customerUseCase.loadExchangeData(ido, currentUserInfo.token ).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Success -> {
+
+                            _exchangeData.value = result.data
+
+                        }
+                        is NetworkResponse.Error -> {
+                            _validationError.value = result.message
+
+                        }
+                        NetworkResponse.Loading -> {
+
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            } finally {
+
+            }
+        }
+    }
+    fun loadTimelineData( ido: String) {
+        viewModelScope.launch(dispatcher) {
+
+            try {
+                customerUseCase.loadTimelineData(ido, currentUserInfo.token ).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Success -> {
+
+                            _timelineData.value = result.data
+
                         }
                         is NetworkResponse.Error -> {
                             _validationError.value = result.message

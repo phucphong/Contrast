@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.line.CustomDivider
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
+import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
 
 @Composable
@@ -65,7 +66,7 @@ fun CustomText(
     fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit = 14.sp,
 
-    color: Color = Color.Black,
+    color: Color = FF000000,
     textAlign: TextAlign = TextAlign.Left,
     showUnderline: Boolean = false
 ) {

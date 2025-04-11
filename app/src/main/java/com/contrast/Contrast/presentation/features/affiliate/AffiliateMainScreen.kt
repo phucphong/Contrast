@@ -23,13 +23,12 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliatePage
-import com.contrast.Contrast.presentation.features.main.home.ui.HomeAffiliatePage
-import com.contrast.Contrast.presentation.features.main.location.ui.LocationScreen
+
 
 import com.contrast.Contrast.presentation.features.store.ui.StoreListScreen
 import com.contrast.Contrast.presentation.features.membership.rewards.RewardsScreen
 import com.contrast.Contrast.presentation.features.navigato.AppNavHost
-import com.contrast.Contrast.presentation.features.security.SecurityScreen
+
 
 
 @Preview(showBackground = true)

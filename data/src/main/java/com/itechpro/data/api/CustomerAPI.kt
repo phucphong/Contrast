@@ -37,6 +37,46 @@ interface CustomerAPI {
         @Header("Authorization") authen: String?
     ): Response<List<Column1>>
 
+    @Headers("Content-Type: application/json")
+    @GET("/ex/api/getobj")
+    suspend fun getCustomerDetail(
+        @Query("obj") obj: String?,
+        @Query("mode") mode: String?,
+        @Query("ido") ido: String?,
+        @Header("Authorization") authen: String?
+    ): Response<List<Customer>>
+
+
+    @Headers("Content-Type: application/json")
+    @GET("/ex/api/getobj")
+    suspend fun getTimelineData(
+        @Query("obj") obj: String?,
+        @Query("mode") mode: String?,
+        @Query("ido") ido: String?,
+        @Header("Authorization") authen: String?
+    ): Response<List<Customer>>
+
+
+    @Headers("Content-Type: application/json")
+    @GET("/ex/api/getobj")
+    suspend fun getExchangeData(
+        @Query("obj") obj: String?,
+        @Query("mode") mode: String?,
+        @Query("ido") ido: String?,
+        @Header("Authorization") authen: String?
+    ): Response<List<Customer>>
+
+    @Headers("Content-Type: application/json")
+    @GET("/ex/api/getobj")
+    suspend fun getCustomerCardInformation(
+        @Query("obj") obj: String,
+        @Query("mode") mode: String,
+        @Query("idkhachhang") idCustomer: String,
+        @Query("iddh") iddh: String,
+        @Query("ngayban") ngayban: String,
+        @Header("Authorization") authen: String?
+    ): Response<List<Customer>>
+
 
 
     @Headers("Content-Type: application/json")

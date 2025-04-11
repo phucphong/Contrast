@@ -5,6 +5,38 @@ fun formatDateYYYYMMDD(day: Int, month: Int, year: Int): String {
     return "%04d-%02d-%02d".format(year, month, day)
 }
 
+fun formatToYYYYMMDD(input: String): String {
+    return try {
+        val inputFormat = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss", java.util.Locale.getDefault())
+        val outputFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        val date = inputFormat.parse(input)
+        outputFormat.format(date ?: return "")
+    } catch (e: Exception) {
+        ""
+    }
+}
+
+fun formatToDDMYYYYHHMM(input: String): String {
+    return try {
+        val inputFormat = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss", java.util.Locale.getDefault())
+        val outputFormat = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault())
+        val date = inputFormat.parse(input)
+        outputFormat.format(date ?: return "")
+    } catch (e: Exception) {
+        ""
+    }
+}
+fun formatToDDMYYYY(input: String): String {
+    return try {
+        val inputFormat = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss", java.util.Locale.getDefault())
+        val outputFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+        val date = inputFormat.parse(input)
+        outputFormat.format(date ?: return "")
+    } catch (e: Exception) {
+        ""
+    }
+}
+
 
 fun convertDateToYYYYMMDD(dateStr: String): String {
     return try {

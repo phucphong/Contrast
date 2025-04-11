@@ -29,9 +29,9 @@ data class CurrentUserInfo(
     val discountAgency: String,
     val paySalary: String,
 
-    val showPhoneKH: Boolean,
-    val showEmailKH: Boolean,
-    val showAddressKH: Boolean,
+    val showPhoneKH: String,
+    val showEmailKH: String,
+    val showAddressKH: String,
 
     val admin: String,
     val adminRoot: String

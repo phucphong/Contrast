@@ -10,11 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 
 @Composable
 fun BorderedCheckBox(
+    size: Dp=22.dp,
     checked: Boolean,
     bordercolor: Color=Color.Gray,
     tintIcon: Color=Color.Gray,
@@ -22,7 +24,7 @@ fun BorderedCheckBox(
 ) {
     Box(
         modifier = Modifier
-            .size(22.dp)
+            .size(size)
             .border(
                 width = 1.5.dp,
                 color = bordercolor,

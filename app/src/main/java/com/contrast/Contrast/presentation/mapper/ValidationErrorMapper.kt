@@ -25,6 +25,7 @@ object ValidationErrorMapper {
             ValidationErrorType.UNKNOWN -> R.string.error_unknown
             ValidationErrorType.CONTACT_PERSON ->  R.string.error_empty_contact_person
             ValidationErrorType.INVALID_EMAIL -> R.string.error_email
+            ValidationErrorType.EMPTY_ACCOUNT -> R.string.error_account_empty
         }
     }
 }

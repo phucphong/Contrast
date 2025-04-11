@@ -36,9 +36,9 @@ interface PreferencesManager {
     fun getPaySalary(): String
 
     // 📞 Customer Display Options
-    fun getShowPhoneKH(): Boolean
-    fun getShowEmailKH(): Boolean
-    fun getShowAddressKH(): Boolean
+    fun getShowPhoneKH(): String
+    fun getShowEmailKH(): String
+    fun getShowAddressKH(): String
 
     // 🛡️ Admin Info
     fun getAdmin(): String

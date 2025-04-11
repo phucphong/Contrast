@@ -21,11 +21,17 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.itechpro.domain.model.Category
 
 
 @Composable
-fun TabBarRow(tabs: List<String>, selectedTab: Int, onTabSelected: (Int) -> Unit) {
+fun TabBarRow(tabs: List<Category>,
+              color: Color=Color.Red, textCorSelect: Color=Color.Black,
+
+              selectedTab: Int, onTabSelected: (Int) -> Unit) {
     val listState = rememberLazyListState()
+
+
 
     // Auto scroll
     LaunchedEffect(selectedTab) {
@@ -41,8 +47,9 @@ fun TabBarRow(tabs: List<String>, selectedTab: Int, onTabSelected: (Int) -> Unit
     ) {
         items(tabs.size) { index ->
             var textWidth by remember { mutableStateOf(0) }
+            var name =tabs[index].ten?:""
 
-            Column(
+                Column(
                 modifier = Modifier
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
@@ -54,10 +61,10 @@ fun TabBarRow(tabs: List<String>, selectedTab: Int, onTabSelected: (Int) -> Unit
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = tabs[index],
-                    fontSize = 16.sp,
+                    text = tabs[index].ten?:"",
+                    fontSize = 14.sp,
                     fontWeight = if (index == selectedTab) FontWeight.Bold else FontWeight.Normal,
-                    color = if (index == selectedTab) Color.Black else Color.Gray,
+                    color = if (index == selectedTab) textCorSelect else Color.Gray,
                     modifier = Modifier.onGloballyPositioned {
                         textWidth = it.size.width
                     }
@@ -68,7 +75,7 @@ fun TabBarRow(tabs: List<String>, selectedTab: Int, onTabSelected: (Int) -> Unit
                         modifier = Modifier
                             .height(2.dp)
                             .width(with(LocalDensity.current) { textWidth.toDp() }) // ✅ chiều rộng bằng Text
-                            .background(Color.Red)
+                            .background(color)
                     )
                 }
             }

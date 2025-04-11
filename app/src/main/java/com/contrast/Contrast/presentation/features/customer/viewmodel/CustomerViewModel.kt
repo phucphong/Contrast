@@ -9,11 +9,13 @@ import com.contrast.Contrast.presentation.mapper.ValidationErrorMapper
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.enumApp.CategoryType
 import com.itechpro.domain.enumApp.ValidationErrorType
+import com.itechpro.domain.model.BottomActionItem
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.InfoDetail
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.UserModel
+import com.itechpro.domain.model.navigationEvent.CustomerNavigationEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.customer.CheckEmailUseCase
 import com.itechpro.domain.usecase.customer.CheckPhoneUseCase
@@ -21,8 +23,10 @@ import com.itechpro.domain.usecase.customer.CustomerInputValidator
 import com.itechpro.domain.usecase.customer.CustomerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -70,6 +74,82 @@ class CustomerViewModel @Inject constructor(
         }
     }
 
+
+    private val _navigationEvent = MutableSharedFlow<CustomerNavigationEvent>()
+    val navigationEvent = _navigationEvent.asSharedFlow()
+
+
+
+
+    fun handleEdit() {
+        viewModelScope.launch {
+            _navigationEvent.emit(CustomerNavigationEvent.GoToEdit)
+        }
+    }
+    fun handleContact() {
+        viewModelScope.launch {
+            _navigationEvent.emit(CustomerNavigationEvent.GoToContact)
+        }
+    }
+    fun handleOpportunity() {
+        viewModelScope.launch {
+            _navigationEvent.emit(CustomerNavigationEvent.GoToOpportunity)
+        }
+    }
+
+    fun handleTask() {
+        viewModelScope.launch {
+            _navigationEvent.emit(CustomerNavigationEvent.GoToTask)
+        }
+    }
+
+    fun handleMore() {
+        viewModelScope.launch {
+            _navigationEvent.emit(CustomerNavigationEvent.GoToMore)
+        }
+    }
+
+
+    val bottomActions = listOf(
+        BottomActionItem(
+            id = "0",
+            iconRes = R.drawable.ic_edit,
+            label = stringProvider.getString(R.string.edit)
+        ),
+        BottomActionItem(
+            id = "1",
+            iconRes = R.drawable.ic_contact,
+            label = stringProvider.getString(R.string.contact)
+        ),
+        BottomActionItem(
+            id = "2",
+            iconRes = R.drawable.ic_opportunity,
+            label = stringProvider.getString(R.string.business_opportunity)
+        ),
+        BottomActionItem(
+            id = "3",
+            iconRes = R.drawable.ic_task,
+            label = stringProvider.getString(R.string.task)
+        ),
+        BottomActionItem(
+            id = "4",
+            iconRes = R.drawable.ic_more,
+            label = stringProvider.getString(R.string.more)
+        )
+    )
+
+    fun onBottomActionClick(id: String) {
+        when (id) {
+            "0" -> handleEdit()
+            "1" -> handleContact()
+            "2" -> handleOpportunity()
+            "3" -> handleTask()
+            "4" -> handleMore()
+        }
+    }
+
+
+    
     fun validateAndRegister(
         customerId: String,
         countryId: String,
@@ -293,11 +373,11 @@ class CustomerViewModel @Inject constructor(
     }
 
 
-    fun customerDetail( ido: String) {
+    fun getCustomerDetail( ido: String) {
         viewModelScope.launch(dispatcher) {
 
             try {
-                customerUseCase.customerDetail(ido, currentUserInfo.token ).collect { result ->
+                customerUseCase.getCustomerDetail(ido, currentUserInfo.token ).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
 
@@ -321,11 +401,11 @@ class CustomerViewModel @Inject constructor(
             }
         }
     }
-    fun loadExchangeData( ido: String) {
+    fun getExchangeData( ido: String) {
         viewModelScope.launch(dispatcher) {
 
             try {
-                customerUseCase.loadExchangeData(ido, currentUserInfo.token ).collect { result ->
+                customerUseCase.getExchangeData(ido, currentUserInfo.token ).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
 
@@ -348,11 +428,11 @@ class CustomerViewModel @Inject constructor(
             }
         }
     }
-    fun loadTimelineData( ido: String) {
+    fun getTimelineData( ido: String) {
         viewModelScope.launch(dispatcher) {
 
             try {
-                customerUseCase.loadTimelineData(ido, currentUserInfo.token ).collect { result ->
+                customerUseCase.getTimelineData(ido, currentUserInfo.token ).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
 

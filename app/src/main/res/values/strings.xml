@@ -381,7 +381,10 @@
     <string name="password_uppercase">Có ít nhất 1 chữ in hoa</string>
     <string name="password_lowercase">Có ít nhất 1 chữ thường</string>
     <string name="password_special">Có ít nhất 1 ký tự đặc biệt (vd: !, @, #, $, %, ^)</string>
+    <string name="history">Lịch sử</string>
+    <string name="call_internal">Nội bộ</string>
     <string name="contact">Liên hệ</string>
+    <string name="contact_phone">Danh bạ</string>
     <string name="contact_info">Thông tin liên hệ</string>
     <string name="business_opportunity">CHKD</string>
     <string name="more">Khác</string>
@@ -434,6 +437,7 @@
     <string name="CONTACT_PERSON">Không xác định</string>
     <string name="error_empty_contact_person">Vui lòng chọn người phụ trách</string>
     <string name="error_email">Email chưa đúng định dạng</string>
+    <string name="error_account_empty">Vui lòng nhập tài khoản đăng nhập</string>
     <string name="registered_phone">Số điện thoại đã đăng ký!</string>
     <string name="registered_email">Email đã đăng ký!</string>
     <string name="create_account_button" translatable="false">Tạo tài khoản</string>

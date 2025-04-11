@@ -23,6 +23,6 @@ fun BottomAction(icon: Int, label: String, onClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(painter = painterResource(id = icon), contentDescription = label, modifier = Modifier.size(24.dp))
-        Text(text = label, fontSize = 12.sp)
+        Text(text = label, fontSize = 12.sp, modifier = Modifier.padding(5.dp))
     }
 }

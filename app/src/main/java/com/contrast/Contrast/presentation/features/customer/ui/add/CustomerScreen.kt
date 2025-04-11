@@ -107,7 +107,7 @@ fun CustomerScreen(
     }
     LaunchedEffect(ido) {
         if (ido != "0") {
-            viewModel.customerDetail(ido)
+            viewModel.getCustomerDetail(ido)
             viewModel.obj.collect { customer ->
                 customer?.let {
                     fillFieldsFromCustomer(it, fieldNames, fieldIds, fieldTypeValues)

@@ -9,6 +9,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -29,7 +30,8 @@ fun CustomText(
     color: Color = Color.Black,
     colorUnderline: Color = Color.Black,
     textAlign: TextAlign = TextAlign.Left,
-    showUnderline: Boolean = false
+    showUnderline: Boolean = false,
+            weight: Boolean = false
 ) {
     val customFontFamily = FontFamily(
         Font(R.font.inter)
@@ -48,10 +50,16 @@ fun CustomText(
                 fontSize = fontSize,
                 color = color,
                 textAlign = textAlign,
+
             ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 5.dp)
+                .let {
+                    if (weight) it.weight(1f)
+                    else it
+                }
+
         )
 
         if (showUnderline) {
@@ -68,7 +76,8 @@ fun CustomText(
 
     color: Color = FF000000,
     textAlign: TextAlign = TextAlign.Left,
-    showUnderline: Boolean = false
+    showUnderline: Boolean = false,
+    weight: Boolean = false,
 ) {
     CustomText(
         text = AnnotatedString(text),

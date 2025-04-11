@@ -11,7 +11,12 @@ import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Column1
 import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.News
 import com.itechpro.domain.repository.CustomerRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 import javax.inject.Inject
 
@@ -36,30 +41,79 @@ class CustomerRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun customerDetail(
-        obj: String?,
-        mode: String?,
-        ido: String?,
-        authen: String?
+    override suspend fun getCustomerDetail(
+        obj: String,
+        mode: String,
+        ido: String,
+        authen: String
     ): NetworkResponse<List<Customer>> {
-        TODO("Not yet implemented")
+        val response = api.getCustomerDetail(obj,"getbyid",ido,authen)
+        return if (response.isSuccessful) {
+
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
     }
-    override suspend fun loadTimelineData(
-        obj: String?,
-        mode: String?,
-        ido: String?,
-        authen: String?
+
+
+
+
+      override suspend  fun getTimelineData(
+          obj: String,
+          mode: String,
+        ido: String,
+        authen: String
     ): NetworkResponse<List<Customer>> {
-        TODO("Not yet implemented")
+        val response = api.getTimelineData(obj,"gettimeline",ido,authen)
+        return if (response.isSuccessful) {
+
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
     }
-    override suspend fun loadExchangeData(
-        obj: String?,
-        mode: String?,
-        ido: String?,
-        authen: String?
+
+
+
+      override suspend  fun getExchangeData(
+          obj: String,
+          mode: String,
+        ido: String,
+        authen: String
     ): NetworkResponse<List<Customer>> {
-        TODO("Not yet implemented")
+        val response = api.getExchangeData(obj,"gettraodoi",ido,authen)
+        return if (response.isSuccessful) {
+
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
     }
+
+
+// hạng thẻ
+      override suspend  fun getCustomerCardInformation(
+          obj: String,
+          mode: String,
+          idCustomer: String,
+          idOder: String,
+          dateOder: String,
+          authen: String
+    ): NetworkResponse<List<Customer>> {
+        val response = api.getCustomerCardInformation(obj,"laythongtinhangthekh",idCustomer,idOder,dateOder,authen)
+        return if (response.isSuccessful) {
+
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
+    }
+
+
+
+
+
 
     override suspend fun checkPhone(
         obj: String?,

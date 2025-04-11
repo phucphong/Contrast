@@ -120,17 +120,27 @@ fun LoginScreen(navController: NavController) {
 
 
             Spacer(modifier = Modifier.height(24.dp))
+Row (verticalAlignment = Alignment.CenterVertically){
+    Button(
+        onClick = { /* login logic */ },
+        modifier = Modifier
+            .fillMaxWidth().weight(1f)
+            .height(50.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00AA88))
+    ) {
+        Text(text = stringResource(R.string.login), fontSize = 16.sp, color = Color.White)
+    }
 
-            Button(
-                onClick = { /* login logic */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00AA88))
-            ) {
-                Text(text = stringResource(R.string.login), fontSize = 16.sp, color = Color.White)
-            }
+    Image(
+        painter = painterResource(id = R.drawable.fingerprintscan),
+        contentDescription = "EZMAX Logo",
+        modifier = Modifier
+            .height(50.dp).padding(start = 15.dp)
+            .noRippleClickableComposable {  }
+
+
+    ) }
 
             Spacer(modifier = Modifier.size(20.dp))
             Row(
@@ -138,19 +148,20 @@ fun LoginScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 BorderedCheckBox(
+                    size=20.dp,
                     checked = rememberMe,
                     onCheckedChange = { rememberMe = it }
                 )
                 Text(text = stringResource(R.string.remember_me),
                         color = FF000000,
-                     modifier = Modifier.padding(5.dp))
+                     modifier = Modifier.padding(10.dp,2.dp,2.dp,2.dp))
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
                     text = stringResource(R.string.forgot_password),
                     color = FF000000,
-                    modifier = Modifier.padding(5.dp,5.dp,0.dp,5.dp).clickable {
+                    modifier = Modifier.padding(5.dp,2.dp,2.dp,2.dp).clickable {
                         navController.navigate("forgotPassword")
                     }
                 )

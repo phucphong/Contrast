@@ -8,6 +8,7 @@ import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
+import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.News
 import com.itechpro.domain.model.UserModel
@@ -30,12 +31,16 @@ class NewsViewModel @Inject constructor(
     private val _news = MutableStateFlow<List<News>>(emptyList())
     val news: StateFlow<List<News>> = _news
 
+
+    private val _obj = MutableStateFlow<News?>(null)
+    val obj: StateFlow<News?> = _obj
+
     private val _categoryNews = MutableStateFlow<List<Category>>(emptyList())
     val categoryNews: StateFlow<List<Category>> = _categoryNews
 
     private val _validationError = MutableStateFlow<String?>(null)
     val validationError: StateFlow<String?> = _validationError
-    private val _domain = MutableStateFlow<String?>(null)
+    private val _domain = MutableStateFlow<String?>("")
     val domain: StateFlow<String?> = _domain
 
     private val _selectedTab = MutableStateFlow(0)
@@ -59,6 +64,39 @@ class NewsViewModel @Inject constructor(
 
     fun onTabSelected(index: Int) {
         _selectedTab.value = index
+    }
+
+
+    fun getNewDetail( ido: String) {
+        viewModelScope.launch(dispatcher) {
+
+            try {
+                currentUserInfo?.let {
+                    newsUseCase.getNewDetail(ido, it.token ).collect { result ->
+                        when (result) {
+                            is NetworkResponse.Success -> {
+
+                                _obj.value = result.data
+
+                            }
+
+                            is NetworkResponse.Error -> {
+                                _validationError.value = result.message
+
+                            }
+
+                            NetworkResponse.Loading -> {
+
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            } finally {
+
+            }
+        }
     }
 
     fun getNews(idCategory: String) {

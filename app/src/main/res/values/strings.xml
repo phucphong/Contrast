@@ -302,6 +302,7 @@
     <!-- Chính sách thành viên -->
     <string name="membership_policy_title">Chính sách thành viên</string>
     <string name="membership_policy_heading">CHÍNH SÁCH THÀNH VIÊN</string>
+    <string name="new_detail">Chi tiết tin tức</string>
 
     <!-- Chính sách điểm -->
     <string name="points_policy_title">CHÍNH SÁCH ĐIỂM</string>

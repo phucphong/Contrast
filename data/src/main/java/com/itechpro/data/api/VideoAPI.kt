@@ -2,9 +2,11 @@ package com.itechpro.data.api
 
 
 
+
+
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.Login
-import com.itechpro.domain.model.News
+import com.itechpro.domain.model.Video
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,27 +16,27 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-interface NewsAPI {
+interface VideoAPI {
 
 
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobj")
 //    @GET("/ex/apiaffiliate/getobjpublic") off
-    suspend  fun getNews(
+    suspend  fun getVideos(
 
         @Query("obj") tintuc: String,
         @Query("mode") modedstintuc: String,
         @Query("idchudetintuc") idCategory: String,
         @Header("Authorization") authen: String
-    ): Response<List<News>>
+    ): Response<List<Video>>
 
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobjpublic")
-    suspend  fun getNewsOff(
+    suspend  fun getVideosOff(
         @Query("obj") tintuc: String?,
         @Query("mode") modedstintuc: String?,
         @Query("idchudetintuc") idCategory: String?
-    ): Response<List<News>>
+    ): Response<List<Video>>
 
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobj")
@@ -43,15 +45,7 @@ interface NewsAPI {
         @Query("mode") modedschudetintuc: String?,
         @Header("Authorization") authen: String?
     ): Response<List<Category>>
-    @Headers("Content-Type: application/json")
-    @GET("/ex/apiaffiliate/getobj")
-    suspend  fun getNewDetail(
-        @Query("obj") obj: String?,
-        @Query("mode") mode: String?,
-        @Query("ido") ido: String?,
-        @Header("Authorization") authen: String?
-    ): Response<List<News>>
-
+   
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobjpublic")
     suspend  fun getCategoryOff(

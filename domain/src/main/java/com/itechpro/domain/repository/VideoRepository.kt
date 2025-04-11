@@ -1,31 +1,29 @@
 package com.itechpro.domain.repository
 
+
+
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.News
+import com.itechpro.domain.model.Video
 
-interface NewsRepository {
+interface VideoRepository {
 
 
-    suspend fun getNews(
+    suspend fun getVideos(
         idCategory: String,
         authen: String
-    ): NetworkResponse<List<News>>
+    ): NetworkResponse<List<Video>>
 
-    suspend fun getNewsOff(
+    suspend fun getVideosOff(
         idCategory: String,
-    ): NetworkResponse<List<News>>
+    ): NetworkResponse<List<Video>>
 
     suspend fun getCategory(
         authen: String
     ): NetworkResponse<List<Category>>
 
-    suspend fun getNewDetail(
-        obj: String,
-        mode: String,
-        ido: String,
-        authen: String
-    ): NetworkResponse<List<News>>
+
 
     suspend fun getCategoryOff(
 

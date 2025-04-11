@@ -1,10 +1,14 @@
-package com.itechpro.domain.usecase.news
+package com.itechpro.domain.usecase.profile
+
+
+
 
 import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.News
+import com.itechpro.domain.model.Notification
 import com.itechpro.domain.repository.NewsRepository
+import com.itechpro.domain.repository.NotificationRepository
 import com.itechpro.domain.safeFlowCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -12,46 +16,30 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class NewsUseCase @Inject constructor(
-    private val repository: NewsRepository,
+class ProfileUseCase @Inject constructor(
+    private val repository: ProfileRepository,
 
-) {
+    ) {
 
 
-    fun getNews(offline: Boolean, idCategory: String, authen: String): Flow<NetworkResponse<List<News>>> {
+    fun getNotifications(startDate: String,endDate: String, authen: String): Flow<NetworkResponse<List<Notification>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
-                repository.getNewsOff(idCategory)
-            } else {
-                repository.getNews(idCategory, authen)
-            }
-
-            emit(result)
-        }.flowOn(Dispatchers.IO)
-    }
-
-    fun getCategory(offline: Boolean,  authen: String): Flow<NetworkResponse<List<Category>>> {
-        return flow {
-            emit(NetworkResponse.Loading)
-
-            val result = if (offline) {
-                repository.getCategoryOff()
-            } else {
-                repository.getCategory( authen)
-            }
+            val result = repository.getNotifications(startDate,endDate, authen)
 
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
 
 
-    fun getNewDetail(
+
+
+    fun getNotificationDetail(
         ido: String,
         authen: String
-    ): Flow<NetworkResponse<News>> = safeFlowCall {
-        val response = repository.getNewDetail("khachhang", "getbyid", ido, authen)
+    ): Flow<NetworkResponse<Notification>> = safeFlowCall {
+        val response = repository.getNotificationDetail("khachhang", "getbyid", ido, authen)
         when (response) {
             is NetworkResponse.Success -> {
                 val customer = response.data.firstOrNull()

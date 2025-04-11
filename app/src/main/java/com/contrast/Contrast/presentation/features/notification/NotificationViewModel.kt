@@ -1,4 +1,5 @@
-package com.contrast.Contrast.presentation.features.video.viewModel
+package com.contrast.Contrast.presentation.features.notification
+
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,35 +9,32 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
-import com.itechpro.domain.model.Video
+import com.itechpro.domain.model.Notification
+
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
-import com.itechpro.domain.usecase.news.NewsUseCase
-import com.itechpro.domain.usecase.video.VideoUseCase
+import com.itechpro.domain.usecase.notification.NotificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 @HiltViewModel
-class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
-                                         private val useCase: VideoUseCase,
-                                         private val stringProvider: StringProvider,
-                                         @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
+class NotificationViewModel @Inject constructor(
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val NotificationUseCase: NotificationUseCase,
+    private val stringProvider: StringProvider,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+) : ViewModel() {
+
+    private val _notifications = MutableStateFlow<List<Notification>>(emptyList())
+    val notifications: StateFlow<List<Notification>> = _notifications
 
 
+    private val _obj = MutableStateFlow<Notification?>(null)
+    val obj: StateFlow<Notification?> = _obj
 
-    private val _videos = MutableStateFlow<List<Video>>(emptyList())
-    val videos: StateFlow<List<Video>> = _videos
 
-
-    private val _obj = MutableStateFlow<Video?>(null)
-    val obj: StateFlow<Video?> = _obj
-
-    private val _categoryNews = MutableStateFlow<List<Category>>(emptyList())
-    val categoryNews: StateFlow<List<Category>> = _categoryNews
 
     private val _validationError = MutableStateFlow<String?>(null)
     val validationError: StateFlow<String?> = _validationError
@@ -55,7 +53,6 @@ class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetC
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo!!.domain?:""
 
-
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
@@ -67,20 +64,51 @@ class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetC
     }
 
 
+    fun getNotificationDetail( ido: String) {
+        viewModelScope.launch(dispatcher) {
 
-    fun getVideos(idCategory: String) {
+            try {
+                currentUserInfo?.let {
+                    NotificationUseCase.getNotificationDetail(ido, it.token ).collect { result ->
+                        when (result) {
+                            is NetworkResponse.Success -> {
+
+                                _obj.value = result.data
+
+                            }
+
+                            is NetworkResponse.Error -> {
+                                _validationError.value = result.message
+
+                            }
+
+                            NetworkResponse.Loading -> {
+
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            } finally {
+
+            }
+        }
+    }
+
+    fun getNotifications(startDate: String,endDate: String,) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {
             try {
-                useCase.getVideos(user.isOfflineMode, idCategory, user.token).collect { result ->
+                NotificationUseCase.getNotifications(startDate, endDate, user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
                             _isLoading.value = true
                         }
                         is NetworkResponse.Success -> {
                             _isLoading.value = false
-                            _videos.value = result.data
+                            _notifications.value = result.data
                         }
                         is NetworkResponse.Error -> {
                             _isLoading.value = false
@@ -94,7 +122,6 @@ class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetC
             }
         }
     }
-
 
 
 

@@ -3,16 +3,20 @@ package com.itechpro.data.repository
 
 
 
+
 import com.itechpro.data.api.NewsAPI
+import com.itechpro.data.api.VideoAPI
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.News
 import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.Video
 import com.itechpro.domain.repository.NewsRepository
+import com.itechpro.domain.repository.VideoRepository
 import javax.inject.Inject
 
-class NewsRepositoryImpl @Inject constructor(
-    private val api: NewsAPI
-) : NewsRepository {
+class VideoRepositoryImpl @Inject constructor(
+    private val api: VideoAPI
+) : VideoRepository {
 
 
 
@@ -35,8 +39,8 @@ class NewsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getNews(idCategory: String, authen: String): NetworkResponse<List<News>> {
-        val response = api.getNews("tintuc","modedstintuc",idCategory, authen)
+    override suspend fun getVideos(idCategory: String, authen: String): NetworkResponse<List<Video>> {
+        val response = api.getVideos("tintuc","modedstintuc",idCategory, authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
@@ -44,8 +48,8 @@ class NewsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getNewsOff(idCategory: String): NetworkResponse<List<News>> {
-        val response = api.getNewsOff("tintuc","modedstintuc",idCategory)
+    override suspend fun getVideosOff(idCategory: String): NetworkResponse<List<Video>> {
+        val response = api.getVideosOff("tintuc","modedstintuc",idCategory)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
@@ -54,13 +58,6 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getNewDetail( obj: String, mode: String,ido: String,authen: String): NetworkResponse<List<News>> {
-        val response = api.getNewDetail("tintuc","modedstintuc",ido, authen)
-        return if (response.isSuccessful) {
-            NetworkResponse.Success(response.body() ?: emptyList())
-        } else {
-            NetworkResponse.Error("Lỗi: ${response.message()}")
-        }
-    }
+
 
 }

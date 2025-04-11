@@ -3,7 +3,9 @@ package com.itechpro.domain.usecase.video
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.News
+import com.itechpro.domain.model.Video
 import com.itechpro.domain.repository.NewsRepository
+import com.itechpro.domain.repository.VideoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,19 +13,19 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class VideoUseCase @Inject constructor(
-    private val repository: NewsRepository,
+    private val repository: VideoRepository,
 
     ) {
 
 
-    fun getNews(offline: Boolean, idCategory: String, authen: String): Flow<NetworkResponse<List<News>>> {
+    fun getVideos(offline: Boolean, idCategory: String, authen: String): Flow<NetworkResponse<List<Video>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
             val result = if (offline) {
-                repository.getNewsOff(idCategory)
+                repository.getVideosOff(idCategory)
             } else {
-                repository.getNews(idCategory, authen)
+                repository.getVideos(idCategory, authen)
             }
 
             emit(result)

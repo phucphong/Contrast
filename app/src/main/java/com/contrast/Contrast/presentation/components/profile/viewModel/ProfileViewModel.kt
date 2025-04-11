@@ -1,4 +1,5 @@
-package com.contrast.Contrast.presentation.features.video.viewModel
+package com.contrast.Contrast.presentation.components.profile.viewModel
+
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,8 +22,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
-                                         private val useCase: VideoUseCase,
+class ProfileViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
+                                         private val useCase: ProfileUseCase,
                                          private val stringProvider: StringProvider,
                                          @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
 

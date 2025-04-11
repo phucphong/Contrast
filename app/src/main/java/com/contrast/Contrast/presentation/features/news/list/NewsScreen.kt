@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
@@ -49,8 +50,6 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
     val selectedTab by viewModel.selectedTab.collectAsState()
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
-    var isAlertDialogVisible by remember { mutableStateOf(false) }
 
     val isLoading by viewModel.isLoading.collectAsState()
 
@@ -72,14 +71,7 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
         )
         if (isLoading) {
             // Hiển thị loading, ví dụ:
-            Box(
-                modifier = Modifier.fillMaxSize().padding(top = 20.dp),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            // Hiển thị danh sách như cũ
+            CustomCircularProgressIndicator()
         }
 
         TabBarRow(

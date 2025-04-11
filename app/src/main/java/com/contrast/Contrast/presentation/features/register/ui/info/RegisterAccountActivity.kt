@@ -7,12 +7,16 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.contrast.Contrast.presentation.components.profile.ProfileScreen
 import com.contrast.Contrast.presentation.features.call.dialer.DialerScreen
 import com.contrast.Contrast.presentation.features.call.viewmodel.DialerViewModel
 import com.contrast.Contrast.presentation.features.customer.ui.add.CustomerScreen
 import com.contrast.Contrast.presentation.features.customer.ui.detail.CustomerDetailScreen
+import com.contrast.Contrast.presentation.features.news.detail.NewDetailScreen
 import com.contrast.Contrast.presentation.features.news.list.NewsScreen
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
+import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
+import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.video.VideoScreen
 import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
 import com.contrast.Contrast.presentation.features.work.WorkScreen
@@ -49,12 +53,32 @@ class RegisterAccountActivity : ComponentActivity() {
 //
 //            )
 
-            val viewModel: NewsViewModel = hiltViewModel()
-            NewsScreen(
-                viewModel = viewModel,
+//            val viewModel: NewsViewModel = hiltViewModel()
+//            NewsScreen(
+//                viewModel = viewModel,
+//
+//                )
+//            val viewModel: NotificationViewModel = hiltViewModel()
+//            NotificationScreen(
+//                viewModel = viewModel,
+//
+//                )
+//            val viewModel: VideoViewModel = hiltViewModel()
+//            VideoScreen(
+//                viewModel = viewModel,
+//
+//                )
+//  val viewModel: NewsViewModel = hiltViewModel()
+//            NewDetailScreen(
+//                ido="0",
+//                viewModel = viewModel,
+//                navController = navController
+//                )
 
-                )
+            ProfileScreen()
+
 
         }
+
     }
 }

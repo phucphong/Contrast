@@ -12,7 +12,7 @@ class AppConfig(context: Context) {
 
     fun getIdEmployee(): String = prefs.getString(KEY_ID_EMPLOYEE, "1") ?: "1"
     fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "ADMIN") ?: "ADMIN"
-    fun getToken(): String = prefs.getString(KEY_TOKEN, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluQGl0ZWNocHJvLnZuIiwidXNlcm5hbWUiOiJhZG1pbkBpdGVjaHByby52biIsImlkIjoiMSIsImlzYWRtaW4iOiJUcnVlIiwiYWN0aXZlIjoiVHJ1ZSIsImlkY29uZ3R5IjoiMSIsImlzYWRtaW5jb3NvIjoiVHJ1ZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiIwIiwibG9haWtoIjoiIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJuaGFudmllbiIsImhvdGVuIjoiIEFkbWluIiwiZGllbnRob2FpIjoiIiwiZW1haWwiOiJhZG1pbkBpdGVjaHByby52biIsInRlbmtoYWNoaGFuZyI6IklURUNIUFJPIiwibWFraGFjaGhhbmciOiJpdHAiLCJpZGNoYXQiOiJpdHBfMSIsInNlcnZlcmNoYXQiOiJodHRwOi8vMTkyLjE2OC4xLjE0OjkxMSIsIm5iZiI6MTc0NDMzNDgwMSwiZXhwIjoxNzUyOTc0ODAxLCJpYXQiOjE3NDQzMzQ4MDEsImlzcyI6Imh0dHBzczovL3NwYS5lem1heC52biIsImF1ZCI6Imh0dHBzczovL3NwYS5lem1heC52biJ9.w2Pv_NVyk51GvGI1YJOSSjJQrcmz3bsvRsARfSStQlo") ?: ""
+    fun getToken(): String = prefs.getString(KEY_TOKEN, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5NjQ5MzEyMjUiLCJ1c2VybmFtZSI6IjA5NjQ5MzEyMjUiLCJpZCI6IjE4MDQ5NzQiLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI1NzQxNTIxOTA2MTc4ODQxNzg3IiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDQ0NTQ3NDIsImV4cCI6MTc1MzA5NDc0MiwiaWF0IjoxNzQ0NDU0NzQyLCJpc3MiOiJodHRwc3M6Ly9jYWxpc3RhLmV6bWF4LnZuIiwiYXVkIjoiaHR0cHNzOi8vY2FsaXN0YS5lem1heC52biJ9.SPWLwjvR7-UGrCXrV7PrnUNGhm1BHE5g7_tVp5C_Wo8") ?: ""
     fun getIdCompany(): String = prefs.getString(KEY_ID_COMPANY, "") ?: ""
     fun getIdCompanyParent(): String = prefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""
     fun getAppType(): String = prefs.getString(KEY_APP_TYPE, "") ?: ""
@@ -22,19 +22,20 @@ class AppConfig(context: Context) {
     fun getSalesPointName(): String = prefs.getString(KEY_SALE_POINT_NAME, "") ?: ""
     fun getFullName(): String = prefs.getString(KEY_ID_FULL_NAME, "") ?: ""
     fun getPermissionMobile(): String = prefs.getString(KEY_PERMISSION, "") ?: ""
-    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "https://spa.ezmax.vn") ?: ""
+    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "https://calista.ezmax.vn") ?: ""
     fun getDomainCustomer(): String = prefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") ?: ""
     fun getDevice(): String = prefs.getString(KEY_DEVICE, "") ?: ""
     fun getDiscountAgency(): String = prefs.getString(KEY_DISCOUNT_AGENCY, "") ?: ""
     fun getPaySalary(): String = prefs.getString(KEY_PAY_SALARY, "") ?: ""
-    fun getDisplayService(): String = prefs.getString(KEY_DISPLAY_SERVICE, "") ?: ""
-    fun getDisplayProduct(): String = prefs.getString(KEY_DISPLAY_PRODUCT, "") ?: ""
-    fun getDisplayPriority(): String = prefs.getString(KEY_DISPLAY_PRIORITY, "") ?: ""
+    fun getDisplayService(): String = prefs.getString(KEY_DISPLAY_SERVICE, "0") ?: ""
+    fun getDisplayProduct(): String = prefs.getString(KEY_DISPLAY_PRODUCT, "1") ?: ""
+    fun getDisplayPriority(): String = prefs.getString(KEY_DISPLAY_PRIORITY, "0") ?: ""
     fun getCategory(): String = prefs.getString(KEY_CATEGORY, "") ?: ""
     fun getTypeAccount(): String = prefs.getString(KEY_TYPE_ACCOUNT, "") ?: ""
     fun getShowPhoneKH(): String = prefs.getString(KEY_SHOW_PHONE, "") ?: ""
     fun getShowEmailKH(): String = prefs.getString(KEY_SHOW_EMAIL, "") ?: ""
     fun getShowAddressKH(): String = prefs.getString(KEY_SHOW_ADDRESS, "") ?: ""
+    fun getModuleOff(): String = prefs.getString(KEY_SHOW_MODULE_OFF, "") ?: ""
     fun isOfflineMode(): Boolean = prefs.getBoolean(KEY_LOGIN, false)
     fun getAdmin(): String = prefs.getString(KEY_ADMIN, "") ?: ""
     fun getAdminRoot(): String = prefs.getString(KEY_ADMIN_ROOT, "") ?: ""
@@ -65,6 +66,7 @@ class AppConfig(context: Context) {
     fun setShowPhoneKH(value: String) = prefs.edit().putString(KEY_SHOW_PHONE, value).apply()
     fun setShowEmailKH(value: String) = prefs.edit().putString(KEY_SHOW_EMAIL, value).apply()
     fun setShowAddressKH(value: String) = prefs.edit().putString(KEY_SHOW_ADDRESS, value).apply()
+    fun setModuleOff(value: String) = prefs.edit().putString(KEY_SHOW_MODULE_OFF, value).apply()
     fun setOfflineMode(value: Boolean) = prefs.edit().putBoolean(KEY_LOGIN, value).apply()
     fun setAdmin(value: Boolean) = prefs.edit().putBoolean(KEY_ADMIN, value).apply()
     fun setAdminRoot(value: Boolean) = prefs.edit().putBoolean(KEY_ADMIN_ROOT, value).apply()
@@ -100,5 +102,6 @@ class AppConfig(context: Context) {
         private const val KEY_LOGIN = "login"
         private const val KEY_ADMIN = "admin"
         private const val KEY_ADMIN_ROOT = "adminRoot"
+        private const val KEY_SHOW_MODULE_OFF = "KEY_SHOW_MODULE_OFF"
     }
 }

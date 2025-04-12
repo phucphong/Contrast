@@ -44,7 +44,8 @@ data class Product(
     var title: String,
     val price: String,
     val imageRes: Int,
-    val discount: String? = null
+    val discount: String? = "",
+    val ten: String? = "",
 )
 @Preview(showBackground = true)
 @Composable

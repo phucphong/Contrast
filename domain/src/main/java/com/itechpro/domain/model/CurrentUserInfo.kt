@@ -34,5 +34,6 @@ data class CurrentUserInfo(
     val showAddressKH: String,
 
     val admin: String,
-    val adminRoot: String
+    val adminRoot: String,
+    val moduleOff: String
 )

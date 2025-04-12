@@ -10,6 +10,7 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.enumApp.CategoryType
 import com.itechpro.domain.enumApp.ValidationErrorType
 import com.itechpro.domain.model.BottomActionItem
+import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.InfoDetail
@@ -21,6 +22,7 @@ import com.itechpro.domain.usecase.customer.CheckEmailUseCase
 import com.itechpro.domain.usecase.customer.CheckPhoneUseCase
 import com.itechpro.domain.usecase.customer.CustomerInputValidator
 import com.itechpro.domain.usecase.customer.CustomerUseCase
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,7 +35,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CustomerViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val customerUseCase: CustomerUseCase,
+    private val useCase: CustomerUseCase,
     private val checkPhoneUseCase: CheckPhoneUseCase,
     private val checkEmailUseCase: CheckEmailUseCase,
     private val validator: CustomerInputValidator,
@@ -56,11 +58,12 @@ class CustomerViewModel @Inject constructor(
     val customerInfo: StateFlow<List<InfoDetail>?> = _customerInfo
     private val _customerOther = MutableStateFlow<List<InfoDetail>?>(null)
     val customerOther: StateFlow<List<InfoDetail>?> = _customerOther
-  private val _timelineData = MutableStateFlow<List<Customer>?>(null)
-    val timelineData: StateFlow<List<Customer>?> = _timelineData
-  private val _exchangeData = MutableStateFlow<List<Customer>?>(null)
-    val exchangeData: StateFlow<List<Customer>?> = _exchangeData
-
+  private val _timelineList = MutableStateFlow<List<Customer>?>(null)
+    val timelineList: StateFlow<List<Customer>?> = _timelineList
+  private val _exchangeList = MutableStateFlow<List<Customer>?>(null)
+    val exchangeList: StateFlow<List<Customer>?> = _exchangeList
+    private val _tabs = MutableStateFlow<List<Category>>(emptyList())
+    val tabs: StateFlow<List<Category>> = _tabs
     private val _domainCustomer = MutableStateFlow("")
     val domainCustomer: StateFlow<String> = _domainCustomer
 
@@ -78,6 +81,9 @@ class CustomerViewModel @Inject constructor(
     private val _navigationEvent = MutableSharedFlow<CustomerNavigationEvent>()
     val navigationEvent = _navigationEvent.asSharedFlow()
 
+    fun loadDefaultTabs() {
+        _tabs.value = useCase.getDefaultAffiliateTabs()
+    }
 
 
 
@@ -377,7 +383,7 @@ class CustomerViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
 
             try {
-                customerUseCase.getCustomerDetail(ido, currentUserInfo.token ).collect { result ->
+                useCase.getCustomerDetail(ido, currentUserInfo.token ).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
 
@@ -405,11 +411,11 @@ class CustomerViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
 
             try {
-                customerUseCase.getExchangeData(ido, currentUserInfo.token ).collect { result ->
+                useCase.getExchangeData(ido, currentUserInfo.token ).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
 
-                            _exchangeData.value = result.data
+                            _exchangeList.value = result.data
 
                         }
                         is NetworkResponse.Error -> {
@@ -432,11 +438,11 @@ class CustomerViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
 
             try {
-                customerUseCase.getTimelineData(ido, currentUserInfo.token ).collect { result ->
+                useCase.getTimelineData(ido, currentUserInfo.token ).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
 
-                            _timelineData.value = result.data
+                            _timelineList.value = result.data
 
                         }
                         is NetworkResponse.Error -> {
@@ -504,7 +510,7 @@ class CustomerViewModel @Inject constructor(
             _registerState.value = NetworkResponse.Loading
             try {
                 val url = if (id != "0") "/ex/api/editkhachhang" else "/ex/api/addkhachhang"
-                val result = customerUseCase.invoke(url, customer, currentUserInfo.token)
+                val result = useCase.invoke(url, customer, currentUserInfo.token)
                 _registerState.value = result
             } catch (e: Exception) {
                 _registerState.value = NetworkResponse.Error(stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}")

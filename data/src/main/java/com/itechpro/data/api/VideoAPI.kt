@@ -20,13 +20,12 @@ interface VideoAPI {
 
 
     @Headers("Content-Type: application/json")
-    @GET("/ex/apiaffiliate/getobj")
+    @GET("/ex/apikh/getobj")
 //    @GET("/ex/apiaffiliate/getobjpublic") off
     suspend  fun getVideos(
-
         @Query("obj") tintuc: String,
         @Query("mode") modedstintuc: String,
-        @Query("idchudetintuc") idCategory: String,
+        @Query("ido") ido: String,
         @Header("Authorization") authen: String
     ): Response<List<Video>>
 
@@ -39,7 +38,7 @@ interface VideoAPI {
     ): Response<List<Video>>
 
     @Headers("Content-Type: application/json")
-    @GET("/ex/apiaffiliate/getobj")
+    @GET("/ex/apikh/getobj")
     suspend  fun getCategory(
         @Query("obj") tintuc: String?,
         @Query("mode") modedschudetintuc: String?,
@@ -53,6 +52,24 @@ interface VideoAPI {
         @Query("mode") modedschudetintuc: String?
     ): Response<List<Category>>
 
+    @Headers("Content-Type: application/json")
+    @GET("/ex/apikh/getobj")
+    suspend  fun deleteVideoHeart(
+        @Query("obj") obj: String?,
+        @Query("mode") mode: String?,
+        @Query("ido") ido: String?,
+        @Query("ma") ma: String?,
+        @Query("mamenu") mamenu: String?,
+        @Query("os") os: String?,
+        @Query("device") device: String?,
+        @Query("noidungchinh") noidungchinh: String?,
+        @Header("Authorization") authen: String?
+    ): Response<List<Video>>
 
+    @Headers("Content-Type: application/json")
+    @POST("/ex/apiaffiliate/adddaily_Dangky")
+    suspend fun addVideoHeart(
+        @Body body: Video?,
+        ): Response<List<Video>>
 
 }

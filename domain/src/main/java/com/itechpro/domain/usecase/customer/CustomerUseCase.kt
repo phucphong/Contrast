@@ -72,4 +72,15 @@ class CustomerUseCase @Inject constructor(
             authen = authen
         )
     }
+
+    fun getDefaultAffiliateTabs(): List<Category> {
+        return listOf(
+            Category(id = "1", code = "info"),
+            Category(id = "2", code = "other"),
+            Category(id = "3", code = "timeline"),
+            Category(id = "4", code = "exchange")
+        )
+    }
+
+
 }

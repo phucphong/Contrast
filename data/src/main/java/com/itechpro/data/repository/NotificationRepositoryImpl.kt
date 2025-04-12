@@ -25,7 +25,7 @@ class NotificationRepositoryImpl @Inject constructor(
 
 
     override suspend fun getNotifications(startDate: String,endDate: String, authen: String): NetworkResponse<List<Notification>> {
-        val response = api.getNotifications("tintuc","modedstintuc",startDate,endDate, authen)
+        val response = api.getNotifications("laydsthongbao","modelaydsthongbao",startDate,endDate, authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
@@ -37,7 +37,7 @@ class NotificationRepositoryImpl @Inject constructor(
 
 
     override suspend fun getNotificationDetail( obj: String, mode: String,ido: String,authen: String): NetworkResponse<List<Notification>> {
-        val response = api.getNotificationDetail("tintuc","modedstintuc",ido, authen)
+        val response = api.getNotificationDetail("layctthongbao","modelayctthongbao",ido, authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {

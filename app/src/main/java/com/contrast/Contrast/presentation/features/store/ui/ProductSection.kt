@@ -59,7 +59,7 @@ fun ProductSection(title: String, products: List<Product>) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             content = {
                 items(products) { product ->
-                    ProductCard(
+                    ProductCardStore(
                         title = product.title,
                         price = product.price,
                         imageRes = product.imageRes,

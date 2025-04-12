@@ -32,14 +32,13 @@ class VideoUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getCategory(offline: Boolean,  authen: String): Flow<NetworkResponse<List<Category>>> {
+    fun getCategory(offline: Boolean,obj: String,mode: String,  authen: String): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
-
             val result = if (offline) {
-                repository.getCategoryOff()
+                repository.getCategoryOff(obj,mode)
             } else {
-                repository.getCategory( authen)
+                repository.getCategory( obj,mode,authen)
             }
 
             emit(result)

@@ -19,14 +19,14 @@ interface VideoRepository {
         idCategory: String,
     ): NetworkResponse<List<Video>>
 
-    suspend fun getCategory(
+    suspend fun getCategory(obj: String,mode: String,
         authen: String
     ): NetworkResponse<List<Category>>
 
 
 
     suspend fun getCategoryOff(
-
+        obj: String,mode: String,
     ): NetworkResponse<List<Category>>
 
 

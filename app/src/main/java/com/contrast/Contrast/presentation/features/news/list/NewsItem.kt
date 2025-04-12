@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.contrast.Contrast.extensions.formatToDDMYYYY
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
+import com.contrast.Contrast.presentation.components.image.NetworkImage
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
@@ -44,15 +45,9 @@ fun NewsItem(article: News, domain:String) {
   ) {
       val fullUrl = domain.trimEnd('/') + article.filetxt
 
-      Log.d("IMAGE_URL", fullUrl)
-
-      AsyncImage(
-          model = fullUrl,
-          contentDescription = null,
-          modifier = Modifier
-              .size(80.dp).padding(5.dp)
-          ,
-          contentScale = ContentScale.Crop
+      NetworkImage(
+          imageUrl = fullUrl,
+          modifier = Modifier.size(80.dp).padding(5.dp)
       )
 
       Spacer(modifier = Modifier.width(12.dp))

@@ -80,14 +80,14 @@ fun TopSearchNotificationCart(
             }
         }
 
-        Spacer(modifier = Modifier.width(12.dp))
+
 
         // Notification Icon
         IconButton(onClick = onNotificationClick) {
             Image(
                 painter = painterResource(id = R.drawable.ic_notification),
                 contentDescription = "Notification",
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(20.dp),
                 colorFilter = ColorFilter.tint(TealGreen)
             )
         }
@@ -97,7 +97,7 @@ fun TopSearchNotificationCart(
             Image(
                 painter = painterResource(id = R.drawable.cart),
                 contentDescription = "Cart",
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(20.dp),
                 colorFilter = ColorFilter.tint(TealGreen)
             )
         }

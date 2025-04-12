@@ -1,6 +1,5 @@
 package com.contrast.Contrast.presentation.features.customer.ui.detail
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.background
@@ -16,19 +15,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
-import com.contrast.Contrast.presentation.components.bottomAction.BottomAction
 import com.contrast.Contrast.presentation.components.bottomAction.BottomActionList
 import com.contrast.Contrast.presentation.components.header.HeaderImageTitle
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
-import com.contrast.Contrast.presentation.components.tab.SegmentTab
+import com.contrast.Contrast.presentation.components.segment_tab.SegmentTab
+import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
 import com.contrast.Contrast.presentation.features.chat.ChatInputBox
 import com.contrast.Contrast.presentation.features.customer.viewmodel.CustomerViewModel
 import com.contrast.Contrast.presentation.features.detail.InfoItemDetail
 import com.contrast.Contrast.presentation.theme.FAFAFA
-import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.itechpro.domain.model.InfoDetail
+import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.navigationEvent.CustomerNavigationEvent
 
 @Composable
@@ -38,22 +36,22 @@ fun CustomerDetailScreen(
     viewModel: CustomerViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    val tabTitles = listOf(
-        stringResource(R.string.info),
-        stringResource(R.string.other),
-        stringResource(R.string.timeline),
-        stringResource(R.string.exchange)
-    )
+
+
+
     var selectedTabIndex by remember { mutableStateOf(0) }
 //    val customerInfoList = getCustomerInfoList()
 
     val customerInfoList by viewModel.customerInfo.collectAsState()
     val customerInfoOtherList  by viewModel.customerOther.collectAsState()
-    val timelineList   by viewModel.customerOther.collectAsState()
-    val exchangeList   by viewModel.customerOther.collectAsState()
+    val timelineList   by viewModel.timelineList.collectAsState()
+    val exchangeList   by viewModel.exchangeList.collectAsState()
+    val tabs   by viewModel.tabs.collectAsState()
 
 
     LaunchedEffect(Unit) {
+
+        viewModel.loadDefaultTabs()
         viewModel.navigationEvent.collect { event ->
             when (event) {
                 is CustomerNavigationEvent.GoToEdit -> {
@@ -129,21 +127,15 @@ fun CustomerDetailScreen(
                 }
 
                 item {
-                    SegmentTab(
-                        tabs = tabTitles,
+                    SegmentTabLocal(
+                        tabs = tabs,
+                        type="name",
                         selectedTab = selectedTabIndex,
                         onTabSelected = { selectedTabIndex = it }
                     )
                 }
 
                 item { Spacer(modifier = Modifier.height(8.dp)) }
-
-
-
-
-
-
-
 
                 item {
                     val infoList = when (selectedTabIndex) {
@@ -158,15 +150,15 @@ fun CustomerDetailScreen(
                     if (infoList != null) {
                         infoList.forEach { info ->
 
-                            when (selectedTabIndex) {
-                                0 -> InfoItemDetail(info = info)
-                                1 ->InfoItemDetail(info = info)
-                                2 -> TimelineCustomer(info = info)
-                                3 -> ExchangeCustomer(info = info)
-                                else ->{
-
-                                }
-                            }
+//                            when (selectedTabIndex) {
+//                                0 -> InfoItemDetail(info = info)
+//                                1 ->InfoItemDetail(info = info)
+//                                2 -> TimelineCustomer(info = info)
+//                                3 -> ExchangeCustomer(info = info)
+//                                else ->{
+//
+//                                }
+//                            }
 
                         }
                     }else{

@@ -127,6 +127,7 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.coil.compose)
     implementation(libs.coil.okhttp3)
+    implementation(libs.androidyoutubeplayer)
     implementation(libs.androidx.foundation.layout)
     implementation(libs.androidx.foundation.layout)
     implementation(libs.androidx.foundation.layout)

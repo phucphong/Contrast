@@ -43,4 +43,5 @@ interface PreferencesManager {
     // 🛡️ Admin Info
     fun getAdmin(): String
     fun getAdminRoot(): String
+    fun getModuleOff(): String
 }

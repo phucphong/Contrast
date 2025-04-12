@@ -26,9 +26,11 @@ import com.itechpro.domain.model.Category
 
 @Composable
 fun TabBarRow(tabs: List<Category>,
-              color: Color=Color.Red, textCorSelect: Color=Color.Black,
 
-              selectedTab: Int, onTabSelected: (Int) -> Unit) {
+              color: Color=Color.Red,textCorSelect: Color=Color.Black,
+              selectedTab: Int,
+              type :String?
+              , onTabSelected: (Int) -> Unit) {
     val listState = rememberLazyListState()
 
 
@@ -43,11 +45,17 @@ fun TabBarRow(tabs: List<Category>,
         state = listState,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         items(tabs.size) { index ->
             var textWidth by remember { mutableStateOf(0) }
-            var name =tabs[index].ten?:""
+            var name =""
+            if(type=="name"){
+                 name =tabs[index].name?:""
+            }else{
+                name =tabs[index].ten?:""
+            }
+
 
                 Column(
                 modifier = Modifier
@@ -61,7 +69,7 @@ fun TabBarRow(tabs: List<Category>,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = tabs[index].ten?:"",
+                    text = name,
                     fontSize = 14.sp,
                     fontWeight = if (index == selectedTab) FontWeight.Bold else FontWeight.Normal,
                     color = if (index == selectedTab) textCorSelect else Color.Gray,

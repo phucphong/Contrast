@@ -23,7 +23,7 @@ import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
-import com.contrast.Contrast.presentation.components.tab.SegmentTab
+
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
 import com.contrast.Contrast.presentation.features.video.ui.VideoItem
 import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
@@ -70,6 +70,7 @@ fun VideoScreen(
             color = TealGreen,
             textCorSelect = TealGreen,
             selectedTab = selectedTab,
+            type = "",
             onTabSelected = viewModel::onTabSelected
         )
 

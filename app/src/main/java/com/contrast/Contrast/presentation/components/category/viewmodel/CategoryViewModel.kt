@@ -1,29 +1,25 @@
 package com.contrast.Contrast.presentation.components.category.viewmodel
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
-import com.contrast.Contrast.utils.Common
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.enumApp.CategoryType
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.preferences.PreferencesManager
 import com.itechpro.domain.usecase.category.CategoryUseCase
-import com.itechpro.domain.usecase.catogory.FilterCategoryUseCase
-import com.itechpro.domain.usecase.register.RegisterAccountUseCase
+import com.itechpro.domain.usecase.category.FilterCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(

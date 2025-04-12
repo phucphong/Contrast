@@ -16,7 +16,8 @@ import androidx.compose.ui.unit.dp
 fun CustomCircularProgressIndicator(
     modifier: Modifier = Modifier,
     size: Dp = 30.dp,
-    strokeWidth: Dp = 5.dp
+    strokeWidth: Dp = 5.dp,
+            paddingTop: Dp = 40.dp
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val animatedSweep = infiniteTransition.animateFloat(
@@ -29,7 +30,7 @@ fun CustomCircularProgressIndicator(
 
 
     Box(
-        modifier = Modifier.fillMaxSize().padding(top = 20.dp),
+        modifier = Modifier.fillMaxSize().padding(paddingTop),
         contentAlignment = Alignment.TopCenter
     ) {
         Canvas(

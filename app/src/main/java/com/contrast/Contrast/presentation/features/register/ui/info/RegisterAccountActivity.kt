@@ -8,6 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.presentation.components.profile.ProfileScreen
+import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
+import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.call.dialer.DialerScreen
 import com.contrast.Contrast.presentation.features.call.viewmodel.DialerViewModel
 import com.contrast.Contrast.presentation.features.customer.ui.add.CustomerScreen
@@ -54,20 +56,30 @@ class RegisterAccountActivity : ComponentActivity() {
 //            )
 
 //            val viewModel: NewsViewModel = hiltViewModel()
+
 //            NewsScreen(
 //                viewModel = viewModel,
 //
 //                )
+
 //            val viewModel: NotificationViewModel = hiltViewModel()
 //            NotificationScreen(
 //                viewModel = viewModel,
 //
 //                )
+
+            val viewModel: CategoryAffiliateModel = hiltViewModel()
+            CategoryAffiliatePage(navController,
+                viewModel = viewModel
+
+                )
+
 //            val viewModel: VideoViewModel = hiltViewModel()
 //            VideoScreen(
 //                viewModel = viewModel,
 //
 //                )
+
 //  val viewModel: NewsViewModel = hiltViewModel()
 //            NewDetailScreen(
 //                ido="0",
@@ -75,7 +87,7 @@ class RegisterAccountActivity : ComponentActivity() {
 //                navController = navController
 //                )
 
-            ProfileScreen()
+//            ProfileScreen()
 
 
         }

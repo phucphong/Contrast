@@ -39,4 +39,5 @@ class PreferencesManagerImpl @Inject constructor(
     override fun isOfflineMode(): Boolean = appConfig.isOfflineMode()
     override fun getAdmin(): String = appConfig.getAdmin()
     override fun getAdminRoot(): String = appConfig.getAdminRoot()
+    override fun getModuleOff(): String = appConfig.getModuleOff()
 }

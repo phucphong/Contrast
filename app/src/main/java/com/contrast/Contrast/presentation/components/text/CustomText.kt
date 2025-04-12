@@ -22,6 +22,7 @@ import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
 
+
 @Composable
 fun CustomText(
     text: AnnotatedString,
@@ -31,7 +32,11 @@ fun CustomText(
     colorUnderline: Color = Color.Black,
     textAlign: TextAlign = TextAlign.Left,
     showUnderline: Boolean = false,
-            weight: Boolean = false
+            weight: Boolean = false,
+    paddingStart: Dp = 0.dp,
+    paddingTop: Dp = 0.dp,
+    paddingEnd: Dp = 0.dp,
+    paddingBottom: Dp = 5.dp,
 ) {
     val customFontFamily = FontFamily(
         Font(R.font.inter)
@@ -52,9 +57,12 @@ fun CustomText(
                 textAlign = textAlign,
 
             ),
+
+
+
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 5.dp)
+                .padding(paddingStart,paddingTop,paddingEnd,paddingBottom)
                 .let {
                     if (weight) it.weight(1f)
                     else it
@@ -78,6 +86,10 @@ fun CustomText(
     textAlign: TextAlign = TextAlign.Left,
     showUnderline: Boolean = false,
     weight: Boolean = false,
+    paddingStart: Dp = 0.dp,
+    paddingTop: Dp = 0.dp,
+    paddingEnd: Dp = 0.dp,
+    paddingBottom: Dp = 5.dp,
 ) {
     CustomText(
         text = AnnotatedString(text),
@@ -85,6 +97,10 @@ fun CustomText(
         fontSize = fontSize,
         color = color,
         textAlign = textAlign,
-        showUnderline = showUnderline
+        showUnderline = showUnderline,
+                paddingStart = paddingStart,
+        paddingTop = paddingTop,
+        paddingEnd = paddingEnd,
+        paddingBottom = paddingBottom,
     )
 }

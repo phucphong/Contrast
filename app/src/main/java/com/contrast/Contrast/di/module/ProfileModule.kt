@@ -2,7 +2,6 @@ package com.contrast.Contrast.di.module
 
 
 
-import com.itechpro.domain.usecase.Profile.ProfileUseCase
 
 import com.itechpro.data.api.ProfileAPI
 import com.itechpro.data.repository.ProfileRepositoryImpl

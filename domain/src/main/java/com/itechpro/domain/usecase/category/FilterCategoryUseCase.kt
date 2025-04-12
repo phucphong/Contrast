@@ -1,11 +1,10 @@
-package com.itechpro.domain.usecase.catogory
+package com.itechpro.domain.usecase.category
 
 import com.itechpro.domain.model.Category
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 

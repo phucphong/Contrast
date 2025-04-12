@@ -3,6 +3,7 @@ package com.itechpro.domain.repository
 
 
 
+import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Notification
@@ -10,19 +11,24 @@ import com.itechpro.domain.model.Notification
 interface ProfileRepository {
 
 
-    suspend fun getNotifications(
-        startDate: String,
-        endDate: String,
+    suspend fun getMenuApp(
+        type: String,
         authen: String
-    ): NetworkResponse<List<Notification>>
+    ): NetworkResponse<List<Category>>
 
 
-    suspend fun getNotificationDetail(
+    suspend fun getQrCodeEmployee(
+        obj: String,
+        mode: String,
+        authen: String
+    ): NetworkResponse<List<Account>>
+
+    suspend fun getQrCodeCustomer(
         obj: String,
         mode: String,
         ido: String,
         authen: String
-    ): NetworkResponse<List<Notification>>
+    ): NetworkResponse<List<Account>>
 
 
 

@@ -1,0 +1,288 @@
+package com.contrast.Contrast.presentation.features.affiliate.category
+
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.contrast.Contrast.R
+import com.contrast.Contrast.di.qualifier.IoDispatcher
+import com.contrast.Contrast.utils.StringProvider
+import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.CurrentUserInfo
+import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.News
+import com.itechpro.domain.model.Product
+import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
+import com.itechpro.domain.usecase.category.CategoryAffiliateUseCase
+
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
+                                                 private val useCase: CategoryAffiliateUseCase,
+                                                 private val stringProvider: StringProvider,
+                                                 @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
+
+
+
+    private val _products = MutableStateFlow<List<Product>>(emptyList())
+    val products: StateFlow<List<Product>> = _products
+
+
+    private val _obj = MutableStateFlow<Product?>(null)
+    val obj: StateFlow<Product?> = _obj
+
+    private val _tabs = MutableStateFlow<List<Category>>(emptyList())
+    val tabs: StateFlow<List<Category>> = _tabs
+
+    private val _category1 = MutableStateFlow<List<Category>>(emptyList())
+    val category1: StateFlow<List<Category>> = _category1
+    
+    private val _category2 = MutableStateFlow<List<Category>>(emptyList())
+    val category2: StateFlow<List<Category>> = _category2
+    
+    private val _category3 = MutableStateFlow<List<Category>>(emptyList())
+    val category3: StateFlow<List<Category>> = _category3
+
+    private val _category1Heart = MutableStateFlow<List<Category>>(emptyList())
+    val category1Heart: StateFlow<List<Category>> = _category1Heart
+
+    private val _validationError = MutableStateFlow<String>("")
+    val validationError: StateFlow<String> = _validationError
+    private val _domain = MutableStateFlow<String>("")
+    val domain: StateFlow<String> = _domain
+    private val _displayProduct = MutableStateFlow<String>("")
+    val displayProduct: StateFlow<String> = _displayProduct
+    private val _displayService = MutableStateFlow<String>("")
+    val displayService: StateFlow<String> = _displayService
+    private val _displayPriority = MutableStateFlow<String>("")
+    val displayPriority: StateFlow<String> = _displayPriority
+    private val _idParent1 = MutableStateFlow<String>("")
+    val idParent1: StateFlow<String> = _idParent1
+    private val _idParent2 = MutableStateFlow<String>("")
+    val idParent2: StateFlow<String> = _idParent2
+    private val _idParent3= MutableStateFlow<String>("")
+    val idParent3: StateFlow<String> = _idParent3
+
+    private val _type = MutableStateFlow<String>("")
+    val type: StateFlow<String> = _type
+
+    private val _objApi = MutableStateFlow<String>("")
+    val objApi: StateFlow<String> = _objApi
+
+    private val _modeApi = MutableStateFlow<String>("")
+    val modeApi: StateFlow<String> = _modeApi
+
+
+    private val _selectedTab = MutableStateFlow(0)
+    val selectedTab: StateFlow<Int> = _selectedTab
+    private val _selectedTab1 = MutableStateFlow(0)
+    val selectedTab1: StateFlow<Int> = _selectedTab1
+    private val _selectedTab2 = MutableStateFlow(0)
+    val selectedTab2: StateFlow<Int> = _selectedTab1
+
+    private val _selectedTab3 = MutableStateFlow(0)
+    val selectedTab3: StateFlow<Int> = _selectedTab3
+
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+    private var currentUserInfo: CurrentUserInfo? = null
+
+    init {
+        viewModelScope.launch(dispatcher) {
+            try {
+                currentUserInfo = getCurrentUserUseCase()
+                _domain.value = currentUserInfo!!.domain?:""
+                _displayProduct.value = currentUserInfo!!.displayProduct?:""
+                _displayService.value = currentUserInfo!!.displayService?:""
+
+
+            } catch (e: Exception) {
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+
+    fun initCategory(displayProduct: String, displayService: String, displayPriority: String) {
+
+        val result = useCase.generateConfig(displayProduct, displayService, displayPriority)
+        _tabs.value = result.tabs
+        _objApi.value = result.objApi
+        _modeApi.value = result.modeApi
+        _type.value = result.type
+
+
+        // Gọi API lấy cấp đầu tiên
+        getCategory1("tatcanhomsp", "tatcanhomsp", result.type, "0", 1)
+    }
+
+    fun onTabSelected(index: Int) {
+        _selectedTab.value = index
+    }
+
+    fun onTabSelected1(index: Int) {
+        _selectedTab1.value = index
+    }
+
+    fun onTabSelected2(index: Int) {
+        _selectedTab2.value = index
+    }
+    fun onCategory1Selected(index: Int, categoryList: List<Category>, type: String) {
+        onTabSelected2(index)
+        val id = categoryList.getOrNull(index)?.id.orEmpty()
+        _idParent1.value = id
+        getCategory2("tatcanhomsp", "tatcanhomsp", type, id, 2)
+    }
+
+
+    fun onCategory2Selected(index: Int, categoryList: List<Category>, type: String) {
+        onTabSelected2(index)
+        val id = categoryList.getOrNull(index)?.id.orEmpty()
+        _idParent2.value = id
+        getCategory3("tatcanhomsp", "tatcanhomsp", type, id, 3)
+    }
+
+    fun onTabSelected3(index: Int) {
+        _selectedTab3.value = index
+    }
+
+    fun onCategory3Selected(index: Int, categoryList: List<Category>, type: String) {
+        onTabSelected3(index)
+        val id = categoryList.getOrNull(index)?.id.orEmpty()
+        _idParent3.value = id
+//        getCategory3("tatcanhomsp", "tatcanhomsp", type, id, 3)
+    }
+
+// lấy danh mực 3 cấp
+    fun getCategory1(obj: String,mode: String,type: String,idParent: String, level:Int) {
+        val user = currentUserInfo ?: return
+
+        viewModelScope.launch(dispatcher) {
+            try {
+                //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
+                useCase.getCategory1(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _isLoading.value = true
+                        }
+                        is NetworkResponse.Success -> {
+                            _isLoading.value = false
+                            _category1.value = result.data
+                            _idParent1.value = result.data[0].id.toString()
+                            getCategory2("tatcanhomsp", "tatcanhomsp", type, result.data[0].id.toString(), 2)
+
+                        }
+                        is NetworkResponse.Error -> {
+                            _isLoading.value = false
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+
+// lấy danh mực 3 cấp
+    fun getCategory2(obj: String,mode: String,type: String,idParent: String, level:Int) {
+        val user = currentUserInfo ?: return
+
+        viewModelScope.launch(dispatcher) {
+            try {
+                //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
+                useCase.getCategory1(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+
+                        }
+                        is NetworkResponse.Success -> {
+
+                            _category2.value = result.data
+                            _idParent2.value = result.data[0].id.toString()
+                            getCategory3("tatcanhomsp", "tatcanhomsp", type, result.data[0].id.toString(), 3)
+                        }
+                        is NetworkResponse.Error -> {
+
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+    fun getCategory3(obj: String,mode: String,type: String,idParent: String, level:Int) {
+        val user = currentUserInfo ?: return
+
+        viewModelScope.launch(dispatcher) {
+            try {
+                //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
+                useCase.getCategory1(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+
+                        }
+                        is NetworkResponse.Success -> {
+
+                            _category3.value = result.data
+                            _idParent3.value = result.data[0].id.toString()
+
+                        }
+                        is NetworkResponse.Error -> {
+
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+
+
+
+    fun getProductsByIdParent(type: String,idParent: String) {
+        val user = currentUserInfo ?: return
+
+        viewModelScope.launch(dispatcher) {
+            try {
+                
+         
+                useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _isLoading.value = true
+                        }
+                        is NetworkResponse.Success -> {
+                            _isLoading.value = false
+                            _products.value = result.data
+                        }
+                        is NetworkResponse.Error -> {
+                            _isLoading.value = false
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+
+
+
+
+
+}

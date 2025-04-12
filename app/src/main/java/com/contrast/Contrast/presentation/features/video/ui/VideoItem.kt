@@ -1,11 +1,6 @@
 package com.contrast.Contrast.presentation.features.video.ui
-import android.webkit.WebSettings
-import android.webkit.WebView
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,43 +9,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayCircleFilled
-import androidx.compose.material3.Icon
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.platform.LocalContext
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import coil3.compose.AsyncImage
-import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.line.CustomDividerColor
-import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
-import com.contrast.Contrast.presentation.theme.FFD91E18
+import com.contrast.Contrast.presentation.components.text.CustomText
+import com.contrast.Contrast.presentation.components.youtube.FullScreenYoutubeActivity
+
+import com.contrast.Contrast.presentation.components.youtube.YoutubeVideoPlayerView
+
 import com.itechpro.domain.model.Video
 
 @Preview(device = Devices.PHONE, showBackground = true)
@@ -64,14 +40,33 @@ fun VideoItem(
             .padding(bottom = 12.dp)
     ) {
 
-        YoutubeVideoWebView(videoId = video.videoId) // hoặc video.videoId
+
+
+        val context = LocalContext.current
+
+        YoutubeVideoPlayerView(
+            videoId = video.idvideo,
+            onRequestFullScreen = {
+                context.startActivity(
+                    Intent(context, FullScreenYoutubeActivity::class.java).apply {
+                        putExtra("videoId", video.idvideo)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // 🔑 quan trọng
+                    }
+                )
+            }
+        )
+
+
         Spacer(modifier = Modifier.height(6.dp))
 
-        Text(
-            text = video.title,
+        CustomText(
+            text = video.ten,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            paddingStart =10.dp,
+            paddingTop =10.dp,
+            paddingEnd =10.dp,
+            paddingBottom =10.dp,
+
         )
     }
 }

@@ -79,6 +79,7 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
             color = TealGreen,
             textCorSelect = TealGreen,
             selectedTab = selectedTab,
+            type = "",
             onTabSelected = viewModel::onTabSelected
         )
         CustomSwipeRefresh(

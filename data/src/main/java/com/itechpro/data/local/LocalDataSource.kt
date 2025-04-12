@@ -44,7 +44,8 @@ class LocalDataSource @Inject constructor(
             showAddressKH = getShowAddressKH(),
 
             admin = getAdmin(),
-            adminRoot = getAdminRoot()
+            adminRoot = getAdminRoot(),
+            moduleOff = getModuleOff(),
         )
     }
 }

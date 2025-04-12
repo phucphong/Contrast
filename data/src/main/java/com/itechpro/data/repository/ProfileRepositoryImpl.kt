@@ -9,25 +9,27 @@ package com.itechpro.data.repository
 
 import com.itechpro.data.api.NewsAPI
 import com.itechpro.data.api.NotificationAPI
+import com.itechpro.data.api.ProfileAPI
+import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.News
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Notification
 import com.itechpro.domain.repository.NewsRepository
-import com.itechpro.domain.repository.NotificationRepository
+import com.itechpro.domain.repository.ProfileRepository
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
-    private val api: NotificationAPI
-) : NotificationRepository {
+    private val api: ProfileAPI
+) : ProfileRepository {
 
 
 
 
 
 
-    override suspend fun getNotifications(startDate: String,endDate: String, authen: String): NetworkResponse<List<Notification>> {
-        val response = api.getNotifications("tintuc","modedstintuc",startDate,endDate, authen)
+    override suspend fun getMenuApp(type: String, authen: String): NetworkResponse<List<Category>> {
+        val response = api.getMenuApp("100","1",type, authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
@@ -38,13 +40,25 @@ class ProfileRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun getNotificationDetail( obj: String, mode: String,ido: String,authen: String): NetworkResponse<List<Notification>> {
-        val response = api.getNotificationDetail("tintuc","modedstintuc",ido, authen)
+    override suspend fun getQrCodeEmployee( obj: String, mode: String,authen: String): NetworkResponse<List<Account>> {
+        val response = api.getQrCodeEmployee("tintuc","modedstintuc", authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
             NetworkResponse.Error("Lỗi: ${response.message()}")
         }
     }
+
+
+    override suspend fun getQrCodeCustomer( obj: String, mode: String, ido: String,authen: String): NetworkResponse<List<Account>> {
+        val response = api.getQrCodeCustomer("tintuc","modedstintuc", ido,authen)
+        return if (response.isSuccessful) {
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
+    }
+
+
 
 }

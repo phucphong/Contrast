@@ -20,8 +20,8 @@ class VideoRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun getCategory( authen: String): NetworkResponse<List<Category>> {
-        val response = api.getCategory("tintuc","modedschudetintuc", authen)
+    override suspend fun getCategory(obj: String,mode: String,authen: String): NetworkResponse<List<Category>> {
+        val response = api.getCategory(obj,mode, authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
@@ -30,8 +30,8 @@ class VideoRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getCategoryOff(): NetworkResponse<List<Category>> {
-        val response = api.getCategoryOff("tintuc","modedschudetintuc")
+    override suspend fun getCategoryOff(obj: String,mode: String): NetworkResponse<List<Category>> {
+        val response = api.getCategoryOff(obj,mode)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
@@ -40,7 +40,7 @@ class VideoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getVideos(idCategory: String, authen: String): NetworkResponse<List<Video>> {
-        val response = api.getVideos("tintuc","modedstintuc",idCategory, authen)
+        val response = api.getVideos("nhomvideo","tatcavideobyidnhom",idCategory, authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
@@ -49,7 +49,7 @@ class VideoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getVideosOff(idCategory: String): NetworkResponse<List<Video>> {
-        val response = api.getVideosOff("tintuc","modedstintuc",idCategory)
+        val response = api.getVideosOff("nhomvideo","tatcavideobyidnhom",idCategory)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {

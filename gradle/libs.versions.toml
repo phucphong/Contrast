@@ -61,6 +61,8 @@ calendar = "2.6.2"
 javaxInject  = "1"
 swiperefresh  = "0.33.2-alpha"
 coil-compose  = "3.1.0"
+androidyoutubeplayer  = "11.1.0"
+playServicesAnalyticsImpl = "18.2.0"
 
 
 
@@ -159,8 +161,9 @@ javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "j
 accompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil-compose" }
 coil-okhttp3 = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil-compose" }
-#implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-#implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+androidyoutubeplayer = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "androidyoutubeplayer" }
+play-services-analytics-impl = { group = "com.google.android.gms", name = "play-services-analytics-impl", version.ref = "playServicesAnalyticsImpl" }
+#com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0
 
 
 [plugins]

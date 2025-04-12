@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.features.affiliate.AffiliateMainScreen
 import com.contrast.Contrast.presentation.features.main.ui.MainScreen
 
 class ContrastActivity : ComponentActivity() {
@@ -18,7 +19,8 @@ class ContrastActivity : ComponentActivity() {
         setContent {
 
 
-            MainScreen()
+//            MainScreen()
+            AffiliateMainScreen()
 
         }
     }

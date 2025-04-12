@@ -17,10 +17,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
+import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliatePage
 
@@ -66,6 +68,7 @@ fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int, navControll
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
+                    val categoryAffiliateModel: CategoryAffiliateModel = hiltViewModel()
         when (selectedIndex) {
             0 -> HomeAffiliatePage(navController) // Truyền navController xuống
             1 -> CategoryAffiliatePage(navController)

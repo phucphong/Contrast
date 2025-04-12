@@ -1,11 +1,7 @@
 package com.contrast.Contrast.di.module.app
-import com.itechpro.domain.usecase.account.ValidateAccountUseCase
-import com.itechpro.domain.usecase.catogory.FilterCategoryUseCase
+import com.itechpro.domain.usecase.category.FilterCategoryUseCase
 import com.itechpro.domain.usecase.customer.CustomerInputValidator
-import com.itechpro.domain.usecase.customer.CustomerUseCase
 import com.itechpro.domain.usecase.customer.ValidateCustomerUseCase
-import com.itechpro.domain.usecase.register.ValidateRegisterUseCase
-import com.itechpro.domain.usecase.register.UserInputValidator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -58,7 +58,7 @@ fun ProductDetailScreen(viewModel: ProductDetailViewModel = viewModel()) {
     var quantity by remember { mutableStateOf(2) }
 
     val basePrice = 59000
-    val toppingPrice =
+    val toppingPrice: Int =
         viewModel.toppings.filter { selectedToppings.contains(it.id) }.sumOf { it.price }
     val totalPrice = (basePrice + toppingPrice) * quantity
 

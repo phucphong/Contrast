@@ -13,6 +13,7 @@ import com.itechpro.domain.model.News
 import com.itechpro.domain.model.Video
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.news.NewsUseCase
+import com.itechpro.domain.usecase.profile.ProfileUseCase
 import com.itechpro.domain.usecase.video.VideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,14 +24,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
-                                         private val useCase: ProfileUseCase,
-                                         private val stringProvider: StringProvider,
-                                         @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
+                                           private val useCase: ProfileUseCase,
+                                           private val stringProvider: StringProvider,
+                                           @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
 
 
 
-    private val _videos = MutableStateFlow<List<Video>>(emptyList())
-    val videos: StateFlow<List<Video>> = _videos
+    private val _menuApp = MutableStateFlow<List<Category>>(emptyList())
+    val menuApp: StateFlow<List<Category>> = _menuApp
 
 
     private val _obj = MutableStateFlow<Video?>(null)
@@ -69,19 +70,45 @@ class ProfileViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
 
 
 
-    fun getVideos(idCategory: String) {
+    fun getQrCodeEmployee(ido:String) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {
             try {
-                useCase.getVideos(user.isOfflineMode, idCategory, user.token).collect { result ->
+                useCase.getQrCodeEmployee( ido,user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
                             _isLoading.value = true
                         }
                         is NetworkResponse.Success -> {
                             _isLoading.value = false
-                            _videos.value = result.data
+//                            _menuApp.value = result.data
+                        }
+                        is NetworkResponse.Error -> {
+                            _isLoading.value = false
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+    fun getMenuApp() {
+        val user = currentUserInfo ?: return
+
+        viewModelScope.launch(dispatcher) {
+            try {
+                useCase.getMenuApp( user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _isLoading.value = true
+                        }
+                        is NetworkResponse.Success -> {
+                            _isLoading.value = false
+                            _menuApp.value = result.data
                         }
                         is NetworkResponse.Error -> {
                             _isLoading.value = false

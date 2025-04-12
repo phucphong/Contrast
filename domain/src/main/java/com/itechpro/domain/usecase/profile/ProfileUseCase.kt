@@ -3,12 +3,14 @@ package com.itechpro.domain.usecase.profile
 
 
 
+import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.News
 import com.itechpro.domain.model.Notification
 import com.itechpro.domain.repository.NewsRepository
 import com.itechpro.domain.repository.NotificationRepository
+import com.itechpro.domain.repository.ProfileRepository
 import com.itechpro.domain.safeFlowCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,11 +24,11 @@ class ProfileUseCase @Inject constructor(
     ) {
 
 
-    fun getNotifications(startDate: String,endDate: String, authen: String): Flow<NetworkResponse<List<Notification>>> {
+    fun getMenuApp( authen: String): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = repository.getNotifications(startDate,endDate, authen)
+            val result = repository.getMenuApp("khachhang", authen)
 
             emit(result)
         }.flowOn(Dispatchers.IO)
@@ -35,11 +37,11 @@ class ProfileUseCase @Inject constructor(
 
 
 
-    fun getNotificationDetail(
+    fun getQrCodeEmployee(
         ido: String,
         authen: String
-    ): Flow<NetworkResponse<Notification>> = safeFlowCall {
-        val response = repository.getNotificationDetail("khachhang", "getbyid", ido, authen)
+    ): Flow<NetworkResponse<Account>> = safeFlowCall {
+        val response = repository.getQrCodeEmployee("layqrcode", "modelayqrcodenhanvien", authen)
         when (response) {
             is NetworkResponse.Success -> {
                 val customer = response.data.firstOrNull()

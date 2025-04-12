@@ -38,10 +38,14 @@ class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetC
     private val _categoryNews = MutableStateFlow<List<Category>>(emptyList())
     val categoryNews: StateFlow<List<Category>> = _categoryNews
 
+    private val _categoryNewsHeart = MutableStateFlow<List<Category>>(emptyList())
+    val categoryNewsHeart: StateFlow<List<Category>> = _categoryNewsHeart
+
     private val _validationError = MutableStateFlow<String?>(null)
     val validationError: StateFlow<String?> = _validationError
     private val _domain = MutableStateFlow<String?>("")
     val domain: StateFlow<String?> = _domain
+
 
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab: StateFlow<Int> = _selectedTab
@@ -55,6 +59,10 @@ class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetC
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo!!.domain?:""
 
+
+
+                getCategory("nhomvideo","modenhomvideo")
+                getCategoryVideoHeart("videokh","modelaythumuc")
 
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
@@ -81,6 +89,59 @@ class VideoViewModel @Inject constructor(private val getCurrentUserUseCase: GetC
                         is NetworkResponse.Success -> {
                             _isLoading.value = false
                             _videos.value = result.data
+                        }
+                        is NetworkResponse.Error -> {
+                            _isLoading.value = false
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+
+    fun getCategory(obj: String,mode: String) {
+        val user = currentUserInfo ?: return
+
+        viewModelScope.launch(dispatcher) {
+            try {
+                useCase.getCategory(user.isOfflineMode,obj, mode,  user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _isLoading.value = true
+                        }
+                        is NetworkResponse.Success -> {
+                            _isLoading.value = false
+                            _categoryNews.value = result.data
+                        }
+                        is NetworkResponse.Error -> {
+                            _isLoading.value = false
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+    fun getCategoryVideoHeart(obj: String,mode: String) {
+        val user = currentUserInfo ?: return
+
+        viewModelScope.launch(dispatcher) {
+            try {
+                useCase.getCategory(user.isOfflineMode,obj, mode,  user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _isLoading.value = true
+                        }
+                        is NetworkResponse.Success -> {
+                            _isLoading.value = false
+                            _categoryNewsHeart.value = result.data
                         }
                         is NetworkResponse.Error -> {
                             _isLoading.value = false

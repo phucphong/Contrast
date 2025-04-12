@@ -66,20 +66,24 @@ import com.itechpro.domain.model.Video
 @Composable
 fun ProfileScreen() {
    Column {
-
        ProfileHeader()
+
        LazyColumn(
            modifier = Modifier
                .fillMaxSize()
                .background(Color.White).weight(1f),
-           contentPadding = PaddingValues(bottom = 80.dp) // chừa khoảng cho bottom nav nếu có
+           contentPadding = PaddingValues(bottom = 80.dp)
        ) {
+
+
+           // trong lady cố định khi scroll
+//           stickyHeader {
+//               ProfileHeader()
+//           }
 
            item {
                OrderStatusRow()
            }
-
-
 
            items(profileOptions) { option ->
                ProfileOptionItem(option)

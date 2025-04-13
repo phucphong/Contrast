@@ -1,358 +1,154 @@
 package com.contrast.Contrast.presentation.features.affiliate.home
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.alertDialog.LocationPermissionDialog
-import com.contrast.Contrast.presentation.components.slider.ImageSlider
-import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.features.main.home.ui.EventCard
-import com.contrast.Contrast.presentation.features.main.home.ui.StoreCard
-import com.contrast.Contrast.presentation.theme.FCFCFC
+import com.contrast.Contrast.presentation.components.line.CustomDividerColor
+import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
+import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
+import com.contrast.Contrast.presentation.components.tab.TabBarPagedGridScrollable
+import com.contrast.Contrast.presentation.components.tab.TabBarGridStyle
+import com.contrast.Contrast.presentation.components.tab.TabBarRow
+import com.contrast.Contrast.presentation.features.product.ui.ProductGridAffiliate
 
-@Preview(showBackground = true)
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeAffiliatePage( navController: NavController) {
-    var showDialog by remember { mutableStateOf(false) }
-    var showDialogFeedbackSuccessDialog by remember { mutableStateOf(false) }
-    var showDialogLocationPermissionDialog by remember { mutableStateOf(false) }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(FCFCFC)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp)
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
+fun HomeAffiliatePage(
+    navController: NavController,
+    viewModel: HomeAffiliateModel = hiltViewModel()
+) {
+    val slides by viewModel.slides.collectAsState()
+    val categorys by viewModel.categorys.collectAsState()
+    val flashSales by viewModel.flashSales.collectAsState()
+    val tabs by viewModel.tabs.collectAsState()
+    val products by viewModel.products.collectAsState()
 
-        /** 🔹 HEADER */
-        /** 🔹 HEADER */
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1f)) {
-                Image(
-                    painter = painterResource(id = R.drawable.avatar1),
-                    contentDescription = "Avatar",
-                    modifier = Modifier.size(40.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Column {
-                    CustomText("Contrast xin chào 👋", fontSize = 12.sp, color = Color.Gray)
-                    CustomText("Nguyễn Phúc Phong", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                }
-            }
-            Row {
-                IconButton(onClick = { /* TODO: Notifications */ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_notification),
-                        tint = Color.Red,
-                        contentDescription = "Thông báo"
-                    )
-                }
-                IconButton(onClick = { /* TODO: Wallet */ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_wallet),
-                        tint = Color.Red,
-                        contentDescription = "Nạp tiền"
 
-                    )
-                }
-            }
+    val domain by viewModel.domain.collectAsState()
+    val displayProduct by viewModel.displayProduct.collectAsState()
+    val displayService by viewModel.displayService.collectAsState()
+    val displayPriority by viewModel.displayPriority.collectAsState()
+
+    val type by viewModel.type.collectAsState()
+    val modeApi by viewModel.modeApi.collectAsState()
+    val objApi by viewModel.objApi.collectAsState()
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedCategory by remember { mutableStateOf(0) }
+    var selectedTab2 by remember { mutableStateOf(0) }
+    var selectedTab3 by remember { mutableStateOf(0) }
+    val selectedTab by viewModel.selectedTab.collectAsState()
+    val isRefreshing by remember { mutableStateOf(false) }
+    var idCategory by remember { mutableStateOf("0") }
+
+    val isLoading by viewModel.isLoading.collectAsState()
+
+
+    val isInit = remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        if (!isInit.value) {
+            viewModel.initCategory(displayProduct, displayService, displayPriority)
+            isInit.value = true
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        /** 🔹 SỐ DƯ */
-
-        WalletBalanceView()
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        /** 🔹 BANNER QUẢNG CÁO */
-        ImageSlider(10.dp)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        /** 🔹 SỰ KIỆN ĐANG DIỄN RA */
-
-
-        Text(
-            text = "Sự kiện đang diễn ra",
-            style = TextStyle(
-                fontSize = 14.sp,
-                lineHeight = 24.sp,
-                fontFamily = FontFamily(Font(R.font.inter)),
-                fontWeight = FontWeight(500),
-                color = Color(0xFF151515),
-            )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp) // 🔥 Thêm khoảng cách giữa các item
-        ) {
-            items(listOf(
-                "Tặng Sticker chúc mừng ngày Quốc Khánh 2-9",
-                "Đổi bạn cùng tiền",
-                "Mua 1 tặng 1 ngày hội cà phê"
-            )) { event ->
-                EventCard("10 ",
-                    "TH6",
-                    "Tặng Sticker chúc mừng ngày Quốc Khánh 2-9",
-                    "Mua được giảm giá")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        /** 🔹 DANH SÁCH CỬA HÀNG */
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-
-
-            Text(
-                text = "Danh sách cửa hàng",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.inter)),
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFF151515),
-                    textAlign = TextAlign.Center,
-                )
-            )
-            ClickableText(
-                text = AnnotatedString("XEM TẤT CẢ"),
-
-                onClick = { /* TODO: Xem tất cả cửa hàng */ },
-                style = TextStyle(color = Color.Red, fontSize = 14.sp)
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp) // 🔥 Khoảng cách giữa các cửa hàng
-        ) {
-            items(listOf(
-                Pair("3,5 km", "Contrast Văn Chương"),
-                Pair("4,2 km", "Contrast Tô Hiệu"),
-                Pair("2,1 km", "Contrast Trần Duy Hưng")
-            )) { (distance, name) ->
-                StoreCard( name, "Địa chỉ chi tiết ở đây...")
-            }}
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        /** 🔹 NÚT PHẢN HỒI */
-        Button(
-            onClick = { showDialog = true },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-            shape = RoundedCornerShape(8.dp),
-            elevation = ButtonDefaults.elevation(6.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .padding(horizontal = 90.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .background(Color.Red, shape = CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.feedback),
-                        contentDescription = "Feedback Icon",
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Text(
-                    text = "Phản hồi",
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        lineHeight = 16.8.sp,
-                        fontFamily = FontFamily(Font(R.font.inter)),
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF1D1D1D),
-                    )
-                )
-            }
-        }
-
-//        FeedbackDialog(
-//            showDialog = showDialog,
-//            onDismiss = { showDialog = false },
-//            onContinue = { selectedBranch ->
-//                showDialog = false
-//                println("Người dùng chọn cơ sở: $selectedBranch")
-//            }
-//        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-        // yêu cầu vân tay
-//        BiometricDisableDialog(
-//            onDisableBiometric = { showDialog = false },
-//            onDismiss = { showDialog = false }
-//        )
-
-//        CongratulationsDialog(
-//            onDismiss = { showDialog = false },
-//            onRedeem = { showDialog = false }
-//        )
-//
-//        CustomAlertDialog(
-//            "Thành công",
-//            onDismiss = { showDialog = false }
-//        )
-
-
-//        LockVerificationDialog(
-//            showDialog = true,
-//            onDismiss = { showDialog = false }
-//        )
-
-//        FaceIDAuthDialog(
-//            onDismiss = { showDialog = false }
-//        )
-
-
-//        FaceIDPermissionDialog(
-//            onConfirm = { showDialog = false },
-//            onDismiss = { showDialog = false }
-//        )
-
-        // thoong bao phản hồi thành công
-//        FeedbackSuccessDialog(
-//            onDismiss = { showDialog = false }
-//        )
-        // cho phép  truy cập vị trí
-//        LocationPermissionDialog(
-//            onAccept = { showDialog = false },
-//            onDismiss = { showDialog = false }
-//        )
-
-
-        // hiện dialog thông báo
-
-        if (showDialog) {
-            LocationPermissionDialog(
-                onAccept = {
-                    showDialog = false
-
-                },
-                onDismiss = {
-                    showDialog = false
-                }
-            )
-        }
-
     }
-}
-@Composable
-fun WalletBalanceView() {
-    Spacer(modifier = Modifier.height(16.dp))
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 🔹 Card hiển thị số dư
-        Card(
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopSearchNotificationCart()
+
+
+        // ✅ Scroll tất cả nội dung chung trong LazyColumn
+        LazyColumn(
             modifier = Modifier
-                .weight(1f) // Chiếm toàn bộ phần còn lại
-                .clip(RoundedCornerShape(8.dp)), // Bo góc
-            backgroundColor = Color.Black, // Nền đen
-            elevation = 4.dp // Bóng đổ nhẹ
+                .fillMaxSize()
+                .background(Color.White),
+            contentPadding = PaddingValues(bottom = 80.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            item {
                 Column {
-                    CustomText("Ví của tôi", fontSize = 14.sp, color = Color.White)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        CustomText(
-                            "đ 8,656.60",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrowright),
-                            contentDescription = "Xem chi tiết",
-                            tint = Color.White
+
+
+                    if (slides.isNotEmpty()) {
+                        ImageSliderFromUrl(domain, autoScroll = true, slides, modifier = Modifier.height(220.dp))
+                    }
+                    if (slides.isNotEmpty()) {
+                        TabBarPagedGridScrollable(
+                            tabs = categorys,
+                            selectedTab = selectedCategory,
+                            domain = domain,
+                            type = "name", // hoặc "name"
+                            onTabSelected = {
+//                            viewModel.onCategory2Selected(it, category2, type)
+                            }
                         )
                     }
-                }
-            }
-        }
 
-        Spacer(modifier = Modifier.width(12.dp))
 
-        // 🔹 Nút "Nạp tiền"
-        Box(
-            modifier = Modifier
-                .height(78.dp) // 🔥 Đặt chiều cao cố định
-                .width(130.dp) // 🔥 Định kích thước giống thiết kế
-                .border(1.dp, Color.Black, shape = RoundedCornerShape(8.dp)) // 🔥 Viền đen
-        ) {
-            Button(
-                onClick = { /* TODO: Xử lý nạp tiền */ },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxSize() // 🔥 Đảm bảo nút full trong Box
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.plus),
-                        contentDescription = "Thêm",
-                        tint = Color.White,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("Nạp tiền", color = Color.White, fontSize = 14.sp)
+
+
+
+//                    if (tabs.size > 1) {
+//                        TabBarRow(
+//                            tabs = tabs,
+//                            selectedTab = selectedTabIndex,
+//                            type = "name",
+//                            onTabSelected = {
+//                                selectedTabIndex = it
+//
+//                            }
+//                        )
+//                    }
+
+
+
+                    CustomDividerColor()
+
+//                    domain?.let {
+//                        ProductGridAffiliate(
+//                            domain = it,
+//                            products = flashSales,
+//                            modifier = Modifier.fillMaxWidth()
+//                        )
+//                    }
+                    if (products.isNotEmpty()) {
+                        domain?.let {
+                            ProductGridAffiliate(
+                                domain = it,
+                                products = products,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+
                 }
             }
         }
 
     }
 }
+
+
+
+

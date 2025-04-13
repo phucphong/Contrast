@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.LaunchedEffect
@@ -36,9 +37,10 @@ import com.contrast.Contrast.presentation.features.product.ui.ProductGridAffilia
 import com.contrast.Contrast.presentation.theme.TealGreen
 
 @Composable
-fun CategoryAffiliatePage( navController: NavController,
-                           viewModel:  CategoryAffiliateModel = hiltViewModel()) {
-
+fun CategoryAffiliatePage(
+    navController: NavController,
+    viewModel: CategoryAffiliateModel = hiltViewModel()
+) {
     val products by viewModel.products.collectAsState()
 
     val category1 by viewModel.category1.collectAsState()
@@ -49,6 +51,7 @@ fun CategoryAffiliatePage( navController: NavController,
     val displayService by viewModel.displayService.collectAsState()
     val displayPriority by viewModel.displayPriority.collectAsState()
     val idParent1 by viewModel.idParent1.collectAsState()
+    val idParent by viewModel.idParent.collectAsState()
     val idParent2 by viewModel.idParent2.collectAsState()
     val idParent3 by viewModel.idParent3.collectAsState()
     val type by viewModel.type.collectAsState()
@@ -62,10 +65,7 @@ fun CategoryAffiliatePage( navController: NavController,
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
 
-
-
     val isLoading by viewModel.isLoading.collectAsState()
-
 
     val tabs by viewModel.tabs.collectAsState()
     val isInit = remember { mutableStateOf(false) }
@@ -77,23 +77,20 @@ fun CategoryAffiliatePage( navController: NavController,
         }
     }
 
-
-
-
     Column(modifier = Modifier.fillMaxSize()) {
         TopSearchNotificationCart()
 
-
-    if(tabs.size>1){
-        SegmentTabLocal(
-            tabs = tabs,
-            selectedTab = selectedTabIndex,
-            type="name",
-            onTabSelected = { selectedTabIndex = it
-                viewModel.getCategory1("tatcanhomsp", "tatcanhomsp",type, "0", 1)
-            }
-        )
-    }
+        if (tabs.size > 1) {
+            SegmentTabLocal(
+                tabs = tabs,
+                selectedTab = selectedTabIndex,
+                type = "name",
+                onTabSelected = {
+                    selectedTabIndex = it
+                    viewModel.getCategory1("tatcanhomsp", "tatcanhomsp", type, "0", 1)
+                }
+            )
+        }
         TabBarRow(
             tabs = category1,
             color = TealGreen,
@@ -105,15 +102,17 @@ fun CategoryAffiliatePage( navController: NavController,
             type = "name"
         )
 
-        // ✅ Bọc LazyColumn trong Box với weight để giới hạn chiều cao
-        Box(modifier = Modifier.weight(1f)) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White),
-                contentPadding = PaddingValues(bottom = 80.dp)
-            ) {
-                item {
+        // ✅ Scroll tất cả nội dung chung trong LazyColumn
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White),
+            contentPadding = PaddingValues(bottom = 80.dp)
+        ) {
+            item {
+                Column {
+
+
                     TabBarRowCircle(
                         tabs = category2,
                         color = TealGreen,
@@ -122,46 +121,33 @@ fun CategoryAffiliatePage( navController: NavController,
                         type = "name",
                         domain = domain,
                         onTabSelected = {
-
                             viewModel.onCategory2Selected(it, category2, type)
-
                         }
                     )
-                }
-                item {
-                    CustomDividerColor()
-                }
-                item {
 
                     TabBarRowPillStyle(
                         tabs = category3,
-                        selectedTab = selectedTabIndex,
+                        selectedTab = selectedTab3,
                         type = "name",
-                        onTabSelected = {  viewModel.onCategory3Selected(it, category3, type) }
+                        onTabSelected = {
+                            viewModel.onCategory3Selected(it, category3, type)
+                        }
                     )
 
-                }
+                    CustomDividerColor()
 
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 0.dp, max = 1000.dp) // hoặc giới hạn chiều cao theo nhu cầu
-                    ) {
-                        domain?.let {
-                            ProductGridAffiliate(
-                                it,
-                                products,
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
+                    domain?.let {
+                        ProductGridAffiliate(
+                            domain = it,
+                            products = products,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
-
             }
         }
-    }
 
+    }
 }
 
 

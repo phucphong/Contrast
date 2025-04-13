@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.components.tab
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,16 +36,28 @@ fun TabBarRowPillStyle(
 ) {
     val listState = rememberLazyListState()
 
+//    LaunchedEffect(selectedTab) {
+//        val targetIndex = if (selectedTab >= tabs.size - 1) tabs.size - 1 else selectedTab
+//        listState.animateScrollToItem(index = maxOf(0, targetIndex - 1))
+//    }
+
+    // Auto scroll
     LaunchedEffect(selectedTab) {
-        val targetIndex = if (selectedTab >= tabs.size - 1) tabs.size - 1 else selectedTab
-        listState.animateScrollToItem(index = maxOf(0, targetIndex - 1))
+        val itemInfo = listState.layoutInfo.visibleItemsInfo.find { it.index == selectedTab }
+
+        val viewportCenter = listState.layoutInfo.viewportEndOffset / 2
+        val itemOffset = itemInfo?.offset ?: 0
+        val itemSize = itemInfo?.size ?: 0
+        val scrollOffset = itemOffset + itemSize / 2 - viewportCenter
+
+        listState.animateScrollBy(scrollOffset.toFloat())
     }
 
     LazyRow(
         state = listState,
         modifier = Modifier
             .fillMaxWidth()
-            .padding( vertical = 8.dp),
+            .padding(horizontal = 8.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->

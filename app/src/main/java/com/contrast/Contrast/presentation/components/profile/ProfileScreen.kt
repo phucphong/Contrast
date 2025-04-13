@@ -54,13 +54,9 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import coil3.compose.AsyncImage
+
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.line.CustomDividerColor
-import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
-import com.contrast.Contrast.presentation.theme.FFD91E18
-import com.itechpro.domain.model.Video
+
 
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable

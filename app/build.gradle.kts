@@ -129,9 +129,9 @@ dependencies {
     implementation(libs.coil.okhttp3)
     implementation(libs.androidyoutubeplayer)
     implementation(libs.androidx.foundation.layout)
-    implementation(libs.androidx.foundation.layout)
-    implementation(libs.androidx.foundation.layout)
-    implementation(libs.androidx.foundation.layout)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+
 
 
     annotationProcessor(libs.glideCompiler)

@@ -10,6 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.presentation.components.profile.ProfileScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
+import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliateModel
+import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliatePage
 import com.contrast.Contrast.presentation.features.call.dialer.DialerScreen
 import com.contrast.Contrast.presentation.features.call.viewmodel.DialerViewModel
 import com.contrast.Contrast.presentation.features.customer.ui.add.CustomerScreen
@@ -68,11 +70,16 @@ class RegisterAccountActivity : ComponentActivity() {
 //
 //                )
 
-            val viewModel: CategoryAffiliateModel = hiltViewModel()
-            CategoryAffiliatePage(navController,
+//            val viewModel: CategoryAffiliateModel = hiltViewModel()
+//            CategoryAffiliatePage(navController,
+//                viewModel = viewModel
+//
+//                )
+            val viewModel: HomeAffiliateModel = hiltViewModel()
+            HomeAffiliatePage(navController,
                 viewModel = viewModel
 
-                )
+            )
 
 //            val viewModel: VideoViewModel = hiltViewModel()
 //            VideoScreen(

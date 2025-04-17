@@ -52,7 +52,7 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
     var idCategory by remember { mutableStateOf("0") }
 
     val isLoading by viewModel.isLoading.collectAsState()
-
+    var searchText by remember { mutableStateOf("") }
 
 
     LaunchedEffect(selectedTab, categoryNews) {
@@ -65,9 +65,12 @@ fun NewsScreen(viewModel: NewsViewModel = hiltViewModel()) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopSearchNotificationCart(
-            onSearchClick = { /* mở màn tìm kiếm */ },
-            onNotificationClick = { /* mở thông báo */ },
-            onCartClick = { /* mở giỏ hàng */ }
+            isTexField = true,
+            text = searchText,
+            onTextChanged = { searchText = it },
+            onSearchClick = { /* mở trang tìm kiếm */ },
+            onNotificationClick = { /* xử lý noti */ },
+            onCartClick = { /* xử lý cart */ }
         )
         if (isLoading) {
             // Hiển thị loading, ví dụ:

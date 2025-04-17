@@ -1,6 +1,8 @@
 package com.contrast.Contrast.presentation.features.affiliate.category
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,6 +38,7 @@ import com.contrast.Contrast.presentation.components.tab.TabBarRowPillStyle
 import com.contrast.Contrast.presentation.features.product.ui.ProductGridAffiliate
 import com.contrast.Contrast.presentation.theme.TealGreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CategoryAffiliatePage(
     navController: NavController,
@@ -66,7 +69,7 @@ fun CategoryAffiliatePage(
     var idCategory by remember { mutableStateOf("0") }
 
     val isLoading by viewModel.isLoading.collectAsState()
-
+    var searchText by remember { mutableStateOf("") }
     val tabs by viewModel.tabs.collectAsState()
     val isInit = remember { mutableStateOf(false) }
 
@@ -78,7 +81,15 @@ fun CategoryAffiliatePage(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopSearchNotificationCart()
+        TopSearchNotificationCart(
+            isTexField = true,
+            text = searchText,
+            onTextChanged = { searchText = it },
+            onSearchClick = { /* mở trang tìm kiếm */ },
+            onNotificationClick = { /* xử lý noti */ },
+            onCartClick = { /* xử lý cart */ }
+        )
+
 
         if (tabs.size > 1) {
             SegmentTabLocal(
@@ -87,7 +98,9 @@ fun CategoryAffiliatePage(
                 type = "name",
                 onTabSelected = {
                     selectedTabIndex = it
-                    viewModel.getCategory1("tatcanhomsp", "tatcanhomsp", type, "0", 1)
+//                    viewModel.getCategory1("tatcanhomsp", "tatcanhomsp", type, "0", 1)
+
+                    viewModel.onCategorySelected(it, category1, type)
                 }
             )
         }

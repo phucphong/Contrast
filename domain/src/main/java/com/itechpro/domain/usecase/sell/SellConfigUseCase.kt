@@ -40,7 +40,7 @@ class SellConfigUseCase @Inject constructor(
                     "tatcasp",
                     "modetatcasp",
                     "huuhinh",
-                    listOf(Category(code = "product"), Category(code = "service"))
+                    listOf(Category(code = "huuhinh"), Category(code = "dichvu"))
                 )
             }
 
@@ -49,7 +49,7 @@ class SellConfigUseCase @Inject constructor(
                     "tatcadv",
                     "modetatcadv",
                     "dichvu",
-                    listOf(Category(code = "service"), Category(code = "product"))
+                    listOf(Category(code = "dichvu"), Category(code = "huuhinh"))
                 )
             }
 

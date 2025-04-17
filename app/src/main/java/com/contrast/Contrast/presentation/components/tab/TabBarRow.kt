@@ -30,7 +30,9 @@ fun TabBarRow(tabs: List<Category>,
 
               color: Color=Color.Red,textCorSelect: Color=Color.Black,
               selectedTab: Int,
+
               type :String?
+
               , onTabSelected: (Int) -> Unit) {
     val listState = rememberLazyListState()
 

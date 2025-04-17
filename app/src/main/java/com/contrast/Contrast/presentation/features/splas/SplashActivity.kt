@@ -45,6 +45,6 @@ class SplashActivity : AppCompatActivity() {
 //        } else if (!TextUtils.isEmpty(token)) {
 //           startactivity(ContrastActivity::class.java)
 //        }
-        startactivity(RegisterAccountActivity::class.java)
+        startactivity(ContrastActivity::class.java)
     }
 }

@@ -62,7 +62,7 @@ fun ProductCardAffiliate(domain: String, product: Product) {
             .width(180.dp)
 
             .background(Color.White)
-            .border(1.dp, Color(0xFFE0E0E0))
+
             .padding(2.dp,2.dp,2.dp,0.dp)
     ) {
         AsyncImage(
@@ -72,7 +72,7 @@ fun ProductCardAffiliate(domain: String, product: Product) {
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(RoundedCornerShape(6.dp))
+
         )
 
         Text(

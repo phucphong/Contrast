@@ -30,25 +30,25 @@ import com.itechpro.domain.model.SliderHome
 fun ImageSliderFromUrl(
     domain:String,
     autoScroll:Boolean = true,
-    imageUrls: List<SliderHome>,
+    slides: List<SliderHome>,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState()
 
     // 🔁 Auto scroll effect
     // 🔁 Auto scroll không phụ thuộc currentPage
-    LaunchedEffect(autoScroll, imageUrls.size) {
-        if (imageUrls.size > 1 && autoScroll) {
+    LaunchedEffect(autoScroll, slides.size) {
+        if (slides.size > 1 && autoScroll) {
             while (true) {
                 kotlinx.coroutines.delay(3000)
-                val nextPage = (pagerState.currentPage + 1) % imageUrls.size
+                val nextPage = (pagerState.currentPage + 1) % slides.size
                 pagerState.animateScrollToPage(nextPage)
             }
         }
     }
     Box(modifier = modifier, contentAlignment = Alignment.BottomCenter) {
         HorizontalPager(
-            count = imageUrls.size,
+            count = slides.size,
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
@@ -57,7 +57,7 @@ fun ImageSliderFromUrl(
 
 
 
-            val fullUrl = domain.trimEnd('/') + (imageUrls[page].filetxt ?: "")
+            val fullUrl = domain.trimEnd('/') + (slides[page].filetxt ?: "")
 
             NetworkImage(
                 imageUrl = fullUrl,

@@ -43,7 +43,7 @@ fun VideoScreen(
     var idCategory by remember { mutableStateOf("0") }
 
     val isLoading by viewModel.isLoading.collectAsState()
-
+    var searchText by remember { mutableStateOf("") }
     LaunchedEffect(selectedTab, categoryNews) {
         if (categoryNews.isNotEmpty() && selectedTab in categoryNews.indices) {
             idCategory =categoryNews[selectedTab].id ?: "0"
@@ -55,9 +55,12 @@ fun VideoScreen(
 
         // 🔍 TopBar tìm kiếm + icon
         TopSearchNotificationCart(
-            onSearchClick = { /* TODO: Mở tìm kiếm */ },
-            onNotificationClick = { /* TODO: Thông báo */ },
-            onCartClick = { /* TODO: Giỏ hàng */ }
+            isTexField = true,
+            text = searchText,
+            onTextChanged = { searchText = it },
+            onSearchClick = { /* mở trang tìm kiếm */ },
+            onNotificationClick = { /* xử lý noti */ },
+            onCartClick = { /* xử lý cart */ }
         )
 
         if (isLoading) {

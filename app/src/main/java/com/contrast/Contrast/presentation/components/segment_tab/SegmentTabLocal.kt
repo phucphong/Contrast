@@ -61,13 +61,7 @@ fun SegmentTabLocal(
     ) {
         tabs.forEachIndexed { index, obj ->
             val isSelected = index == selectedTab
-            var segmentName = ""
-            if(type=="name"){
-                segmentName = obj.name?:""
 
-            }else{
-                segmentName = obj.ten?:""
-            }
 
             // Divider TRÁI
             if (index != 0) {
@@ -112,7 +106,7 @@ fun SegmentTabLocal(
                 Box(
                     modifier = Modifier
                         .width(1.dp)
-                        .fillMaxHeight()
+                        .height(30.dp)
                         .padding(vertical = 10.dp)
                         .background(FFE0E0E0)
                 )

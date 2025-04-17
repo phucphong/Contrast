@@ -49,7 +49,7 @@ import androidx.compose.foundation.layout.Row as Row1
 
 @Preview(showBackground = true)
 @Composable
-fun ProductDetailScreen(viewModel: ProductDetailViewModel = viewModel()) {
+fun ProductDetailScreen(productId: String,viewModel: ProductDetailViewModel = viewModel()) {
     var selectedSize by remember { mutableStateOf("Size M") }
     var selectedSugar by remember { mutableStateOf("Ngọt bình thường") }
     var selectedIce by remember { mutableStateOf("Đá bình thường") }

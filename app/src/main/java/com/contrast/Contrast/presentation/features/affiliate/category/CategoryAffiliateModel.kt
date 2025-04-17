@@ -154,6 +154,16 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     fun onTabSelected2(index: Int) {
         _selectedTab2.value = index
     }
+    fun onCategorySelected(index: Int, categoryList: List<Category>, type: String) {
+        onTabSelected1(0)
+        onTabSelected2(0)
+        onTabSelected3(0)
+        val code = categoryList.getOrNull(index)?.code.orEmpty()
+        _type.value=code
+        getCategory1("tatcanhomsp", "tatcanhomsp", code, "0", 1)
+    }
+
+
     fun onCategory1Selected(index: Int, categoryList: List<Category>, type: String) {
         onTabSelected1(index)
         onTabSelected2(0)

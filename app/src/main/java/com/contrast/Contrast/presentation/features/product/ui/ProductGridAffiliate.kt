@@ -32,8 +32,8 @@ fun ProductGridAffiliate(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(1.dp),
+
             ) {
                 rowItems.forEach { product ->
                     Box(modifier = Modifier.weight(1f)) {

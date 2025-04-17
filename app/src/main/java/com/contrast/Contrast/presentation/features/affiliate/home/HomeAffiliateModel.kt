@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
+import com.contrast.Contrast.presentation.features.navigator.HomeNavEvent
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
@@ -99,6 +100,18 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
     val isLoading: StateFlow<Boolean> = _isLoading
     private var currentUserInfo: CurrentUserInfo? = null
 
+    private val _navigationEvent = MutableStateFlow<HomeNavEvent>(HomeNavEvent.None)
+    val navigationEvent: StateFlow<HomeNavEvent> = _navigationEvent
+
+    fun onTabSelected(index: Int, category: Category) {
+        _navigationEvent.value = HomeNavEvent.GoToProduct(category.id.toString())
+    }
+
+    // Sau khi navigate xong, reset lại state
+    fun resetNavigation() {
+        _navigationEvent.value = HomeNavEvent.None
+    }
+
     init {
         viewModelScope.launch(dispatcher) {
             try {
@@ -132,10 +145,16 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
 
     }
 
-    fun onTabSelected(index: Int) {
-        _selectedTab.value = index
-    }
 
+
+    fun onCategorySelected(index: Int, categoryList: List<Category>) {
+        _selectedTab.value=index
+
+        val code = categoryList.getOrNull(index)?.code.orEmpty()
+        _type.value = code
+
+        getProductsByIdParent(code,"0")
+    }
 
 
 

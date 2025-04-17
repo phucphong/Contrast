@@ -17,16 +17,14 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.bottomAction.BottomActionList
 import com.contrast.Contrast.presentation.components.header.HeaderImageTitle
-import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
-import com.contrast.Contrast.presentation.components.segment_tab.SegmentTab
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
+import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
+
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
 import com.contrast.Contrast.presentation.features.chat.ChatInputBox
 import com.contrast.Contrast.presentation.features.customer.viewmodel.CustomerViewModel
-import com.contrast.Contrast.presentation.features.detail.InfoItemDetail
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.navigationEvent.CustomerNavigationEvent
 
 @Composable

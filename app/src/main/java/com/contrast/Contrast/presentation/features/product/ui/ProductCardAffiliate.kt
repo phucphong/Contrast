@@ -31,6 +31,7 @@ import com.contrast.Contrast.extensions.DateUtils
 import com.contrast.Contrast.extensions.DateUtils.today
 import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.presentation.components.countdownTimer.rememberCountdownTimer
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.progressBar.FlashSaleSeekBar
 import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
 import com.itechpro.domain.model.Product
@@ -41,7 +42,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun ProductCardAffiliate(domain: String, product: Product) {
+fun ProductCardAffiliate(domain: String, product: Product, onClick: () -> Unit) {
     val totalPrice = product.sotien ?: 0.0
     val promoPrice = product.sotiensaukm?:0.0
     val startDate = product.tungay?:""
@@ -63,7 +64,7 @@ fun ProductCardAffiliate(domain: String, product: Product) {
 
             .background(Color.White)
 
-            .padding(2.dp,2.dp,2.dp,0.dp)
+            .padding(2.dp,2.dp,2.dp,0.dp).noRippleClickableComposable { onClick() }
     ) {
         AsyncImage(
             model = fullUrl,

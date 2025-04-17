@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.account.personalInfo.PersonalInfoScreen
@@ -38,16 +39,7 @@ import com.contrast.Contrast.presentation.theme.FFD91E18
 @Preview(device = Devices.PHONE, showBackground = true)
 
 @Composable
-fun AccountScreenPreview() {
-    val navController = rememberNavController()  // Tạo NavController giả lập cho Preview
-    AccountScreen(
-        navController = navController,
-
-        )
-}
-
-@Composable
-fun AccountScreen( navController: NavController) {
+fun AccountScreen( navHostController: NavHostController) {
     val accountItems = listOf(
         R.string.personal_info to R.drawable.user,
         R.string.membership to R.drawable.ic_medal,
@@ -86,8 +78,7 @@ fun AccountScreen( navController: NavController) {
                 modifier = Modifier
                     .weight(1f)
                     .clickable {
-                        // Chuyển hướng sang màn hình thông tin cá nhân
-                        navController.navigate("personal_info")
+
                     }
             ) {
                 Text(text = "Xin chào!", fontSize = 12.sp, color = Color.Gray)

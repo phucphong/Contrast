@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.AFFFFFF
@@ -58,7 +59,7 @@ import com.contrast.Contrast.presentation.theme.FFD91E18
 
 @Preview(showBackground = true)
 @Composable
-fun LocationScreen( navController: NavController) {
+fun LocationScreen(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()

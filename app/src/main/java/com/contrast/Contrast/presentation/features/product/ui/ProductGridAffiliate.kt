@@ -23,6 +23,8 @@ import com.itechpro.domain.model.Product
 fun ProductGridAffiliate(
     domain: String,
     products: List<Product>,
+    onItemClick: (Int) -> Unit,
+
     modifier: Modifier = Modifier
 ) {
     val rows = products.chunked(2) // mỗi dòng 2 sản phẩm
@@ -37,7 +39,7 @@ fun ProductGridAffiliate(
             ) {
                 rowItems.forEach { product ->
                     Box(modifier = Modifier.weight(1f)) {
-                        ProductCardAffiliate(domain, product)
+                        ProductCardAffiliate(domain, product, onClick = { onItemClick(product.id) }  )
                     }
                 }
                 if (rowItems.size < 2) {

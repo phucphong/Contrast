@@ -18,16 +18,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
-import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
-import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
-import com.contrast.Contrast.presentation.features.navigator.AppNavHost
-import com.contrast.Contrast.presentation.features.store.ui.StoreListScreen
-import com.contrast.Contrast.presentation.features.membership.rewards.RewardsScreen
+import com.contrast.Contrast.presentation.navigator.AppNavHost
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

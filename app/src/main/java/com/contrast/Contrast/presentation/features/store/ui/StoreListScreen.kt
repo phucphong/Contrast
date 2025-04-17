@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.features.main.home.ui.StoreCard
 data class Product(
@@ -49,7 +50,7 @@ data class Product(
 )
 @Preview(showBackground = true)
 @Composable
-fun StoreListScreen(navController: NavController? = null) {
+fun StoreListScreen(navHostController: NavHostController) {
     val teaProducts = listOf(
         Product("Nhẫn Hoa Mộc Tê", "55.000 đ", R.drawable.product_image, "50% OFF"),
         Product("Nhẫn Hoa Mộc Tê", "55.000 đ", R.drawable.product_image, "50% OFF")

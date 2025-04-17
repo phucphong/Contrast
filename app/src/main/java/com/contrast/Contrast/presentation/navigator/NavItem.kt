@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.navigator
+package com.contrast.Contrast.presentation.navigator
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

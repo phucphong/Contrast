@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.navigator
+package com.contrast.Contrast.presentation.navigator.event
 
 sealed class HomeNavEvent {
     data class GoToProduct(val categoryId: String) : HomeNavEvent()

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
@@ -31,8 +32,8 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.Video
 
 @Composable
-fun VideoScreen(
-    viewModel: VideoViewModel = hiltViewModel()
+fun VideoScreen(navHostController: NavHostController,
+                viewModel: VideoViewModel = hiltViewModel()
 ) {
     val videos by viewModel.videos.collectAsState()
     val categoryNews by viewModel.categoryNews.collectAsState()

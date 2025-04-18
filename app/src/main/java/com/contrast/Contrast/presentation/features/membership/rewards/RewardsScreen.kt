@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.theme.AEA1F27
@@ -49,7 +50,7 @@ import com.contrast.Contrast.presentation.theme.FFE40000
 
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable
-fun RewardsScreen( navController: NavController) {
+fun RewardsScreen( navHostController: NavHostController) {
     val menuItems = listOf(
         stringResource(R.string.membership_benefits)to R.drawable.ic_medal,
         stringResource(R.string.membership_policy)to R.drawable.membership_policy,

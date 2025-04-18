@@ -43,10 +43,10 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
     private val _category1 = MutableStateFlow<List<Category>>(emptyList())
     val category1: StateFlow<List<Category>> = _category1
-    
+
     private val _category2 = MutableStateFlow<List<Category>>(emptyList())
     val category2: StateFlow<List<Category>> = _category2
-    
+
     private val _category3 = MutableStateFlow<List<Category>>(emptyList())
     val category3: StateFlow<List<Category>> = _category3
 
@@ -66,7 +66,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
     private val _idParent1 = MutableStateFlow<String>("")
     val idParent1: StateFlow<String> = _idParent1
-        private val _idParent = MutableStateFlow<String>("")
+    private val _idParent = MutableStateFlow<String>("")
     val idParent: StateFlow<String> = _idParent
 
     private val _idParent2 = MutableStateFlow<String>("")
@@ -106,6 +106,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
                 _domain.value = currentUserInfo!!.domain?:""
                 _displayProduct.value = currentUserInfo!!.displayProduct?:""
                 _displayService.value = currentUserInfo!!.displayService?:""
+                _displayPriority.value = currentUserInfo!!.displayPriority?:""
 
 
             } catch (e: Exception) {
@@ -125,12 +126,12 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
             _idParent.value =idParent1
         }
 
-      getProductsByIdParent(type, _idParent.value)
+        getProductsByIdParent(type, _idParent.value)
 
 
     }
 
-    fun initCategory(displayProduct: String, displayService: String, displayPriority: String) {
+    fun initCategory(displayProduct: String, displayService: String, displayPriority: String, categoryId: String) {
 
         val result = sellConfigUseCase.generateConfig(displayProduct, displayService, displayPriority)
         _tabs.value = result.tabs
@@ -140,7 +141,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
 
         // Gọi API lấy cấp đầu tiên
-        getCategory1("tatcanhomsp", "tatcanhomsp", result.type, "0", 1)
+        getCategory1("tatcanhomsp", "tatcanhomsp", result.type, categoryId, 1)
     }
 
     fun onTabSelected(index: Int) {
@@ -154,13 +155,13 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     fun onTabSelected2(index: Int) {
         _selectedTab2.value = index
     }
-    fun onCategorySelected(index: Int, categoryList: List<Category>, type: String) {
+    fun onCategorySelected(index: Int, categoryList: List<Category>, categoryId: String) {
         onTabSelected1(0)
         onTabSelected2(0)
         onTabSelected3(0)
         val code = categoryList.getOrNull(index)?.code.orEmpty()
         _type.value=code
-        getCategory1("tatcanhomsp", "tatcanhomsp", code, "0", 1)
+        getCategory1("tatcanhomsp", "tatcanhomsp", code, categoryId, 1)
     }
 
 
@@ -170,6 +171,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         onTabSelected3(0)
         val id = categoryList.getOrNull(index)?.id.orEmpty()
         _idParent1.value = id
+
         getCategory2("tatcanhomsp", "tatcanhomsp", type, id, 2)
     }
 
@@ -179,7 +181,10 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         onTabSelected3(0)
         val id = categoryList.getOrNull(index)?.id.orEmpty()
         _idParent2.value = id
+
         getCategory3("tatcanhomsp", "tatcanhomsp", type, id, 3)
+
+
     }
 
     fun onTabSelected3(index: Int) {
@@ -200,7 +205,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         )
     }
 
-// lấy danh mực 3 cấp
+    // lấy danh mực 3 cấp
     fun getCategory1(obj: String,mode: String,type: String,idParent: String, level:Int) {
         val user = currentUserInfo ?: return
 
@@ -220,6 +225,12 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
                             }else{
                                 _idParent1.value = ""
                             }
+                            handleIdParentResult(
+                                idParent1 = _idParent1.value,
+                                idParent2 = _idParent2.value,
+                                idParent3 = _idParent3.value,
+                               type
+                            )
                             getCategory2("tatcanhomsp", "tatcanhomsp", type, result.data[0].id.toString(), 2)
 
                         }
@@ -236,7 +247,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         }
     }
 
-// lấy danh mực 3 cấp
+    // lấy danh mực 3 cấp
     fun getCategory2(obj: String,mode: String,type: String,idParent: String, level:Int) {
         val user = currentUserInfo ?: return
 
@@ -256,6 +267,12 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
                             }else{
                                 _idParent2.value = ""
                             }
+                            handleIdParentResult(
+                                idParent1 = _idParent1.value,
+                                idParent2 = _idParent2.value,
+                                idParent3 = _idParent3.value,
+                                type
+                            )
                             getCategory3("tatcanhomsp", "tatcanhomsp", type, result.data[0].id.toString(), 3)
                         }
                         is NetworkResponse.Error -> {
@@ -319,8 +336,8 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
         viewModelScope.launch(dispatcher) {
             try {
-                
-         
+
+
                 useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {

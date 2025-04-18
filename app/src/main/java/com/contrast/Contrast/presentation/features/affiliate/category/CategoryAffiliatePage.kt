@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.features.affiliate.category
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
@@ -41,7 +43,8 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CategoryAffiliatePage(
-    navController: NavController,
+    navHostController: NavHostController,
+    categoryId: String,
     viewModel: CategoryAffiliateModel = hiltViewModel()
 ) {
     val products by viewModel.products.collectAsState()
@@ -66,7 +69,7 @@ fun CategoryAffiliatePage(
     val selectedTab2 by viewModel.selectedTab2.collectAsState()
     val selectedTab3 by viewModel.selectedTab3.collectAsState()
     val isRefreshing by remember { mutableStateOf(false) }
-    var idCategory by remember { mutableStateOf("0") }
+
 
     val isLoading by viewModel.isLoading.collectAsState()
     var searchText by remember { mutableStateOf("") }
@@ -74,11 +77,13 @@ fun CategoryAffiliatePage(
     val isInit = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
+        Log.e("categoryId",categoryId)
         if (!isInit.value) {
-            viewModel.initCategory(displayProduct, displayService, displayPriority)
+            viewModel.initCategory(displayProduct, displayService, displayPriority,categoryId)
             isInit.value = true
         }
     }
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopSearchNotificationCart(
@@ -100,7 +105,7 @@ fun CategoryAffiliatePage(
                     selectedTabIndex = it
 //                    viewModel.getCategory1("tatcanhomsp", "tatcanhomsp", type, "0", 1)
 
-                    viewModel.onCategorySelected(it, category1, type)
+                    viewModel.onCategorySelected(it, category1, categoryId)
                 }
             )
         }
@@ -153,6 +158,7 @@ fun CategoryAffiliatePage(
                         ProductGridAffiliate(
                             domain = it,
                             products = products,
+                            onItemClick={},
                             modifier = Modifier.fillMaxWidth()
                         )
                     }

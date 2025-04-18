@@ -32,7 +32,7 @@ class SellConfigUseCase @Inject constructor(
     ): CategoryAffiliateConfig {
         val isProductEnabled = displayProduct == "1"
         val isServiceEnabled = displayService == "1"
-        val isProductPriority = displayPriority == "0"
+        val isProductPriority = displayPriority == "1"
 
         val (objApi, modeApi, type, tabs) = when {
             isProductEnabled && isServiceEnabled && isProductPriority -> {
@@ -44,7 +44,7 @@ class SellConfigUseCase @Inject constructor(
                 )
             }
 
-            isProductEnabled && isServiceEnabled -> {
+            isProductEnabled && isServiceEnabled && !isProductPriority -> {
                 ConfigData(
                     "tatcadv",
                     "modetatcadv",

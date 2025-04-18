@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.presentation.components.profile.ProfileScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
@@ -33,6 +34,7 @@ class RegisterAccountActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val  navHostController= NavHostController(this)
 //            CustomerScreen(navController = navController,"0")
 
 //            WorkScreen()
@@ -70,16 +72,17 @@ class RegisterAccountActivity : ComponentActivity() {
 //
 //                )
 
-//            val viewModel: CategoryAffiliateModel = hiltViewModel()
-//            CategoryAffiliatePage(navController,
+            val viewModel: CategoryAffiliateModel = hiltViewModel()
+            CategoryAffiliatePage(navController,
+                viewModel = viewModel,
+                        categoryId = "0"
+
+                )
+//            val viewModel: HomeAffiliateModel = hiltViewModel()
+//            HomeAffiliatePage(navHostController,
 //                viewModel = viewModel
 //
-//                )
-            val viewModel: HomeAffiliateModel = hiltViewModel()
-            HomeAffiliatePage(navController,
-                viewModel = viewModel
-
-            )
+//            )
 
 //            val viewModel: VideoViewModel = hiltViewModel()
 //            VideoScreen(

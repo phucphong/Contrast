@@ -8,12 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
-import com.contrast.Contrast.presentation.features.navigator.HomeNavEvent
+import com.contrast.Contrast.presentation.navigator.event.HomeNavEvent
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.SliderHome
@@ -71,30 +70,10 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
     private val _displayPriority = MutableStateFlow<String>("")
     val displayPriority: StateFlow<String> = _displayPriority
 
-    private val _idParent1 = MutableStateFlow<String>("")
-    val idParent1: StateFlow<String> = _idParent1
-    private val _idParent = MutableStateFlow<String>("")
-    val idParent: StateFlow<String> = _idParent
-
-    private val _idParent2 = MutableStateFlow<String>("")
-    val idParent2: StateFlow<String> = _idParent2
-    private val _idParent3= MutableStateFlow<String>("")
-    val idParent3: StateFlow<String> = _idParent3
-
     private val _type = MutableStateFlow<String>("")
     val type: StateFlow<String> = _type
-
-    private val _objApi = MutableStateFlow<String>("")
-    val objApi: StateFlow<String> = _objApi
-
-    private val _modeApi = MutableStateFlow<String>("")
-    val modeApi: StateFlow<String> = _modeApi
-
-
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab: StateFlow<Int> = _selectedTab
-
-
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -104,7 +83,9 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
     val navigationEvent: StateFlow<HomeNavEvent> = _navigationEvent
 
     fun onTabSelected(index: Int, category: Category) {
-        _navigationEvent.value = HomeNavEvent.GoToProduct(category.id.toString())
+        _selectedTab.value =index
+        Log.e("categoryId",category.id?:"")
+        _navigationEvent.value = HomeNavEvent.GoToProduct(category.id?:"")
     }
 
     // Sau khi navigate xong, reset lại state
@@ -119,6 +100,7 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
                 _domain.value = currentUserInfo!!.domain?:""
                 _displayProduct.value = currentUserInfo!!.displayProduct?:""
                 _displayService.value = currentUserInfo!!.displayService?:""
+                _displayPriority.value = currentUserInfo!!.displayPriority?:""
 
                 getSlideHome("sanphamtrangchu","modeslide")
                 getCategory("tatcanhomsp","tatcanhomsp","","0")
@@ -138,8 +120,6 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
 
         val result = sellConfigUseCase.generateConfig(displayProduct, displayService, displayPriority)
         _tabs.value = result.tabs
-        _objApi.value = result.objApi
-        _modeApi.value = result.modeApi
         _type.value = result.type
         getProductsByIdParent(result.type,"0")
 

@@ -24,7 +24,7 @@ fun AppNavHost(navController: NavHostController) {
         composable("storeList") { StoreListScreen(navController) }
         composable("membership") { RewardsScreen(navController) }
         composable("account") { AccountScreen(navController) }
-        composable("product/{categoryId}") {  }
+        composable("product/{categoryId}") {AccountScreen(navController)  }
     }
 }
 //

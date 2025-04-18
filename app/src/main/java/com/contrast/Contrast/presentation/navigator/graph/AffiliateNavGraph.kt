@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliatePage
+import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.video.VideoScreen
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 
@@ -26,11 +27,27 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
         }
 
 
+  composable(NavRoutes.Notifications.route) {
+            NotificationScreen(navController)
+        }
+  composable(NavRoutes.NotificationDetail.route) {
+            NotificationScreen(navController)
+        }
+
+
+
         composable(NavRoutes.ProductByCategory.route) { backStackEntry ->
             val categoryId = backStackEntry.arguments?.getString("categoryId") ?: ""
-
-
             CategoryAffiliatePage(navController, categoryId)
+        }
+
+        composable(NavRoutes.AddServiceRequest.route) { backStackEntry ->
+            val idService = backStackEntry.arguments?.getString("idService") ?: ""
+            CategoryAffiliatePage(navController, idService)
+        }
+       composable(NavRoutes.AddServiceRequest.route) { backStackEntry ->
+            val idService = backStackEntry.arguments?.getString("idService") ?: ""
+            CategoryAffiliatePage(navController, idService)
         }
 
 

@@ -1,17 +1,13 @@
 package com.itechpro.domain.usecase.customer
 
-
-import com.itechpro.domain.enumApp.CategoryType
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
 import com.itechpro.domain.repository.CustomerRepository
 import com.itechpro.domain.safeFlowCall
-import kotlinx.coroutines.Dispatchers
+
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+
 import javax.inject.Inject
 
 class CustomerUseCase @Inject constructor(

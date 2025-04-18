@@ -9,8 +9,10 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
+
 import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.category.CategoryAffiliateUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
@@ -65,23 +67,15 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     val displayPriority: StateFlow<String> = _displayPriority
 
     private val _idParent1 = MutableStateFlow<String>("")
-    val idParent1: StateFlow<String> = _idParent1
+
     private val _idParent = MutableStateFlow<String>("")
-    val idParent: StateFlow<String> = _idParent
-
     private val _idParent2 = MutableStateFlow<String>("")
-    val idParent2: StateFlow<String> = _idParent2
     private val _idParent3= MutableStateFlow<String>("")
-    val idParent3: StateFlow<String> = _idParent3
-
     private val _type = MutableStateFlow<String>("")
     val type: StateFlow<String> = _type
-
     private val _objApi = MutableStateFlow<String>("")
-    val objApi: StateFlow<String> = _objApi
-
     private val _modeApi = MutableStateFlow<String>("")
-    val modeApi: StateFlow<String> = _modeApi
+
 
 
     private val _selectedTab = MutableStateFlow(0)
@@ -98,7 +92,8 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
     private var currentUserInfo: CurrentUserInfo? = null
-
+    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
+    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
     init {
         viewModelScope.launch(dispatcher) {
             try {
@@ -115,20 +110,15 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         }
     }
 
-    fun handleIdParentResult(idParent1:String,idParent2:String, idParent3:String , type:String ) {
 
-
-        if(idParent1.isNotEmpty()&&idParent2.isNotEmpty()&&idParent3.isNotEmpty()){
-            _idParent.value =idParent3
-        }else  if(idParent1.isNotEmpty()&&idParent2.isNotEmpty()){
-            _idParent.value =idParent2
-        }else  if(idParent1.isNotEmpty()){
-            _idParent.value =idParent1
+    fun handleIdParentResult(idParent1: String, idParent2: String, idParent3: String, type: String) {
+        _idParent.value = when {
+            idParent3.isNotEmpty() -> idParent3
+            idParent2.isNotEmpty() -> idParent2
+            else -> idParent1
         }
 
         getProductsByIdParent(type, _idParent.value)
-
-
     }
 
     fun initCategory(displayProduct: String, displayService: String, displayPriority: String, categoryId: String) {
@@ -139,7 +129,12 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         _modeApi.value = result.modeApi
         _type.value = result.type
 
-
+        handleIdParentResult(
+            idParent1 = _idParent1.value,
+            idParent2 = _idParent2.value,
+            idParent3 = _idParent3.value,
+            result.type
+        )
         // Gọi API lấy cấp đầu tiên
         getCategory1("tatcanhomsp", "tatcanhomsp", result.type, categoryId, 1)
     }
@@ -186,6 +181,43 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
 
     }
+    fun onItemProductSelected( category: Product) {
+        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
+            id = category.id ?: "",
+            serviceName = category.ten ?: "",
+            idUnit = category.iddonvichuan ?: "",
+            discount = category.iddonvichuan ?: ""
+        )
+
+
+    }
+
+    fun onItemCart( category: Product) {
+
+        // val  objCart = Product()
+        //        objCart.id=obj.id
+        //        objCart.iddonvichuan=obj.iddonvichuan
+        //        objCart.soluong=obj.countNumber
+        //        objCart.khuyenmai = obj.discount
+        //        objCart.sotien = obj.price
+        //        objCart.dongia = obj.price
+        //        addCart(objCart)
+
+        // callApAddCart
+
+
+
+    }
+    fun onAddServiceRequestSelected( category: Product) {
+        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
+            id = category.id ?: "",
+            serviceName = category.ten ?: "",
+            idUnit = category.iddonvichuan ?: "",
+            discount = category.iddonvichuan ?: ""
+        )
+
+
+    }
 
     fun onTabSelected3(index: Int) {
         _selectedTab3.value = index
@@ -206,7 +238,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     }
 
     // lấy danh mực 3 cấp
-    fun getCategory1(obj: String,mode: String,type: String,idParent: String, level:Int) {
+  private  fun getCategory1(obj: String,mode: String,type: String,idParent: String, level:Int) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {
@@ -248,7 +280,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     }
 
     // lấy danh mực 3 cấp
-    fun getCategory2(obj: String,mode: String,type: String,idParent: String, level:Int) {
+    private  fun getCategory2(obj: String,mode: String,type: String,idParent: String, level:Int) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {
@@ -287,7 +319,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
             }
         }
     }
-    fun getCategory3(obj: String,mode: String,type: String,idParent: String, level:Int) {
+    private  fun getCategory3(obj: String,mode: String,type: String,idParent: String, level:Int) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {
@@ -331,7 +363,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
 
 
-    fun getProductsByIdParent(type: String,idParent: String) {
+   private fun getProductsByIdParent(type: String,idParent: String) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {

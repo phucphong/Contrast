@@ -1,14 +1,9 @@
 package com.itechpro.domain.usecase.notification
 
-
-
-import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
 import com.itechpro.domain.model.Notification
-import com.itechpro.domain.repository.NewsRepository
+import com.itechpro.domain.model.notification.NotificationResult
 import com.itechpro.domain.repository.NotificationRepository
-import com.itechpro.domain.safeFlowCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,35 +15,53 @@ class NotificationUseCase @Inject constructor(
 
     ) {
 
+//
+//    fun getNotifications(startDate: String,endDate: String, authen: String): Flow<NetworkResponse<List<Notification>>> {
+//        return flow {
+//            emit(NetworkResponse.Loading)
+//            val result = repository.getNotifications(startDate,endDate, authen)
+//            emit(result)
+//        }.flowOn(Dispatchers.IO)
+//    }
 
-    fun getNotifications(startDate: String,endDate: String, authen: String): Flow<NetworkResponse<List<Notification>>> {
+
+    fun getNotifications(startDate: String,endDate: String, authen: String): Flow<NetworkResponse<NotificationResult>> {
         return flow {
             emit(NetworkResponse.Loading)
+            when (val result = repository.getNotifications(startDate, endDate ,authen)) {
+                is NetworkResponse.Success -> {
+                    val items = result.data
+                    emit(NetworkResponse.Success(NotificationResult(items, items.size)))
+                }
+                is NetworkResponse.Error -> {
+                    emit(NetworkResponse.Error(result.message))
+                }
 
-            val result = repository.getNotifications(startDate,endDate, authen)
-
-            emit(result)
+                NetworkResponse.Loading -> {}
+            }
         }.flowOn(Dispatchers.IO)
     }
 
-  
+    fun getNotificationDetail(ido: String, authen: String): Flow<NetworkResponse<Notification?>> {
+        return flow {
+            emit(NetworkResponse.Loading)
+            when (val result = repository.getNotificationDetail("layctthongbao","modelayctthongbao",ido, authen)) {
+                is NetworkResponse.Success -> {
+                    val list: List<Notification> = result.data
+                    val obj = list.firstOrNull()
+                    emit(NetworkResponse.Success(obj))
+                }
 
+                is NetworkResponse.Error -> {
+                    emit(NetworkResponse.Error(result.message))
+                }
 
-    fun getNotificationDetail(
-        ido: String,
-        authen: String
-    ): Flow<NetworkResponse<Notification>> = safeFlowCall {
-        val response = repository.getNotificationDetail("khachhang", "getbyid", ido, authen)
-        when (response) {
-            is NetworkResponse.Success -> {
-                val customer = response.data.firstOrNull()
-                customer?.let { NetworkResponse.Success(it) }
-                    ?: NetworkResponse.Error("Không tìm thấy dữ liệu khách hàng")
+                else -> Unit
             }
-
-            is NetworkResponse.Error -> NetworkResponse.Error(response.message)
-            is NetworkResponse.Loading -> NetworkResponse.Loading
-        }
+        }.flowOn(Dispatchers.IO)
     }
+
+
+
 
 }

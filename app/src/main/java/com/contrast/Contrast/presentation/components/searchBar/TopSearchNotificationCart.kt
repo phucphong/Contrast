@@ -47,12 +47,16 @@ import com.contrast.Contrast.presentation.theme.iOSUnderlineGray
 fun TopSearchNotificationCart(
     modifier: Modifier = Modifier,
     placeholder: String = "Tìm kiếm",
+    totalNotificationItems: Int = 0,
+    totalCartItems: Int = 0,
     isTexField: Boolean = true,
+    isBackStack: Boolean = false,
     text: String = "",
     onTextChanged: (String) -> Unit = {},
     onSearchClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
-    onCartClick: () -> Unit = {}
+    onCartClick: () -> Unit = {},
+    onBackStack: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -61,16 +65,28 @@ fun TopSearchNotificationCart(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        if(isBackStack){
+            Image(
+                painter= painterResource(R.drawable.back),
+                contentDescription = "Search Icon",
+                modifier = Modifier.size(35.dp).padding(8.dp).noRippleClickableComposable { onBackStack() }
+                , colorFilter = ColorFilter.tint(TealGreen)
+            )
+        }
+
+
         // Search Box
         Box(
             modifier = Modifier
                 .weight(1f)
-                .height(40.dp)
+                .height(40.dp).padding(start = 5.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color(0xFFF5F5F5))
                 .noRippleClickableComposable { onSearchClick() },
             contentAlignment = Alignment.CenterStart
         ) {
+
+
             Row(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -148,7 +164,7 @@ fun TopSearchNotificationCart(
 
         // Cart Icon
         NotificationIconWithBadge(
-            count = 1,
+            count = totalNotificationItems,
             onNotificationClick = {
                 // Xử lý click giỏ hàng
                 onNotificationClick()
@@ -157,7 +173,7 @@ fun TopSearchNotificationCart(
 
         // Cart Icon
         CartIconWithBadge(
-            count = 1,
+            count = totalCartItems,
             onCartClick = {
                 // Xử lý click giỏ hàng
                 onCartClick()

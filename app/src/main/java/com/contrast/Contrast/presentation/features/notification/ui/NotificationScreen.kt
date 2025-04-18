@@ -18,45 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.theme.FCFCFC
-import com.contrast.Contrast.presentation.theme.FFD7D7D7
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
-import com.contrast.Contrast.presentation.features.news.list.NewsItem
 
-
-import com.itechpro.domain.model.sampleNotifications
-
-//@Composable
-//fun NotificationScreen(onBackPress: () -> Unit) {
-//    val notifications = remember { sampleNotifications() }
-//
-//    Scaffold(
-//        topBar = {
-//            CustomTopAppBarBackTitle(
-//                title = stringResource(id = R.string.notification_title),
-//                Color.Red,
-//                FFD7D7D7,
-//                onBackClick = { onBackPress }
-//            )
-//        }
-//
-//    ) { paddingValues ->
-//        LazyColumn(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(paddingValues)
-//                .background(FCFCFC),
-//            contentPadding = PaddingValues(16.dp),
-//            verticalArrangement = Arrangement.spacedBy(8.dp)
-//        ) {
-//            items(notifications, key = { it.id }) { notification ->
-//                NotificationItem(notification)
-//            }
-//        }
-//    }
-//}
-
-
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 
@@ -72,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.extensions.DateUtils
 
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
@@ -79,25 +42,21 @@ import com.contrast.Contrast.presentation.components.circularProgressIndicatorCe
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
-import com.contrast.Contrast.presentation.components.tab.TabBarRow
-
-import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
+import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.theme.TealGreen
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable
-fun NotificationScreen(viewModel: NotificationViewModel = hiltViewModel()) {
+fun NotificationScreen(navHostController: NavHostController, viewModel: NotificationViewModel = hiltViewModel()) {
     val notifications by viewModel.notifications.collectAsState()
 
     val domain by viewModel.domain.collectAsState()
 
-    val selectedTab by viewModel.selectedTab.collectAsState()
+
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
     var startDate by remember { mutableStateOf("") }
@@ -107,6 +66,20 @@ fun NotificationScreen(viewModel: NotificationViewModel = hiltViewModel()) {
 
     val isLoading by viewModel.isLoading.collectAsState()
 
+    val navEvent by viewModel.navigationEvent.collectAsState()
+//    LaunchedEffect(navEvent) {
+//        when (val event = navEvent) {
+//            is NotificationNavEvent.GoToOrderDetail -> {
+//                navHostController.currentBackStackEntry?.savedStateHandle?.apply {
+//                    set("orderId", event.id) // ✅ dùng đúng tên field trong event
+//                }
+//                navHostController.navigate(NavRoutes.OrderDetail)
+//                viewModel.resetNavigation()
+//            }
+//
+//            else -> Unit
+//        }
+//    }
 
 
     LaunchedEffect(Unit) {
@@ -120,10 +93,12 @@ fun NotificationScreen(viewModel: NotificationViewModel = hiltViewModel()) {
 
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopSearchNotificationCart(
-            onSearchClick = { /* mở màn tìm kiếm */ },
-            onNotificationClick = { /* mở thông báo */ },
-            onCartClick = { /* mở giỏ hàng */ }
+
+
+
+        CustomTitleBack(
+            title = stringResource(R.string.notification_title),
+            onBackPress = { navHostController.popBackStack()}
         )
         if (isLoading) {
             // Hiển thị loading, ví dụ:
@@ -157,7 +132,7 @@ fun NotificationScreen(viewModel: NotificationViewModel = hiltViewModel()) {
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(notifications, key = { it.id }) { notification ->
+                    items(notifications, key = { it.id?:"0" }) { notification ->
                         NotificationItem(notification)
                     }
                 }

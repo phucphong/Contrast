@@ -20,19 +20,11 @@ import com.contrast.Contrast.presentation.features.video.VideoScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController) {
-<<<<<<< HEAD:app/src/main/java/com/contrast/Contrast/presentation/features/navigator/AppNavHost.kt
-    NavHost(navController, startDestination = "home") {
-        composable("home") { HomeAffiliatePage(navController) }
-        composable("location") { LocationScreen(navController) }
-        composable("storeList") { StoreListScreen(navController) }
-        composable("membership") { RewardsScreen(navController) }
-        composable("account") { AccountScreen(navController) }
-        composable("product/{categoryId}") {AccountScreen(navController)  }
-=======
+
     NavHost(navController, startDestination = NavRoutes.AffiliateRoot.route) {
         affiliateNavGraph(navController)
         contrastNavGraph(navController)
         accountNavGraph(navController)
->>>>>>> 690e998dc9202a76c93e2573871ef4fedb64786a:app/src/main/java/com/contrast/Contrast/presentation/navigator/AppNavHost.kt
+
     }
 }

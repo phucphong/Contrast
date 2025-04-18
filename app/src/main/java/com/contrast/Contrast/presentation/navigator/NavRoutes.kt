@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.navigator
 
+import android.net.Uri
 
 
 sealed class NavRoutes(val route: String) {
@@ -11,6 +12,14 @@ sealed class NavRoutes(val route: String) {
     object Membership : NavRoutes("membership")
     object Account : NavRoutes("account")
     object PersonalInfo : NavRoutes("personalInfo")
+    object Notifications : NavRoutes("notifications")
+    object NotificationDetail : NavRoutes("notificationDetail")
+    object OrderDetail : NavRoutes("notificationDetail")
+    object CustomerDetail : NavRoutes("customerDetail")
+    object OpportunityDetail : NavRoutes("opportunityDetail")
+    object ProjectDetail : NavRoutes("projectDetail")
+    object TaskDetail : NavRoutes("taskDetail")
+
 
     // Affiliate + Product
     object AffiliateHome : NavRoutes("affiliateHome")
@@ -18,6 +27,37 @@ sealed class NavRoutes(val route: String) {
         fun createRoute(categoryId: String) = "product/$categoryId"
     }
 
+
+    object ProductDetail {
+        const val route = "product_detail"
+
+        fun createRoute(
+            id: String,
+            idUnit: String
+        ): String {
+            return "$route" +
+                    "?id=$id" +
+                    "&idUnit=$idUnit"
+        }
+    }
+    object AddServiceRequest {
+        const val route = "add_service_request"
+
+        fun createRoute(
+            categoryId: String,
+            idService: String,
+            serviceName: String,
+            idUnit: String,
+            discount: String
+        ): String {
+            return "$route" +
+                    "?categoryId=$categoryId" +
+                    "&idService=$idService" +
+                    "&serviceName=${Uri.encode(serviceName)}" +
+                    "&idUnit=$idUnit" +
+                    "&discount=$discount"
+        }
+    }
 
     // Root Graph
     object MainRoot : NavRoutes("main")

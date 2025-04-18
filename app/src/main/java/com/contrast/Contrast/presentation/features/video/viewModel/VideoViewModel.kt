@@ -8,10 +8,9 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
+
 import com.itechpro.domain.model.Video
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
-import com.itechpro.domain.usecase.news.NewsUseCase
 import com.itechpro.domain.usecase.video.VideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

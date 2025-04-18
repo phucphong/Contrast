@@ -3,13 +3,13 @@ package com.itechpro.domain.model
 
 
 data class Product(
-    val id: Int,
-    val ten: String,
-    val filetxt: String,
-    val tungay: String?,
-    val denngay: String?,
-    val sotien: Double,
-    val sotiensaukm: Double?,
-
-
+    val id: String?=null,
+    val iddonvi: String?=null,
+    val iddonvichuan: String?=null,
+    val ten: String?=null,
+    val filetxt: String?=null,
+    val tungay: String?=null,
+    val denngay: String?=null,
+    val sotien: Double?=null,
+    val sotiensaukm: Double?=null,
     )

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
-import com.contrast.Contrast.presentation.navigator.event.HomeNavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
@@ -16,6 +16,10 @@ import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.navigationEvent.HomeNavEvent
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
+
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 
 import com.itechpro.domain.usecase.home.HomeAffiliateUseCase
@@ -29,11 +33,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
-                                             private val useCase: HomeAffiliateUseCase,
-                                             private val sellConfigUseCase: SellConfigUseCase,
-                                             private val stringProvider: StringProvider,
-                                             @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
+class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
+                                                 private val useCase: HomeAffiliateUseCase,
+                                                 private val sellConfigUseCase: SellConfigUseCase,
+                                                 private val stringProvider: StringProvider,
+                                                 @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
 
 
 
@@ -79,18 +83,67 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
     val isLoading: StateFlow<Boolean> = _isLoading
     private var currentUserInfo: CurrentUserInfo? = null
 
-    private val _navigationEvent = MutableStateFlow<HomeNavEvent>(HomeNavEvent.None)
-    val navigationEvent: StateFlow<HomeNavEvent> = _navigationEvent
+    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
+    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
 
     fun onTabSelected(index: Int, category: Category) {
         _selectedTab.value =index
-        Log.e("categoryId",category.id?:"")
-        _navigationEvent.value = HomeNavEvent.GoToProduct(category.id?:"")
+
+        _navigationEvent.value = ProductNavEvent.GoToProductsCategory(category.id?:"")
+
     }
+
+    fun onItemProductSelected( category: Product) {
+        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
+            id = category.id ?: "",
+            serviceName = category.ten ?: "",
+            idUnit = category.iddonvichuan ?: "",
+            discount = category.iddonvichuan ?: ""
+        )
+
+
+    }
+
+    fun onItemNotificationSelected( ) {
+        _navigationEvent.value = NotificationNavEvent.GoToNotifications(
+            startDate = "",
+            endDate = "",
+
+        )
+
+
+    }
+    fun onItemCart( category: Product) {
+
+        // val  objCart = Product()
+        //        objCart.id=obj.id
+        //        objCart.iddonvichuan=obj.iddonvichuan
+        //        objCart.soluong=obj.countNumber
+        //        objCart.khuyenmai = obj.discount
+        //        objCart.sotien = obj.price
+        //        objCart.dongia = obj.price
+        //        addCart(objCart)
+
+       // callApAddCart
+
+
+
+    }
+    fun onAddServiceRequestSelected( category: Product) {
+        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
+            id = category.id ?: "",
+            serviceName = category.ten ?: "",
+            idUnit = category.iddonvichuan ?: "",
+            discount = category.iddonvichuan ?: ""
+        )
+
+
+    }
+
 
     // Sau khi navigate xong, reset lại state
     fun resetNavigation() {
-        _navigationEvent.value = HomeNavEvent.None
+        _navigationEvent.value = ProductNavEvent.None
     }
 
     init {
@@ -138,6 +191,7 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
 
 
 
+
     // lấy danh mực 3 cấp
     fun getCategory(obj: String,mode: String,type: String,idParent: String) {
         val user = currentUserInfo ?: return
@@ -148,14 +202,14 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
                 useCase.getCategory(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
-                            _isLoading.value = true
+
                         }
                         is NetworkResponse.Success -> {
-                            _isLoading.value = false
+
                             _categorys.value = result.data
                         }
                         is NetworkResponse.Error -> {
-                            _isLoading.value = false
+
                             _validationError.value = result.message
                         }
                     }
@@ -177,16 +231,11 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
                 useCase.getFlashSale(user.isOfflineMode, user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
-                      
                         }
                         is NetworkResponse.Success -> {
-                         
                             _flashSales.value = result.data
-
-
                         }
                         is NetworkResponse.Error -> {
-                         
                             _validationError.value = result.message
                         }
                     }
@@ -200,7 +249,6 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
 
     fun getSlideHome(obj: String,mode: String) {
         val user = currentUserInfo ?: return
-
         viewModelScope.launch(dispatcher) {
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
@@ -212,7 +260,6 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
                             _slides.value = result.data
                         }
                         is NetworkResponse.Error -> {
-
                             _validationError.value = result.message
                         }
                     }
@@ -222,7 +269,7 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
         }
-    } 
+    }
 
     fun getProductsByIdParent(type: String,idParent: String) {
         val user = currentUserInfo ?: return
@@ -250,7 +297,7 @@ class HomeAffiliateModel @Inject constructor(private val getCurrentUserUseCase: 
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
         }
-    }    
+    }
     fun getRotation(type: String) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {

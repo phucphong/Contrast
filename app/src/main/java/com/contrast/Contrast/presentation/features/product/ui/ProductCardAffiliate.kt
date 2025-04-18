@@ -42,7 +42,11 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun ProductCardAffiliate(domain: String, product: Product, onClick: () -> Unit) {
+fun ProductCardAffiliate(domain: String,
+                         product: Product,
+                         onClick: () -> Unit,
+                         onClickCart: () -> Unit,
+                         onClickAddServiceRequest: () -> Unit) {
     val totalPrice = product.sotien ?: 0.0
     val promoPrice = product.sotiensaukm?:0.0
     val startDate = product.tungay?:""
@@ -114,7 +118,11 @@ fun ProductCardAffiliate(domain: String, product: Product, onClick: () -> Unit) 
                 PromoPriceBar(price = promoPrice.formatCurrency())
 
             }else{
-                PriceBar(price = totalPrice.formatCurrency())
+                PriceBar(
+                    price = totalPrice.formatCurrency(), onClickCart={onClickCart()},
+                    onClickAddServiceRequest = {onClickAddServiceRequest()},
+
+                )
             }
 
             Box(Modifier.size(5.dp))

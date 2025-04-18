@@ -6,10 +6,7 @@ package com.itechpro.domain.usecase.profile
 import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
-import com.itechpro.domain.model.Notification
-import com.itechpro.domain.repository.NewsRepository
-import com.itechpro.domain.repository.NotificationRepository
+
 import com.itechpro.domain.repository.ProfileRepository
 import com.itechpro.domain.safeFlowCall
 import kotlinx.coroutines.Dispatchers

@@ -15,11 +15,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 
 @Composable
 fun PriceBar(
     price: String,
+    onClickCart: () -> Unit,
+    onClickAddServiceRequest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(Modifier.padding(5.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -37,14 +41,14 @@ fun PriceBar(
             tint = Color(0xFF00BFA6),
             modifier = Modifier
                 .padding(end = 6.dp)
-                .size(20.dp)
+                .size(20.dp).noRippleClickableComposable { onClickCart() }
         )
         Box(Modifier.size(10.dp))
         Icon(
             painter = painterResource(id = R.drawable.calendar_service),
             contentDescription = "Buy Package",
             tint = Color(0xFF00BFA6),
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(20.dp).noRippleClickableComposable { onClickAddServiceRequest() }
         )
 
     }

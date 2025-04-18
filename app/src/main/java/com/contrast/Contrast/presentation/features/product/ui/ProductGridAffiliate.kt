@@ -23,7 +23,9 @@ import com.itechpro.domain.model.Product
 fun ProductGridAffiliate(
     domain: String,
     products: List<Product>,
-    onItemClick: (Int) -> Unit,
+    onItemClick: (Product) -> Unit,
+    onClickCart: (Product) -> Unit,
+    onClickAddServiceRequest: (Product) -> Unit,
 
     modifier: Modifier = Modifier
 ) {
@@ -39,7 +41,7 @@ fun ProductGridAffiliate(
             ) {
                 rowItems.forEach { product ->
                     Box(modifier = Modifier.weight(1f)) {
-                        ProductCardAffiliate(domain, product, onClick = { onItemClick(product.id) }  )
+                        ProductCardAffiliate(domain, product, onClick = { onItemClick(product) } , onClickCart = { onClickCart(product) } , onClickAddServiceRequest = { onClickAddServiceRequest(product) }  )
                     }
                 }
                 if (rowItems.size < 2) {

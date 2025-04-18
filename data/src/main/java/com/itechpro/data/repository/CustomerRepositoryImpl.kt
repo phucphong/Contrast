@@ -1,22 +1,11 @@
 package com.itechpro.data.repository
-
-
-
-
-
-import android.util.Log
 import com.itechpro.data.api.CustomerAPI
-
-import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Column1
 import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
+
 import com.itechpro.domain.repository.CustomerRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+
 
 import javax.inject.Inject
 

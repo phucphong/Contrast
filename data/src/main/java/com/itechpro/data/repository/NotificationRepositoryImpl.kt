@@ -4,14 +4,9 @@ package com.itechpro.data.repository
 
 
 
-
-import com.itechpro.data.api.NewsAPI
 import com.itechpro.data.api.NotificationAPI
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.News
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Notification
-import com.itechpro.domain.repository.NewsRepository
 import com.itechpro.domain.repository.NotificationRepository
 import javax.inject.Inject
 

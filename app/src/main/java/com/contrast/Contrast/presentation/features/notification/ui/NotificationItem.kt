@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.extensions.formatDateTimeDDMMYYYY
+import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
 import com.itechpro.domain.model.Notification
 import com.itechpro.domain.model.NotificationType
 
@@ -44,13 +46,13 @@ fun NotificationItem(notification: Notification) {
 
               // Tiêu đề thông báo
               Text(
-                  text = notification.title,
+                  text = notification.tieude?:"",
                   fontSize = 16.sp,
                   fontWeight = FontWeight.Bold
               )
 
               // Nội dung thông báo (nếu có)
-              notification.message?.let {
+              notification.noidung?.let {
                   Spacer(modifier = Modifier.height(4.dp))
                   Text(
                       text = it,
@@ -68,7 +70,7 @@ fun NotificationItem(notification: Notification) {
                   verticalAlignment = Alignment.CenterVertically
               ) {
                   Text(
-                      text = notification.date,
+                      text = formatToDDMYYYYHHMM(notification.ngaygui?:""),
                       fontSize = 12.sp,
                       color = Color.Gray
                   )

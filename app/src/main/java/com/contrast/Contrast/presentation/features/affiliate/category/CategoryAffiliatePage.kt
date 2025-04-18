@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,12 +26,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
@@ -56,19 +59,16 @@ fun CategoryAffiliatePage(
     val displayProduct by viewModel.displayProduct.collectAsState()
     val displayService by viewModel.displayService.collectAsState()
     val displayPriority by viewModel.displayPriority.collectAsState()
-    val idParent1 by viewModel.idParent1.collectAsState()
-    val idParent by viewModel.idParent.collectAsState()
-    val idParent2 by viewModel.idParent2.collectAsState()
-    val idParent3 by viewModel.idParent3.collectAsState()
+
     val type by viewModel.type.collectAsState()
-    val modeApi by viewModel.modeApi.collectAsState()
-    val objApi by viewModel.objApi.collectAsState()
+
     var selectedTabIndex by remember { mutableStateOf(0) }
     val selectedTab by viewModel.selectedTab.collectAsState()
     val selectedTab1 by viewModel.selectedTab1.collectAsState()
     val selectedTab2 by viewModel.selectedTab2.collectAsState()
     val selectedTab3 by viewModel.selectedTab3.collectAsState()
     val isRefreshing by remember { mutableStateOf(false) }
+    var isBackStack by remember { mutableStateOf(false) }
 
 
     val isLoading by viewModel.isLoading.collectAsState()
@@ -77,24 +77,46 @@ fun CategoryAffiliatePage(
     val isInit = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        Log.e("categoryId",categoryId)
+
+
         if (!isInit.value) {
             viewModel.initCategory(displayProduct, displayService, displayPriority,categoryId)
             isInit.value = true
         }
     }
 
+    LaunchedEffect(categoryId) {
+        Log.e("categoryId",categoryId)
+
+        if(categoryId!="0"){
+            isBackStack = true
+        }
+
+    }
+
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopSearchNotificationCart(
             isTexField = true,
+            isBackStack = isBackStack,
             text = searchText,
             onTextChanged = { searchText = it },
             onSearchClick = { /* mở trang tìm kiếm */ },
             onNotificationClick = { /* xử lý noti */ },
-            onCartClick = { /* xử lý cart */ }
+            onCartClick = { },
+            onBackStack = {   navHostController.popBackStack() }
         )
 
+        if (isLoading) {
+            // Hiển thị loading, ví dụ:
+            Box(
+                modifier = Modifier.fillMaxSize().padding(top = 20.dp),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                CustomCircularProgressIndicator()
+            }
+        }
 
         if (tabs.size > 1) {
             SegmentTabLocal(
@@ -154,12 +176,24 @@ fun CategoryAffiliatePage(
 
                     CustomDividerColor()
 
-                    domain?.let {
-                        ProductGridAffiliate(
-                            domain = it,
-                            products = products,
-                            onItemClick={},
-                            modifier = Modifier.fillMaxWidth()
+                    if (products.isNotEmpty()) {
+                        domain?.let {
+                            ProductGridAffiliate(
+                                domain = it,
+                                products = products,
+
+                                onItemClick={
+                                    viewModel.onItemProductSelected( it)
+
+                                },
+                                onClickCart={viewModel.onItemCart( it)},
+                                onClickAddServiceRequest={viewModel.onAddServiceRequestSelected( it)},
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }else{
+                        Box(
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }

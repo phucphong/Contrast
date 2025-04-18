@@ -8,23 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.contrast.Contrast.presentation.components.profile.ProfileScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
-import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliateModel
-import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliatePage
-import com.contrast.Contrast.presentation.features.call.dialer.DialerScreen
-import com.contrast.Contrast.presentation.features.call.viewmodel.DialerViewModel
-import com.contrast.Contrast.presentation.features.customer.ui.add.CustomerScreen
-import com.contrast.Contrast.presentation.features.customer.ui.detail.CustomerDetailScreen
-import com.contrast.Contrast.presentation.features.news.detail.NewDetailScreen
-import com.contrast.Contrast.presentation.features.news.list.NewsScreen
-import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
-import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
-import com.contrast.Contrast.presentation.features.video.VideoScreen
-import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
-import com.contrast.Contrast.presentation.features.work.WorkScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint // ✅ Bắt buộc nếu Activity cần inject ViewModel

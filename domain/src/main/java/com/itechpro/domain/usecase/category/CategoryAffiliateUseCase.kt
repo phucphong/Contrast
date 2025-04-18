@@ -1,16 +1,9 @@
 package com.itechpro.domain.usecase.category
 
-
-
-import com.itechpro.domain.R
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
 import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.Video
 import com.itechpro.domain.repository.CategoryAffiliateRepository
-import com.itechpro.domain.repository.NewsRepository
-import com.itechpro.domain.repository.VideoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

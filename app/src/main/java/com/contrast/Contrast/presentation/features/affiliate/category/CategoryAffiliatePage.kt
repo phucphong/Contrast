@@ -178,18 +178,18 @@ fun CategoryAffiliatePage(
 
                     if (products.isNotEmpty()) {
                         domain?.let {
-                            ProductGridAffiliate(
-                                domain = it,
-                                products = products,
-
-                                onItemClick={
-                                    viewModel.onItemProductSelected( it)
-
-                                },
-                                onClickCart={viewModel.onItemCart( it)},
-                                onClickAddServiceRequest={viewModel.onAddServiceRequestSelected( it)},
-                                modifier = Modifier.fillMaxWidth()
-                            )
+//                            ProductGridAffiliate(
+//                                domain = it,
+//                                products = products,
+//
+//                                onItemClick={
+//                                    viewModel.onItemProductSelected( it)
+//
+//                                },
+//                                onClickCart={viewModel.onItemCart( it)},
+//                                onClickAddServiceRequest={viewModel.onAddServiceRequestSelected( it)},
+//                                modifier = Modifier.fillMaxWidth()
+//                            )
                         }
                     }else{
                         Box(

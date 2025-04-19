@@ -1,9 +1,6 @@
 package com.itechpro.domain.model
-
-
-import android.graphics.Color
-
-// Data model
+import com.squareup.moshi.JsonClass
+@JsonClass(generateAdapter = true)
 data class Voucher(
     val title: String,
     val expiryDate: String,

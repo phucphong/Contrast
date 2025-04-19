@@ -5,8 +5,6 @@ import android.content.Context
 import com.contrast.Contrast.extensions.ColorAdapter
 import com.contrast.Contrast.extensions.LocalDateTimeAdapter
 import com.itechpro.data.config.AppConfig
-
-
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -17,9 +15,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-
 import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -28,51 +24,54 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOKHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,dynamicBaseUrlInterceptor: DynamicBaseUrlInterceptor): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-        builder.addInterceptor(dynamicBaseUrlInterceptor)
-        builder.interceptors().add(httpLoggingInterceptor)
-        return builder.build()
+    fun provideOKHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        dynamicBaseUrlInterceptor: DynamicBaseUrlInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(dynamicBaseUrlInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
     }
 
     @Provides
     @Singleton
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        return httpLoggingInterceptor
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
     }
 
     @Provides
     @Singleton
-    fun provideMoshiConverterFactory(): MoshiConverterFactory {
-//        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-
-        val moshi = Moshi.Builder()
-            .add(LocalDateTimeAdapter()) // 👈 Thêm custom adapter
-            .add(ColorAdapter()) // 👈 Thêm custom adapter
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(LocalDateTimeAdapter())
+            .add(ColorAdapter())
             .addLast(KotlinJsonAdapterFactory())
             .build()
-
-        return MoshiConverterFactory.create(moshi)
     }
 
-    @Volatile
-    private var currentBaseUrl: String = "https://calista.ezmax.vn"
+    @Provides
+    @Singleton
+    fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory {
+        return MoshiConverterFactory.create(moshi)
+    }
 
     @Provides
     @Singleton
     fun provideRetrofitCustomDomain(
         okHttpClient: OkHttpClient,
-        moshiConverterFactory: MoshiConverterFactory, @ApplicationContext context: Context
+        moshiConverterFactory: MoshiConverterFactory
     ): Retrofit {
-        return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
-            .baseUrl(currentBaseUrl)
+        val start = System.currentTimeMillis()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://calista.ezmax.vn") // dummy base URL overridden by interceptor
+            .addConverterFactory(moshiConverterFactory)
             .client(okHttpClient)
             .build()
-    }
-    fun updateBaseUrl(newBaseUrl: String) {
-        currentBaseUrl = newBaseUrl
+        android.util.Log.d("Timing", "🚀 Retrofit created in ${System.currentTimeMillis() - start}ms")
+        return retrofit
     }
 
     @Provides
@@ -81,16 +80,8 @@ object AppModule {
         return AppConfig(context)
     }
 
-
     @Provides
     fun provideContext(application: Application): Context {
         return application
     }
-
-
-
-
-
-
-
 }

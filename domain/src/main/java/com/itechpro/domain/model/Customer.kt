@@ -1,10 +1,7 @@
 package com.itechpro.domain.model
 
-
-
-// ✅ BaseModel: Lớp cha với `os` mặc định là "Android"
-
-// ✅ Account kế thừa BaseModel
+import com.squareup.moshi.JsonClass
+@JsonClass(generateAdapter = true)
 data class Customer(
 
     val os: String? = "android",

@@ -1,8 +1,6 @@
 package com.itechpro.domain.model
-
-import android.os.Parcelable
-
-
+import com.squareup.moshi.JsonClass
+@JsonClass(generateAdapter = true)
 data class Rotation(
     var id: String? = "",
     var ten: String? = "",

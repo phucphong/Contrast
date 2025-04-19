@@ -35,7 +35,7 @@ fun FlashSaleSeekBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(thumbSize),
+            .height(thumbSize).padding(horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Thanh seekbar + icon thumb

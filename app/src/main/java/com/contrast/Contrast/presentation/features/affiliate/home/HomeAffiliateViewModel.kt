@@ -3,22 +3,27 @@ package com.contrast.Contrast.presentation.features.affiliate.home
 
 
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.contrast.Contrast.utils.StringProvider
+import com.itechpro.domain.enumApp.ProductSectionType
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.SliderHome
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
+import com.itechpro.domain.model.product.ProductSection
 
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 
@@ -27,11 +32,17 @@ import com.itechpro.domain.usecase.sell.SellConfigUseCase
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
-
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
                                                  private val useCase: HomeAffiliateUseCase,
@@ -85,6 +96,72 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
 
     private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
+    private val _sections = MutableStateFlow<List<ProductSection>>(emptyList())
+    val sections: StateFlow<List<ProductSection>> = _sections
+
+    private val _promoUiDataMap = MutableStateFlow<Map<String, PromoUiData>>(emptyMap())
+    val promoUiDataMap: StateFlow<Map<String, PromoUiData>> = _promoUiDataMap
+
+    private var countdownJob: Job? = null
+
+
+    fun startPromoCountdown(products: List<Product>) {
+        countdownJob?.cancel()
+        countdownJob = viewModelScope.launch(dispatcher) {
+            while (isActive) {
+                val now = LocalDateTime.now()
+                val updatedMap = products.associate { product ->
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+                    val start = runCatching { LocalDateTime.parse(product.tungay ?: "18/04/2025", formatter) }.getOrNull()
+                    val end = runCatching { LocalDateTime.parse(product.denngay ?: "19/04/2025", formatter) }.getOrNull()
+
+                    val promo = if (start != null && end != null) {
+                        val total = Duration.between(start, end).toMillis().toFloat()
+                        val elapsed = Duration.between(start, now).toMillis().coerceAtLeast(0)
+                        val progress = (elapsed / total).coerceIn(0f, 1f)
+
+                        val remain = Duration.between(now, end).coerceAtLeast(Duration.ZERO)
+                        val h = remain.toHours()
+                        val m = remain.toMinutes() % 60
+                        val s = remain.seconds % 60
+                        val timeStr = String.format("%02d:%02d:%02d", h, m, s)
+
+                        PromoUiData(progress, timeStr)
+                    } else PromoUiData()
+
+                    product.id.orEmpty() to promo
+                }
+                _promoUiDataMap.value = updatedMap
+                delay(1000)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        countdownJob?.cancel()
+        super.onCleared()
+    }
+    private fun updateSections() {
+        val data = mutableListOf<ProductSection>()
+
+        if (_slides.value.isNotEmpty()) {
+            data.add(ProductSection(id = "slide", type = ProductSectionType.SLIDE, slides = _slides.value))
+        }
+
+        if (_categorys.value.isNotEmpty()) {
+            data.add(ProductSection(id = "category", type = ProductSectionType.CATEGORY, categories = _categorys.value))
+        }
+
+        if (_flashSales.value.isNotEmpty()) {
+            data.add(ProductSection(id = "flashsale", type = ProductSectionType.FLASH_SALE, products = _flashSales.value, title = "Ưu đãi chớp nhoáng"))
+        }
+
+        if (_products.value.isNotEmpty()) {
+            data.add(ProductSection(id = "product", type = ProductSectionType.PRODUCT_ALL, products = _products.value, title = "Sản phẩm hot", headerTab = true))
+        }
+
+        _sections.value = data
+    }
 
     fun onTabSelected(index: Int, category: Category) {
         _selectedTab.value =index
@@ -197,6 +274,8 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {
+            val startTime = System.currentTimeMillis()
+            Log.d("Timing", "📤 Start getCategory at $startTime")
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
                 useCase.getCategory(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
@@ -207,6 +286,10 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                         is NetworkResponse.Success -> {
 
                             _categorys.value = result.data
+                            val endTime = System.currentTimeMillis()
+                            val duration = endTime - startTime
+                            Log.d("Timing", "✅ Success getSlideHome in $duration ms")
+                            updateSections()
                         }
                         is NetworkResponse.Error -> {
 
@@ -234,6 +317,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                         }
                         is NetworkResponse.Success -> {
                             _flashSales.value = result.data
+                            updateSections()
                         }
                         is NetworkResponse.Error -> {
                             _validationError.value = result.message
@@ -250,6 +334,8 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
     fun getSlideHome(obj: String,mode: String) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
+            val startTime = System.currentTimeMillis()
+            Log.d("Timing", "📤 Start getSlideHome at $startTime")
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
                 useCase.getSlideHome(user.isOfflineMode, obj,mode,user.token).collect { result ->
@@ -258,6 +344,10 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                         }
                         is NetworkResponse.Success -> {
                             _slides.value = result.data
+                            val endTime = System.currentTimeMillis()
+                            val duration = endTime - startTime
+                            Log.d("Timing", "✅ Success getSlideHome in $duration ms")
+                            updateSections()
                         }
                         is NetworkResponse.Error -> {
                             _validationError.value = result.message
@@ -275,7 +365,8 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             try {
-
+                val startTime = System.currentTimeMillis()
+                Log.d("Timing", "📤 Start getProductsByIdParent at $startTime")
 
                 useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
                     when (result) {
@@ -283,8 +374,14 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                             _isLoading.value = true
                         }
                         is NetworkResponse.Success -> {
+                            val endTime = System.currentTimeMillis()
+                            val duration = endTime - startTime
+                            Log.d("Timing", "✅ Success getProductsByIdParent in $duration ms")
+
                             _isLoading.value = false
                             _products.value = result.data
+                            updateSections()
+                            startPromoCountdown(result.data)
                         }
                         is NetworkResponse.Error -> {
                             _isLoading.value = false

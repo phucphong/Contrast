@@ -1,6 +1,7 @@
 package com.itechpro.domain.model
 
-
+import com.squareup.moshi.JsonClass
+@JsonClass(generateAdapter = true)
 data class InfoDetail(
     val label: String,
     val value: String,

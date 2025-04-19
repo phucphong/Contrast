@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.features.affiliate.home
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -71,6 +73,19 @@ fun HomeAffiliatePage(
     val isInit = remember { mutableStateOf(false) }
     val navEvent by viewModel.navigationEvent.collectAsState()
 
+    val start = System.currentTimeMillis()
+    Log.d("Timing", "📤 Start getProductsByIdParent at $start")
+
+    LaunchedEffect(Unit) {
+        val duration = System.currentTimeMillis() - start
+        android.util.Log.d("Timing", "⏱️ Render HomeAffiliatePage in $duration ms")
+    }
+    LaunchedEffect(products) {
+        if (products.isNotEmpty()) {
+            val renderDoneTime = System.currentTimeMillis() - start
+            Log.d("Timing", "⏱️ Render + Load Products in $renderDoneTime ms")
+        }
+    }
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
             is ProductNavEvent.GoToProductsCategory -> {
@@ -119,6 +134,7 @@ fun HomeAffiliatePage(
         }
     }
 
+
     Column(modifier = Modifier.fillMaxSize()) {
 
 
@@ -132,15 +148,6 @@ fun HomeAffiliatePage(
             onNotificationClick = { viewModel.onItemNotificationSelected()},
             onCartClick = { /* xử lý cart */ }
         )
-//        if (isLoading) {
-//            // Hiển thị loading, ví dụ:
-//            Box(
-//                modifier = Modifier.fillMaxSize().padding(top = 20.dp),
-//                contentAlignment = Alignment.TopCenter
-//            ) {
-//                CustomCircularProgressIndicator()
-//            }
-//        }
 
         LazyColumn(
             modifier = Modifier
@@ -189,26 +196,19 @@ fun HomeAffiliatePage(
                     )
                 }
             }
-
-
-
             item {
                 if (products.isNotEmpty()) {
                     domain?.let {
-
                             ProductGridAffiliate(
                                 domain = it,
                                 products = products,
-
                                 onItemClick={
                                     viewModel.onItemProductSelected( it)
-
                                 },
                                 onClickCart={viewModel.onItemCart( it)},
                                 onClickAddServiceRequest={viewModel.onAddServiceRequestSelected( it)},
-                                modifier = Modifier.fillMaxWidth().height(500.dp)
+                                modifier = Modifier.fillMaxWidth().wrapContentHeight()
                             )
-
                     }
                 }else{
                     Box(

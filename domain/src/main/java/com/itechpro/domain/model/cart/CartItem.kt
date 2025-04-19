@@ -1,6 +1,7 @@
 package com.itechpro.domain.model.cart
 
-
+import com.squareup.moshi.JsonClass
+@JsonClass(generateAdapter = true)
 data class CartItem(
     val id: String?="",
     val ido: String?="",

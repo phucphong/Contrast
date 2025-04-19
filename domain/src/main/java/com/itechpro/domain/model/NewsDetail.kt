@@ -1,5 +1,6 @@
 package com.itechpro.domain.model
-
+import com.squareup.moshi.JsonClass
+@JsonClass(generateAdapter = true)
 data class NewsDetail(
     val title: String,
     val startDate: String,

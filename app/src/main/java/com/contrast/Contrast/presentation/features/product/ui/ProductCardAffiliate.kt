@@ -35,40 +35,71 @@ import com.contrast.Contrast.presentation.components.modifier.noRippleClickableC
 import com.contrast.Contrast.presentation.components.progressBar.FlashSaleSeekBar
 import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
 import com.itechpro.domain.model.Product
+import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 @RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
 @Composable
-fun ProductCardAffiliate(domain: String,
-                         product: Product,
-                         onClick: () -> Unit,
-                         onClickCart: () -> Unit,
-                         onClickAddServiceRequest: () -> Unit) {
+fun ProductCardAffiliate(
+    domain: String,
+    product: Product,
+    onClick: () -> Unit,
+    onClickCart: () -> Unit,
+    onClickAddServiceRequest: () -> Unit
+) {
     val totalPrice = product.sotien ?: 0.0
-    val promoPrice = product.sotiensaukm?:0.0
-    val startDate = product.tungay?:""
-    val endDate =  product.denngay?:""
+    val promoPrice = product.sotiensaukm ?: 0.0
+    val startDate = product.tungay ?: ""
+    val endDate = product.denngay ?: ""
     val fullUrl = domain.trimEnd('/') + product.filetxt.orEmpty()
 
     val isPromo = startDate.isNotEmpty() && endDate.isNotEmpty()
-    var remainingTime by remember { mutableStateOf("") }
 
-    if (isPromo) {
-        rememberCountdownTimer(endDate) { time ->
-            remainingTime = time
+    // Parse date chỉ 1 lần
+    val formatter = remember { DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm") }
+    val startTime = remember(startDate) {
+        runCatching { LocalDateTime.parse(startDate, formatter) }.getOrNull()
+    }
+    val endTime = remember(endDate) {
+        runCatching { LocalDateTime.parse(endDate, formatter) }.getOrNull()
+    }
+
+    // Countdown & progress riêng biệt
+    var remainingTime by remember { mutableStateOf("00:00:00") }
+
+    val progress by remember {
+        derivedStateOf {
+            if (startTime != null && endTime != null) {
+                val total = Duration.between(startTime, endTime).toMillis().toFloat()
+                val now = LocalDateTime.now()
+                val elapsed = Duration.between(startTime, now).toMillis().coerceAtLeast(0)
+                (elapsed / total).coerceIn(0f, 1f)
+            } else 0f
         }
     }
 
+    LaunchedEffect(endTime) {
+        if (isPromo && endTime != null) {
+            while (true) {
+                val now = LocalDateTime.now()
+                val remain = Duration.between(now, endTime).coerceAtLeast(Duration.ZERO)
+                val h = remain.toHours()
+                val m = remain.toMinutes() % 60
+                val s = remain.seconds % 60
+                remainingTime = String.format("%02d:%02d:%02d", h, m, s)
+                delay(1000)
+            }
+        }
+    }
+
+    // UI chính
     Column(
         modifier = Modifier
             .width(180.dp)
-
             .background(Color.White)
-
-            .padding(2.dp,2.dp,2.dp,0.dp).noRippleClickableComposable { onClick() }
+            .noRippleClickableComposable { onClick() }
+            .padding(2.dp, 2.dp, 2.dp, 0.dp)
     ) {
         AsyncImage(
             model = fullUrl,
@@ -77,7 +108,6 @@ fun ProductCardAffiliate(domain: String,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-
         )
 
         Text(
@@ -90,44 +120,20 @@ fun ProductCardAffiliate(domain: String,
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        Column {
-            if (isPromo) {
-
-
-                Box(
-
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
-                ) {
-
-
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-                    val start = LocalDateTime.parse(startDate, formatter)
-                    val end = LocalDateTime.parse(endDate, formatter)
-                    val totalDuration = Duration.between(start, end).toMillis().toFloat()
-
-                    val current = LocalDateTime.now()
-                    val elapsedDuration = Duration.between(start, current).toMillis().coerceAtLeast(0).toFloat()
-                    val progress = (elapsedDuration / totalDuration).coerceIn(0f, 1f)
-                    FlashSaleSeekBar(progress = progress, remainingTime = remainingTime)
-
-
-                }
+        if (isPromo) {
+            Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+                FlashSaleSeekBar(progress = progress, remainingTime = remainingTime)
             }
 
-            if(isPromo){
-                PromoPriceBar(price = promoPrice.formatCurrency())
-
-            }else{
-                PriceBar(
-                    price = totalPrice.formatCurrency(), onClickCart={onClickCart()},
-                    onClickAddServiceRequest = {onClickAddServiceRequest()},
-
-                )
-            }
-
-            Box(Modifier.size(5.dp))
-
+            PromoPriceBar(price = promoPrice.formatCurrency())
+        } else {
+            PriceBar(
+                price = totalPrice.formatCurrency(),
+                onClickCart = onClickCart,
+                onClickAddServiceRequest = onClickAddServiceRequest,
+            )
         }
 
+        Spacer(Modifier.size(5.dp))
     }
 }

@@ -37,12 +37,14 @@ import com.contrast.Contrast.extensions.label
 import com.contrast.Contrast.presentation.theme.FFE0E0E0
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.PromoUiData
 
 
 @Composable
 fun TabBarRowLocal(
     tabs: List<Category>,
     selectedTab: Int,
+
     paddingBottom: Dp =2.dp,
     fillMaxWidth: Float=1f,
     onTabSelected: (Int) -> Unit

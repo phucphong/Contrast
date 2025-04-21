@@ -67,7 +67,8 @@ fun HomePage(
     val displayProduct by viewModel.displayProduct.collectAsState()
     val displayService by viewModel.displayService.collectAsState()
     val displayPriority by viewModel.displayPriority.collectAsState()
-    val promoUiDataMap by viewModel.promoUiDataMap.collectAsState() // ✅ Countdown riêng
+    val promoUiDataMap = viewModel.promoUiDataMap // ✅ Không cần collectAsState()
+
     val selectedTab by viewModel.selectedTab.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     var searchText by remember { mutableStateOf("") }

@@ -34,9 +34,11 @@ import com.contrast.Contrast.presentation.components.countdownTimer.rememberCoun
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.progressBar.FlashSaleSeekBar
 import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
+import com.contrast.Contrast.presentation.features.affiliate.home.ProductPriceSection
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.PromoUiData
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.StateFlow
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -45,7 +47,7 @@ import java.time.format.DateTimeFormatter
 fun ProductCardAffiliate(
     domain: String,
     product: Product,
-    promoUiData: PromoUiData? = null,
+    promoUiDataFlow: StateFlow<PromoUiData>?, // 🔁 truyền flow riêng
     onClick: () -> Unit,
     onClickCart: () -> Unit,
     onClickAddServiceRequest: () -> Unit
@@ -56,8 +58,8 @@ fun ProductCardAffiliate(
         domain.trimEnd('/') + product.filetxt.orEmpty()
     }
 
-    val countdownText by rememberUpdatedState(promoUiData?.remainingTime ?: "00:00:00")
-    val progress by rememberUpdatedState(promoUiData?.progress ?: 0f)
+    val promoUiData by promoUiDataFlow?.collectAsState() ?: remember { mutableStateOf(PromoUiData()) }
+
 
     Column(
         modifier = Modifier
@@ -87,25 +89,14 @@ fun ProductCardAffiliate(
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        if (promoUiData != null) {
-            key(product.id) { // 🔥 giới hạn recomposition
-                FlashSaleSeekBar(
-                    progress = progress,
-                    remainingTime = countdownText,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp)
-                )
-            }
+        ProductPriceSection(
+            promoUiData = promoUiData,
+            price = totalPrice,
+            promoPrice = promoPrice,
+            onClickCart = onClickCart,
+            onClickAddServiceRequest = onClickAddServiceRequest
+        )
 
-            PromoPriceBar(price = promoPrice.formatCurrency())
-        } else {
-            PriceBar(
-                price = totalPrice.formatCurrency(),
-                onClickCart = onClickCart,
-                onClickAddServiceRequest = onClickAddServiceRequest,
-            )
-        }
 
         Spacer(Modifier.height(5.dp))
     }

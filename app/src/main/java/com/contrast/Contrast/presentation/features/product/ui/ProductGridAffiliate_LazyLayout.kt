@@ -37,14 +37,14 @@ fun ProductGridAffiliate_LazyLayout(
 
             @Composable
             override fun Item(index: Int, key: Any) {
-                ProductCardAffiliate(
-                    domain = domain,
-                    product = products[index],
-                    promoUiData = promoUiDataMap[products[index].id],
-                    onClick = { onItemClick(products[index]) },
-                    onClickCart = { onClickCart(products[index]) },
-                    onClickAddServiceRequest = { onClickAddServiceRequest(products[index]) }
-                )
+//                ProductCardAffiliate(
+//                    domain = domain,
+//                    product = products[index],
+//                    promoUiData = promoUiDataMap[products[index].id],
+//                    onClick = { onItemClick(products[index]) },
+//                    onClickCart = { onClickCart(products[index]) },
+//                    onClickAddServiceRequest = { onClickAddServiceRequest(products[index]) }
+//                )
             }
         }
     }

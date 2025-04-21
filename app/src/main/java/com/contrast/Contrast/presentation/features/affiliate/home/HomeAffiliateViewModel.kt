@@ -100,8 +100,13 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
     private val _sections = MutableStateFlow<List<ProductSection>>(emptyList())
     val sections: StateFlow<List<ProductSection>> = _sections
 
-    private val _promoUiDataMap = MutableStateFlow<Map<String, PromoUiData>>(emptyMap())
-    val promoUiDataMap: StateFlow<Map<String, PromoUiData>> = _promoUiDataMap
+//    private val _promoUiDataMap = MutableStateFlow<Map<String, PromoUiData>>(emptyMap())
+//    val promoUiDataMap: StateFlow<Map<String, PromoUiData>> = _promoUiDataMap
+
+    private val _promoUiDataMap = mutableMapOf<String, MutableStateFlow<PromoUiData>>()
+    val promoUiDataMap: Map<String, StateFlow<PromoUiData>>
+        get() = _promoUiDataMap
+
 
     private var countdownJob: Job? = null
 
@@ -110,17 +115,28 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         countdownJob?.cancel()
         countdownJob = viewModelScope.launch(dispatcher) {
             val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+            // Khởi tạo state cho từng item nếu chưa có
+            products.forEach { product ->
+                val id = product.id ?: return@forEach
+                _promoUiDataMap.getOrPut(id) { MutableStateFlow(PromoUiData()) }
+            }
+
             while (isActive) {
                 val now = LocalDateTime.now()
-                val updatedMap = products.associate { product ->
+
+                products.forEach { product ->
+                    val id = product.id ?: return@forEach
+
                     val start = runCatching {
-                        LocalDate.parse(product.tungay ?: "18/04/2025", formatter).atStartOfDay()
-                    }.getOrNull()
-                    val end = runCatching {
-                        LocalDate.parse(product.denngay ?: "22/04/2025", formatter).atTime(23, 59, 59)
+                        LocalDate.parse("10/04/2025", formatter).atStartOfDay()
                     }.getOrNull()
 
-                    val promo = if (start != null && end != null) {
+                    val end = runCatching {
+                        LocalDate.parse("22/04/2025", formatter).atTime(23, 59, 59)
+                    }.getOrNull()
+
+                    if (start != null && end != null) {
                         val total = Duration.between(start, end).toMillis().toFloat()
                         val elapsed = Duration.between(start, now).toMillis().coerceAtLeast(0)
                         val progress = if (total > 0f) (elapsed / total).coerceIn(0f, 1f) else 1f
@@ -131,12 +147,10 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                         val s = remain.seconds % 60
                         val timeStr = String.format("%02d:%02d:%02d", h, m, s)
 
-                        PromoUiData(progress, timeStr)
-                    } else PromoUiData()
-
-                    product.id.orEmpty() to promo
+                        _promoUiDataMap[id]?.value = PromoUiData(progress, timeStr)
+                    }
                 }
-                _promoUiDataMap.value = updatedMap
+
                 delay(1000)
             }
         }

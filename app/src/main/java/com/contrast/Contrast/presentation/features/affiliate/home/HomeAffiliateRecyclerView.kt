@@ -29,33 +29,33 @@ fun HomeAffiliateRecyclerView(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-//    AndroidView(
-//        modifier = modifier,
-//        factory = { ctx ->
-//            val recyclerView = RecyclerView(ctx).apply {
-//                layoutManager = LinearLayoutManager(ctx)
-//                itemAnimator = null
-//            }
-//
-//            val adapter = HomeAffiliateAdapter(
-//                promoUiDataMap = viewModel.promoUiDataMap.value,
-//                onItemClick = { viewModel.onItemProductSelected(it) },
-//                onClickCart = { viewModel.onItemCart(it) },
-//                onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) },
-//                onCategorySelected = { index, tabs ->
-//                    viewModel.onCategorySelected(index, tabs)
-//                }
-//            )
-//            recyclerView.adapter = adapter
-//
-//            // Observe sections
-//            lifecycleOwner.lifecycleScope.launch {
-//                viewModel.sections.collectLatest {
-//                    adapter.submitList(it)
-//                }
-//            }
-//
-//            recyclerView
-//        }
-//    )
+    AndroidView(
+        modifier = modifier,
+        factory = { ctx ->
+            val recyclerView = RecyclerView(ctx).apply {
+                layoutManager = LinearLayoutManager(ctx)
+                itemAnimator = null
+            }
+
+            val adapter = HomeAffiliateAdapter(
+
+                onItemClick = { viewModel.onItemProductSelected(it) },
+                onClickCart = { viewModel.onItemCart(it) },
+                onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) },
+                onCategorySelected = { index, tabs ->
+                    viewModel.onCategorySelected(index, tabs)
+                }
+            )
+            recyclerView.adapter = adapter
+
+            // Observe sections
+            lifecycleOwner.lifecycleScope.launch {
+                viewModel.sections.collectLatest {
+                    adapter.submitList(it)
+                }
+            }
+
+            recyclerView
+        }
+    )
 }

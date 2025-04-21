@@ -1,14 +1,13 @@
 package com.contrast.Contrast.presentation.navigator.graph
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
-import com.contrast.Contrast.presentation.features.affiliate.home.HomeAffiliatePage
+import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.video.VideoScreen
 import com.contrast.Contrast.presentation.navigator.NavRoutes
@@ -20,7 +19,7 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
         route = NavRoutes.AffiliateRoot.route
     ) {
         composable(NavRoutes.AffiliateHome.route) {
-            HomeAffiliatePage(navController)
+            HomePage(navController)
         }
         composable(NavRoutes.Video.route) {
             VideoScreen(navController)

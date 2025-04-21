@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -108,17 +109,21 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
     fun startPromoCountdown(products: List<Product>) {
         countdownJob?.cancel()
         countdownJob = viewModelScope.launch(dispatcher) {
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
             while (isActive) {
                 val now = LocalDateTime.now()
                 val updatedMap = products.associate { product ->
-                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-                    val start = runCatching { LocalDateTime.parse(product.tungay ?: "18/04/2025", formatter) }.getOrNull()
-                    val end = runCatching { LocalDateTime.parse(product.denngay ?: "19/04/2025", formatter) }.getOrNull()
+                    val start = runCatching {
+                        LocalDate.parse(product.tungay ?: "18/04/2025", formatter).atStartOfDay()
+                    }.getOrNull()
+                    val end = runCatching {
+                        LocalDate.parse(product.denngay ?: "22/04/2025", formatter).atTime(23, 59, 59)
+                    }.getOrNull()
 
                     val promo = if (start != null && end != null) {
                         val total = Duration.between(start, end).toMillis().toFloat()
                         val elapsed = Duration.between(start, now).toMillis().coerceAtLeast(0)
-                        val progress = (elapsed / total).coerceIn(0f, 1f)
+                        val progress = if (total > 0f) (elapsed / total).coerceIn(0f, 1f) else 1f
 
                         val remain = Duration.between(now, end).coerceAtLeast(Duration.ZERO)
                         val h = remain.toHours()
@@ -137,6 +142,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         }
     }
 
+
     override fun onCleared() {
         countdownJob?.cancel()
         super.onCleared()
@@ -145,19 +151,19 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         val data = mutableListOf<ProductSection>()
 
         if (_slides.value.isNotEmpty()) {
-            data.add(ProductSection(id = "slide", type = ProductSectionType.SLIDE, slides = _slides.value))
+            data.add(ProductSection(id = "slide",domain = _domain.value, type = ProductSectionType.SLIDE, slides = _slides.value))
         }
 
         if (_categorys.value.isNotEmpty()) {
-            data.add(ProductSection(id = "category", type = ProductSectionType.CATEGORY, categories = _categorys.value))
+            data.add(ProductSection(id = "category", domain = _domain.value, type = ProductSectionType.CATEGORY, categories = _categorys.value))
         }
 
         if (_flashSales.value.isNotEmpty()) {
-            data.add(ProductSection(id = "flashsale", type = ProductSectionType.FLASH_SALE, products = _flashSales.value, title = "Ưu đãi chớp nhoáng"))
+            data.add(ProductSection(id = "flashsale", domain = _domain.value, type = ProductSectionType.FLASH_SALE, products = _flashSales.value, title = "Ưu đãi chớp nhoáng"))
         }
 
         if (_products.value.isNotEmpty()) {
-            data.add(ProductSection(id = "product", type = ProductSectionType.PRODUCT_ALL, products = _products.value, title = "Sản phẩm hot", headerTab = true))
+            data.add(ProductSection(id = "product",domain = _domain.value,  type = ProductSectionType.PRODUCT_ALL, products = _products.value, title = "Sản phẩm hot", headerTab = true))
         }
 
         _sections.value = data
@@ -235,7 +241,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                 getSlideHome("sanphamtrangchu","modeslide")
                 getCategory("tatcanhomsp","tatcanhomsp","","0")
                 getFlashSale()
-
+                initCategory(currentUserInfo!!.displayPriority,currentUserInfo!!.displayPriority,currentUserInfo!!.displayPriority)
 
                 getRotation(currentUserInfo!!.typeAccount)
             } catch (e: Exception) {
@@ -251,6 +257,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         val result = sellConfigUseCase.generateConfig(displayProduct, displayService, displayPriority)
         _tabs.value = result.tabs
         _type.value = result.type
+        Log.e("getProductsByIdParent","getProductsByIdParent")
         getProductsByIdParent(result.type,"0")
 
     }
@@ -262,7 +269,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
 
         val code = categoryList.getOrNull(index)?.code.orEmpty()
         _type.value = code
-
+        Log.e("getProductsByIdParent","getProductsByIdParent")
         getProductsByIdParent(code,"0")
     }
 
@@ -288,7 +295,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                             _categorys.value = result.data
                             val endTime = System.currentTimeMillis()
                             val duration = endTime - startTime
-                            Log.d("Timing", "✅ Success getSlideHome in $duration ms")
+                            Log.d("Timing", "✅ Success getCategory in $duration ms")
                             updateSections()
                         }
                         is NetworkResponse.Error -> {

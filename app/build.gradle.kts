@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.compose.compiler)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation(libs.compose.foundation)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
@@ -115,23 +116,23 @@ dependencies {
 //    implementation(libs.barcodescanner)
     implementation(libs.logging.interceptor)
     implementation(libs.glide)
-    implementation(libs.ui)
-    implementation(libs.androidx.pager)
+
     implementation(libs.paging.composer)
     implementation(libs.paging.runtime)
-    implementation(libs.androidx.foundation.layout)
 
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.calendar)
 
-    implementation(libs.androidx.foundation.layout)
-    implementation(libs.androidx.foundation.layout)
+
+
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.coil.compose)
     implementation(libs.coil.okhttp3)
     implementation(libs.androidyoutubeplayer)
-    implementation(libs.androidx.foundation.layout)
+
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
+    implementation(libs.androidx.foundation.layout)
 
 
 

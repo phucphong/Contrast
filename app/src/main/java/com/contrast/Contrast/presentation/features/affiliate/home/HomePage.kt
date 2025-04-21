@@ -4,6 +4,7 @@ package com.contrast.Contrast.presentation.features.affiliate.home
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
@@ -45,15 +44,18 @@ import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 
 @Composable
-fun HomeAffiliatePage(
+fun HomePage(
     navHostController: NavHostController,
     viewModel: HomeAffiliateViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
+
+    val sections by viewModel.sections.collectAsState()
     val slides by viewModel.slides.collectAsState()
     val categorys by viewModel.categorys.collectAsState()
     val flashSales by viewModel.flashSales.collectAsState()
@@ -65,7 +67,7 @@ fun HomeAffiliatePage(
     val displayProduct by viewModel.displayProduct.collectAsState()
     val displayService by viewModel.displayService.collectAsState()
     val displayPriority by viewModel.displayPriority.collectAsState()
-
+    val promoUiDataMap by viewModel.promoUiDataMap.collectAsState() // ✅ Countdown riêng
     val selectedTab by viewModel.selectedTab.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     var searchText by remember { mutableStateOf("") }
@@ -74,7 +76,7 @@ fun HomeAffiliatePage(
     val navEvent by viewModel.navigationEvent.collectAsState()
 
     val start = System.currentTimeMillis()
-    Log.d("Timing", "📤 Start getProductsByIdParent at $start")
+    Log.d("Timing", "📤 Start HomeAffiliatePage at $start")
 
     LaunchedEffect(Unit) {
         val duration = System.currentTimeMillis() - start
@@ -196,27 +198,47 @@ fun HomeAffiliatePage(
                     )
                 }
             }
+
             item {
-                if (products.isNotEmpty()) {
-                    domain?.let {
-                            ProductGridAffiliate(
-                                domain = it,
-                                products = products,
-                                onItemClick={
-                                    viewModel.onItemProductSelected( it)
-                                },
-                                onClickCart={viewModel.onItemCart( it)},
-                                onClickAddServiceRequest={viewModel.onAddServiceRequestSelected( it)},
-                                modifier = Modifier.fillMaxWidth().wrapContentHeight()
-                            )
-                    }
-                }else{
-                    Box(
-                        modifier = Modifier.fillMaxSize()
+                if (products.isNotEmpty() && domain != null) {
+                    val itemHeight = 290.dp
+                    val itemSpacing = 8.dp
+                    val rowCount = (products.size + 1) / 2 // mỗi hàng 2 item
+
+                    val totalHeight = (itemHeight * rowCount) + (itemSpacing * (rowCount - 1).coerceAtLeast(0))
+
+                    ProductGridAffiliate(
+                        domain = domain!!,
+                        products = products,
+                        promoUiDataMap = promoUiDataMap, // ✅ Tối ưu performance
+                        onItemClick = { viewModel.onItemProductSelected(it) },
+                        onClickCart = { viewModel.onItemCart(it) },
+                        onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(totalHeight)
                     )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        // Optional: Text("Không có sản phẩm")
+                    }
                 }
             }
         }
+
+//        HomeAffiliateRecyclerView(
+//            viewModel = viewModel,
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .background(FAFAFA)
+//                .padding(bottom = 80.dp)
+//        )
+
     }
 }
 

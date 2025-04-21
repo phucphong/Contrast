@@ -7,8 +7,8 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-compose-version= "1.5.15"
-composeBom = "2025.03.01" # ✅ Updated BOM version
+compose-version = "1.5.15"
+composeBom = "2025.04.00"
 appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.10.1"
@@ -53,18 +53,18 @@ okhttp-version = "4.12.0"
 retrofit-version = "2.11.0"
 compose-ui = "1.5.15"
 compose-preview = "1.5.15"
+compose = "1.8.0-rc03"
+ui = "1.7.8"
+paging-compose = "3.3.6"
 
-compose = "1.8.0-rc01"
-ui = "1.0.1"
-paging-compose = "3.2.1"
-foundationLayout = "1.0.1"
 calendar = "2.6.2"
-javaxInject  = "1"
-swiperefresh  = "0.33.2-alpha"
-coil-compose  = "3.1.0"
-androidyoutubeplayer  = "11.1.0"
+javaxInject = "1"
+swiperefresh = "0.33.2-alpha"
+coil-compose = "3.1.0"
+androidyoutubeplayer = "11.1.0"
 playServicesAnalyticsImpl = "18.2.0"
 accompanist-pager = "0.34.0"
+foundationLayout = "1.0.1"
 
 
 
@@ -80,6 +80,8 @@ compose-material = { group = "androidx.compose.material", name = "material", ver
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-version" }
 compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "compose-version" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" } # <-- version do BOM quản lý
+
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -155,11 +157,10 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version = "2.7.7" }
 androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose-version" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-version" }
-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
-androidx-pager = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
+
 paging-composer = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
 paging-runtime = { group = "androidx.paging", name = "paging-compose", version.ref = "paging-compose" }
-androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
+
 calendar = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "calendar" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
 accompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
@@ -170,6 +171,7 @@ play-services-analytics-impl = { group = "com.google.android.gms", name = "play-
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist-pager" }
 accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist-pager" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi-kotlin-codegen" }
+androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 
 
 

@@ -35,6 +35,7 @@ import com.contrast.Contrast.presentation.components.modifier.noRippleClickableC
 import com.contrast.Contrast.presentation.components.progressBar.FlashSaleSeekBar
 import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
 import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.PromoUiData
 import kotlinx.coroutines.delay
 import java.time.Duration
 import java.time.LocalDateTime
@@ -44,62 +45,26 @@ import java.time.format.DateTimeFormatter
 fun ProductCardAffiliate(
     domain: String,
     product: Product,
+    promoUiData: PromoUiData? = null,
     onClick: () -> Unit,
     onClickCart: () -> Unit,
     onClickAddServiceRequest: () -> Unit
 ) {
     val totalPrice = product.sotien ?: 0.0
     val promoPrice = product.sotiensaukm ?: 0.0
-    val startDate = product.tungay ?: ""
-    val endDate = product.denngay ?: ""
-    val fullUrl = domain.trimEnd('/') + product.filetxt.orEmpty()
-
-    val isPromo = startDate.isNotEmpty() && endDate.isNotEmpty()
-
-    // Parse date chỉ 1 lần
-    val formatter = remember { DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm") }
-    val startTime = remember(startDate) {
-        runCatching { LocalDateTime.parse(startDate, formatter) }.getOrNull()
-    }
-    val endTime = remember(endDate) {
-        runCatching { LocalDateTime.parse(endDate, formatter) }.getOrNull()
+    val fullUrl = remember(product.filetxt) {
+        domain.trimEnd('/') + product.filetxt.orEmpty()
     }
 
-    // Countdown & progress riêng biệt
-    var remainingTime by remember { mutableStateOf("00:00:00") }
+    val countdownText by rememberUpdatedState(promoUiData?.remainingTime ?: "00:00:00")
+    val progress by rememberUpdatedState(promoUiData?.progress ?: 0f)
 
-    val progress by remember {
-        derivedStateOf {
-            if (startTime != null && endTime != null) {
-                val total = Duration.between(startTime, endTime).toMillis().toFloat()
-                val now = LocalDateTime.now()
-                val elapsed = Duration.between(startTime, now).toMillis().coerceAtLeast(0)
-                (elapsed / total).coerceIn(0f, 1f)
-            } else 0f
-        }
-    }
-
-    LaunchedEffect(endTime) {
-        if (isPromo && endTime != null) {
-            while (true) {
-                val now = LocalDateTime.now()
-                val remain = Duration.between(now, endTime).coerceAtLeast(Duration.ZERO)
-                val h = remain.toHours()
-                val m = remain.toMinutes() % 60
-                val s = remain.seconds % 60
-                remainingTime = String.format("%02d:%02d:%02d", h, m, s)
-                delay(1000)
-            }
-        }
-    }
-
-    // UI chính
     Column(
         modifier = Modifier
             .width(180.dp)
             .background(Color.White)
             .noRippleClickableComposable { onClick() }
-            .padding(2.dp, 2.dp, 2.dp, 0.dp)
+            .padding(2.dp)
     ) {
         AsyncImage(
             model = fullUrl,
@@ -111,18 +76,26 @@ fun ProductCardAffiliate(
         )
 
         Text(
-            text = product.ten ?: "",
+            text = product.ten.orEmpty(),
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(top = 6.dp, start = 4.dp, end = 4.dp),
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .padding(top = 6.dp),
             maxLines = 2
         )
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        if (isPromo) {
-            Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
-                FlashSaleSeekBar(progress = progress, remainingTime = remainingTime)
+        if (promoUiData != null) {
+            key(product.id) { // 🔥 giới hạn recomposition
+                FlashSaleSeekBar(
+                    progress = progress,
+                    remainingTime = countdownText,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp)
+                )
             }
 
             PromoPriceBar(price = promoPrice.formatCurrency())
@@ -134,6 +107,6 @@ fun ProductCardAffiliate(
             )
         }
 
-        Spacer(Modifier.size(5.dp))
+        Spacer(Modifier.height(5.dp))
     }
 }

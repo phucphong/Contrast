@@ -7,6 +7,7 @@ import com.itechpro.domain.model.SliderHome
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ProductSection(
+    val domain: String = "",
     val id: String = "",
     val type: ProductSectionType,
     val title: String = "",

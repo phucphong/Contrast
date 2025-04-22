@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.features.notification
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,6 +25,7 @@ import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.notification.NotificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -72,7 +74,10 @@ class NotificationViewModel @Inject constructor(
             try {
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo?.domain.orEmpty()
-                getNotifications(DateUtils.today(),DateUtils.today())
+
+//
+//                val notificationsDeferred = async {  getNotifications(DateUtils.today(),DateUtils.today())}
+//                notificationsDeferred.await()
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage.orEmpty()}"
             }
@@ -90,6 +95,9 @@ class NotificationViewModel @Inject constructor(
 
     fun getNotifications(startDate: String,endDate: String) {
         val user = currentUserInfo ?: return
+
+        val start = System.currentTimeMillis()
+
         viewModelScope.launch(dispatcher) {
             useCase.getNotifications(formatToYYYYMMDD(startDate),formatToYYYYMMDD(endDate),user.token).collect { result ->
                 when (result) {
@@ -98,6 +106,9 @@ class NotificationViewModel @Inject constructor(
                         _isLoading.value = false
                         _notifications.value = result.data.items
                         _totalNotificationItems.value = result.data.totalCount
+
+                        val end = System.currentTimeMillis()
+                        Log.d("⏱️Notification", "✅ Finished useCase, duration = ${end - start}ms")
                     }
                     is NetworkResponse.Error -> {
                         _isLoading.value = false

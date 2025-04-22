@@ -2,6 +2,8 @@ package com.contrast.Contrast.di.module.app
 
 
 import android.content.Context
+import android.util.Log
+import com.android.volley.BuildConfig
 import com.itechpro.data.config.AppConfig
 
 
@@ -20,7 +22,10 @@ class DynamicBaseUrlInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val newBaseUrl = appConfig.getDomain().toHttpUrlOrNull()
-
+        Log.d("DynamicBaseUrl", "New domain: ${appConfig.getDomain()}")
+        if (BuildConfig.DEBUG) {
+            Log.d("DynamicBaseUrl", "🔁 Intercepting: ${originalRequest.url}")
+        }
         val newRequest = newBaseUrl?.let { baseUrl ->
             val newUrl = originalRequest.url.newBuilder()
                 .scheme(baseUrl.scheme)

@@ -6,47 +6,39 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.*
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
 import com.contrast.Contrast.presentation.components.tab.TabBarPagedGridScrollable
 import com.contrast.Contrast.presentation.components.tab.TabBarRowLocal
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
-
-import com.contrast.Contrast.presentation.features.product.ui.ProductGridAffiliate
+import com.contrast.Contrast.presentation.features.product.ui.ProductCardAffiliate
+import com.contrast.Contrast.presentation.features.product.ui.ProductRow
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
+import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
-
 @Composable
 fun HomePage(
     navHostController: NavHostController,
@@ -54,49 +46,48 @@ fun HomePage(
     cartViewModel: CartViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
-
-    val sections by viewModel.sections.collectAsState()
     val slides by viewModel.slides.collectAsState()
     val categorys by viewModel.categorys.collectAsState()
-    val flashSales by viewModel.flashSales.collectAsState()
     val tabs by viewModel.tabs.collectAsState()
     val products by viewModel.products.collectAsState()
+    val pagedProducts by viewModel.pagedProducts.collectAsState()
+    val domain by viewModel.domain.collectAsState()
+    val promoUiDataMap = viewModel.promoUiDataMap
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
     val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
-    val domain by viewModel.domain.collectAsState()
-    val displayProduct by viewModel.displayProduct.collectAsState()
-    val displayService by viewModel.displayService.collectAsState()
-    val displayPriority by viewModel.displayPriority.collectAsState()
-    val promoUiDataMap = viewModel.promoUiDataMap // ✅ Không cần collectAsState()
-
     val selectedTab by viewModel.selectedTab.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
+
     var searchText by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(0) }
-    val isInit = remember { mutableStateOf(false) }
+
     val navEvent by viewModel.navigationEvent.collectAsState()
 
-    val start = System.currentTimeMillis()
-    Log.d("Timing", "📤 Start HomeAffiliatePage at $start")
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(products) { viewModel.setInitialProducts(products) }
 
     LaunchedEffect(Unit) {
-        val duration = System.currentTimeMillis() - start
-        android.util.Log.d("Timing", "⏱️ Render HomeAffiliatePage in $duration ms")
+        delay(300) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
+        viewModel.loadHomeData()
     }
-    LaunchedEffect(products) {
-        if (products.isNotEmpty()) {
-            val renderDoneTime = System.currentTimeMillis() - start
-            Log.d("Timing", "⏱️ Render + Load Products in $renderDoneTime ms")
-        }
+
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { index ->
+                val total = listState.layoutInfo.totalItemsCount
+                if (index != null && index >= total - 2) {
+                    viewModel.loadNextPage()
+                }
+            }
     }
+
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
             is ProductNavEvent.GoToProductsCategory -> {
                 navHostController.navigate(NavRoutes.ProductByCategory.createRoute(event.categoryId))
                 viewModel.resetNavigation()
             }
-
-
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.currentBackStackEntry?.savedStateHandle?.apply {
                     set("id", event.id)
@@ -119,40 +110,30 @@ fun HomePage(
                 navHostController.currentBackStackEntry?.savedStateHandle?.apply {
                     set("startDate", event.startDate)
                     set("endDate", event.endDate)
-
                 }
                 navHostController.navigate(NavRoutes.Notifications.route)
                 viewModel.resetNavigation()
             }
-
             else -> Unit
         }
     }
 
 
-    LaunchedEffect(Unit) {
-        if (!isInit.value) {
-            viewModel.initCategory(displayProduct, displayService, displayPriority)
-            isInit.value = true
-        }
-    }
-
 
     Column(modifier = Modifier.fillMaxSize()) {
-
-
         TopSearchNotificationCart(
             isTexField = true,
             text = searchText,
             totalNotificationItems = totalNotificationItems,
             totalCartItems = totalCartItems,
             onTextChanged = { searchText = it },
-            onSearchClick = { /* mở trang tìm kiếm */ },
-            onNotificationClick = { viewModel.onItemNotificationSelected()},
-            onCartClick = { /* xử lý cart */ }
+            onSearchClick = { },
+            onNotificationClick = { viewModel.onItemNotificationSelected() },
+            onCartClick = { }
         )
 
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .background(FAFAFA),
@@ -183,65 +164,34 @@ fun HomePage(
                     )
                 }
             }
+
             item {
-                CustomDividerColor(color = FFD9D9D9, padding=5.dp)
+                CustomDividerColor(color = FFD9D9D9, padding = 5.dp)
             }
-            // ✅ stickyHeader phải nằm ngoài item {}
+
             if (tabs.size > 1) {
                 stickyHeader {
-                    TabBarRowLocal (
+                    TabBarRowLocal(
                         tabs = tabs,
                         selectedTab = selectedTab,
                         onTabSelected = {
                             viewModel.onCategorySelected(it, tabs)
                         }
-
                     )
                 }
             }
 
-            item {
-                if (products.isNotEmpty() && domain != null) {
-                    val itemHeight = 290.dp
-                    val itemSpacing = 8.dp
-                    val rowCount = (products.size + 1) / 2 // mỗi hàng 2 item
-
-                    val totalHeight = (itemHeight * rowCount) + (itemSpacing * (rowCount - 1).coerceAtLeast(0))
-
-                    ProductGridAffiliate(
-                        domain = domain!!,
-                        products = products,
-                        promoUiDataMap = promoUiDataMap, // ✅ Tối ưu performance
-                        onItemClick = { viewModel.onItemProductSelected(it) },
-                        onClickCart = { viewModel.onItemCart(it) },
-                        onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(totalHeight)
-                    )
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // Optional: Text("Không có sản phẩm")
-                    }
-                }
+            val rows = products.chunked(2)
+            items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                ProductRow(
+                    domain = domain,
+                    rowProducts = row,
+                    promoUiDataMap = promoUiDataMap,
+                    onItemClick = { viewModel.onItemProductSelected(it) },
+                    onClickCart = { viewModel.onItemCart(it) },
+                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
+                )
             }
         }
-
-//        HomeAffiliateRecyclerView(
-//            viewModel = viewModel,
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .background(FAFAFA)
-//                .padding(bottom = 80.dp)
-//        )
-
     }
 }
-
-
-

@@ -44,12 +44,6 @@ object HomeAffiliateNetworkModule {
         return HomeAffiliateUseCase(repository)
     }
 
-    @Provides
-    fun provideSellConfigUseCase(): SellConfigUseCase {
-        return SellConfigUseCase()
-    }
-
-
 
 
 

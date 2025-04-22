@@ -33,16 +33,21 @@ import com.itechpro.domain.usecase.sell.SellConfigUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
+
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
@@ -85,7 +90,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
     val displayService: StateFlow<String> = _displayService
     private val _displayPriority = MutableStateFlow<String>("")
     val displayPriority: StateFlow<String> = _displayPriority
-
+    private var isLoaded = false
     private val _type = MutableStateFlow<String>("")
     val type: StateFlow<String> = _type
     private val _selectedTab = MutableStateFlow(0)
@@ -109,6 +114,35 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
 
 
     private var countdownJob: Job? = null
+    private val _pagedProducts = MutableStateFlow<List<Product>>(emptyList())
+    val pagedProducts: StateFlow<List<Product>> = _pagedProducts
+
+    private var allProducts: List<Product> = emptyList()
+    private var currentPage = 0
+    private val pageSize = 200
+    private suspend fun isInternetAvailable(): Boolean {
+        return try {
+            val address = java.net.InetAddress.getByName("google.com")
+            !address.equals("")
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setInitialProducts(products: List<Product>) {
+        allProducts = products
+        currentPage = 1
+        _pagedProducts.value = products.take(pageSize)
+    }
+
+    fun loadNextPage() {
+        if (currentPage * pageSize >= allProducts.size) return
+
+        val nextPage = currentPage + 1
+        val nextItems = allProducts.take(nextPage * pageSize)
+        _pagedProducts.value = nextItems
+        currentPage = nextPage
+    }
 
 
     fun startPromoCountdown(products: List<Product>) {
@@ -123,36 +157,41 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
             }
 
             while (isActive) {
-                val now = LocalDateTime.now()
+                val elapsedMillis = measureTimeMillis {
+                    val now = LocalDateTime.now()
 
-                products.forEach { product ->
-                    val id = product.id ?: return@forEach
+                    products.forEach { product ->
+                        val id = product.id ?: return@forEach
 
-                    val start = runCatching {
-                        LocalDate.parse("10/04/2025", formatter).atStartOfDay()
-                    }.getOrNull()
+                        val start = runCatching {
+                            LocalDate.parse("10/04/2025", formatter).atStartOfDay()
+                        }.getOrNull()
 
-                    val end = runCatching {
-                        LocalDate.parse("22/04/2025", formatter).atTime(23, 59, 59)
-                    }.getOrNull()
+                        val end = runCatching {
+                            LocalDate.parse("22/04/2025", formatter).atTime(23, 59, 59)
+                        }.getOrNull()
 
-                    if (start != null && end != null) {
-                        val total = Duration.between(start, end).toMillis().toFloat()
-                        val elapsed = Duration.between(start, now).toMillis().coerceAtLeast(0)
-                        val progress = if (total > 0f) (elapsed / total).coerceIn(0f, 1f) else 1f
+                        if (start != null && end != null) {
+                            val total = Duration.between(start, end).toMillis().toFloat()
+                            val elapsed = Duration.between(start, now).toMillis().coerceAtLeast(0)
+                            val progress = if (total > 0f) (elapsed / total).coerceIn(0f, 1f) else 1f
 
-                        val remain = Duration.between(now, end).coerceAtLeast(Duration.ZERO)
-                        val h = remain.toHours()
-                        val m = remain.toMinutes() % 60
-                        val s = remain.seconds % 60
-                        val timeStr = String.format("%02d:%02d:%02d", h, m, s)
+                            val remain = Duration.between(now, end).coerceAtLeast(Duration.ZERO)
+                            val h = remain.toHours()
+                            val m = remain.toMinutes() % 60
+                            val s = remain.seconds % 60
+                            val timeStr = String.format("%02d:%02d:%02d", h, m, s)
 
-                        _promoUiDataMap[id]?.value = PromoUiData(progress, timeStr)
+                            _promoUiDataMap[id]?.value = PromoUiData(progress, timeStr)
+                        }
                     }
                 }
 
+                Log.d("CountdownTimer", "Loop execution time: ${elapsedMillis}ms")
+
                 delay(1000)
             }
+
         }
     }
 
@@ -243,48 +282,100 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         _navigationEvent.value = ProductNavEvent.None
     }
 
-    init {
+
+    fun loadHomeData() {
+        if (isLoaded) return
+        isLoaded = true
+
         viewModelScope.launch(dispatcher) {
             try {
                 currentUserInfo = getCurrentUserUseCase()
-                _domain.value = currentUserInfo!!.domain?:""
-                _displayProduct.value = currentUserInfo!!.displayProduct?:""
-                _displayService.value = currentUserInfo!!.displayService?:""
-                _displayPriority.value = currentUserInfo!!.displayPriority?:""
+                val user = currentUserInfo ?: return@launch
 
-                getSlideHome("sanphamtrangchu","modeslide")
-                getCategory("tatcanhomsp","tatcanhomsp","","0")
-                getFlashSale()
-                initCategory(currentUserInfo!!.displayPriority,currentUserInfo!!.displayPriority,currentUserInfo!!.displayPriority)
+                _domain.value = user.domain.orEmpty()
+                _displayProduct.value = user.displayProduct.orEmpty()
+                _displayService.value = user.displayService.orEmpty()
+                _displayPriority.value = user.displayPriority.orEmpty()
 
-                getRotation(currentUserInfo!!.typeAccount)
+                val result = sellConfigUseCase.generateConfig(
+                    user.displayProduct.orEmpty(),
+                    user.displayService.orEmpty(),
+                    user.displayPriority.orEmpty()
+                )
+
+                _tabs.value = result.tabs
+                _type.value = result.type
+
+                val start = System.currentTimeMillis()
+                Log.d("Timing", "🚀 Bắt đầu loadHomeData")
+
+                val apis = listOf(
+                    launch { callSafe("getSlideHome") { getSlideHome("sanphamtrangchu", "modeslide") } },
+                    launch { callSafe("getCategory") { getCategory("tatcanhomsp", "tatcanhomsp", "", "0") } },
+                    launch { callSafe("getFlashSale") { getFlashSale() } },
+                    launch { callSafe("getProductsByIdParent") { getProductsByIdParent(result.type, "0") } },
+                    launch { callSafe("getRotation") { getRotation(user.typeAccount.orEmpty()) } }
+                )
+
+                apis.joinAll() // Đợi toàn bộ hoàn thành
+
+                Log.d("Timing", "✅ loadHomeData hoàn tất trong ${System.currentTimeMillis() - start}ms")
+
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+                Log.e("loadHomeData", "❌ Exception tổng: ${e.localizedMessage}")
+            }
+        }
+    }
+    private suspend fun callSafe(tag: String, block: suspend () -> Unit) {
+        try {
+            block()
+            Log.d("Timing", "✅ $tag thành công")
+        } catch (e: Exception) {
+            Log.w("Retry", "⚠️ $tag lỗi: ${e.message} → thử lại sau 1s")
+            delay(1000)
+            try {
+                block()
+                Log.d("Retry", "🔁 $tag retry thành công")
+            } catch (ex: Exception) {
+                Log.e("Retry", "❌ $tag retry thất bại: ${ex.message}")
+            }
+        }
+    }
+
+
+    private suspend fun callWithTiming(name: String, block: suspend () -> Unit) {
+        val start = System.currentTimeMillis()
+        try {
+            block()
+            val duration = System.currentTimeMillis() - start
+            Log.d("Timing", "✅ Success $name in ${duration}ms")
+        } catch (e: Exception) {
+            Log.e("Timing", "❌ Failed $name: ${e.message}")
+            delay(1000) // ✅ Retry sau 1s
+            try {
+                block()
+                Log.d("Timing", "🔁 Retry success $name")
+            } catch (ex: Exception) {
+                Log.e("Timing", "❌ Retry failed $name: ${ex.message}")
             }
         }
     }
 
 
 
-    fun initCategory(displayProduct: String, displayService: String, displayPriority: String) {
-
-        val result = sellConfigUseCase.generateConfig(displayProduct, displayService, displayPriority)
-        _tabs.value = result.tabs
-        _type.value = result.type
-        Log.e("getProductsByIdParent","getProductsByIdParent")
-        getProductsByIdParent(result.type,"0")
-
-    }
-
-
 
     fun onCategorySelected(index: Int, categoryList: List<Category>) {
-        _selectedTab.value=index
+        if (_selectedTab.value != index) {
+            _selectedTab.value = index
 
-        val code = categoryList.getOrNull(index)?.code.orEmpty()
-        _type.value = code
-        Log.e("getProductsByIdParent","getProductsByIdParent")
-        getProductsByIdParent(code,"0")
+            val code = categoryList.getOrNull(index)?.code.orEmpty()
+            _type.value = code
+            Log.e("getProductsByIdParent", "getProductsByIdParent with code: $code")
+            getProductsByIdParent(code, "0")
+        } else {
+            Log.d("getProductsByIdParent", "🟡 Same tab selected ($index), skip API call.")
+        }
     }
 
 
@@ -384,11 +475,16 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
 
     fun getProductsByIdParent(type: String,idParent: String) {
         val user = currentUserInfo ?: return
+
+
         viewModelScope.launch(dispatcher) {
             try {
                 val startTime = System.currentTimeMillis()
                 Log.d("Timing", "📤 Start getProductsByIdParent at $startTime")
-
+                // ✅ RESET phân trang mỗi lần gọi mới
+                _pagedProducts.value = emptyList()
+                currentPage = 0
+                allProducts = emptyList()
                 useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
@@ -407,10 +503,12 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                         is NetworkResponse.Error -> {
                             _isLoading.value = false
                             _validationError.value = result.message
+                            Log.e("MoshiError", "❌ API Error: ${result.message}")
                         }
                     }
                 }
             } catch (e: Exception) {
+                Log.e("MoshiException", "❌ Exception parse JSON: ${e.message}", e)
                 _isLoading.value = false
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }

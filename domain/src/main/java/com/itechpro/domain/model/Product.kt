@@ -1,5 +1,6 @@
 package com.itechpro.domain.model
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -14,5 +15,6 @@ data class Product(
     val sotien: Double? = null,
     val sotiensaukm: Double? = null,
 
-    val noidung: String? = null // 👈 KHÔNG cần @Transient nếu không có trong JSON
+    @Json(ignore = true)
+    val noidung: String? = null
 )

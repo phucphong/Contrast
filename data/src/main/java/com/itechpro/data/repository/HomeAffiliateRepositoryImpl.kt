@@ -88,31 +88,11 @@ class HomeAffiliateRepositoryImpl @Inject constructor(
     override suspend fun getProductsByIdParent(type: String,idParent: String, authen: String): NetworkResponse<List<Product>> {
         val response = api.getProductsByIdParent("laysanphamtheonhom","laysanphamtheonhom","",type, idParent,"",authen)
         return if (response.isSuccessful) {
-
-            val rawJson = response.body()?.let {
-                Moshi.Builder()
-                    .add(KotlinJsonAdapterFactory())
-                    .build()
-                    .adapter(List::class.java)
-                    .toJson(it)
-            } ?: "[]"
-
-            val moshi = Moshi.Builder()
-                .add(KotlinJsonAdapterFactory())
-                .build()
-
-            val type = Types.newParameterizedType(List::class.java, Product::class.java)
-            val adapter = moshi.adapter<List<Product>>(type)
-
-            val start = System.currentTimeMillis()
-            val parsedList = adapter.fromJson(rawJson).orEmpty()
-            val duration = System.currentTimeMillis() - start
-
-            Log.d("TimingMoshi", "✅ Moshi parse getProductsByIdParent took: ${duration}ms | items: ${parsedList.size}")
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {
             NetworkResponse.Error("Lỗi: ${response.message()}")
         }
+
     }
     override suspend fun getProductsByIdParentOff(type: String,idParent: String): NetworkResponse<List<Product>> {
         val response = api.getProductsByIdParentOff("laysanphamtheonhom","laysanphamtheonhom","",type, idParent,"")

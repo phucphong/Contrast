@@ -14,6 +14,7 @@ import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.cart.CartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -61,8 +62,10 @@ class CartViewModel @Inject constructor(
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo?.domain.orEmpty()
 
+//                val cartsDeferred = async { getCarts() }
+//                cartsDeferred.await()
 
-                getCarts()
+
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage.orEmpty()}"
             }

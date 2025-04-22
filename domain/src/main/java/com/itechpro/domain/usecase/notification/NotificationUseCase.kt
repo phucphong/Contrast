@@ -25,22 +25,26 @@ class NotificationUseCase @Inject constructor(
 //    }
 
 
-    fun getNotifications(startDate: String,endDate: String, authen: String): Flow<NetworkResponse<NotificationResult>> {
+    fun getNotifications(startDate: String, endDate: String, authen: String): Flow<NetworkResponse<NotificationResult>> {
         return flow {
             emit(NetworkResponse.Loading)
+            val start = System.currentTimeMillis()
+
             when (val result = repository.getNotifications(startDate, endDate ,authen)) {
                 is NetworkResponse.Success -> {
                     val items = result.data
+                    val end = System.currentTimeMillis()
+                    android.util.Log.d("⏱️NotificationUseCase", "⏱️ Gọi repository thành công sau ${end - start}ms, size = ${items.size}")
                     emit(NetworkResponse.Success(NotificationResult(items, items.size)))
                 }
                 is NetworkResponse.Error -> {
                     emit(NetworkResponse.Error(result.message))
                 }
-
-                NetworkResponse.Loading -> {}
+                else -> Unit
             }
         }.flowOn(Dispatchers.IO)
     }
+
 
     fun getNotificationDetail(ido: String, authen: String): Flow<NetworkResponse<Notification?>> {
         return flow {

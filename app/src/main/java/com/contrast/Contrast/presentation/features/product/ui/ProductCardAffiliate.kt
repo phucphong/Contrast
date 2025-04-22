@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 
-import androidx.compose.foundation.shape.RoundedCornerShape
+
 
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -16,35 +16,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+
 
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
-
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
-import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.DateUtils
-import com.contrast.Contrast.extensions.DateUtils.today
-import com.contrast.Contrast.extensions.formatCurrency
-import com.contrast.Contrast.presentation.components.countdownTimer.rememberCountdownTimer
-import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
-import com.contrast.Contrast.presentation.components.progressBar.FlashSaleSeekBar
-import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
+
 import com.contrast.Contrast.presentation.features.affiliate.home.ProductPriceSection
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.PromoUiData
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProductCardAffiliate(
+    modifier: Modifier = Modifier, // 👈 nhận modifier từ bên ngoài
     domain: String,
     product: Product,
     promoUiDataFlow: StateFlow<PromoUiData>?, // 🔁 truyền flow riêng
@@ -62,11 +50,7 @@ fun ProductCardAffiliate(
 
 
     Column(
-        modifier = Modifier
-            .width(180.dp)
-            .background(Color.White)
-            .noRippleClickableComposable { onClick() }
-            .padding(2.dp)
+        modifier = modifier
     ) {
         AsyncImage(
             model = fullUrl,

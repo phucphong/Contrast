@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -45,6 +46,7 @@ import com.contrast.Contrast.presentation.theme.iOSUnderlineGray
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable
 fun TopSearchNotificationCart(
+    painter: Painter = painterResource(R.drawable.back),
     modifier: Modifier = Modifier,
     placeholder: String = "Tìm kiếm",
     totalNotificationItems: Int = 0,
@@ -67,7 +69,7 @@ fun TopSearchNotificationCart(
     ) {
         if(isBackStack){
             Image(
-                painter= painterResource(R.drawable.back),
+                painter= painter,
                 contentDescription = "Search Icon",
                 modifier = Modifier.size(35.dp).padding(8.dp).noRippleClickableComposable { onBackStack() }
                 , colorFilter = ColorFilter.tint(TealGreen)

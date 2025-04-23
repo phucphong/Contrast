@@ -30,6 +30,7 @@ import com.itechpro.domain.model.SliderHome
 fun ImageSliderFromUrl(
     domain:String,
     autoScroll:Boolean = true,
+    indicator:Boolean = true,
     slides: List<SliderHome>,
     modifier: Modifier = Modifier
 ) {
@@ -66,12 +67,15 @@ fun ImageSliderFromUrl(
         }
 
         Spacer(modifier = Modifier.height(8.dp))
+if(indicator){
+    HorizontalPagerIndicator(
+        pagerState = pagerState,
+        activeColor = Color(0xFF00B09B),
+        inactiveColor = Color.LightGray
+        , modifier = Modifier.padding(bottom = 10.dp)
+    )
 
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            activeColor = Color(0xFF00B09B),
-            inactiveColor = Color.LightGray
-                , modifier = Modifier.padding(bottom = 10.dp)
-        )
+}
+
     }
 }

@@ -12,17 +12,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
-fun WebView(htmlContent: String) {
-    AndroidView(factory = {
-        WebView(it).apply {
-            settings.javaScriptEnabled = true
-            loadDataWithBaseURL(
-                null,
-                htmlContent,
-                "text/html",
-                "utf-8",
-                null
-            )
-        }
-    })
+fun WebView(
+    htmlContent: String,
+    modifier: Modifier = Modifier
+) {
+    AndroidView(
+        factory = { context ->
+            WebView(context).apply {
+                settings.javaScriptEnabled = true
+                loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
+            }
+        },
+        modifier = modifier
+    )
 }

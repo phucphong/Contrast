@@ -121,12 +121,31 @@
     <string name="balance_label">Số dư</string>
     <string name="payment_methods">Hình Thức Thanh Toán</string>
     <string name="close">Đóng</string>
+    <string name="add_to_cart">Thêm vào giỏ hàng</string>
     <string name="save_work">Lưu và tạo việc</string>
     <string name="domestic_card">Thẻ nội địa</string>
     <string name="domestic_banks">Vietcombank, BIDV, Vietinbank, Sacombank</string>
     <string name="international_card">Thẻ quốc tế</string>
     <string name="international_banks">Visa, MasterCard, JCB, Amex</string>
     <string name="e_wallet">Ví điện tử</string>
+    <string name="cart_title">Giỏ hàng</string>
+    <string name="cart_select_all">Chọn tất cả</string>
+    <string name="cart_delete_all">Xóa tất cả giỏ hàng</string>
+
+    <string name="cart_item_note">Ghi chú đơn hàng</string>
+    <string name="cart_total_amount">TỔNG TIỀN</string>
+    <string name="cart_discount">CHIẾT KHẤU</string>
+    <string name="cart_final_amount">THÀNH TIỀN</string>
+
+    <string name="cart_need_consultation">CẦN TƯ VẤN THÊM</string>
+    <string name="cart_checkout">THANH TOÁN</string>
+
+    <string name="cart_delivery_address">Địa chỉ nhận hàng</string>
+    <string name="cart_empty">Giỏ hàng của bạn đang trống</string>
+
+    <string name="cart_item_quantity">Số lượng</string>
+    <string name="cart_remove">Xóa</string>
+    <string name="cart_item_unit_price">đ%s</string>
 
     <string name="customer_code">Mã khách hàng</string>
     <string name="phone_number_label">Điện thoại</string>

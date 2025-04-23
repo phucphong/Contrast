@@ -218,6 +218,7 @@
     <string name="rank_achiever">Achiever</string>
     <string name="exchange_voucher">Đổi voucher</string>
     <string name="near_me">Gần tôi</string>
+    <string name="notification">Thông báo</string>
     <string name="current_location">Vị trí hiện tại</string>
     <string name="voucher_detail">Chi tiết voucher</string>
     // fake dữ liệu
@@ -360,6 +361,8 @@
     <string name="faceid">Face id</string>
     <string name="personal_info_title">Thông tin cá nhân</string>
     <string name="personal_info_heading">THÔNG TIN CÁ NHÂN</string>
+    <string name="flash_sale">Ưu đãi chớp nhoáng</string>
+
 
     <string name="personal_info_warning">Bạn sẽ không thể thay đổi thông tin cá nhân  &amp;  sinh nhật.</string>
 
@@ -398,7 +401,7 @@
     <string name="task">Công việc</string>
     <string name="events_happening">Sự kiện đang diễn ra</string>
     <string name="store_list">Danh sách cửa hàng</string>
-    <string name="see_all">XEM TẤT CẢ</string>
+    <string name="see_all">Xem tất cả</string>
     <string name="feedback">Phản hồi</string>
     <string name="greeting">Contrast xin chào 👋</string>
     <string name="add_money">+ Nạp tiền</string>

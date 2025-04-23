@@ -5,6 +5,7 @@ import android.content.Context
 import com.contrast.Contrast.extensions.ColorAdapter
 import com.contrast.Contrast.extensions.LocalDateTimeAdapter
 import com.itechpro.data.config.AppConfig
+import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -15,10 +16,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.ConnectionPool
 import okhttp3.Dispatcher
+import okhttp3.Dns
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.net.InetAddress
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -30,12 +33,24 @@ object AppModule {
     fun provideOKHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         dynamicBaseUrlInterceptor: DynamicBaseUrlInterceptor,
-
+      appConfig: AppConfig
     ): OkHttpClient {
+
+
         return OkHttpClient.Builder()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+
+            .dns(object : Dns {
+                override fun lookup(hostname: String): List<InetAddress> {
+                    return if (hostname == appConfig.getDomain().replace("https://","")) {
+                        listOf(InetAddress.getByName("123.30.186.75")) // IP tĩnh backend của bạn
+                    } else {
+                        Dns.SYSTEM.lookup(hostname)
+                    }
+                }
+            })
 
             .addInterceptor(dynamicBaseUrlInterceptor)
             .addInterceptor(httpLoggingInterceptor)
@@ -76,7 +91,7 @@ object AppModule {
         return MoshiConverterFactory.create(moshi)
     }
     @Volatile
-    private var currentBaseUrl: String = "https://calista.ezmax.vn"
+    private var currentBaseUrl: String = "https://spa.ezmax.vn"
     @Provides
     @Singleton
     fun provideRetrofitCustomDomain(
@@ -86,7 +101,7 @@ object AppModule {
         val start = System.currentTimeMillis()
         val retrofit = Retrofit.Builder()
             .baseUrl(currentBaseUrl) // dummy base URL overridden by interceptor
-            .client(OkHttpProvider.getClient())
+            .client(okHttpClient)
             .addConverterFactory(moshiConverterFactory)
             .build()
 
@@ -111,6 +126,10 @@ object AppModule {
     @Provides
     fun provideSellConfigUseCase(): SellConfigUseCase {
         return SellConfigUseCase()
+    }
+    @Provides
+    fun providePromoCountdownUseCase(): PromoCountdownUseCase {
+        return PromoCountdownUseCase()
     }
 
 }

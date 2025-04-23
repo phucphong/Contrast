@@ -12,29 +12,30 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
-import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
 import com.contrast.Contrast.presentation.components.tab.TabBarPagedGridScrollable
 import com.contrast.Contrast.presentation.components.tab.TabBarRowLocal
+import com.contrast.Contrast.presentation.features.affiliate.home.viewModel.HomeAffiliateViewModel
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
+import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.features.product.ui.ProductCardAffiliate
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
-import com.itechpro.domain.model.Product
+import com.contrast.Contrast.utils.NetworkMonitor
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,6 +49,7 @@ fun HomePage(
 ) {
     val slides by viewModel.slides.collectAsState()
     val categorys by viewModel.categorys.collectAsState()
+    val flashSales by viewModel.flashSales.collectAsState()
     val tabs by viewModel.tabs.collectAsState()
     val products by viewModel.products.collectAsState()
     val pagedProducts by viewModel.pagedProducts.collectAsState()
@@ -56,7 +58,7 @@ fun HomePage(
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
     val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
-
+    val isOnline by NetworkMonitor.isOnline.collectAsState()
     var searchText by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(0) }
 
@@ -67,20 +69,26 @@ fun HomePage(
     LaunchedEffect(products) { viewModel.setInitialProducts(products) }
 
     LaunchedEffect(Unit) {
-        delay(300) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
+        delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         viewModel.loadHomeData()
     }
 
-
     LaunchedEffect(listState) {
-        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
-            .collect { index ->
-                val total = listState.layoutInfo.totalItemsCount
-                if (index != null && index >= total - 2) {
+        snapshotFlow {
+            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            val totalItems = listState.layoutInfo.totalItemsCount
+            lastVisibleItem?.index to totalItems
+        }
+            .distinctUntilChanged()
+            .debounce(300) // ✅ ngăn spam trigger khi scroll nhanh
+            .collect { (lastIndex, total) ->
+                if (lastIndex != null && total > 0 && lastIndex >= total - 2) {
+                    Log.d("Paging", "📦 Trigger loadNextPage at index=$lastIndex / total=$total")
                     viewModel.loadNextPage()
                 }
             }
     }
+
 
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
@@ -88,6 +96,7 @@ fun HomePage(
                 navHostController.navigate(NavRoutes.ProductByCategory.createRoute(event.categoryId))
                 viewModel.resetNavigation()
             }
+
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.currentBackStackEntry?.savedStateHandle?.apply {
                     set("id", event.id)
@@ -96,6 +105,7 @@ fun HomePage(
                 navHostController.navigate(NavRoutes.ProductDetail.route)
                 viewModel.resetNavigation()
             }
+
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.currentBackStackEntry?.savedStateHandle?.apply {
                     set("id", event.id)
@@ -106,6 +116,7 @@ fun HomePage(
                 navHostController.navigate(NavRoutes.AddServiceRequest.route)
                 viewModel.resetNavigation()
             }
+
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.currentBackStackEntry?.savedStateHandle?.apply {
                     set("startDate", event.startDate)
@@ -114,6 +125,7 @@ fun HomePage(
                 navHostController.navigate(NavRoutes.Notifications.route)
                 viewModel.resetNavigation()
             }
+
             else -> Unit
         }
     }
@@ -164,10 +176,31 @@ fun HomePage(
                     )
                 }
             }
+            if (flashSales.size > 1) {
+                stickyHeader {
+                    FlashSaleHeader()
+                }
+            }
+            item {
+                if (flashSales.isNotEmpty()) {
+                    FlashSaleHome(
+                        flashSales = flashSales,
+                        promoUiDataMap = promoUiDataMap,
+                        domain = domain,
+                        onItemProductSelected = { index ->
+                            viewModel.onItemProductSelected(index)
+                        },
+                        onSeeAllClicked = {
+
+                        }
+                    )
+                }
+            }
 
             item {
                 CustomDividerColor(color = FFD9D9D9, padding = 5.dp)
             }
+
 
             if (tabs.size > 1) {
                 stickyHeader {
@@ -181,7 +214,7 @@ fun HomePage(
                 }
             }
 
-            val rows = products.chunked(2)
+            val rows = pagedProducts.chunked(2)
             items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
                 ProductRow(
                     domain = domain,
@@ -192,6 +225,8 @@ fun HomePage(
                     onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
                 )
             }
+
+
         }
     }
 }

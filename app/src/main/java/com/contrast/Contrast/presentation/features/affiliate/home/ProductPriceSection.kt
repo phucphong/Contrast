@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.affiliate.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -24,15 +25,27 @@ fun ProductPriceSection(
     if (promoUiData != null) {
         val countdownText by rememberUpdatedState(promoUiData.remainingTime)
         val progress by rememberUpdatedState(promoUiData.progress)
+        Log.e("countdownText",countdownText)
+        if(countdownText!="00:00:00"){
+            FlashSaleSeekBar(
+                progress = progress,
+                remainingTime = countdownText,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+            )
+            PromoPriceBar(price = promoPrice.formatCurrency())
+        }else{
+            PriceBar(
+                price = price.formatCurrency(),
+                onClickCart = onClickCart,
+                onClickAddServiceRequest = onClickAddServiceRequest,
+            )
 
-        FlashSaleSeekBar(
-            progress = progress,
-            remainingTime = countdownText,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-        )
-        PromoPriceBar(price = promoPrice.formatCurrency())
+        }
+
+
+
     } else {
         PriceBar(
             price = price.formatCurrency(),

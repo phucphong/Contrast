@@ -66,8 +66,7 @@ class SplashViewModel @Inject constructor(
     fun getSettingViewOff() {
 
         viewModelScope.launch(dispatcher) {
-            val startTime = System.currentTimeMillis()
-            Log.d("Timing", "📤 Start getSettingViewOff at $startTime")
+
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
                 useCase.getSettingViewOff( "laydulieu","cauhinhhienthi").collect { result ->

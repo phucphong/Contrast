@@ -62,8 +62,8 @@ class CartViewModel @Inject constructor(
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo?.domain.orEmpty()
 
-//                val cartsDeferred = async { getCarts() }
-//                cartsDeferred.await()
+                val cartsDeferred = async { getCarts() }
+                cartsDeferred.await()
 
 
             } catch (e: Exception) {

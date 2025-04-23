@@ -16,6 +16,7 @@ val AFFFFFF = Color(0x1AFFFFFF) // 🔴 Đỏ nhat (Deep Red)
 
 val FFFFA500 = Color(0xFFFFA500) // 🟠 Cam (Orange)
 val FF404040 = Color(0xFF404040) // 🟠 Cam (Orange)
+val FFFF9800 = Color(0xFFFF9800) // 🟠 Cam (Orange)
 
 val FF1E7D3A = Color(0xFF1E7D3A) // 🟢 Xanh lá cây đậm (Dark Green)
 

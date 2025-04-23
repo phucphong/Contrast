@@ -31,6 +31,7 @@ class HomeAffiliateUseCase @Inject constructor(
         return flow {
             emit(NetworkResponse.Loading)
             val startTime = System.currentTimeMillis()
+            Log.d("Timing", "📤 Start getCategory at $startTime")
             val result = if (offline) {
                 repository.getCategoryOff(obj, mode,type,idParent)
             } else {
@@ -46,6 +47,7 @@ class HomeAffiliateUseCase @Inject constructor(
         return flow {
             emit(NetworkResponse.Loading)
             val startTime = System.currentTimeMillis()
+            Log.d("Timing", "📤 Start getSlideHome at $startTime")
             val result = if (offline) {
                 repository.getSlideHomeOff(obj, mode)
             } else {
@@ -76,6 +78,7 @@ class HomeAffiliateUseCase @Inject constructor(
         return flow {
             emit(NetworkResponse.Loading)
             val startTime = System.currentTimeMillis()
+            Log.d("Timing", "📤 Start getProductsByIdParent at $startTime")
             val result = if (offline) {
                 repository.getProductsByIdParentOff(type,idParent)
             } else {
@@ -95,34 +98,6 @@ class HomeAffiliateUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getPromoUiData(product: Product, now: LocalDateTime): PromoUiData? {
-        val start = product.tungay
-        val end = product.denngay
-
-        if (start.isNullOrEmpty() || end.isNullOrEmpty()) return null
-
-        return try {
-            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-            val startTime = LocalDateTime.parse(start, formatter)
-            val endTime = LocalDateTime.parse(end, formatter)
-
-            val total = Duration.between(startTime, endTime).toMillis().toFloat()
-            val elapsed = Duration.between(startTime, now).toMillis().coerceAtLeast(0)
-            val progress = (elapsed / total).coerceIn(0f, 1f)
-
-            val remain = Duration.between(now, endTime).coerceAtLeast(Duration.ZERO)
-            val h = remain.toHours()
-            val m = remain.toMinutes() % 60
-            val s = remain.seconds % 60
-            val remainingTime = String.format("%02d:%02d:%02d", h, m, s)
-
-            PromoUiData(progress, remainingTime)
-        } catch (e: Exception) {
-            null
-        }
-    }
 
 
 

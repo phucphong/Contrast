@@ -1,6 +1,9 @@
 package com.contrast.Contrast.presentation.features.affiliate.category
 
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
@@ -11,23 +14,30 @@ import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
 
 import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.category.CategoryAffiliateUseCase
+import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
                                                  private val useCase: CategoryAffiliateUseCase,
                                                  private val sellConfigUseCase: SellConfigUseCase,
+                                                 private val promoCountdownUseCase: PromoCountdownUseCase,
                                                  private val stringProvider: StringProvider,
                                                  @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
 
@@ -76,7 +86,11 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     private val _objApi = MutableStateFlow<String>("")
     private val _modeApi = MutableStateFlow<String>("")
 
+    private var countdownJob: Job? = null
 
+    private val _promoUiDataMap = mutableMapOf<String, MutableStateFlow<PromoUiData>>()
+    val promoUiDataMap: Map<String, StateFlow<PromoUiData>>
+        get() = _promoUiDataMap
 
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab: StateFlow<Int> = _selectedTab
@@ -94,6 +108,12 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     private var currentUserInfo: CurrentUserInfo? = null
     private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
+
+    private val _pagedProducts = MutableStateFlow<List<Product>>(emptyList())
+    val pagedProducts: StateFlow<List<Product>> = _pagedProducts
+    private var allProducts: List<Product> = emptyList()
+    private var currentPage = 0
+    private val pageSize = 10
     init {
         viewModelScope.launch(dispatcher) {
             try {
@@ -109,7 +129,11 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
             }
         }
     }
-
+    fun setInitialProducts(products: List<Product>) {
+        allProducts = products
+        currentPage = 1
+        _pagedProducts.value = products.take(pageSize)
+    }
 
     fun handleIdParentResult(idParent1: String, idParent2: String, idParent3: String, type: String) {
         _idParent.value = when {
@@ -150,13 +174,40 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     fun onTabSelected2(index: Int) {
         _selectedTab2.value = index
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startPromoCountdown(products: List<Product>) {
+        countdownJob?.cancel()
+        countdownJob = viewModelScope.launch(dispatcher) {
+            // Khởi tạo state cho từng item nếu chưa có
+            products.forEach { product ->
+                val id = product.id ?: return@forEach
+                _promoUiDataMap.getOrPut(id) { MutableStateFlow(PromoUiData()) }
+            }
+            while (isActive) {
+                val now = LocalDateTime.now()
+                products.forEach { product ->
+                    val id = product.id ?: return@forEach
+                    val promo = promoCountdownUseCase.calculate(product, now)
+                    _promoUiDataMap[id]?.value = promo
+                }
+                delay(1000)
+            }
+        }
+    }
     fun onCategorySelected(index: Int, categoryList: List<Category>, categoryId: String) {
-        onTabSelected1(0)
-        onTabSelected2(0)
-        onTabSelected3(0)
-        val code = categoryList.getOrNull(index)?.code.orEmpty()
-        _type.value=code
-        getCategory1("tatcanhomsp", "tatcanhomsp", code, categoryId, 1)
+
+        if (_selectedTab.value != index) {
+            _selectedTab.value = index
+            onTabSelected1(0)
+            onTabSelected2(0)
+            onTabSelected3(0)
+            val code = categoryList.getOrNull(index)?.code.orEmpty()
+            _type.value = code
+            getCategory1("tatcanhomsp", "tatcanhomsp", code, categoryId, 1)
+        } else {
+
+        }
     }
 
 
@@ -369,7 +420,10 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         viewModelScope.launch(dispatcher) {
             try {
 
-
+                // ✅ RESET phân trang mỗi lần gọi mới
+                _pagedProducts.value = emptyList()
+                currentPage = 0
+                allProducts = emptyList()
                 useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
@@ -378,6 +432,8 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
                         is NetworkResponse.Success -> {
                             _isLoading.value = false
                             _products.value = result.data
+
+                            startPromoCountdown(result.data)
                         }
                         is NetworkResponse.Error -> {
                             _isLoading.value = false

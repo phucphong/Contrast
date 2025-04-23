@@ -75,9 +75,9 @@ class NotificationViewModel @Inject constructor(
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo?.domain.orEmpty()
 
-//
-//                val notificationsDeferred = async {  getNotifications(DateUtils.today(),DateUtils.today())}
-//                notificationsDeferred.await()
+
+                val notificationsDeferred = async {  getNotifications(DateUtils.today(),DateUtils.today())}
+                notificationsDeferred.await()
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage.orEmpty()}"
             }

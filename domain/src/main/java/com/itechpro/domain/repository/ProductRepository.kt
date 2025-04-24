@@ -21,12 +21,6 @@ interface ProductRepository {
 
 
 
-    suspend fun getEvaluates(idProduct: String,count: String,authen: String
-    ): NetworkResponse<Evaluate>
-
-    suspend fun getEvaluatesOff(idProduct: String,count: String,
-    ): NetworkResponse<Evaluate>
-
 
 
     suspend fun getTypeReport(authen: String

@@ -15,6 +15,9 @@ sealed class ProductNavEvent: NavEvent {
         val id: String,
         val idUnit: String,
     ) : ProductNavEvent()
+    data class GoToProductEvaluates(
+        val id: String
+    ) : ProductNavEvent()
 
 
     object None : ProductNavEvent() // trạng thái mặc định

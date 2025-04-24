@@ -68,38 +68,7 @@ class ProductUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getEvaluates(
-        offline: Boolean,
-        idProduct: String,
-        count: String,
-        authen: String
-    ): Flow<NetworkResponse<EvaluateResult>> {
-        return flow {
-            emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
-                repository.getEvaluatesOff(idProduct, count)
-            } else {
-                repository.getEvaluates(idProduct, count, authen)
-            }
-
-            when (result) {
-                is NetworkResponse.Success -> {
-                    val list = result.data.lst_danhgia
-                    val ratingScore = result.data.diemdanhgia?:0f
-                    val customResult = EvaluateResult(
-                        totalEvaluate = list.size,
-                        evaluateList = list,
-                                ratingScore = ratingScore
-                    )
-                    emit(NetworkResponse.Success(customResult))
-                }
-
-                is NetworkResponse.Error -> emit(result)
-                is NetworkResponse.Loading -> emit(result)
-            }
-        }.flowOn(Dispatchers.IO)
-    }
 
 
     fun getProductsByIdParent(offline: Boolean,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {

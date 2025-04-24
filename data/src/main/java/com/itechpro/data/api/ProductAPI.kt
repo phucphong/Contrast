@@ -36,26 +36,6 @@ interface ProductAPI {
         @Query("iddonvi") idUnit: String?,
     ): Response<List<ProductDetail>>
 
-
-    @Headers("Content-Type: application/json")
-    @GET("/ex/api_DanhGiaSanPham/getobj")
-    suspend  fun getEvaluates(
-        @Query("obj") laythongtin: String?,
-        @Query("mode") laydsdanhgia: String?,
-        @Query("idsanpham") idProduct: String?,
-        @Query("soluong") count: String?,
-        @Header("Authorization") authen: String?
-    ): Response<Evaluate>
-    @Headers("Content-Type: application/json")
-    @GET("/ex/apiaffiliate/getobjpublic")
-    suspend  fun getEvaluatesOff(
-        @Query("obj") laythongtin: String?,
-        @Query("mode") laydsdanhgia: String?,
-        @Query("idsanpham") idProduct: String?,
-        @Query("soluong") count: String?,
-
-        ): Response<Evaluate>
-
     //
     @Headers("Content-Type: application/json")
     @GET("/ex/api_Sanpham/getobj")

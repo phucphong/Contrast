@@ -68,14 +68,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
 
     private val _productInfo = MutableStateFlow<ProductDetail?>(null)
     val productInfo: StateFlow<ProductDetail?> = _productInfo
-    private val _evaluates = MutableStateFlow<List<EvaluateDetail>>(emptyList())// xuống use case tính lại  list
-    val evaluates: StateFlow<List<EvaluateDetail>> = _evaluates
 
-    private val _totalEvaluate = MutableStateFlow<Int>(0)// xuống use case tính lại  list
-    val totalEvaluate: StateFlow<Int> = _totalEvaluate
-
-    private val _ratingScore = MutableStateFlow<Float>(0f)// xuống use case tính lại  list
-    val ratingScore: StateFlow<Float> = _ratingScore
 
 
 
@@ -199,12 +192,18 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
 
     }
 
-    fun onItemProductSelected( category: Product) {
+    fun onItemProductSelected( obj: Product) {
         _navigationEvent.value = ProductNavEvent.GoToProductDetail(
-            id = category.id ?: "",
-            idUnit = category.iddonvichuan ?: "",
+            id = obj.id ?: "",
+            idUnit = obj.iddonvichuan ?: "",
             )
     }
+
+    fun onItemEvaluatesSelected( id: String) {
+        _navigationEvent.value = ProductNavEvent.GoToProductEvaluates(
+            id = id)
+    }
+
 
     fun onItemNotificationSelected( ) {
         _navigationEvent.value = NotificationNavEvent.GoToNotifications(
@@ -279,11 +278,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
                             getInfoProduct(idParent, idUnit)
                         }
                     }
-                    val evaluateJob = async {
-                        measureAndRetry("getEvaluates") {
-                            getEvaluates(idParent, idUnit)
-                        }
-                    }
+
                   
                     val productJob = async {
                         measureAndRetry("getProductsByIdParent") {
@@ -292,7 +287,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
                     }
                  
 
-                    awaitAll(InfoProductJob, evaluateJob, productJob)
+                    awaitAll(InfoProductJob, productJob)
                 }
 
                 Log.d("Timing", "✅ Tất cả API hoàn tất trong ${totalDuration}ms")
@@ -415,36 +410,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
         }
     }
 
-    fun getEvaluates(idProduct: String, count:String) {
-        val user = currentUserInfo ?: return
-        viewModelScope.launch(dispatcher) {
-            try {
-                useCase.getEvaluates(user.isOfflineMode,idProduct, count, user.token).collect { result ->
-                    when (result) {
-                        is NetworkResponse.Loading -> {
-                        }
-                        is NetworkResponse.Success -> {
-                            _isLoading.value = false
-                            val evaluateList = result.data.evaluateList
-                            val totalEvaluate = result.data.totalEvaluate
-                            val ratingScore = result.data.ratingScore
 
-                            _evaluates.value = evaluateList
-                            _totalEvaluate.value = totalEvaluate
-                            _ratingScore.value = ratingScore
-                        }
-
-                        is NetworkResponse.Error -> {
-                            _validationError.value = result.message
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                _isLoading.value = false
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-            }
-        }
-    }
     fun addEditLike(url: String, obj: Product) {
         val user = currentUserInfo ?: return
 

@@ -54,34 +54,6 @@ class ProductRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getEvaluatesOff(idProduct: String,count: String): NetworkResponse<Evaluate> {
-        val response = api.getEvaluatesOff("laythongtin","laydsdanhgia",idProduct,count, )
-        return if (response.isSuccessful) {
-            val body = response.body()
-            if (body != null) {
-                NetworkResponse.Success(body)
-            } else {
-                NetworkResponse.Error("Cart data is null")
-            }
-        } else {
-            NetworkResponse.Error("Lỗi: ${response.message()}")
-        }
-    }
-
-    override suspend fun getEvaluates(idProduct: String,count: String, authen: String): NetworkResponse<Evaluate> {
-        val response = api.getEvaluates("laythongtin","laydsdanhgia",idProduct,count, authen)
-        return if (response.isSuccessful) {
-            val body = response.body()
-            if (body != null) {
-                NetworkResponse.Success(body)
-            } else {
-                NetworkResponse.Error("Cart data is null")
-            }
-        } else {
-            NetworkResponse.Error("Lỗi: ${response.message()}")
-        }
-    }
-
 
     override suspend fun getTypeReport( authen: String): NetworkResponse<List<Product>> {
         val response = api.getTypeReport("laydulieu","laydslydobaocao",  authen)

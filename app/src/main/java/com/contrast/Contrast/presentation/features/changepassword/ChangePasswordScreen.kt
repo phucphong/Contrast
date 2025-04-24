@@ -240,8 +240,3 @@ fun ChangePasswordScreen(
 
     }
 }
-
-@Composable
-fun CustomTextField(value: String, onValueChange: () -> Unit, placeholder: String, keyboardType: KeyboardType) {
-
-}

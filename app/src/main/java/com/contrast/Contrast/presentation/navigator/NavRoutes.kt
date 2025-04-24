@@ -42,8 +42,38 @@ sealed class NavRoutes(val route: String) {
             navArgument("idUnit") { type = NavType.StringType; defaultValue = "" }
         )
     }
+    object Evaluates {
+        const val baseRoute = "product_Evaluates"
+        const val fullRoute = "$baseRoute?id={id}"
 
+        fun createRoute(id: String): String {
+            return "$baseRoute?id=$id"
+        }
 
+        val arguments = listOf(
+            navArgument("id") { type = NavType.StringType; defaultValue = "" },
+
+        )
+    }
+    object MediaPicker {
+        const val route = "media_picker/{maxCount}/{allowImage}/{allowVideo}"
+        val arguments = listOf(
+            navArgument("maxCount") { type = NavType.IntType },
+            navArgument("allowImage") { type = NavType.BoolType },
+            navArgument("allowVideo") { type = NavType.BoolType }
+        )
+
+        fun withArgs(maxCount: Int, allowImage: Boolean, allowVideo: Boolean) =
+            "media_picker/$maxCount/$allowImage/$allowVideo"
+    }
+    object AddEvaluate {
+        const val route = "add_evaluate/{id}"
+        fun withId(id: String) = "add_evaluate/$id"
+
+        val arguments = listOf(
+            navArgument("id") { type = NavType.StringType }
+        )
+    }
 
     object AddServiceRequest {
         const val route = "add_service_request"

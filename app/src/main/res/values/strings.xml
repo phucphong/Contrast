@@ -133,6 +133,7 @@
     <string name="cart_select_all">Chọn tất cả</string>
     <string name="cart_delete_all">Xóa tất cả giỏ hàng</string>
     <string name="write_feedback">Viết đánh giá</string>
+    <string name="write_feedback_you">Chia sẻ đánh giá của bạn</string>
 
     <string name="cart_item_note">Ghi chú đơn hàng</string>
     <string name="cart_total_amount">TỔNG TIỀN</string>
@@ -328,6 +329,8 @@
     <string name="new_detail">Chi tiết tin tức</string>
     <string name="product_detail">Chi tiết sản phẩm</string>
     <string name="service_detail">Chi tiết dịch vụ</string>
+    <string name="evaluates">Đánh giá</string>
+    <string name="evaluate_product">Đánh giá sản phẩm</string>
 
     <!-- Chính sách điểm -->
     <string name="points_policy_title">CHÍNH SÁCH ĐIỂM</string>

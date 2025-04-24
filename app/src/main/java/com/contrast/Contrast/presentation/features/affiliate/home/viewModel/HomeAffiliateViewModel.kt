@@ -180,6 +180,8 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
 
     }
 
+
+
     fun onItemNotificationSelected( ) {
         _navigationEvent.value = NotificationNavEvent.GoToNotifications(
             startDate = "",

@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.button.CustomButton
@@ -30,6 +31,7 @@ import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificati
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.evaluate.EvaluateScreen
+import com.contrast.Contrast.presentation.features.evaluate.EvaluateViewModel
 import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
 
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
@@ -62,14 +64,15 @@ fun ProductDetailScreen(
     idUnit: String,
     viewModel: ProductViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
+    evaluateViewModel: EvaluateViewModel = viewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
     val productInfo by viewModel.productInfo.collectAsState()
-    val evaluates by viewModel.evaluates.collectAsState()
+    val evaluates by evaluateViewModel.evaluates.collectAsState()
     val products by viewModel.products.collectAsState()
     val pagedProducts by viewModel.pagedProducts.collectAsState()
-    val totalEvaluate by viewModel.totalEvaluate.collectAsState()
-    val ratingScore by viewModel.ratingScore.collectAsState()
+    val totalEvaluate by evaluateViewModel.totalEvaluate.collectAsState()
+    val ratingScore by evaluateViewModel.ratingScore.collectAsState()
     val domain by viewModel.domain.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
@@ -92,6 +95,7 @@ fun ProductDetailScreen(
     LaunchedEffect(Unit) {
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         viewModel.loadData(id, idUnit)
+        evaluateViewModel.loadEvaluate(id, "3")
     }
 
     LaunchedEffect(listState) {
@@ -104,7 +108,7 @@ fun ProductDetailScreen(
             .debounce(300) // ✅ ngăn spam trigger khi scroll nhanh
             .collect { (lastIndex, total) ->
                 if (lastIndex != null && total > 0 && lastIndex >= total - 2) {
-                    Log.d("Paging", "📦 Trigger loadNextPage at index=$lastIndex / total=$total")
+
                     viewModel.loadNextPage()
                 }
             }
@@ -126,7 +130,10 @@ fun ProductDetailScreen(
                 navHostController.navigate(NavRoutes.ProductDetail.createRoute(event.id, event.idUnit))
                 viewModel.resetNavigation()
             }
-
+            is ProductNavEvent.GoToProductEvaluates -> {
+                navHostController.navigate(NavRoutes.Evaluates.createRoute(event.id))
+                viewModel.resetNavigation()
+            }
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.currentBackStackEntry?.savedStateHandle?.apply {
                     set("id", event.id)
@@ -234,7 +241,7 @@ fun ProductDetailScreen(
                         favorite= productInfo?.yeuthich?:0,
                         onFavorite = { },
                         onReportClick = { },
-                        onWriteFeedbackClick = { }
+                        onWriteFeedbackClick = { viewModel.onItemEvaluatesSelected(id)}
                     )
 
                 }

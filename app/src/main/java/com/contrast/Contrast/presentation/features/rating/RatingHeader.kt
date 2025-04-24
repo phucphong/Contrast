@@ -35,6 +35,8 @@ import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.extensions.formatFloat
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.components.ratingbar.RatingStars
+
 import com.contrast.Contrast.presentation.theme.FFF5F5F5
 import com.contrast.Contrast.presentation.theme.TealGreen
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
@@ -64,15 +66,9 @@ fun RatingHeader(
 
                Spacer(modifier = Modifier.width(4.dp))
 
-               // Dãy sao
-               repeat(5) { index ->
-                   Icon(
-                       imageVector = Icons.Filled.Star,
-                       contentDescription = null,
-                       tint = Color.Black,
-                       modifier = Modifier.size(16.dp)
-                   )
-               }
+
+               RatingStars(rating=rating.toInt(),
+                   onRatingChanged = { })
 
                Spacer(modifier = Modifier.width(4.dp))
 

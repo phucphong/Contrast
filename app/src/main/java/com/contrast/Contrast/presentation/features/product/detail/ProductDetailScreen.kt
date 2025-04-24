@@ -19,31 +19,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.button.CustomButton
-import com.contrast.Contrast.presentation.components.line.CustomDividerColor
-import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
-import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
-import com.contrast.Contrast.presentation.components.tab.TabBarPagedGridScrollable
-import com.contrast.Contrast.presentation.components.tab.TabBarRowLocal
-import com.contrast.Contrast.presentation.features.affiliate.home.viewModel.HomeAffiliateViewModel
+import com.contrast.Contrast.presentation.components.image.NetworkImage
+
+import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificationShare
+
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.features.evaluate.EvaluateScreen
 import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
-import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
+
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductDetailHeader
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductPriceDetailSection
 import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProduct
-import com.contrast.Contrast.presentation.features.product.ui.ProductRow
+
+import com.contrast.Contrast.presentation.features.product.viewmodel.ProductViewModel
 import com.contrast.Contrast.presentation.features.rating.RatingHeader
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
-import com.contrast.Contrast.presentation.theme.FFAFAFAF
-import com.contrast.Contrast.presentation.theme.FFD9D9D9
+
+import com.contrast.Contrast.presentation.theme.FFFF9800
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.contrast.Contrast.utils.NetworkMonitor
+import com.itechpro.domain.model.evaluate.EvaluateDetail
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import kotlinx.coroutines.delay
@@ -56,25 +58,29 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun ProductDetailScreen(
     navHostController: NavHostController,
-    idProduct: String,
+    id: String,
     idUnit: String,
-    viewModel: HomeAffiliateViewModel = hiltViewModel(),
+    viewModel: ProductViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
-    val slides by viewModel.slides.collectAsState()
-    val categorys by viewModel.categorys.collectAsState()
-    val flashSales by viewModel.flashSales.collectAsState()
-    val tabs by viewModel.tabs.collectAsState()
+    val productInfo by viewModel.productInfo.collectAsState()
+    val evaluates by viewModel.evaluates.collectAsState()
     val products by viewModel.products.collectAsState()
     val pagedProducts by viewModel.pagedProducts.collectAsState()
+    val totalEvaluate by viewModel.totalEvaluate.collectAsState()
+    val ratingScore by viewModel.ratingScore.collectAsState()
     val domain by viewModel.domain.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
+    val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
     val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
     val isOnline by NetworkMonitor.isOnline.collectAsState()
     var searchText by remember { mutableStateOf("") }
+    var type by remember { mutableStateOf("huuhinh") }
+    var bookService by remember { mutableStateOf(false) }
+
     var selectedCategory by remember { mutableStateOf(0) }
 
     val navEvent by viewModel.navigationEvent.collectAsState()
@@ -85,7 +91,7 @@ fun ProductDetailScreen(
 
     LaunchedEffect(Unit) {
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
-        viewModel.loadHomeData()
+        viewModel.loadData(id, idUnit)
     }
 
     LaunchedEffect(listState) {
@@ -117,7 +123,7 @@ fun ProductDetailScreen(
                     set("id", event.id)
                     set("idUnit", event.idUnit)
                 }
-                navHostController.navigate(NavRoutes.ProductDetail.route)
+                navHostController.navigate(NavRoutes.ProductDetail.createRoute(event.id, event.idUnit))
                 viewModel.resetNavigation()
             }
 
@@ -148,44 +154,49 @@ fun ProductDetailScreen(
 
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopSearchNotificationCart(
+        type = productInfo?.loaichitiet?:""
+        bookService = productInfo?.cothedatlich?:false
+        TopTextNotificationShare(
             painter=painterResource(R.drawable.quaylai),
-            isTexField = false,
-            text = searchText,
-            totalNotificationItems = totalNotificationItems,
+
+            placeholder =if(type=="huuhinh") stringResource(R.string.product_detail)else stringResource(R.string.service_detail),
+
             totalCartItems = totalCartItems,
-            onTextChanged = { searchText = it },
-            onSearchClick = { },
-            onNotificationClick = { viewModel.onItemNotificationSelected() },
-            onCartClick = { }
+            onShareClick = { viewModel.onItemNotificationSelected() },
+            onCartClick = { },
+                    onBackStack = { navHostController.popBackStack()}
         )
 
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize().weight(1f)
-                .background(FAFAFA),
-            contentPadding = PaddingValues(bottom = 80.dp)
+                .background(FAFAFA)
         ) {
             item {
-                if (slides.isNotEmpty()) {
-                    ImageSliderFromUrl(
-                        domain = domain,
-                        autoScroll = false,
-                        slides = slides,
-                        modifier = Modifier.height(220.dp)
+                if (productInfo!=null) {
+
+                    val fullUrl = domain.trimEnd('/') + (productInfo?.filetxt ?: "")
+                    NetworkImage(
+                        imageUrl = fullUrl,
+                        modifier = Modifier.fillMaxWidth().height(250.dp)
                     )
                 }
             }
-
             item {
-                if (flashSales.isNotEmpty()) {
+                if (productInfo!=null) {
+
+                    var  isFlashSale: Boolean = false
+                    val  discountPercent: Double = productInfo?.khuyenmai?:0.0
+                    if(discountPercent!=0.0){
+                        isFlashSale = true
+                    }
                     ProductPriceDetailSection (
-                        productName = "Kem trắng da J&D",
-                        price = "₫1.020.000",
-                        oldPrice = "₫1.020.000",
-                        discountPercent = "-0%",
-                        isFlashSale = true,
+                        productName =productInfo?.ten?:"",
+                        priceDisCount = productInfo?.sotiensaukm?:0.0,
+                        price = productInfo?.sotien?:0.0,
+                        discountPercent =productInfo?.khuyenmai?:0.0,
+                        isFlashSale = isFlashSale,
                         remainingTime = "40:00:40:18",
                         quantity = 1,
                         onQuantityChange = { /* logic */ }
@@ -195,79 +206,91 @@ fun ProductDetailScreen(
             }
 
 
+            stickyHeader {
+                RatingHeader(
+                    rating = ratingScore,
+                    totalReviews = totalEvaluate,
+                    onViewAllClick = { }
+                )
 
-
-            if (tabs.size > 1) {
-                stickyHeader {
-                    RatingHeader(
-                        rating = 5.0f,
-                        totalReviews = 1,
-                        onViewAllClick = { /* TODO: handle click */ }
-                    )
-
-                }
             }
-
-
             item {
-                if (flashSales.isNotEmpty()) {
-                    FlashSaleHome(
-                        flashSales = flashSales,
-                        promoUiDataMap = promoUiDataMap,
+                if (evaluates.isNotEmpty()) {
+                    EvaluateScreen(
+                        evaluates = evaluates,
                         domain = domain,
-                        onItemProductSelected = { index ->
-                            viewModel.onItemProductSelected(index)
-                        },
-                        onSeeAllClicked = {
-
+                        onDownloadClick = { fileUrl ->
+                            viewModel.downloadImage(fileUrl)
                         }
+
                     )
                 }
             }
 
-
-            if (flashSales.size > 1) {
+            if (productInfo!=null) {
                 stickyHeader {
                     ProductDetailHeader(
-                        onSaveClick = { },
-                        onReportClick = { }
+                        type= productInfo?.loaichitiet?:"",
+                        favorite= productInfo?.yeuthich?:0,
+                        onFavorite = { },
+                        onReportClick = { },
+                        onWriteFeedbackClick = { }
                     )
 
                 }
             }
             item {
-                if (flashSales.isNotEmpty()) {
+                if (productInfo!=null) {
                     WebViewProduct(
-                        htmlContent = "",
+                        htmlContent = productInfo?.noidung?:"",
 
                         )
                 }
             }
-            val rows = pagedProducts.chunked(2)
-            items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                ProductRow(
-                    domain = domain,
-                    rowProducts = row,
-                    promoUiDataMap = promoUiDataMap,
-                    onItemClick = { viewModel.onItemProductSelected(it) },
-                    onClickCart = { viewModel.onItemCart(it) },
-                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
-                )
-            }
+//            val rows = pagedProducts.chunked(2)
+//            items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+//                ProductRow(
+//                    domain = domain,
+//                    rowProducts = row,
+//                    promoUiDataMap = promoUiDataMap,
+//                    onItemClick = { viewModel.onItemProductSelected(it) },
+//                    onClickCart = { viewModel.onItemCart(it) },
+//                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
+//                )
+//            }
 
 
         }
 
-        CustomButton(
-            text = stringResource(id = R.string.add_to_cart),
-            textColor = Color.White,
-            containerColor = TealGreen,
-            paddingStart = 5.dp,
-            paddingTop = 20.dp,
-            paddingEnd = 5.dp,
-            paddingBottom = 5.dp,
-            roundedCornerShape = 10.dp,
-            onClick = {}
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+
+
+        ) {
+            CustomButton(
+                text = stringResource(id = R.string.add_to_cart),
+                textColor = Color.White,
+                containerColor = TealGreen,
+                modifier = Modifier.weight(1f),
+                roundedCornerShape = 10.dp,
+                fontSize = 12.sp,
+                onClick = {}
+            )
+            if(bookService){
+                Spacer(modifier = Modifier.width(10.dp))
+                CustomButton(
+                    text = stringResource(id = R.string.bookService),
+                    textColor = Color.White,
+                    containerColor = FFFF9800,
+                    modifier = Modifier.weight(1f),
+                    roundedCornerShape = 10.dp,
+                    fontSize = 12.sp,
+                    onClick = {}
+                )
+            }
+
+        }
+
     }
 }

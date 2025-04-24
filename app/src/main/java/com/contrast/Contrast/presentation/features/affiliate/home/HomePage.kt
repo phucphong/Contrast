@@ -98,11 +98,7 @@ fun HomePage(
             }
 
             is ProductNavEvent.GoToProductDetail -> {
-                navHostController.currentBackStackEntry?.savedStateHandle?.apply {
-                    set("id", event.id)
-                    set("idUnit", event.idUnit)
-                }
-                navHostController.navigate(NavRoutes.ProductDetail.route)
+                navHostController.navigate(NavRoutes.ProductDetail.createRoute(event.id, event.idUnit))
                 viewModel.resetNavigation()
             }
 

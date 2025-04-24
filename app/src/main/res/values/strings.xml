@@ -122,6 +122,7 @@
     <string name="payment_methods">Hình Thức Thanh Toán</string>
     <string name="close">Đóng</string>
     <string name="add_to_cart">Thêm vào giỏ hàng</string>
+    <string name="bookService">Đặt lịch</string>
     <string name="save_work">Lưu và tạo việc</string>
     <string name="domestic_card">Thẻ nội địa</string>
     <string name="domestic_banks">Vietcombank, BIDV, Vietinbank, Sacombank</string>
@@ -131,6 +132,7 @@
     <string name="cart_title">Giỏ hàng</string>
     <string name="cart_select_all">Chọn tất cả</string>
     <string name="cart_delete_all">Xóa tất cả giỏ hàng</string>
+    <string name="write_feedback">Viết đánh giá</string>
 
     <string name="cart_item_note">Ghi chú đơn hàng</string>
     <string name="cart_total_amount">TỔNG TIỀN</string>
@@ -259,7 +261,8 @@
     <string name="store_note">Hôm nay đông khách quá! Gọi điện check bàn trước để có chỗ ngồi lý tưởng bạn nha 🥰</string>
     <string name="store_open">Contrast Coffee</string>
     <string name="store_open_24">Luôn mở cửa - 24 giờ</string>
-    <string name="report">Phản hồi</string>
+
+    <string name="report">Báo cáo</string>
     <string name="share">Chia sẻ</string>
     <string name="done">Xong</string>
 
@@ -323,6 +326,8 @@
     <string name="membership_policy_title">Chính sách thành viên</string>
     <string name="membership_policy_heading">CHÍNH SÁCH THÀNH VIÊN</string>
     <string name="new_detail">Chi tiết tin tức</string>
+    <string name="product_detail">Chi tiết sản phẩm</string>
+    <string name="service_detail">Chi tiết dịch vụ</string>
 
     <!-- Chính sách điểm -->
     <string name="points_policy_title">CHÍNH SÁCH ĐIỂM</string>
@@ -468,6 +473,7 @@
     <string name="create_account_button" translatable="false">Tạo tài khoản</string>
     <string name="phone_placeholder" translatable="false">Nhập số điện thoại của bạn</string>
     <string name="error_connection">Lỗi kết nối</string>
+    <string name="quantity">Số lượng</string>
     <string name="error_invalid_length">Mật khẩu phải từ 8 - 15 ký tự!</string>
     <string name="error_missing_number">Mật khẩu phải chứa ít nhất một chữ số!</string>
     <string name="error_missing_uppercase">Mật khẩu phải chứa ít nhất một chữ in hoa!</string>

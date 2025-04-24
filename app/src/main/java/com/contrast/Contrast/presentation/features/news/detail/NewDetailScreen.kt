@@ -39,7 +39,6 @@ import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBa
 import com.contrast.Contrast.presentation.components.webview.WebView
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
 
-@Preview(showBackground = true)
 @Composable
 fun NewDetailScreen(ido:String,viewModel: NewsViewModel = hiltViewModel(), navController: NavController) {
     val obj by viewModel.obj.collectAsState()

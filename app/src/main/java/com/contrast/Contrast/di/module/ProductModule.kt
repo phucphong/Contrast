@@ -2,6 +2,7 @@ package com.contrast.Contrast.di.module
 import com.itechpro.data.api.ProductAPI
 import com.itechpro.data.repository.ProductRepositoryImpl
 import com.itechpro.domain.repository.ProductRepository
+import com.itechpro.domain.usecase.product.ProductUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

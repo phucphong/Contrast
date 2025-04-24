@@ -21,22 +21,11 @@ import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.EmptyStateScreen
-import com.contrast.Contrast.presentation.components.button.CustomButton
-import com.contrast.Contrast.presentation.components.category.viewmodel.CategoryViewModel
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
-import com.contrast.Contrast.presentation.components.line.CustomDividerColor
-import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
-import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.components.searchBar.SearchBar
 
-import com.contrast.Contrast.presentation.theme.FFAFAFAF
-import com.contrast.Contrast.presentation.theme.FFFCFCFC
-import com.contrast.Contrast.presentation.theme.FFFFFFFF
+import com.contrast.Contrast.R
+
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.enumApp.CategoryType
 @Composable

@@ -162,6 +162,7 @@ fun CategoryDialogMultiSelect(
                 ) {
                     CustomButton(
                         text = stringResource(id = R.string.close),
+                        modifier = Modifier.padding(16.dp,40.dp,16.dp,16.dp).weight(1f),
                         textColor = Color.White,
                         containerColor = FFAFAFAF,
                         roundedCornerShape = 10.dp,

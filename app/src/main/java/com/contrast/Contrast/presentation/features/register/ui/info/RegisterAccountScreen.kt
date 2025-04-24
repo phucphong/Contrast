@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -133,6 +134,7 @@ fun RegisterAccountScreen(
         item {
             CustomButton(
                 text = stringResource(id = R.string.create_account_button),
+                modifier = Modifier.padding(16.dp,40.dp,16.dp,16.dp).fillMaxWidth(),
                 onClick = {
                     isRegisterButton = true
                     viewModel.validateAndRegister(

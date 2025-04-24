@@ -4,11 +4,14 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
+import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
 import com.contrast.Contrast.presentation.features.video.VideoScreen
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 
@@ -33,6 +36,15 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
             NotificationScreen(navController)
         }
 
+       
+        composable(
+            route = NavRoutes.ProductDetail.fullRoute,
+            arguments = NavRoutes.ProductDetail.arguments
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+            val idUnit = backStackEntry.arguments?.getString("idUnit") ?: ""
+            ProductDetailScreen(navController, id, idUnit)
+        }
 
 
         composable(NavRoutes.ProductByCategory.route) { backStackEntry ->
@@ -48,6 +60,7 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
             val idService = backStackEntry.arguments?.getString("idService") ?: ""
             CategoryAffiliatePage(navController, idService)
         }
+
 
 
     }

@@ -1,21 +1,19 @@
 package com.itechpro.domain.repository
 
 
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.Customer
-import com.itechpro.domain.model.Evaluate
+import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.product.ProductDetail
 
 
 interface ProductRepository {
 
     suspend fun getInfoProduct(idProduct: String,idUnit: String,authen: String
-    ): NetworkResponse<List<Product>>
+    ): NetworkResponse<List<ProductDetail>>
     suspend fun getInfoProductOff(idProduct: String,idUnit: String
-    ): NetworkResponse<List<Product>>
+    ): NetworkResponse<List<ProductDetail
+            >>
 
     suspend fun getUnLike(type: String,idProduct: String,idUnit: String,authen: String
     ): NetworkResponse<List<Product>>

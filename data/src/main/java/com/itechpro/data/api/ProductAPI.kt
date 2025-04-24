@@ -1,7 +1,8 @@
 package com.itechpro.data.api
 
-import com.itechpro.domain.model.Evaluate
+import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.ProductDetail
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,7 +26,7 @@ interface ProductAPI {
         @Query("idsanpham") idProduct: String?,
         @Query("iddonvi") idUnit: String?,
         @Header("Authorization") authen: String?
-    ): Response<List<Product>>
+    ): Response<List<ProductDetail>>
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobjpublic")
     suspend  fun getInfoProductOff(
@@ -33,7 +34,7 @@ interface ProductAPI {
         @Query("mode") modechitietsanpham: String?,
         @Query("idsanpham") idProduct: String?,
         @Query("iddonvi") idUnit: String?,
-    ): Response<List<Product>>
+    ): Response<List<ProductDetail>>
 
 
     @Headers("Content-Type: application/json")

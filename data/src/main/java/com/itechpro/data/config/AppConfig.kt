@@ -12,7 +12,7 @@ class AppConfig(context: Context) {
 
     fun getIdEmployee(): String = prefs.getString(KEY_ID_EMPLOYEE, "1") ?: "1"
     fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "ADMIN") ?: "ADMIN"
-    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluQGl0ZWNocHJvLnZuIiwidXNlcm5hbWUiOiJhZG1pbkBpdGVjaHByby52biIsImlkIjoiMSIsImlzYWRtaW4iOiJUcnVlIiwiYWN0aXZlIjoiVHJ1ZSIsImlkY29uZ3R5IjoiMSIsImlzYWRtaW5jb3NvIjoiVHJ1ZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiIwIiwibG9haWtoIjoiIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJuaGFudmllbiIsImhvdGVuIjoiIEFkbWluIiwiZGllbnRob2FpIjoiIiwiZW1haWwiOiJhZG1pbkBpdGVjaHByby52biIsInRlbmtoYWNoaGFuZyI6IklURUNIUFJPIiwibWFraGFjaGhhbmciOiJpdHAiLCJpZGNoYXQiOiJpdHBfMSIsInNlcnZlcmNoYXQiOiJodHRwOi8vMTkyLjE2OC4xLjE0OjkxMSIsIm5iZiI6MTc0NTM5MTc1MCwiZXhwIjoxNzU0MDMxNzUwLCJpYXQiOjE3NDUzOTE3NTAsImlzcyI6Imh0dHBzczovL3NwYS5lem1heC52biIsImF1ZCI6Imh0dHBzczovL3NwYS5lem1heC52biJ9.JrN6g4LinsTc0dyj7C-kjIWUwGe1VekIbmAV0cr7-GU")?:""
+    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluQGl0ZWNocHJvLnZuIiwidXNlcm5hbWUiOiJhZG1pbkBpdGVjaHByby52biIsImlkIjoiMSIsImlzYWRtaW4iOiJUcnVlIiwiYWN0aXZlIjoiVHJ1ZSIsImlkY29uZ3R5IjoiMSIsImlzYWRtaW5jb3NvIjoiVHJ1ZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiIwIiwibG9haWtoIjoiIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJuaGFudmllbiIsImhvdGVuIjoiQURNSU4iLCJkaWVudGhvYWkiOiIwOTY5NjY5OTY2IiwiZW1haWwiOiJhZG1pbkBpdGVjaHByby52biIsInRlbmtoYWNoaGFuZyI6IklURUNIUFJPIiwibWFraGFjaGhhbmciOiJpdHAiLCJpZGNoYXQiOiJpdHBfMSIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDU0ODkwMTEsImV4cCI6MTc1NDEyOTAxMSwiaWF0IjoxNzQ1NDg5MDExLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAiLCJhdWQiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAifQ.2-ti1gtUCHXn6zV_NSVstK8pLTYlfJ13dlvLGaqGcuQ")?:""
     fun getIdCompany(): String = prefs.getString(KEY_ID_COMPANY, "") ?: ""
     fun getIdCompanyParent(): String = prefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""
     fun getAppType(): String = prefs.getString(KEY_APP_TYPE, "") ?: ""
@@ -22,7 +22,7 @@ class AppConfig(context: Context) {
     fun getSalesPointName(): String = prefs.getString(KEY_SALE_POINT_NAME, "") ?: ""
     fun getFullName(): String = prefs.getString(KEY_ID_FULL_NAME, "") ?: ""
     fun getPermissionMobile(): String = prefs.getString(KEY_PERMISSION, "") ?: ""
-    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "https://spa.ezmax.vn") ?: ""
+    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "http://192.168.1.119:910") ?: ""
     fun getDomainCustomer(): String = prefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") ?: ""
     fun getDevice(): String = prefs.getString(KEY_DEVICE, "") ?: ""
     fun getDiscountAgency(): String = prefs.getString(KEY_DISCOUNT_AGENCY, "") ?: ""

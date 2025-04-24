@@ -1,7 +1,10 @@
 package com.contrast.Contrast.presentation.features.product.detail.ui
 
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +15,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 
 import androidx.compose.runtime.Composable
@@ -19,58 +24,106 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.theme.FAFAFA
+import com.contrast.Contrast.presentation.theme.FFE40000
+import com.contrast.Contrast.presentation.theme.PlaceholderGray
+import com.contrast.Contrast.presentation.theme.TealGreen
+import com.contrast.Contrast.presentation.theme.iOSUnderlineGray
+
 @Preview(showBackground = true)
 @Composable
 fun ProductDetailHeader(
-    onSaveClick: () -> Unit,
-    onReportClick: () -> Unit
+    type: String = "huuhinh",
+    favorite: Int = 0,
+    onFavorite: () -> Unit,
+    onReportClick: () -> Unit,
+    onWriteFeedbackClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "Chi tiết sản phẩm",
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
-        )
+    Column {
 
+Row(  modifier = Modifier
+    .fillMaxWidth()
+    .background(FAFAFA)
+    .padding(horizontal = 16.dp, vertical = 4.dp).
+    noRippleClickableComposable { onWriteFeedbackClick },
+    verticalAlignment = Alignment.CenterVertically) {
+    Text(
+    text = stringResource(R.string.write_feedback),
+    fontWeight = FontWeight(450),
+    fontSize = 14.sp,
+    color = TealGreen
+)
+
+    Image(
+        imageVector =Icons.Default.Edit,
+        contentDescription = "",
+        colorFilter = ColorFilter.tint(TealGreen),
+        modifier = Modifier
+            .size(22.dp).padding(5.dp)
+
+    )
+
+}
+        CustomDividerColor()
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                ,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
-                imageVector = Icons.Default.FavoriteBorder,
-                contentDescription = "Lưu",
-                modifier = Modifier
-                    .size(20.dp)
-                    .noRippleClickableComposable { onSaveClick() }
-            )
-            Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "Lưu",
-                modifier = Modifier.noRippleClickableComposable { onSaveClick() },
-                fontSize = 14.sp
+                text = if (type == "huuhinh") stringResource(R.string.product_detail) else stringResource(
+                    R.string.service_detail
+                ),
+                fontWeight = FontWeight(450),
+                fontSize = 14.sp,
+                color = Color.Black
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "|",
-                color = Color.Gray
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "Báo cáo",
-                modifier = Modifier.noRippleClickableComposable { onReportClick() },
-                fontSize = 14.sp
-            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    imageVector = if (favorite == 1) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(FFE40000),
+                    modifier = Modifier
+                        .size(20.dp)
+                        .noRippleClickableComposable { onFavorite() }
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(R.string.save),
+                    modifier = Modifier.noRippleClickableComposable { onFavorite() },
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "|",
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.report),
+                    modifier = Modifier.noRippleClickableComposable { onReportClick() },
+                    fontSize = 14.sp
+                )
+            }
         }
+
+        CustomDividerColor()
     }
 }

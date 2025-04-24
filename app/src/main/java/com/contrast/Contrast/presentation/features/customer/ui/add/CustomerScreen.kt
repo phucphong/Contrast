@@ -318,6 +318,7 @@ fun CustomerScreen(
         if(domainCustomer=="dcheery"){
             CustomButton(
                 text = stringResource(id = R.string.save_work),
+                modifier = Modifier.padding(16.dp,40.dp,16.dp,16.dp).weight(1f),
                 textColor = Color.White,
                 containerColor = TealGreen,
                 roundedCornerShape = 10.dp,

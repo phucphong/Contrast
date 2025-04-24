@@ -1,6 +1,8 @@
 package com.contrast.Contrast.presentation.navigator
 
 import android.net.Uri
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 
 sealed class NavRoutes(val route: String) {
@@ -27,19 +29,22 @@ sealed class NavRoutes(val route: String) {
         fun createRoute(categoryId: String) = "product/$categoryId"
     }
 
-
     object ProductDetail {
-        const val route = "product_detail"
+        const val baseRoute = "product_detail"
+        const val fullRoute = "$baseRoute?id={id}&idUnit={idUnit}"
 
-        fun createRoute(
-            id: String,
-            idUnit: String
-        ): String {
-            return "$route" +
-                    "?id=$id" +
-                    "&idUnit=$idUnit"
+        fun createRoute(id: String, idUnit: String): String {
+            return "$baseRoute?id=$id&idUnit=$idUnit"
         }
+
+        val arguments = listOf(
+            navArgument("id") { type = NavType.StringType; defaultValue = "" },
+            navArgument("idUnit") { type = NavType.StringType; defaultValue = "" }
+        )
     }
+
+
+
     object AddServiceRequest {
         const val route = "add_service_request"
 

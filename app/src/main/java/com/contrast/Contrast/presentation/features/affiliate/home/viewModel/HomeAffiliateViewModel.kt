@@ -171,11 +171,10 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
     }
 
     fun onItemProductSelected( category: Product) {
-        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
+        _navigationEvent.value = ProductNavEvent.GoToProductDetail(
             id = category.id ?: "",
-            serviceName = category.ten ?: "",
             idUnit = category.iddonvichuan ?: "",
-            discount = category.iddonvichuan ?: ""
+
         )
 
 

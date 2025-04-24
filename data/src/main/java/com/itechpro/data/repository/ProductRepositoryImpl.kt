@@ -3,26 +3,17 @@ package com.itechpro.data.repository
 
 
 
-import android.util.Log
-import com.itechpro.data.api.CategoryAffiliateAPI
 import com.itechpro.data.api.ProductAPI
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.Customer
-import com.itechpro.domain.model.Evaluate
+import com.itechpro.domain.model.evaluate.Evaluate
 
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.product.ProductDetail
 
-import com.itechpro.domain.repository.CategoryAffiliateRepository
 import com.itechpro.domain.repository.ProductRepository
-import com.squareup.moshi.KotlinJsonAdapterFactory
-import com.squareup.moshi.Moshi
 
 
 import javax.inject.Inject
-import com.squareup.moshi.Types
 
 
 class ProductRepositoryImpl @Inject constructor(
@@ -44,7 +35,7 @@ class ProductRepositoryImpl @Inject constructor(
 
 
     override suspend fun getInfoProduct(idProduct: String,idUnit: String,authen: String):
-            NetworkResponse<List<Product>> {
+            NetworkResponse<List<ProductDetail>> {
         val response = api.getInfoProduct("chitietsanpham","modechitietsanpham", idProduct,idUnit,authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
@@ -54,7 +45,7 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getInfoProductOff(idProduct: String,idUnit: String,): NetworkResponse<List<Product>> {
+    override suspend fun getInfoProductOff(idProduct: String,idUnit: String,): NetworkResponse<List<ProductDetail>> {
         val response = api.getInfoProductOff("chitietsanpham","modechitietsanpham",idProduct,idUnit)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())

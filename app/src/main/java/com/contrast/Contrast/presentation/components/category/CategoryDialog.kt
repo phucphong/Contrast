@@ -134,13 +134,11 @@ fun CategoryDialog(
 
                 CustomButton(
                     text = stringResource(id = R.string.close),
+                    modifier = Modifier.padding(16.dp,40.dp,16.dp,16.dp).weight(1f),
                     textColor = Color.White,
                     containerColor = FFAFAFAF,
-                    paddingStart = 5.dp,
-                    paddingTop = 20.dp,
-                    paddingEnd = 5.dp,
-                    paddingBottom = 5.dp,
                     roundedCornerShape = 10.dp,
+
                     onClick = { onDismiss() }
                 )
             }

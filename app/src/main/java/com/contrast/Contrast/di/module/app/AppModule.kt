@@ -2,9 +2,13 @@ package com.contrast.Contrast.di.module.app
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.contrast.Contrast.extensions.ColorAdapter
 import com.contrast.Contrast.extensions.LocalDateTimeAdapter
 import com.itechpro.data.config.AppConfig
+import com.itechpro.data.repository.DownloadImageUseCaseImpl
+import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
 import com.squareup.moshi.Moshi
@@ -91,7 +95,7 @@ object AppModule {
         return MoshiConverterFactory.create(moshi)
     }
     @Volatile
-    private var currentBaseUrl: String = "https://spa.ezmax.vn"
+    private var currentBaseUrl: String = "http://192.168.1.119:910"
     @Provides
     @Singleton
     fun provideRetrofitCustomDomain(
@@ -127,9 +131,16 @@ object AppModule {
     fun provideSellConfigUseCase(): SellConfigUseCase {
         return SellConfigUseCase()
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun providePromoCountdownUseCase(): PromoCountdownUseCase {
         return PromoCountdownUseCase()
+    }
+    @Provides
+    fun provideDownloadImageUseCase(
+        context: Context
+    ): DownloadImageUseCase {
+        return DownloadImageUseCaseImpl(context)
     }
 
 }

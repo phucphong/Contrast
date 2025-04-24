@@ -16,20 +16,18 @@ import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.Evaluate
+import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.PromoUiData
-import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
-import com.itechpro.domain.model.cart.CartItem
+import com.itechpro.domain.model.evaluate.EvaluateDetail
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
-import com.itechpro.domain.repository.ProductRepository
+import com.itechpro.domain.model.product.ProductDetail
 
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
+import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
 
-import com.itechpro.domain.usecase.home.HomeAffiliateUseCase
 import com.itechpro.domain.usecase.product.ProductUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
@@ -51,28 +49,33 @@ import kotlin.system.measureTimeMillis
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
-                                                 private val useCase: ProductUseCase,
-                                                 private val sellConfigUseCase: SellConfigUseCase,
-                                                 private val promoCountdownUseCase: PromoCountdownUseCase,
-                                                 private val stringProvider: StringProvider,
-                                                 @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
+                                           private val useCase: ProductUseCase,
+                                           private val sellConfigUseCase: SellConfigUseCase,
+                                           private val promoCountdownUseCase: PromoCountdownUseCase,
+                                           private val stringProvider: StringProvider,
+                                           private val downloadImageUseCase: DownloadImageUseCase,
+                                           @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
 
 
 
 
 
-    private val _obj = MutableStateFlow<Product?>(null)
-    val obj: StateFlow<Product?> = _obj
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
     private val _typeReports = MutableStateFlow<List<Product>>(emptyList())
     val typeReports: StateFlow<List<Product>> = _typeReports
 
-    private val _productInfo = MutableStateFlow<List<Product>>(emptyList())
-    val productInfo: StateFlow<List<Product>> = _productInfo
-    private val _evaluates = MutableStateFlow<Evaluate?>(null)// xuống use case tính lại  list
-    val evaluates: StateFlow<Evaluate?> = _evaluates
+    private val _productInfo = MutableStateFlow<ProductDetail?>(null)
+    val productInfo: StateFlow<ProductDetail?> = _productInfo
+    private val _evaluates = MutableStateFlow<List<EvaluateDetail>>(emptyList())// xuống use case tính lại  list
+    val evaluates: StateFlow<List<EvaluateDetail>> = _evaluates
+
+    private val _totalEvaluate = MutableStateFlow<Int>(0)// xuống use case tính lại  list
+    val totalEvaluate: StateFlow<Int> = _totalEvaluate
+
+    private val _ratingScore = MutableStateFlow<Float>(0f)// xuống use case tính lại  list
+    val ratingScore: StateFlow<Float> = _ratingScore
 
 
 
@@ -91,6 +94,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab: StateFlow<Int> = _selectedTab
 
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
     private var currentUserInfo: CurrentUserInfo? = null
@@ -103,6 +107,11 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     private val _promoUiDataMap = mutableMapOf<String, MutableStateFlow<PromoUiData>>()
     val promoUiDataMap: Map<String, StateFlow<PromoUiData>>
         get() = _promoUiDataMap
+
+    private val _promoUiDataMapInfo = mutableMapOf<String, MutableStateFlow<PromoUiData>>()
+    val promoUiDataMapInfo: Map<String, StateFlow<PromoUiData>>
+        get() = _promoUiDataMapInfo
+
 
 
     private var countdownJob: Job? = null
@@ -119,7 +128,9 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
         currentPage = 1
         _pagedProducts.value = products.take(pageSize)
     }
-
+    fun downloadImage(url: String) {
+        downloadImageUseCase(url, url)
+    }
     private var isLoadingNextPage = false
 
     fun loadNextPage() {
@@ -155,6 +166,24 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
             }
         }
     }
+    fun startPromoCountdownInfo(product: ProductDetail) {
+        countdownJob?.cancel()
+        countdownJob = viewModelScope.launch(dispatcher) {
+            val id = product.id ?: return@launch
+
+            // Khởi tạo state nếu chưa có
+            _promoUiDataMap.getOrPut(id) { MutableStateFlow(PromoUiData()) }
+
+            while (isActive) {
+                val now = LocalDateTime.now()
+                val promo = promoCountdownUseCase.calculateProductDetail(product, now)
+                _promoUiDataMap[id]?.value = promo
+
+                delay(1000)
+            }
+        }
+    }
+
 
 
     override fun onCleared() {
@@ -171,14 +200,10 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     }
 
     fun onItemProductSelected( category: Product) {
-        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
+        _navigationEvent.value = ProductNavEvent.GoToProductDetail(
             id = category.id ?: "",
-            serviceName = category.ten ?: "",
             idUnit = category.iddonvichuan ?: "",
-            discount = category.iddonvichuan ?: ""
-        )
-
-
+            )
     }
 
     fun onItemNotificationSelected( ) {
@@ -224,7 +249,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     }
 
 
-    fun loadHomeData(idParent: String,idUnit: String) {
+    fun loadData(idParent: String,idUnit: String) {
         if (isLoaded) return
         isLoaded = true
 
@@ -323,6 +348,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
                         }
                         is NetworkResponse.Success -> {
                             _productInfo.value = result.data
+                            startPromoCountdownInfo(result.data)
                         }
                         is NetworkResponse.Error -> {
                             _validationError.value = result.message
@@ -398,8 +424,16 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
                         is NetworkResponse.Loading -> {
                         }
                         is NetworkResponse.Success -> {
-                            _evaluates.value = result.data
+                            _isLoading.value = false
+                            val evaluateList = result.data.evaluateList
+                            val totalEvaluate = result.data.totalEvaluate
+                            val ratingScore = result.data.ratingScore
+
+                            _evaluates.value = evaluateList
+                            _totalEvaluate.value = totalEvaluate
+                            _ratingScore.value = ratingScore
                         }
+
                         is NetworkResponse.Error -> {
                             _validationError.value = result.message
                         }

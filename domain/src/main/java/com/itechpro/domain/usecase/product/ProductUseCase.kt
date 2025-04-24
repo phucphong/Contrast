@@ -3,27 +3,17 @@ package com.itechpro.domain.usecase.product
 
 
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.Evaluate
+import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.NetworkResponse
 
 import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.PromoUiData
-import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
-import com.itechpro.domain.model.cart.CartItem
-import com.itechpro.domain.repository.HomeAffiliateRepository
+import com.itechpro.domain.model.evaluate.EvaluateResult
+import com.itechpro.domain.model.product.ProductDetail
 import com.itechpro.domain.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class ProductUseCase @Inject constructor(
@@ -31,20 +21,37 @@ class ProductUseCase @Inject constructor(
 
     ) {
 
-
-    fun getInfoProduct(offline: Boolean, idParent: String,idUnit: String,authen: String): Flow<NetworkResponse<List<Product>>> {
+    fun getInfoProduct(
+        offline: Boolean,
+        idParent: String,
+        idUnit: String,
+        authen: String
+    ): Flow<NetworkResponse<ProductDetail>> {
         return flow {
             emit(NetworkResponse.Loading)
 
             val result = if (offline) {
                 repository.getInfoProductOff(idParent, idUnit)
             } else {
-                repository.getInfoProduct(idParent,idUnit, authen)
+                repository.getInfoProduct(idParent, idUnit, authen)
             }
 
-            emit(result)
+            // Map List<ProductDetail> → ProductDetail (chỉ lấy phần tử đầu tiên)
+            when (result) {
+                is NetworkResponse.Success -> {
+                    val firstItem = result.data.firstOrNull()
+                    if (firstItem != null) {
+                        emit(NetworkResponse.Success(firstItem))
+                    } else {
+                        emit(NetworkResponse.Error("Danh sách rỗng"))
+                    }
+                }
+                is NetworkResponse.Error -> emit(result)
+                is NetworkResponse.Loading -> emit(result)
+            }
         }.flowOn(Dispatchers.IO)
     }
+
 
     fun getUnLike(type: String,idProduct: String,idUnit: String,authen: String): Flow<NetworkResponse<List<Product>>> {
         return flow {
@@ -61,17 +68,39 @@ class ProductUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getEvaluates(offline: Boolean, idProduct: String,count: String,authen: String): Flow<NetworkResponse<Evaluate>> {
+    fun getEvaluates(
+        offline: Boolean,
+        idProduct: String,
+        count: String,
+        authen: String
+    ): Flow<NetworkResponse<EvaluateResult>> {
         return flow {
             emit(NetworkResponse.Loading)
+
             val result = if (offline) {
                 repository.getEvaluatesOff(idProduct, count)
             } else {
-                repository.getEvaluates(idProduct, count,authen)
+                repository.getEvaluates(idProduct, count, authen)
             }
-            emit(result)
+
+            when (result) {
+                is NetworkResponse.Success -> {
+                    val list = result.data.lst_danhgia
+                    val ratingScore = result.data.diemdanhgia?:0f
+                    val customResult = EvaluateResult(
+                        totalEvaluate = list.size,
+                        evaluateList = list,
+                                ratingScore = ratingScore
+                    )
+                    emit(NetworkResponse.Success(customResult))
+                }
+
+                is NetworkResponse.Error -> emit(result)
+                is NetworkResponse.Loading -> emit(result)
+            }
         }.flowOn(Dispatchers.IO)
     }
+
 
     fun getProductsByIdParent(offline: Boolean,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
         return flow {

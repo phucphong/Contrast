@@ -17,11 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.theme.FFFF9800
+
+@Preview(showBackground = true)
 @Composable
 fun QuantitySelector(
     quantity: Int,
@@ -31,13 +37,13 @@ fun QuantitySelector(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
-            .padding(vertical = 8.dp)
+            .background(Color.White, shape = RoundedCornerShape(6.dp))
+            .padding(vertical = 10.dp)
     ) {
         Text(
-            text = "Số lượng",
+            text = stringResource(R.string.quantity),
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(start = 4.dp)
+            modifier = Modifier.padding(start = 10.dp)
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -45,8 +51,9 @@ fun QuantitySelector(
         // Nút trừ
         Box(
             modifier = Modifier
-                .width(32.dp)
-                .height(32.dp)
+                .width(28.dp)
+                .height(28.dp)
+                .padding(2.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color(0xFFF5F5F5))
                 .clickable(enabled = quantity > 1) {
@@ -60,7 +67,7 @@ fun QuantitySelector(
         // Số lượng
         Box(
             modifier = Modifier
-                .width(40.dp)
+                .width(35.dp)
                 .padding(horizontal = 8.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -74,8 +81,9 @@ fun QuantitySelector(
         // Nút cộng
         Box(
             modifier = Modifier
-                .width(32.dp)
-                .height(32.dp)
+                .width(28.dp)
+                .height(28.dp)
+                .padding(2.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color(0xFFF5F5F5))
                 .clickable {

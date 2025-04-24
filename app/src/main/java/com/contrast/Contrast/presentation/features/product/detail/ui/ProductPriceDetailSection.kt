@@ -1,6 +1,8 @@
 package com.contrast.Contrast.presentation.features.product.detail.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LinearProgressIndicator
@@ -17,18 +20,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.contrast.Contrast.R
+import com.contrast.Contrast.extensions.formatCurrency
+import com.contrast.Contrast.extensions.formatDouble
+import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
+import com.contrast.Contrast.presentation.theme.FFFF5722
+import com.contrast.Contrast.presentation.theme.FFFF9800
 
-
+@Preview(showBackground = true)
 @Composable
 fun ProductPriceDetailSection(
     productName: String,
-    price: String,
-    oldPrice: String? = null,
-    discountPercent: String? = null,
+    priceDisCount: Double = 0.0,
+    price: Double = 0.0,
+    discountPercent: Double = 0.0,
     isFlashSale: Boolean = false,
     remainingTime: String = "",
     quantity: Int,
@@ -47,75 +61,95 @@ fun ProductPriceDetailSection(
             fontSize = 16.sp
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+
 
         // Giá và giảm giá
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 8.dp)) {
+
+            if (priceDisCount!=0.0 && discountPercent!=0.0){
+                Image(painter = painterResource(R.drawable.flash_sale),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(FFFF9800),
+                    modifier = Modifier.size(30.dp).padding(5.dp)
+                )
+            }
+
+
             Text(
-                text = price,
-                color = Color(0xFFFF5722),
+                text = "đ",
+                color =if(isFlashSale) FFFF9800 else Color.Black,
+                fontSize = 13.sp
+            )
+            Text(
+                text = if(isFlashSale)priceDisCount.formatDouble()else price.formatDouble(),
+                color =if(isFlashSale) FFFF9800 else Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
-            if (!oldPrice.isNullOrEmpty() && !discountPercent.isNullOrEmpty()) {
+            if (priceDisCount!=0.0 && discountPercent!=0.0) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = oldPrice,
+                    text = "đ",
+                    textDecoration = TextDecoration.LineThrough,
+                    color = Color.Gray,
+                    fontSize = 14.sp, modifier = Modifier.padding( top = 4.dp)
+                )
+                Text(
+                    text = price.formatDouble(),
                     textDecoration = TextDecoration.LineThrough,
                     color = Color.Gray,
                     fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Box(
+                Row (
                     modifier = Modifier
                         .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(4.dp))
-                        .padding(horizontal = 4.dp, vertical = 2.dp)
+                        .border(2.dp, FFFF9800,
+                            RoundedCornerShape(4.dp)
+                        )
                 ) {
-                    Text(text = discountPercent, fontSize = 12.sp, color = Color.Gray)
+                    Text(text = discountPercent.formatDouble(), fontSize = 12.sp, color = Color.Gray
+                        , modifier = Modifier.padding( 4.dp,4.dp,2.dp,4.dp))
+                    Text( text = "%",
+                        textDecoration = TextDecoration.LineThrough, fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(0.dp,4.dp,4.dp,4.dp))
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
 
         // Flash sale nếu có
         if (isFlashSale) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFFF9800), shape = RoundedCornerShape(6.dp))
-                    .padding(8.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "Ưu đãi chớp nhoáng",
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        fontSize = 14.sp
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    LinearProgressIndicator(
-                        progress = 0.5f, // Có thể truyền từ ngoài
-                        color = Color.Yellow,
-                        backgroundColor = Color.White,
-                        modifier = Modifier
-                            .height(6.dp)
-                            .weight(1f)
-                            .clip(RoundedCornerShape(3.dp))
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "Kết thúc sau $remainingTime",
-                        color = Color.White,
-                        fontSize = 12.sp
-                    )
+        Column (modifier = Modifier  .background( if(isFlashSale) FFFF9800 else Color.White, shape = RoundedCornerShape(6.dp)).padding(8.dp)){
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(FFFF9800, shape = RoundedCornerShape(6.dp))
+
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = stringResource(R.string.flash_sale),
+                            fontStyle = FontStyle.Italic,
+                            color = Color.White,
+                            fontSize = 12.sp,
+                        )
+                        Box (modifier = Modifier.width(10.dp).height(12.dp).padding(horizontal = 4.dp).background(Color.White))
+                        PromoProgressBar()
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Kết thúc sau $remainingTime",
+                            color = Color.White,
+                            fontSize = 11.sp
+                        )
+                    }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+            QuantitySelector(quantity = quantity, onQuantityChange = onQuantityChange)
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-        }
+            // Chọn số lượng
 
-        // Chọn số lượng
-        QuantitySelector(quantity = quantity, onQuantityChange = onQuantityChange)
+        }else{
+            QuantitySelector(quantity = quantity, onQuantityChange = onQuantityChange)
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.contrast.Contrast.presentation.features.product.detail.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -23,7 +24,8 @@ fun WebViewProduct(htmlContent:String) {
             htmlContent = htmlContent,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(if (isExpanded) Dp.Unspecified else 100.dp) // Mở rộng hoặc thu gọn
+                .height(if (isExpanded) Dp.Unspecified else 200.dp)
+                .defaultMinSize(minHeight = 200.dp)
         )
 
         SeeMoreButton(

@@ -6,19 +6,18 @@ import androidx.annotation.RequiresApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.contrast.Contrast.presentation.components.image.MediaPickerScreen
 import com.contrast.Contrast.presentation.components.image.MediaPickerScreenNew
 import com.contrast.Contrast.presentation.components.image.ReviewCreateViewModel
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
-import com.contrast.Contrast.presentation.features.evaluate.ui.AddEvaluateScreen
-import com.contrast.Contrast.presentation.features.evaluate.ui.EvaluatesScreen
+
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
+import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
+import com.contrast.Contrast.presentation.features.review.ui.ReviewsFilterScreen
+
 import com.contrast.Contrast.presentation.features.video.VideoScreen
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 
@@ -49,24 +48,24 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
             ProductDetailScreen(navController, id, idUnit)
         }
         composable(
-            route = NavRoutes.Evaluates.route,
-            arguments = NavRoutes.Evaluates.arguments
+            route = NavRoutes.Reviews.route,
+            arguments = NavRoutes.Reviews.arguments
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
-            EvaluatesScreen(navController, id)
+            ReviewsFilterScreen(navController, id)
         }
 
 
 
         composable(
-            route = NavRoutes.AddEvaluate.route, arguments = NavRoutes.AddEvaluate.arguments
+            route = NavRoutes.AddReview.route, arguments = NavRoutes.AddReview.arguments
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
             val fileTxt = backStackEntry.arguments?.getString("fileTxt") ?: ""
             val name = backStackEntry.arguments?.getString("name") ?: ""
             val sharedViewModel = hiltViewModel<ReviewCreateViewModel>()
 
-            AddEvaluateScreen(
+            AddReviewScreen(
                 navController,
                 id = id,
                 fileTxt = fileTxt,

@@ -15,10 +15,10 @@ sealed class ProductNavEvent: NavEvent {
         val id: String,
         val idUnit: String,
     ) : ProductNavEvent()
-    data class GoToProductEvaluates(
+    data class GoToProductReviews(
         val id: String
     ) : ProductNavEvent()
-    data class GoToAddEvaluates(
+    data class GoToAddReviews(
         val id: String,
         val fileTxt: String,
         val name: String,

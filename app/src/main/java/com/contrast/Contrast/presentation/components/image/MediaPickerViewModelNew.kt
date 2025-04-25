@@ -30,7 +30,7 @@ data class MediaItem(
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaPickerViewModelNew @Inject constructor(
     application: Application,
-    private val mediaUrisUseCase: MediaUrisUseCase,
+
 ) : AndroidViewModel(application) {
 
     private val pageSize = 18
@@ -46,15 +46,7 @@ class MediaPickerViewModelNew @Inject constructor(
     private var allowImage = true
     private var allowVideo = true
 
-    private val _compressedFiles = MutableStateFlow<List<File>>(emptyList())
-    val compressedFiles: StateFlow<List<File>> = _compressedFiles
 
-    fun compressUris(context: Context, uris: List<Uri>) {
-        viewModelScope.launch {
-            val result = mediaUrisUseCase.invoke(uris)
-            _compressedFiles.value = result
-        }
-    }
     fun loadMedia(image: Boolean, video: Boolean) {
         allowImage = image
         allowVideo = video

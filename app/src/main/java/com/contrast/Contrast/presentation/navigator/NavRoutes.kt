@@ -56,8 +56,8 @@ sealed class NavRoutes(val route: String) {
         )
     }
 
-    object Evaluates {
-        const val baseRoute = "product_evaluates"
+    object Reviews {
+        const val baseRoute = "product_Reviews"
         const val route = "$baseRoute/{id}"
 
         fun withArgs(id: String): String {
@@ -81,15 +81,15 @@ sealed class NavRoutes(val route: String) {
         fun withArgs(maxCount: Int, allowImage: Boolean, allowVideo: Boolean, compressedFiles: Boolean) =
             "media_picker/$maxCount/$allowImage/$allowVideo/$compressedFiles"
     }
-    object AddEvaluate {
-        const val route = "add_evaluate/{id}/{fileTxt}/{name}"
+    object AddReview {
+        const val route = "add_Review/{id}/{fileTxt}/{name}"
         val arguments = listOf(
             navArgument("id") { type = NavType.StringType },
             navArgument("fileTxt") { type = NavType.StringType },
             navArgument("name") { type = NavType.StringType }
         )
         fun withArgs(id: String, fileTxt: String, name: String): String {
-            return "add_evaluate/${Uri.encode(id)}/${Uri.encode(fileTxt)}/${Uri.encode(name)}"
+            return "add_Review/${Uri.encode(id)}/${Uri.encode(fileTxt)}/${Uri.encode(name)}"
         }
 
     }

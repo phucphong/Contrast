@@ -16,11 +16,9 @@ import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.PromoUiData
-import com.itechpro.domain.model.evaluate.EvaluateDetail
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.product.ProductDetail
@@ -199,14 +197,14 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
             )
     }
 
-    fun onItemEvaluatesSelected( id: String) {
-        _navigationEvent.value = ProductNavEvent.GoToProductEvaluates(
+    fun onItemReviewsSelected( id: String) {
+        _navigationEvent.value = ProductNavEvent.GoToProductReviews(
             id = id)
     }
 
 
-    fun onItemAddEvaluatesSelected( id: String, fileTxt:String, name:String) {
-        _navigationEvent.value = ProductNavEvent.GoToAddEvaluates(
+    fun onItemAddReviewsSelected( id: String, fileTxt:String, name:String) {
+        _navigationEvent.value = ProductNavEvent.GoToAddReviews(
             id = id,
             fileTxt = fileTxt,
             name = name,

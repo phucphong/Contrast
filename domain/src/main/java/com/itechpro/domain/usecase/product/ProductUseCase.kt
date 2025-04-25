@@ -3,11 +3,9 @@ package com.itechpro.domain.usecase.product
 
 
 
-import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.NetworkResponse
 
 import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.evaluate.EvaluateResult
 import com.itechpro.domain.model.product.ProductDetail
 import com.itechpro.domain.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers

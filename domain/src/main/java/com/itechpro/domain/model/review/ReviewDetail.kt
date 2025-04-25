@@ -1,4 +1,4 @@
-package com.itechpro.domain.model.evaluate
+package com.itechpro.domain.model.review
 
 
 import com.squareup.moshi.JsonClass
@@ -7,7 +7,7 @@ import com.itechpro.domain.model.product.AttachFile
 
 
 @JsonClass(generateAdapter = true)
-data class EvaluateDetail(
+data class ReviewDetail(
 
     var id: String? = null,
     var noidung: String? = null,

@@ -4,14 +4,12 @@ package com.contrast.Contrast.presentation.features.product.detail
 
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -30,9 +28,8 @@ import com.contrast.Contrast.presentation.components.image.NetworkImage
 import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificationShare
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
-import com.contrast.Contrast.presentation.features.evaluate.EvaluateScreen
-import com.contrast.Contrast.presentation.features.evaluate.EvaluateViewModel
-import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
+
+import com.contrast.Contrast.presentation.features.review.ReviewViewModel
 
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductDetailHeader
@@ -41,6 +38,7 @@ import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProd
 
 import com.contrast.Contrast.presentation.features.product.viewmodel.ProductViewModel
 import com.contrast.Contrast.presentation.features.rating.RatingHeader
+import com.contrast.Contrast.presentation.features.review.ReviewScreen
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 
@@ -64,15 +62,16 @@ fun ProductDetailScreen(
     idUnit: String,
     viewModel: ProductViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
-    evaluateViewModel: EvaluateViewModel = hiltViewModel(),
+    reviewViewModel: ReviewViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
     val productInfo by viewModel.productInfo.collectAsState()
-    val evaluates by evaluateViewModel.evaluates.collectAsState()
+
     val products by viewModel.products.collectAsState()
     val pagedProducts by viewModel.pagedProducts.collectAsState()
-    val totalEvaluate by evaluateViewModel.totalEvaluate.collectAsState()
-    val ratingScore by evaluateViewModel.ratingScore.collectAsState()
+    val totalReview by reviewViewModel.totalReview.collectAsState()
+    val ratingScore by reviewViewModel.ratingScore.collectAsState()
+    val reviews by reviewViewModel.reviews.collectAsState()
     val domain by viewModel.domain.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
@@ -95,7 +94,7 @@ fun ProductDetailScreen(
     LaunchedEffect(Unit) {
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         viewModel.loadData(id, idUnit)
-        evaluateViewModel.loadEvaluate(id, "3")
+        reviewViewModel.loadReview(id, "3")
     }
 
     LaunchedEffect(listState) {
@@ -138,9 +137,9 @@ fun ProductDetailScreen(
                 viewModel.resetNavigation()
             }
 
-            is ProductNavEvent.GoToProductEvaluates -> {
+            is ProductNavEvent.GoToProductReviews -> {
                 navHostController.navigate(
-                    NavRoutes.Evaluates.withArgs(
+                    NavRoutes.Reviews.withArgs(
                         id = event.id,
 
                     )
@@ -148,9 +147,9 @@ fun ProductDetailScreen(
                 viewModel.resetNavigation()
             }
 
-            is ProductNavEvent.GoToAddEvaluates -> {
+            is ProductNavEvent.GoToAddReviews -> {
                 navHostController.navigate(
-                    NavRoutes.AddEvaluate.withArgs(
+                    NavRoutes.AddReview.withArgs(
                         id = event.id,
                         fileTxt = event.fileTxt,
                         name = event.name
@@ -234,15 +233,15 @@ fun ProductDetailScreen(
             stickyHeader {
                 RatingHeader(
                     rating = ratingScore,
-                    totalReviews = totalEvaluate,
-                    onViewAllClick = {viewModel.onItemEvaluatesSelected(id) }
+                    totalReviews = totalReview,
+                    onViewAllClick = {viewModel.onItemReviewsSelected(id) }
                 )
 
             }
             item {
-                if (evaluates.isNotEmpty()) {
-                    EvaluateScreen(
-                        evaluates = evaluates,
+                if (reviews.isNotEmpty()) {
+                    ReviewScreen(
+                        reviews = reviews,
                         domain = domain,
                         onDownloadClick = { fileUrl ->
                             viewModel.downloadImage(fileUrl)
@@ -259,7 +258,7 @@ fun ProductDetailScreen(
                         favorite= productInfo?.yeuthich?:0,
                         onFavorite = { },
                         onReportClick = { },
-                        onWriteFeedbackClick = { viewModel.onItemAddEvaluatesSelected(id, "$domain${productInfo?.filetxt?:""}", productInfo?.ten?:"")}
+                        onWriteFeedbackClick = { viewModel.onItemAddReviewsSelected(id, "$domain${productInfo?.filetxt?:""}", productInfo?.ten?:"")}
                     )
 
                 }

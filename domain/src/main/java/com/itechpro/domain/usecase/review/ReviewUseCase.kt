@@ -1,49 +1,50 @@
-package com.itechpro.domain.usecase.evaluate
+package com.itechpro.domain.usecase.review
 
 
 
 
 
-import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.evaluate.EvaluateResult
+import com.itechpro.domain.model.review.ReviewAttach
+import com.itechpro.domain.model.review.ReviewResult
 
-import com.itechpro.domain.repository.EvaluateRepository
+import com.itechpro.domain.repository.ReviewRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
-class EvaluateUseCase @Inject constructor(
-    private val repository: EvaluateRepository,
+class ReviewUseCase @Inject constructor(
+    private val repository: ReviewRepository,
 
     ) {
 
 
-    fun getEvaluates(
+    fun getReviews(
         offline: Boolean,
-        idEvaluate: String,
+        idReview: String,
         count: String,
         authen: String
-    ): Flow<NetworkResponse<EvaluateResult>> {
+    ): Flow<NetworkResponse<ReviewResult>> {
         return flow {
             emit(NetworkResponse.Loading)
 
             val result = if (offline) {
-                repository.getEvaluatesOff(idEvaluate, count)
+                repository.getReviewsOff(idReview, count)
             } else {
-                repository.getEvaluates(idEvaluate, count, authen)
+                repository.getReviews(idReview, count, authen)
             }
 
             when (result) {
                 is NetworkResponse.Success -> {
                     val list = result.data.lst_danhgia
                     val ratingScore = result.data.diemdanhgia?:0f
-                    val customResult = EvaluateResult(
-                        totalEvaluate = list.size,
-                        evaluateList = list,
+                    val customResult = ReviewResult(
+                        totalReview = list.size,
+                        reviewList = list,
                         ratingScore = ratingScore
                     )
                     emit(NetworkResponse.Success(customResult))
@@ -66,6 +67,22 @@ class EvaluateUseCase @Inject constructor(
             emit(NetworkResponse.Loading)
             try {
                 val result = repository.addEditLike(url, obj, authen)
+                emit(result)
+            } catch (e: Exception) {
+                emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    fun uploadReviewFile(
+
+        obj: ReviewAttach,
+        authen: String
+    ): Flow<NetworkResponse<ResponseBody>> {
+        return flow {
+            emit(NetworkResponse.Loading)
+            try {
+                val result = repository.uploadReviewFile("/ex/api_DanhGiaSanPham/adddanhgia", obj, authen)
                 emit(result)
             } catch (e: Exception) {
                 emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))

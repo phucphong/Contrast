@@ -27,20 +27,20 @@ class ContrastActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val  navHostController= NavHostController(this)
-            MediaPickerScreenNew(
+//            MediaPickerScreenNew(
+//
+//                maxCount = 0,
+//                allowImage = true,
+//                allowVideo = true,
+//                compressedFiles = true,
+//                onSendClick = { uris ->
+//
+//                },
+//                navHostController = navHostController,
+//
+//            )
 
-                maxCount = 0,
-                allowImage = true,
-                allowVideo = true,
-                compressedFiles = true,
-                onSendClick = { uris ->
-
-                },
-                navHostController = navHostController,
-
-            )
-
-//            MainScreen()
+            MainScreen()
 //            AffiliateMainScreen()
 
         }

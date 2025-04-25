@@ -4,7 +4,6 @@ package com.itechpro.data.repository
 
 
 import com.itechpro.data.api.ProductAPI
-import com.itechpro.domain.model.evaluate.Evaluate
 
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product

@@ -1,7 +1,6 @@
 package com.itechpro.domain.repository
 
 
-import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.product.ProductDetail

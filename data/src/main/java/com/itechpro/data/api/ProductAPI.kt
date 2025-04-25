@@ -1,6 +1,5 @@
 package com.itechpro.data.api
 
-import com.itechpro.domain.model.evaluate.Evaluate
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.product.ProductDetail
 import retrofit2.Response

@@ -12,9 +12,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,8 +35,6 @@ import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.checkbox.CheckBoxColor
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
-import com.contrast.Contrast.presentation.features.evaluate.EvaluateViewModel
 import com.contrast.Contrast.presentation.features.product.viewmodel.ProductDetailViewModel
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FF637875

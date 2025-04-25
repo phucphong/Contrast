@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.evaluate.ui
+package com.contrast.Contrast.presentation.features.review.ui
 
 
 import androidx.compose.foundation.horizontalScroll
@@ -33,11 +33,11 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.image.AttachFileItem
 
 
-import com.itechpro.domain.model.evaluate.EvaluateDetail
+import com.itechpro.domain.model.review.ReviewDetail
 
 @Composable
-fun EvaluateItem(
-    evaluate: EvaluateDetail,
+fun ReviewItem(
+    evaluate: ReviewDetail,
     domain: String,
     onDownloadClick: (String) -> Unit
 ) {

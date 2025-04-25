@@ -1,15 +1,13 @@
-package com.itechpro.domain.model.evaluate
+package com.itechpro.domain.model.review
 
 
 
 import android.net.Uri
 import com.squareup.moshi.JsonClass
 
-import com.itechpro.domain.model.product.AttachFile
-
 
 @JsonClass(generateAdapter = true)
-data class EvaluateInput(
+data class ReviewInput(
 
     val rating: Int = 0,
     val comment: String = "",

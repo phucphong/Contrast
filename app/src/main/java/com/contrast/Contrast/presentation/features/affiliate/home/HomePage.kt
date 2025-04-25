@@ -92,35 +92,44 @@ fun HomePage(
 
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
+            is NotificationNavEvent.GoToNotifications -> {
+                navHostController.navigate(
+                    NavRoutes.Notifications.withArgs(
+                        startDate = event.startDate,
+                        endDate = event.endDate
+                    )
+                )
+                viewModel.resetNavigation()
+            }
             is ProductNavEvent.GoToProductsCategory -> {
-                navHostController.navigate(NavRoutes.ProductByCategory.createRoute(event.categoryId))
+                navHostController.navigate(
+                    NavRoutes.ProductByCategory.withArgs(
+                        categoryId = event.categoryId,
+                        )
+                )
                 viewModel.resetNavigation()
             }
 
             is ProductNavEvent.GoToProductDetail -> {
-                navHostController.navigate(NavRoutes.ProductDetail.createRoute(event.id, event.idUnit))
+                navHostController.navigate(
+                    NavRoutes.ProductDetail.withArgs(
+                        id = event.id,
+                        idUnit = event.idUnit,
+
+                    )
+                )
                 viewModel.resetNavigation()
             }
-
-
 
             is ProductNavEvent.GoToAddServiceRequest -> {
-                navHostController.currentBackStackEntry?.savedStateHandle?.apply {
-                    set("id", event.id)
-                    set("serviceName", event.serviceName)
-                    set("idUnit", event.idUnit)
-                    set("discount", event.discount)
-                }
-                navHostController.navigate(NavRoutes.AddServiceRequest.route)
-                viewModel.resetNavigation()
-            }
-
-            is NotificationNavEvent.GoToNotifications -> {
-                navHostController.currentBackStackEntry?.savedStateHandle?.apply {
-                    set("startDate", event.startDate)
-                    set("endDate", event.endDate)
-                }
-                navHostController.navigate(NavRoutes.Notifications.route)
+                navHostController.navigate(
+                    NavRoutes.AddServiceRequest.withArgs(
+                        id = event.id,
+                        serviceName = event.serviceName,
+                        idUnit = event.idUnit,
+                        discount = event.discount
+                    )
+                )
                 viewModel.resetNavigation()
             }
 

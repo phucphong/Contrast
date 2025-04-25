@@ -60,11 +60,13 @@ paging-compose = "3.3.6"
 calendar = "2.6.2"
 javaxInject = "1"
 swiperefresh = "0.33.2-alpha"
-coil-compose = "3.1.0"
+coil-compose = "2.4.0"
 androidyoutubeplayer = "11.1.0"
 playServicesAnalyticsImpl = "18.2.0"
 accompanist-pager = "0.34.0"
 foundationLayout = "1.0.1"
+coil  = "2.4.0"
+accompanist-permissions = "0.34.0"
 
 
 
@@ -100,8 +102,8 @@ camerax-core = { group = "androidx.camera", name = "camera-core", version.ref = 
 camerax-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax-version" }
 camerax-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax-version" }
 camerax-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax-version" }
-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil-version" }
-coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil-version" }
+
+
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx-version" }
 fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment-ktx-version" }
 
@@ -164,15 +166,19 @@ paging-runtime = { group = "androidx.paging", name = "paging-compose", version.r
 calendar = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "calendar" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
 accompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
-coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil-compose" }
-coil-okhttp3 = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil-compose" }
+
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-video = { group = "io.coil-kt", name = "coil-video", version.ref  = "coil" }
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil-version" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil-version" }
 androidyoutubeplayer = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "androidyoutubeplayer" }
 play-services-analytics-impl = { group = "com.google.android.gms", name = "play-services-analytics-impl", version.ref = "playServicesAnalyticsImpl" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist-pager" }
 accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist-pager" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi-kotlin-codegen" }
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
-
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions" }
+lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
 
 
 [plugins]

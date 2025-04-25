@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.button.CustomButton
@@ -47,7 +47,7 @@ import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF9800
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.contrast.Contrast.utils.NetworkMonitor
-import com.itechpro.domain.model.evaluate.EvaluateDetail
+
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import kotlinx.coroutines.delay
@@ -64,7 +64,7 @@ fun ProductDetailScreen(
     idUnit: String,
     viewModel: ProductViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
-    evaluateViewModel: EvaluateViewModel = viewModel(),
+    evaluateViewModel: EvaluateViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
     val productInfo by viewModel.productInfo.collectAsState()
@@ -117,42 +117,60 @@ fun ProductDetailScreen(
 
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
-            is ProductNavEvent.GoToProductsCategory -> {
-                navHostController.navigate(NavRoutes.ProductByCategory.createRoute(event.categoryId))
+            is NotificationNavEvent.GoToNotifications -> {
+                navHostController.navigate(
+                    NavRoutes.Notifications.withArgs(
+                        startDate = event.startDate,
+                        endDate = event.endDate
+                    )
+                )
                 viewModel.resetNavigation()
             }
 
             is ProductNavEvent.GoToProductDetail -> {
-                navHostController.currentBackStackEntry?.savedStateHandle?.apply {
-                    set("id", event.id)
-                    set("idUnit", event.idUnit)
-                }
-                navHostController.navigate(NavRoutes.ProductDetail.createRoute(event.id, event.idUnit))
-                viewModel.resetNavigation()
-            }
-            is ProductNavEvent.GoToProductEvaluates -> {
-                navHostController.navigate(NavRoutes.Evaluates.createRoute(event.id))
-                viewModel.resetNavigation()
-            }
-            is ProductNavEvent.GoToAddServiceRequest -> {
-                navHostController.currentBackStackEntry?.savedStateHandle?.apply {
-                    set("id", event.id)
-                    set("serviceName", event.serviceName)
-                    set("idUnit", event.idUnit)
-                    set("discount", event.discount)
-                }
-                navHostController.navigate(NavRoutes.AddServiceRequest.route)
+                navHostController.navigate(
+                    NavRoutes.ProductDetail.withArgs(
+                        id = event.id,
+                        idUnit = event.idUnit,
+
+                        )
+                )
                 viewModel.resetNavigation()
             }
 
-            is NotificationNavEvent.GoToNotifications -> {
-                navHostController.currentBackStackEntry?.savedStateHandle?.apply {
-                    set("startDate", event.startDate)
-                    set("endDate", event.endDate)
-                }
-                navHostController.navigate(NavRoutes.Notifications.route)
+            is ProductNavEvent.GoToProductEvaluates -> {
+                navHostController.navigate(
+                    NavRoutes.Evaluates.withArgs(
+                        id = event.id,
+
+                    )
+                )
                 viewModel.resetNavigation()
             }
+
+            is ProductNavEvent.GoToAddEvaluates -> {
+                navHostController.navigate(
+                    NavRoutes.AddEvaluate.withArgs(
+                        id = event.id,
+                        fileTxt = event.fileTxt,
+                        name = event.name
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProductNavEvent.GoToAddServiceRequest -> {
+                navHostController.navigate(
+                    NavRoutes.AddServiceRequest.withArgs(
+                        id = event.id,
+                        serviceName = event.serviceName,
+                        idUnit = event.idUnit,
+                        discount = event.discount
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
 
             else -> Unit
         }
@@ -185,7 +203,7 @@ fun ProductDetailScreen(
 
                     val fullUrl = domain.trimEnd('/') + (productInfo?.filetxt ?: "")
                     NetworkImage(
-                        imageUrl = fullUrl,
+                        model = fullUrl,
                         modifier = Modifier.fillMaxWidth().height(250.dp)
                     )
                 }
@@ -217,7 +235,7 @@ fun ProductDetailScreen(
                 RatingHeader(
                     rating = ratingScore,
                     totalReviews = totalEvaluate,
-                    onViewAllClick = { }
+                    onViewAllClick = {viewModel.onItemEvaluatesSelected(id) }
                 )
 
             }
@@ -241,7 +259,7 @@ fun ProductDetailScreen(
                         favorite= productInfo?.yeuthich?:0,
                         onFavorite = { },
                         onReportClick = { },
-                        onWriteFeedbackClick = { viewModel.onItemEvaluatesSelected(id)}
+                        onWriteFeedbackClick = { viewModel.onItemAddEvaluatesSelected(id, "$domain${productInfo?.filetxt?:""}", productInfo?.ten?:"")}
                     )
 
                 }

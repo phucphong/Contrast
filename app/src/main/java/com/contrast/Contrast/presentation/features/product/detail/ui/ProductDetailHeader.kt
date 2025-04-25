@@ -55,7 +55,7 @@ Row(  modifier = Modifier
     .fillMaxWidth()
     .background(FAFAFA)
     .padding(horizontal = 16.dp, vertical = 4.dp).
-    noRippleClickableComposable { onWriteFeedbackClick },
+    noRippleClickableComposable { onWriteFeedbackClick() },
     verticalAlignment = Alignment.CenterVertically) {
     Text(
     text = stringResource(R.string.write_feedback),

@@ -72,6 +72,7 @@
     <string name="care_staff">Người chăm sóc</string>
     <string name="search_placeholder">Nhập từ khóa tìm kiếm</string>
     <string name="save">Lưu</string>
+    <string name="select">Chọn</string>
     <string name="pronoun">Xưng hô</string>
     <string name="pronoun_mr">Anh</string>
     <string name="pronoun_ms">Chị</string>
@@ -324,6 +325,7 @@
     <string name="forgot_password_title">Quên mật mã?</string>
     <string name="forgot_password_message">Vì lý do bảo mật, bạn sẽ bị đăng xuất ra khỏi tài khoản. Để tạo mật mã mới, vui lòng đăng nhập lại và vào mục Cài đặt > Bảo mật.\n\nBạn có muốn tiếp tục?</string>
     <!-- Chính sách thành viên -->
+    <string name="all_image">Tất cả ảnh</string>
     <string name="membership_policy_title">Chính sách thành viên</string>
     <string name="membership_policy_heading">CHÍNH SÁCH THÀNH VIÊN</string>
     <string name="new_detail">Chi tiết tin tức</string>
@@ -331,6 +333,13 @@
     <string name="service_detail">Chi tiết dịch vụ</string>
     <string name="evaluates">Đánh giá</string>
     <string name="evaluate_product">Đánh giá sản phẩm</string>
+    <string name="limited_access_message">Bạn vừa cấp quyền cho %1$s chọn một vài ảnh nhất định.</string>
+    <string name="change_permission_here">Thay đổi quyền tại đây</string>
+    <string name="limited_access_instruction">
+    Để truy cập vào tất cả ảnh của bạn trong ứng dụng, hãy mở phần cài đặt thiết bị để cho phép truy cập vào toàn bộ thư viện.
+</string>
+    <string name="pick_more_photos">Chọn thêm ảnh</string>
+    <string name="change_settings">Thay đổi cài đặt</string>
 
     <!-- Chính sách điểm -->
     <string name="points_policy_title">CHÍNH SÁCH ĐIỂM</string>
@@ -356,6 +365,12 @@
     <!-- Chính sách xét hạng -->
     <string name="rank_policy_title">CHÍNH SÁCH XÉT HẠNG</string>
     <string name="rank_policy_heading">CHÍNH SÁCH XÉT HẠNG</string>
+    <string name="rank_evaluate">* Xếp hạng</string>
+    <string name="rating_excellent">Tuyệt vời</string>
+    <string name="rating_good">Tốt</string>
+    <string name="rating_average">Trung bình</string>
+
+
     <string name="rank_policy_description">Đối tượng xét hạng\nÁp dụng với thành viên Silver, Gold và Black Diamond.\n* Black Diamond là hạng Bạch Kim ở hệ thống cũ.</string>
 
     <string name="rank_evaluation_time">Thời gian xét hạng</string>

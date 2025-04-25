@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+
 import com.contrast.Contrast.extensions.formatToDDMYYYY
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
 import com.contrast.Contrast.presentation.components.image.NetworkImage
@@ -46,7 +46,7 @@ fun NewsItem(article: News, domain:String) {
       val fullUrl = domain.trimEnd('/') + article.filetxt
 
       NetworkImage(
-          imageUrl = fullUrl,
+          model = fullUrl,
           modifier = Modifier.size(80.dp).padding(5.dp)
       )
 

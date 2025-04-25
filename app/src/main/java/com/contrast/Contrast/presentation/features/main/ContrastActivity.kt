@@ -9,7 +9,10 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.image.MediaPickerScreenNew
 import com.contrast.Contrast.presentation.features.affiliate.AffiliateMainScreen
 import com.contrast.Contrast.presentation.features.main.ui.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,10 +25,22 @@ class ContrastActivity : ComponentActivity() {
 
 
         setContent {
+            val navController = rememberNavController()
+            val  navHostController= NavHostController(this)
+            MediaPickerScreenNew(
 
+                maxCount = 0,
+                allowImage = true,
+                allowVideo = true,
+                onSendClick = { uris ->
+
+                },
+                navHostController = navHostController,
+
+            )
 
 //            MainScreen()
-            AffiliateMainScreen()
+//            AffiliateMainScreen()
 
         }
     }

@@ -127,6 +127,23 @@ class EvaluateViewModel @Inject constructor(private val getCurrentUserUseCase: G
     private val _filterType = MutableStateFlow(ReviewFilterType.ALL)
     val filterType: StateFlow<ReviewFilterType> = _filterType.asStateFlow()
 
+
+
+    private val _rating = MutableStateFlow(5)
+    val rating: StateFlow<Int> = _rating
+
+    private val _noteRating = MutableStateFlow("")
+    val noteRating: StateFlow<String> = _noteRating
+
+    fun setRatingNote(star: Int) {
+        _rating.value = star
+        _noteRating.value = when (star) {
+            5 -> stringProvider.getString(R.string.rating_excellent)
+            4 -> stringProvider.getString(R.string.rating_good)
+            else -> stringProvider.getString(R.string.rating_average)
+        }
+    }
+
     fun setFilter(type: ReviewFilterType) {
         _filterType.value = type
     }

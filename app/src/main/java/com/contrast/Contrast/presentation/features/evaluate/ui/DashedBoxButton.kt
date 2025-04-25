@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
+
 @Composable
 fun DashedBoxButton(
     icon: ImageVector,
@@ -36,11 +38,11 @@ fun DashedBoxButton(
         Canvas(modifier = Modifier.matchParentSize()) {
             val dashWidth = 10f
             val dashGap = 10f
-            val cornerRadius = 16.dp.toPx()
-            val strokeWidth = 2.dp.toPx()
+            val cornerRadius = 10.dp.toPx()
+            val strokeWidth = 1.dp.toPx()
 
             val paint = Paint().apply {
-                color = Color.Gray
+                color = FFD7D7D7
                 style = PaintingStyle.Stroke
                 this.strokeWidth = strokeWidth
                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(dashWidth, dashGap))
@@ -57,7 +59,7 @@ fun DashedBoxButton(
 
             drawPath(
                 path = path,
-                color = Color.Gray,
+                color = FFD7D7D7,
                 style = Stroke(
                     width = strokeWidth,
                     pathEffect = PathEffect.dashPathEffect(floatArrayOf(dashWidth, dashGap))
@@ -73,7 +75,7 @@ fun DashedBoxButton(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(icon, contentDescription = label, modifier = Modifier.size(24.dp))
+            Icon(icon, contentDescription = label, modifier = Modifier.size(24.dp), tint = FFD7D7D7)
             Spacer(modifier = Modifier.height(4.dp))
             Text(label, style = MaterialTheme.typography.labelSmall)
         }

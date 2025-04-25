@@ -6,6 +6,10 @@ import androidx.navigation.navArgument
 
 
 sealed class NavRoutes(val route: String) {
+    // Root Graph
+    object MainRoot : NavRoutes("main")
+    object AccountRoot : NavRoutes("accountRoot")
+    object AffiliateRoot : NavRoutes("affiliateRoot")
     object Home : NavRoutes("home")
     object Category : NavRoutes("category")
     object Video : NavRoutes("video")
@@ -14,7 +18,7 @@ sealed class NavRoutes(val route: String) {
     object Membership : NavRoutes("membership")
     object Account : NavRoutes("account")
     object PersonalInfo : NavRoutes("personalInfo")
-    object Notifications : NavRoutes("notifications")
+//    object Notifications : NavRoutes("notifications")
     object NotificationDetail : NavRoutes("notificationDetail")
     object OrderDetail : NavRoutes("notificationDetail")
     object CustomerDetail : NavRoutes("customerDetail")
@@ -25,36 +29,46 @@ sealed class NavRoutes(val route: String) {
 
     // Affiliate + Product
     object AffiliateHome : NavRoutes("affiliateHome")
-    object ProductByCategory : NavRoutes("product/{categoryId}") {
-        fun createRoute(categoryId: String) = "product/$categoryId"
+    object ProductByCategory {
+        private const val baseRoute = "product"
+        const val route = "$baseRoute/{categoryId}"
+
+        fun withArgs(categoryId: String): String {
+            return "$baseRoute/${Uri.encode(categoryId)}"
+        }
+
+        val arguments = listOf(
+            navArgument("categoryId") { type = NavType.StringType }
+        )
     }
+
 
     object ProductDetail {
-        const val baseRoute = "product_detail"
-        const val fullRoute = "$baseRoute?id={id}&idUnit={idUnit}"
+        const val route = "product_detail/{id}/{idUnit}"
 
-        fun createRoute(id: String, idUnit: String): String {
-            return "$baseRoute?id=$id&idUnit=$idUnit"
+        fun withArgs(id: String, idUnit: String): String {
+            return "product_detail/${Uri.encode(id)}/${Uri.encode(idUnit)}"
         }
 
         val arguments = listOf(
-            navArgument("id") { type = NavType.StringType; defaultValue = "" },
-            navArgument("idUnit") { type = NavType.StringType; defaultValue = "" }
+            navArgument("id") { type = NavType.StringType },
+            navArgument("idUnit") { type = NavType.StringType }
         )
     }
+
     object Evaluates {
-        const val baseRoute = "product_Evaluates"
-        const val fullRoute = "$baseRoute?id={id}"
+        const val baseRoute = "product_evaluates"
+        const val route = "$baseRoute/{id}"
 
-        fun createRoute(id: String): String {
-            return "$baseRoute?id=$id"
+        fun withArgs(id: String): String {
+            return "$baseRoute/${Uri.encode(id)}"
         }
 
         val arguments = listOf(
-            navArgument("id") { type = NavType.StringType; defaultValue = "" },
-
+            navArgument("id") { type = NavType.StringType }
         )
     }
+
     object MediaPicker {
         const val route = "media_picker/{maxCount}/{allowImage}/{allowVideo}"
         val arguments = listOf(
@@ -67,35 +81,45 @@ sealed class NavRoutes(val route: String) {
             "media_picker/$maxCount/$allowImage/$allowVideo"
     }
     object AddEvaluate {
-        const val route = "add_evaluate/{id}"
-        fun withId(id: String) = "add_evaluate/$id"
-
+        const val route = "add_evaluate/{id}/{fileTxt}/{name}"
         val arguments = listOf(
-            navArgument("id") { type = NavType.StringType }
+            navArgument("id") { type = NavType.StringType },
+            navArgument("fileTxt") { type = NavType.StringType },
+            navArgument("name") { type = NavType.StringType }
         )
+        fun withArgs(id: String, fileTxt: String, name: String): String {
+            return "add_evaluate/${Uri.encode(id)}/${Uri.encode(fileTxt)}/${Uri.encode(name)}"
+        }
+
     }
 
     object AddServiceRequest {
-        const val route = "add_service_request"
+        const val route = "add_service_request/{id}/{serviceName}/{idUnit}/{discount}"
 
-        fun createRoute(
-            categoryId: String,
-            idService: String,
-            serviceName: String,
-            idUnit: String,
-            discount: String
-        ): String {
-            return "$route" +
-                    "?categoryId=$categoryId" +
-                    "&idService=$idService" +
-                    "&serviceName=${Uri.encode(serviceName)}" +
-                    "&idUnit=$idUnit" +
-                    "&discount=$discount"
+        fun withArgs(id: String, serviceName: String, idUnit: String, discount: String): String {
+            return "add_service_request/${Uri.encode(id)}/${Uri.encode(serviceName)}/${Uri.encode(idUnit)}/${Uri.encode(discount)}"
         }
+
+        val arguments = listOf(
+            navArgument("id") { type = NavType.StringType },
+            navArgument("serviceName") { type = NavType.StringType },
+            navArgument("idUnit") { type = NavType.StringType },
+            navArgument("discount") { type = NavType.StringType }
+        )
     }
 
-    // Root Graph
-    object MainRoot : NavRoutes("main")
-    object AccountRoot : NavRoutes("accountRoot")
-    object AffiliateRoot : NavRoutes("affiliateRoot")
+    object Notifications {
+        const val route = "notifications/{startDate}/{endDate}"
+
+        fun withArgs(startDate: String, endDate: String): String {
+            return "notifications/${Uri.encode(startDate)}/${Uri.encode(endDate)}"
+        }
+
+        val arguments = listOf(
+            navArgument("startDate") { type = NavType.StringType },
+            navArgument("endDate") { type = NavType.StringType }
+        )
+    }
+
+
 }

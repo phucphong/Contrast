@@ -21,8 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import coil3.compose.AsyncImage
+import com.contrast.Contrast.presentation.components.image.NetworkImage
+
 
 import com.contrast.Contrast.presentation.features.affiliate.home.ProductPriceSection
 import com.itechpro.domain.model.Product
@@ -52,13 +52,16 @@ fun ProductCardAffiliate(
     Column(
         modifier = modifier
     ) {
-        AsyncImage(
+
+
+        NetworkImage(
             model = fullUrl,
             contentDescription = null,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.FillHeight,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
+
         )
 
         Text(

@@ -21,7 +21,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 
 @Composable
-fun CustomTitleBack(
+fun CustomBackTitle(
     title: String,
     tint: Color = Color.Gray,
     textColor: Color = Color.Red,
@@ -30,8 +30,6 @@ fun CustomTitleBack(
     painter: Painter = painterResource(id = R.drawable.back),
     onBackPress: () -> Unit
 ) {
-
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,7 +45,7 @@ fun CustomTitleBack(
 
 
             modifier = Modifier
-                .align(Alignment.BottomEnd)
+                .align(Alignment.CenterStart)
                 .size(55.dp)
                 .padding(20.dp).noRippleClickableComposable { onBackPress() }
         )

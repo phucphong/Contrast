@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+
 import com.contrast.Contrast.R
 
 import com.contrast.Contrast.presentation.components.text.CustomText

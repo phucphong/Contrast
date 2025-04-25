@@ -205,6 +205,15 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     }
 
 
+    fun onItemAddEvaluatesSelected( id: String, fileTxt:String, name:String) {
+        _navigationEvent.value = ProductNavEvent.GoToAddEvaluates(
+            id = id,
+            fileTxt = fileTxt,
+            name = name,
+            )
+    }
+
+
     fun onItemNotificationSelected( ) {
         _navigationEvent.value = NotificationNavEvent.GoToNotifications(
             startDate = "",

@@ -28,8 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
-import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.image.NetworkImage
+
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.progressBar.FlashSaleSeekBar
 
@@ -55,7 +55,7 @@ fun FlashSaleItemCard(
             .width(90.dp)
             .noRippleClickableComposable { onClick() }
     ) {
-        AsyncImage(
+        NetworkImage(
             model = fullUrl,
             contentDescription = null,
             contentScale = ContentScale.FillHeight,

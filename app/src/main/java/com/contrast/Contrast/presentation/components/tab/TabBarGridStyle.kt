@@ -67,7 +67,7 @@ fun TabBarGridStyle(
                             contentAlignment = Alignment.Center
                         ) {
                             NetworkImage(
-                                imageUrl = fullUrl,
+                                model = fullUrl,
                                 modifier = Modifier.size(32.dp)
                             )
                         }

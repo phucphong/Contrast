@@ -61,7 +61,7 @@ fun ImageSliderFromUrl(
             val fullUrl = domain.trimEnd('/') + (slides[page].filetxt ?: "")
 
             NetworkImage(
-                imageUrl = fullUrl,
+                model = fullUrl,
                 modifier = Modifier.fillMaxSize()
             )
         }

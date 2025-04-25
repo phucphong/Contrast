@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -24,9 +25,8 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 fun CustomTopAppBarBackTitle(title: String,
                              titleColor: Color = Color.Black,
 
-
                              backgroundColor : Color = Color.White, fontWeight :FontWeight= FontWeight.Bold,
-                             iconTint:Color = Color.Gray,  fontSize: TextUnit =20.sp,onBackClick: () -> Unit) {
+                             iconTint:Color = Color.Gray,  fontSize: TextUnit =20.sp, painter:Painter  =painterResource(id = R.drawable.back),onBackClick: () -> Unit) {
     TopAppBar(
         title = {
 
@@ -41,7 +41,7 @@ fun CustomTopAppBarBackTitle(title: String,
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
-                    painter = painterResource(id = R.drawable.back),
+                    painter = painter,
                     contentDescription = "Back",
                     modifier = Modifier.padding(vertical = 5.dp)
                 )

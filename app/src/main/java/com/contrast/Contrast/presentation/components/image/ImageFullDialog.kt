@@ -40,7 +40,7 @@ fun ImageFullDialog(
         ) {
             // Ảnh hiển thị chính
             NetworkImage(
-                imageUrl = imageUrl,
+                model = imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Fit, // hoặc ContentScale.Inside
                 modifier = Modifier

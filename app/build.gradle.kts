@@ -127,14 +127,15 @@ dependencies {
 
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.coil.compose)
-    implementation(libs.coil.okhttp3)
+
     implementation(libs.androidyoutubeplayer)
 
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.androidx.foundation.layout)
-    implementation(libs.androidx.foundation.layout)
-
+    implementation(libs.accompanist.permissions)
+    implementation(libs.coil.video)
+    implementation(libs.lifecycle.runtime.compose)
 
 
     annotationProcessor(libs.glideCompiler)

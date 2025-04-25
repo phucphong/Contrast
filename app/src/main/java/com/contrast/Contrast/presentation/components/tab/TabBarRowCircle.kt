@@ -94,7 +94,7 @@ fun TabBarRowCircle(
                     contentAlignment = Alignment.Center
                 ) {
                     NetworkImage(
-                        imageUrl = fullUrl,
+                        model = fullUrl,
                         modifier = Modifier.size(36.dp)
                     )
                 }

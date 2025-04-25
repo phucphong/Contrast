@@ -32,9 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil3.compose.AsyncImage
+
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
+import com.contrast.Contrast.presentation.components.image.NetworkImage
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.components.webview.WebView
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
@@ -69,13 +70,14 @@ fun NewDetailScreen(ido:String,viewModel: NewsViewModel = hiltViewModel(), navCo
          .background(Color.White)
 
          .verticalScroll(rememberScrollState())){
-         AsyncImage(
+
+         NetworkImage(
              model = fullUrl,
              contentDescription = null,
+             contentScale = ContentScale.FillHeight,
              modifier = Modifier
                  .height(250.dp).padding(5.dp).fillMaxWidth()
-             ,
-             contentScale = ContentScale.Crop
+
          )
 
          Row(

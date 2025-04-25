@@ -18,6 +18,12 @@ sealed class ProductNavEvent: NavEvent {
     data class GoToProductEvaluates(
         val id: String
     ) : ProductNavEvent()
+    data class GoToAddEvaluates(
+        val id: String,
+        val fileTxt: String,
+        val name: String,
+
+    ) : ProductNavEvent()
 
 
     object None : ProductNavEvent() // trạng thái mặc định

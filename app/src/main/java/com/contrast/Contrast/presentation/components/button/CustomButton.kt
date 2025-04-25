@@ -29,6 +29,7 @@ import com.contrast.Contrast.presentation.theme.FFD91E18
 fun CustomButton(text:String, fontWeight: FontWeight =  FontWeight(600),
                  fontSize: TextUnit = 14.sp,
                  modifier: Modifier = Modifier,
+                 enabled: Boolean = true,
 
                  roundedCornerShape: Dp = 16.dp,
                  textColor: Color = Color.White,
@@ -36,6 +37,7 @@ fun CustomButton(text:String, fontWeight: FontWeight =  FontWeight(600),
 
     Button(
         onClick = onClick,
+        enabled=enabled,
         colors = ButtonDefaults.buttonColors(containerColor = containerColor),
         modifier = modifier,
         shape = RoundedCornerShape(roundedCornerShape)

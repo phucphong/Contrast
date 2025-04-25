@@ -36,7 +36,7 @@ fun AttachFileItem(
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         NetworkImage(
-            imageUrl = fullUrl,
+            model = fullUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

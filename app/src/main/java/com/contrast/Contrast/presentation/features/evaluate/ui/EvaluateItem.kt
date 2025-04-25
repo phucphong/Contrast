@@ -27,7 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil.compose.AsyncImage
+
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.image.AttachFileItem
 

@@ -83,12 +83,14 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
             val maxCount = backStackEntry.arguments?.getInt("maxCount") ?: 5
             val allowImage = backStackEntry.arguments?.getBoolean("allowImage") ?: true
             val allowVideo = backStackEntry.arguments?.getBoolean("allowVideo") ?: true
+            val compressedFiles = backStackEntry.arguments?.getBoolean("compressedFiles") ?: false
 
             MediaPickerScreenNew(
                 navController,
                 maxCount = maxCount,
                 allowImage = allowImage,
                 allowVideo = allowVideo,
+                compressedFiles = compressedFiles,
                 onSendClick = { uris ->
                     sharedViewModel.setSelectedMedia(uris)
                     navController.popBackStack()

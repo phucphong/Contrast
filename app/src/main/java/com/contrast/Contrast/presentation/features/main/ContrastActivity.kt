@@ -32,6 +32,7 @@ class ContrastActivity : ComponentActivity() {
                 maxCount = 0,
                 allowImage = true,
                 allowVideo = true,
+                compressedFiles = true,
                 onSendClick = { uris ->
 
                 },

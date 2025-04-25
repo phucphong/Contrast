@@ -8,11 +8,14 @@ import com.contrast.Contrast.extensions.ColorAdapter
 import com.contrast.Contrast.extensions.LocalDateTimeAdapter
 import com.itechpro.data.config.AppConfig
 import com.itechpro.data.repository.DownloadImageUseCaseImpl
+import com.itechpro.data.repository.MediaRepositoryImpl
+import com.itechpro.domain.repository.MediaRepository
 import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

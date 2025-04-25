@@ -68,7 +68,8 @@ foundationLayout = "1.0.1"
 coil  = "2.4.0"
 accompanist-permissions = "0.34.0"
 
-
+compressor = "3.0.1"
+ffmpeg = "6.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -179,7 +180,8 @@ moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 androidx-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions" }
 lifecycle-runtime-compose = "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
-
+compressor = { group = "id.zelory", name = "compressor", version.ref = "compressor" }
+ffmpeg = { group = "com.arthenica", name = "ffmpeg-kit-full-gpl", version.ref = "ffmpeg" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.components.image
 
 import android.app.Application
 import android.content.ContentUris
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,11 +10,13 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.itechpro.domain.usecase.media.MediaUrisUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 data class MediaItem(
@@ -26,7 +29,8 @@ data class MediaItem(
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaPickerViewModelNew @Inject constructor(
-    application: Application
+    application: Application,
+    private val mediaUrisUseCase: MediaUrisUseCase,
 ) : AndroidViewModel(application) {
 
     private val pageSize = 18
@@ -42,6 +46,15 @@ class MediaPickerViewModelNew @Inject constructor(
     private var allowImage = true
     private var allowVideo = true
 
+    private val _compressedFiles = MutableStateFlow<List<File>>(emptyList())
+    val compressedFiles: StateFlow<List<File>> = _compressedFiles
+
+    fun compressUris(context: Context, uris: List<Uri>) {
+        viewModelScope.launch {
+            val result = mediaUrisUseCase.invoke(uris)
+            _compressedFiles.value = result
+        }
+    }
     fun loadMedia(image: Boolean, video: Boolean) {
         allowImage = image
         allowVideo = video

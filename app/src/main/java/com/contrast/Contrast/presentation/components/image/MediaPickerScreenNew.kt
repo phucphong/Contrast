@@ -70,6 +70,7 @@ fun MediaPickerScreenNew(
     maxCount: Int = 5,
     allowImage: Boolean = true,
     allowVideo: Boolean = true,
+    compressedFiles: Boolean = true,
     onSendClick: (List<Uri>) -> Unit,
     viewModel: MediaPickerViewModelNew = hiltViewModel(),
 ) {
@@ -272,6 +273,7 @@ fun MediaPickerScreenNew(
                 roundedCornerShape = 10.dp,
                 onClick = {
                     onSendClick(allSelectedUris)
+
                 }
             )
         }

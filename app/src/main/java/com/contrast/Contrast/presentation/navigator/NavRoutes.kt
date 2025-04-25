@@ -70,15 +70,16 @@ sealed class NavRoutes(val route: String) {
     }
 
     object MediaPicker {
-        const val route = "media_picker/{maxCount}/{allowImage}/{allowVideo}"
+        const val route = "media_picker/{maxCount}/{allowImage}/{allowVideo}/{compressedFiles}"
         val arguments = listOf(
             navArgument("maxCount") { type = NavType.IntType },
             navArgument("allowImage") { type = NavType.BoolType },
-            navArgument("allowVideo") { type = NavType.BoolType }
+            navArgument("allowVideo") { type = NavType.BoolType },
+            navArgument("compressedFiles") { type = NavType.BoolType }
         )
 
-        fun withArgs(maxCount: Int, allowImage: Boolean, allowVideo: Boolean) =
-            "media_picker/$maxCount/$allowImage/$allowVideo"
+        fun withArgs(maxCount: Int, allowImage: Boolean, allowVideo: Boolean, compressedFiles: Boolean) =
+            "media_picker/$maxCount/$allowImage/$allowVideo/$compressedFiles"
     }
     object AddEvaluate {
         const val route = "add_evaluate/{id}/{fileTxt}/{name}"

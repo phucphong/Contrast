@@ -47,7 +47,8 @@ dependencies {
     implementation(libs.okhttp3)
     implementation(libs.retrofit2)
     implementation(libs.converter.gson)
-
+    implementation(libs.compressor)
+    implementation(libs.ffmpeg)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)

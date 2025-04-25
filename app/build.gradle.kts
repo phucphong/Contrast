@@ -136,7 +136,8 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.coil.video)
     implementation(libs.lifecycle.runtime.compose)
-
+    implementation(libs.compressor)
+    implementation(libs.ffmpeg)
 
     annotationProcessor(libs.glideCompiler)
     implementation(libs.circleimageview)

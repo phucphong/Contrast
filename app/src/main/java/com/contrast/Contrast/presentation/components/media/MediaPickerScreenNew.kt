@@ -46,6 +46,7 @@ import com.contrast.Contrast.extensions.isLimitedAccessGranted
 import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
 import com.contrast.Contrast.presentation.theme.FF0967DF
+import com.itechpro.domain.model.media.CustomMedia
 
 enum class MediaPermissionStatus { GRANTED_FULL, GRANTED_LIMITED, DENIED }
 
@@ -58,12 +59,12 @@ fun MediaPickerScreenNew(
     allowImage: Boolean = true,
     allowVideo: Boolean = true,
     compressedFiles: Boolean = true,
-    onSendClick: (List<Uri>) -> Unit,
+    onSendClick: (List<CustomMedia>) -> Unit, // 🔥 trả về List<CustomMedia>
     viewModel: MediaPickerViewModelNew = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val mediaItems by viewModel.mediaItems.collectAsState()
-    val selectedUris by viewModel.selectedUris.collectAsState()
+    val selectedMedia by viewModel.selectedMedia.collectAsState() // 🔥 lấy selectedMedia
     val gridState = rememberLazyGridState()
 
     var permissionStatus by remember { mutableStateOf(MediaPermissionStatus.DENIED) }
@@ -144,14 +145,14 @@ fun MediaPickerScreenNew(
                 modifier = Modifier.fillMaxHeight()
             ) {
                 items(mediaItems) { item ->
-                    val selected = selectedUris.contains(item.uri)
+                    val isSelected = selectedMedia.any { it.uri == item.uri }
 
                     Box(
                         modifier = Modifier
                             .aspectRatio(1f)
                             .clickable {
-                                if (maxCount > 0 && !selected && selectedUris.size >= maxCount) return@clickable
-                                viewModel.toggleSelect(item.uri)
+                                if (maxCount > 0 && !isSelected && selectedMedia.size >= maxCount) return@clickable
+                                viewModel.toggleSelect(item) // 🔥 toggle bằng MediaItem
                             }
                     ) {
                         Image(
@@ -185,7 +186,7 @@ fun MediaPickerScreenNew(
                             }
                         }
 
-                        if (selected) {
+                        if (isSelected) {
                             Box(
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
@@ -210,7 +211,7 @@ fun MediaPickerScreenNew(
                 text = buildString {
                     append(stringResource(R.string.select))
                     append(" (")
-                    append(selectedUris.size)
+                    append(selectedMedia.size)
                     if (maxCount > 0) {
                         append("/$maxCount")
                     }
@@ -219,11 +220,11 @@ fun MediaPickerScreenNew(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(15.dp),
-                enabled = selectedUris.isNotEmpty(),
-                textColor = if (selectedUris.isNotEmpty()) Color.White else Color.Black,
+                enabled = selectedMedia.isNotEmpty(),
+                textColor = if (selectedMedia.isNotEmpty()) Color.White else Color.Black,
                 containerColor = FF0967DF,
                 roundedCornerShape = 10.dp,
-                onClick = { onSendClick(selectedUris.toList()) }
+                onClick = { onSendClick(selectedMedia) } // 🔥 trả List<CustomMedia>
             )
         }
     }

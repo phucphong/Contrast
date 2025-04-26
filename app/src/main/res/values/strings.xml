@@ -467,6 +467,7 @@
     <string name="onboarding_desc_4">Contrast Coffee tự hào là người đồng hành đáng tin cậy trên con đường trở thành công dân tốt.</string>
 
     <string name="next_button">Tiếp tục</string>
+    <string name="total_file_25">Dung lượng file không được quá 25MB</string>
     <string name="finish_button">Khám phá ngay</string>
     <string name="register_title">Tạo tài khoản</string>
     <string name="phone_label">Số điện thoại *</string>

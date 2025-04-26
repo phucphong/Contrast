@@ -98,13 +98,7 @@ dependencies {
     implementation(libs.places)
     implementation(libs.jsoup)
     implementation(libs.commons.lang3)
-    implementation(libs.exoplayer)
-    implementation(libs.exoplayerNew)
-    implementation(libs.exoplayer.ui)
-    implementation(libs.exoplayer.core)
-    implementation(libs.exoplayer.dash)
-    implementation(libs.exoplayer.hls)
-    implementation(libs.exoplayer.smoothstreaming)
+
     implementation(libs.isoparser)
     implementation(libs.work.runtime)
 
@@ -123,7 +117,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.calendar)
 
-
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
 
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.coil.compose)

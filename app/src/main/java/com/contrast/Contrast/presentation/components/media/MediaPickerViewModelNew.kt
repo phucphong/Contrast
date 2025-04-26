@@ -9,6 +9,8 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.itechpro.domain.model.media.CustomMedia
+import com.itechpro.domain.model.media.MediaItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,18 +18,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class MediaItem(
-    val uri: Uri,
-    val isVideo: Boolean,
-    val durationMs: Long = 0L,
-    val dateAdded: Long = 0L
-)
+
+
 
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaPickerViewModelNew @Inject constructor(
     application: Application,
-
 ) : AndroidViewModel(application) {
 
     private val pageSize = 18
@@ -37,12 +34,11 @@ class MediaPickerViewModelNew @Inject constructor(
     private val _mediaItems = MutableStateFlow<List<MediaItem>>(emptyList())
     val mediaItems: StateFlow<List<MediaItem>> = _mediaItems
 
-    private val _selectedUris = MutableStateFlow<Set<Uri>>(emptySet())
-    val selectedUris: StateFlow<Set<Uri>> = _selectedUris
+    private val _selectedMedia = MutableStateFlow<List<CustomMedia>>(emptyList())
+    val selectedMedia: StateFlow<List<CustomMedia>> = _selectedMedia
 
     private var allowImage = true
     private var allowVideo = true
-
 
     fun loadMedia(image: Boolean, video: Boolean) {
         allowImage = image
@@ -141,12 +137,24 @@ class MediaPickerViewModelNew @Inject constructor(
         return items.sortedByDescending { it.dateAdded }
     }
 
-    fun toggleSelect(uri: Uri) {
-        _selectedUris.update {
-            if (it.contains(uri)) it - uri else it + uri
+    // ✅ Toggle chọn CustomMedia
+    fun toggleSelect(mediaItem: MediaItem) {
+        val customMedia = CustomMedia(
+            uri = mediaItem.uri,
+            isVideo = mediaItem.isVideo,
+            durationMs = mediaItem.durationMs
+        )
+
+        _selectedMedia.update { currentList ->
+            if (currentList.any { it.uri == customMedia.uri }) {
+                currentList.filterNot { it.uri == customMedia.uri }
+            } else {
+                currentList + customMedia
+            }
         }
     }
 
+    // ✅ Thêm ảnh limited từ ACTION_PICK_IMAGES
     fun addLimitedUris(uris: List<Uri>) {
         val newItems = uris.map { uri ->
             MediaItem(uri = uri, isVideo = false, dateAdded = System.currentTimeMillis())

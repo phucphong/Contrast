@@ -6,11 +6,14 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.itechpro.domain.model.CheckMediaResult
+import com.itechpro.domain.model.media.CustomMedia
 import com.itechpro.domain.repository.MediaRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
 import javax.inject.Inject
 
 class MediaUrisUseCase @Inject constructor(
@@ -34,34 +37,71 @@ class MediaUrisUseCase @Inject constructor(
      * @param uris Danh sách các Uri ảnh/video.
      * @return Tổng dung lượng các file, đơn vị bytes.
      */
-    suspend fun calculateTotalSize(uris: List<Uri>): Long = withContext(Dispatchers.IO) {
+
+    /**
+     * Tính tổng dung lượng của danh sách CustomMedia (local + remote)
+     */
+    suspend fun calculateTotalSize(context: Context, medias: List<CustomMedia>): Long = withContext(Dispatchers.IO) {
         val resolver = context.contentResolver
         var totalSize = 0L
 
-        for (uri in uris) {
+        for (media in medias) {
             try {
-                resolver.query(
-                    uri,
-                    arrayOf(android.provider.OpenableColumns.SIZE),
-                    null,
-                    null,
-                    null
-                )?.use { cursor ->
-                    val sizeIndex = cursor.getColumnIndexOrThrow(android.provider.OpenableColumns.SIZE)
-                    if (cursor.moveToFirst()) {
-                        val size = cursor.getLong(sizeIndex)
-                        totalSize += size
+                // Nếu có uri local thì lấy size từ máy
+                media.uri?.let { uri ->
+                    resolver.query(
+                        uri,
+                        arrayOf(android.provider.OpenableColumns.SIZE),
+                        null,
+                        null,
+                        null
+                    )?.use { cursor ->
+                        val sizeIndex = cursor.getColumnIndexOrThrow(android.provider.OpenableColumns.SIZE)
+                        if (cursor.moveToFirst()) {
+                            val size = cursor.getLong(sizeIndex)
+                            totalSize += size
+                        }
                     }
                 }
+
+                // Nếu có remoteUrl thì lấy size từ server
+                media.remoteUrl?.let { url ->
+                    val remoteSize = getRemoteFileSize(url)
+                    totalSize += remoteSize
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
-                // Bỏ qua file lỗi
+                // Bỏ qua nếu lỗi
             }
         }
 
         totalSize
     }
 
+    /**
+     * Lấy kích thước file từ remote server (bytes) bằng HEAD request
+     */
+    private suspend fun getRemoteFileSize(remoteUrl: String): Long = withContext(Dispatchers.IO) {
+        try {
+            val url = URL(remoteUrl)
+            val connection = (url.openConnection() as HttpURLConnection).apply {
+                requestMethod = "HEAD"
+                connectTimeout = 5000
+                readTimeout = 5000
+            }
+            connection.connect()
+
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                connection.getHeaderFieldLong("Content-Length", 0L)
+            } else {
+                0L
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            0L
+        }
+    }
 
     /**
      * Kiểm tra số lượng ảnh/video theo giới hạn cho phép.
@@ -72,7 +112,7 @@ class MediaUrisUseCase @Inject constructor(
      */
     suspend fun checkMediaLimit(
         context: Context,
-        uris: List<Uri>,
+        uris: List<Uri?>,
         type: String,
     ): CheckMediaResult {
         var validate = ""
@@ -85,12 +125,14 @@ class MediaUrisUseCase @Inject constructor(
 
         for (uri in uris) {
             try {
-                val mimeType = resolver.getType(uri).orEmpty()
+                val mimeType = uri?.let { resolver.getType(it).orEmpty() }
 
-                if (mimeType.startsWith("image")) {
-                    imageCount++
-                } else if (mimeType.startsWith("video")) {
-                    videoCount++
+                if (mimeType != null) {
+                    if (mimeType.startsWith("image")) {
+                        imageCount++
+                    } else if (mimeType.startsWith("video")) {
+                        videoCount++
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

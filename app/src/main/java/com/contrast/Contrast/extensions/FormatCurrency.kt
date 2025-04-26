@@ -31,3 +31,7 @@ fun formatDuration(ms: Long): String {
     else
         "%02d:%02d".format(minutes, seconds)
 }
+
+fun formatSizeInMB(sizeInBytes: Long): Double {
+    return sizeInBytes / 1024.0 / 1024.0
+}

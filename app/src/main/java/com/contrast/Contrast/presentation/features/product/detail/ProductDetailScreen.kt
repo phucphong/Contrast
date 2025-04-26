@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.button.CustomButton
-import com.contrast.Contrast.presentation.components.image.NetworkImage
+import com.contrast.Contrast.presentation.components.media.NetworkImage
 
 import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificationShare
 
@@ -37,8 +37,9 @@ import com.contrast.Contrast.presentation.features.product.detail.ui.ProductPric
 import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProduct
 
 import com.contrast.Contrast.presentation.features.product.viewmodel.ProductViewModel
-import com.contrast.Contrast.presentation.features.rating.RatingHeader
+
 import com.contrast.Contrast.presentation.features.review.ReviewScreen
+import com.contrast.Contrast.presentation.features.review.ui.ReviewHeader
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 
@@ -231,7 +232,7 @@ fun ProductDetailScreen(
 
 
             stickyHeader {
-                RatingHeader(
+                ReviewHeader(
                     rating = ratingScore,
                     totalReviews = totalReview,
                     onViewAllClick = {viewModel.onItemReviewsSelected(id) }

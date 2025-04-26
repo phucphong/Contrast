@@ -54,7 +54,7 @@ fun ProductDetailHeader(
 Row(  modifier = Modifier
     .fillMaxWidth()
     .background(FAFAFA)
-    .padding(horizontal = 16.dp, vertical = 4.dp).
+    .padding(horizontal = 16.dp, vertical = 10.dp).
     noRippleClickableComposable { onWriteFeedbackClick() },
     verticalAlignment = Alignment.CenterVertically) {
     Text(

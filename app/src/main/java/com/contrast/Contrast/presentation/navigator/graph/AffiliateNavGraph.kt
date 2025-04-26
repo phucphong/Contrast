@@ -8,15 +8,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.contrast.Contrast.presentation.components.image.MediaPickerScreenNew
-import com.contrast.Contrast.presentation.components.image.ReviewCreateViewModel
+import com.contrast.Contrast.presentation.components.media.MediaPickerScreenNew
+import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
 
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
-import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
-import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
-import com.contrast.Contrast.presentation.features.review.ui.ReviewsFilterScreen
+
 
 import com.contrast.Contrast.presentation.features.video.VideoScreen
 import com.contrast.Contrast.presentation.navigator.NavRoutes
@@ -32,88 +30,14 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
         composable(NavRoutes.Video.route) {
             VideoScreen(navController)
         }
-
-
-
         composable(NavRoutes.NotificationDetail.route) {
             NotificationScreen(navController)
         }
 
-        composable(
-            route = NavRoutes.ProductDetail.route,
-            arguments = NavRoutes.ProductDetail.arguments
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("id") ?: ""
-            val idUnit = backStackEntry.arguments?.getString("idUnit") ?: ""
-            ProductDetailScreen(navController, id, idUnit)
-        }
-        composable(
-            route = NavRoutes.Reviews.route,
-            arguments = NavRoutes.Reviews.arguments
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("id") ?: ""
-            ReviewsFilterScreen(navController, id)
-        }
+        productnavGraph(navController)
 
+        accountNavGraph(navController)
 
-
-        composable(
-            route = NavRoutes.AddReview.route, arguments = NavRoutes.AddReview.arguments
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("id") ?: ""
-            val fileTxt = backStackEntry.arguments?.getString("fileTxt") ?: ""
-            val name = backStackEntry.arguments?.getString("name") ?: ""
-            val sharedViewModel = hiltViewModel<ReviewCreateViewModel>()
-
-            AddReviewScreen(
-                navController,
-                id = id,
-                fileTxt = fileTxt,
-                name = name,
-                reviewCreateViewModel = sharedViewModel
-            )
-        }
-
-
-        composable(
-            route = NavRoutes.MediaPicker.route, arguments = NavRoutes.MediaPicker.arguments
-        ) { backStackEntry ->
-            val sharedViewModel = hiltViewModel<ReviewCreateViewModel>()
-            val maxCount = backStackEntry.arguments?.getInt("maxCount") ?: 5
-            val allowImage = backStackEntry.arguments?.getBoolean("allowImage") ?: true
-            val allowVideo = backStackEntry.arguments?.getBoolean("allowVideo") ?: true
-            val compressedFiles = backStackEntry.arguments?.getBoolean("compressedFiles") ?: false
-
-            MediaPickerScreenNew(
-                navController,
-                maxCount = maxCount,
-                allowImage = allowImage,
-                allowVideo = allowVideo,
-                compressedFiles = compressedFiles,
-                onSendClick = { uris ->
-                    sharedViewModel.setSelectedMedia(uris)
-                    navController.popBackStack()
-                }
-                 )
-
-        }
-
-
-
-        composable(
-            route = NavRoutes.ProductByCategory.route, arguments = NavRoutes.ProductByCategory.arguments
-        ) { backStackEntry ->
-            val categoryId = backStackEntry.arguments?.getString("categoryId") ?: ""
-            CategoryAffiliatePage(navController, categoryId)
-        }
-
-
-        composable(
-            route = NavRoutes.AddServiceRequest.route, arguments = NavRoutes.AddServiceRequest.arguments
-        ) { backStackEntry ->
-            val idService = backStackEntry.arguments?.getString("idService") ?: ""
-            CategoryAffiliatePage(navController, idService)
-        }
 
 
 

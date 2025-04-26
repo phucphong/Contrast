@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.components.image
+package com.contrast.Contrast.presentation.components.media
 
 
 import androidx.compose.foundation.clickable
@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import com.contrast.Contrast.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.extensions.splitTextToTwoLines
-import com.contrast.Contrast.presentation.components.image.NetworkImage
+import com.contrast.Contrast.presentation.components.media.NetworkImage
 
 import com.itechpro.domain.model.Category
 @Composable

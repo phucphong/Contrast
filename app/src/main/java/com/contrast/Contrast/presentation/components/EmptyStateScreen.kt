@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -40,7 +41,8 @@ fun EmptyStateScreen(
         Image(
             painter = painterResource(id = imageRes),
             contentDescription = null,
-            modifier = Modifier.size(size)
+            modifier = Modifier.size(size),
+
         )
         Text(
             text = title,

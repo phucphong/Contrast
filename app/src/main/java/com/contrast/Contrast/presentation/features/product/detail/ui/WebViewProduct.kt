@@ -20,6 +20,9 @@ fun WebViewProduct(htmlContent:String) {
 
     var isExpanded by remember { mutableStateOf(false) }
     Column {
+
+
+
         WebView(
             htmlContent = htmlContent,
             modifier = Modifier

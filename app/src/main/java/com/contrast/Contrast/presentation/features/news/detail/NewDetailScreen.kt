@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,7 +34,7 @@ import androidx.navigation.NavController
 
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
-import com.contrast.Contrast.presentation.components.image.NetworkImage
+import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 import com.contrast.Contrast.presentation.components.webview.WebView
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel

@@ -25,6 +25,8 @@ sealed class NavRoutes(val route: String) {
     object OpportunityDetail : NavRoutes("opportunityDetail")
     object ProjectDetail : NavRoutes("projectDetail")
     object TaskDetail : NavRoutes("taskDetail")
+    object ReviewRoot : NavRoutes("review_root")
+    object HomeRoot : NavRoutes("review_root")
 
 
     // Affiliate + Product

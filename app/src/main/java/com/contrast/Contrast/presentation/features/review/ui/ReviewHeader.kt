@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.rating
+package com.contrast.Contrast.presentation.features.review.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +16,6 @@ import androidx.compose.material.Text
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Star
 
 import androidx.compose.runtime.Composable
 
@@ -31,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.extensions.formatFloat
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
@@ -41,7 +38,7 @@ import com.contrast.Contrast.presentation.theme.FFF5F5F5
 import com.contrast.Contrast.presentation.theme.TealGreen
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-fun RatingHeader(
+fun ReviewHeader(
     rating: Float,
     totalReviews: Int,
     onViewAllClick: () -> Unit

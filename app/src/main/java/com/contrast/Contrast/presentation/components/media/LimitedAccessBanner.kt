@@ -1,15 +1,11 @@
-package com.contrast.Contrast.presentation.components.image
+package com.contrast.Contrast.presentation.components.media
 
 import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import android.provider.Settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PhotoLibrary
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment

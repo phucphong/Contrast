@@ -136,8 +136,8 @@ fun MembershipPolicyScreen(navController: NavController) {
             CustomText(stringResource(id = R.string.rank_policy_description))
             Spacer(modifier = Modifier.height(8.dp))
 
-            CustomText(stringResource(id = R.string.rank_evaluation_time))
-            CustomText(stringResource(id = R.string.rank_evaluation_description))
+            CustomText(stringResource(id = R.string.rank_review_time))
+            CustomText(stringResource(id = R.string.rank_review_description))
             Spacer(modifier = Modifier.height(8.dp))
 
             CustomText(stringResource(id = R.string.how_to_keep_rank))

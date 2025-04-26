@@ -2,26 +2,21 @@ package com.contrast.Contrast.presentation.features.product.ui
 
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 
 
 
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 
 
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.contrast.Contrast.presentation.components.image.NetworkImage
+import com.contrast.Contrast.presentation.components.media.NetworkImage
 
 
 import com.contrast.Contrast.presentation.features.affiliate.home.ProductPriceSection

@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.components.image
+package com.contrast.Contrast.presentation.components.media
 
 import android.net.Uri
 import androidx.compose.foundation.background

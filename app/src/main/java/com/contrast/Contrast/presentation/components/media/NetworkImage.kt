@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.components.image
+package com.contrast.Contrast.presentation.components.media
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

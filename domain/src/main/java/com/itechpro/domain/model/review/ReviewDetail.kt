@@ -14,7 +14,8 @@ data class ReviewDetail(
     var nguoidanhgia: String? = null,
     var thoigiandanhgia: String? = null,
     var anhdaidien: String? = null,
-    var diem: Double? = 0.0,
+    var diem:  Int? = 0,
+    var diemdanhgia: Int? = 0,
     var lst_dinhkem: List<AttachFile> = arrayListOf(),
 
     )

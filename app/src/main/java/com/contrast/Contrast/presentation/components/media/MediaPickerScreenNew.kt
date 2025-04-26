@@ -1,16 +1,12 @@
-package com.contrast.Contrast.presentation.components.image
+package com.contrast.Contrast.presentation.components.media
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.provider.Settings
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,11 +19,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,30 +31,23 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.formatDuration
 import com.contrast.Contrast.extensions.isLimitedAccessGranted
 import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
-import com.contrast.Contrast.presentation.theme.FF037BFF
 import com.contrast.Contrast.presentation.theme.FF0967DF
 
-enum class MediaPermissionStatus {
-    GRANTED_FULL,
-    GRANTED_LIMITED,
-    DENIED
-}
+enum class MediaPermissionStatus { GRANTED_FULL, GRANTED_LIMITED, DENIED }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
@@ -80,105 +67,39 @@ fun MediaPickerScreenNew(
     val gridState = rememberLazyGridState()
 
     var permissionStatus by remember { mutableStateOf(MediaPermissionStatus.DENIED) }
-
-    val selectedUrisLimited = remember { mutableStateListOf<Uri>() }
-
-
-
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
-
-        val hasMediaPermission = permissions.entries.any {
-            it.key == Manifest.permission.READ_MEDIA_IMAGES ||
-                    it.key == Manifest.permission.READ_MEDIA_VIDEO
-        }
-
         val granted = permissions.values.any { it } || isLimitedAccessGranted(context)
-
-        if (granted) {
-            viewModel.loadMedia(allowImage, allowVideo)
-        }
+        if (granted) viewModel.loadMedia(allowImage, allowVideo)
     }
 
-    LaunchedEffect(Unit) {
-        val hasLimited = isLimitedAccessGranted(context)
-
-        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            buildList {
-                if (allowImage) add(Manifest.permission.READ_MEDIA_IMAGES)
-                if (allowVideo) add(Manifest.permission.READ_MEDIA_VIDEO)
-            }.toTypedArray()
-        } else {
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        val allGranted = permissions.all {
-            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-
-        permissionStatus = when {
-            allGranted -> MediaPermissionStatus.GRANTED_FULL
-            hasLimited -> MediaPermissionStatus.GRANTED_LIMITED
-            else -> MediaPermissionStatus.DENIED
-        }
-
-        if (permissionStatus != MediaPermissionStatus.DENIED) {
-            viewModel.loadMedia(allowImage, allowVideo)
-        } else {
-            permissionLauncher.launch(permissions)
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            buildList {
-                if (allowImage) add(Manifest.permission.READ_MEDIA_IMAGES)
-                if (allowVideo) add(Manifest.permission.READ_MEDIA_VIDEO)
-            }.toTypedArray()
-        } else {
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        val allGranted = permissions.all {
-            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
-
-        if (allGranted) {
-            viewModel.loadMedia(allowImage, allowVideo)
-        } else {
-            permissionLauncher.launch(permissions)
-        }
-    }
     val lifecycleOwner = LocalLifecycleOwner.current
 
     DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _: LifecycleOwner, event: Lifecycle.Event ->
+        val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                val hasLimited = isLimitedAccessGranted(context)
-                val allGranted = listOf(
-                    Manifest.permission.READ_MEDIA_IMAGES,
-                    Manifest.permission.READ_MEDIA_VIDEO
-                ).all {
-                    ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-                }
-
+                val allGranted = checkAllPermissionsGranted(context, allowImage, allowVideo)
                 permissionStatus = when {
                     allGranted -> MediaPermissionStatus.GRANTED_FULL
-                    hasLimited -> MediaPermissionStatus.GRANTED_LIMITED
+                    isLimitedAccessGranted(context) -> MediaPermissionStatus.GRANTED_LIMITED
                     else -> MediaPermissionStatus.DENIED
                 }
-
                 if (permissionStatus != MediaPermissionStatus.DENIED) {
                     viewModel.loadMedia(allowImage, allowVideo)
                 }
             }
         }
-
         lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
 
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
+    LaunchedEffect(Unit) {
+        val allGranted = checkAllPermissionsGranted(context, allowImage, allowVideo)
+        if (allGranted || isLimitedAccessGranted(context)) {
+            viewModel.loadMedia(allowImage, allowVideo)
+        } else {
+            permissionLauncher.launch(getPermissionsArray(allowImage, allowVideo))
         }
     }
 
@@ -195,28 +116,26 @@ fun MediaPickerScreenNew(
 
         CustomBackTitle(
             title = stringResource(R.string.all_image),
-            tint =  Color.Black,
-            textColor =  Color.Black,
-            fontSize =  14.sp,
-
-            painter =painterResource(id = R.drawable.ic_close),
-            onBackPress = {navHostController.popBackStack() }
+            tint = Color.Black,
+            textColor = Color.Black,
+            fontSize = 14.sp,
+            painter = painterResource(id = R.drawable.ic_close),
+            onBackPress = { navHostController.popBackStack() }
         )
 
         if (permissionStatus == MediaPermissionStatus.GRANTED_LIMITED) {
-            LimitedAccessBanner(appName = "Contrast", onPickMorePhotos = {
-
-                val intent = Intent(MediaStore.ACTION_PICK_IMAGES).apply {
-                    putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, 20)
+            LimitedAccessBanner(
+                appName = "Contrast",
+                onPickMorePhotos = {
+                    val intent = Intent(MediaStore.ACTION_PICK_IMAGES).apply {
+                        putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, 20)
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
-            },)
+            )
         }
 
-
         Box(contentAlignment = Alignment.BottomCenter) {
-            val displayUris = if (mediaItems.isNotEmpty()) mediaItems.map { it.uri } else selectedUrisLimited
-
             LazyVerticalGrid(
                 state = gridState,
                 columns = GridCells.Fixed(3),
@@ -224,22 +143,47 @@ fun MediaPickerScreenNew(
                 horizontalArrangement = Arrangement.spacedBy(1.dp),
                 modifier = Modifier.fillMaxHeight()
             ) {
-                items(displayUris) { uri ->
-                    val selected = selectedUris.contains(uri)
+                items(mediaItems) { item ->
+                    val selected = selectedUris.contains(item.uri)
+
                     Box(
                         modifier = Modifier
                             .aspectRatio(1f)
                             .clickable {
                                 if (maxCount > 0 && !selected && selectedUris.size >= maxCount) return@clickable
-                                viewModel.toggleSelect(uri)
+                                viewModel.toggleSelect(item.uri)
                             }
                     ) {
                         Image(
-                            painter = rememberImagePainter(uri),
+                            painter = rememberAsyncImagePainter(item.uri),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
+
+                        if (item.isVideo) {
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.BottomStart)
+                                    .background(Color.Black.copy(alpha = 0.5f))
+                                    .padding(2.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.Videocam,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Spacer(modifier = Modifier.width(2.dp))
+                                Text(
+                                    text = formatDuration(item.durationMs),
+                                    fontSize = 10.sp,
+                                    color = Color.White,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
 
                         if (selected) {
                             Box(
@@ -262,21 +206,48 @@ fun MediaPickerScreenNew(
                 }
             }
 
-            val allSelectedUris = (selectedUris + selectedUrisLimited).distinct()
-
             CustomButton(
-                text = if(maxCount>0)"${stringResource(R.string.select)} (${allSelectedUris.size}/$maxCount)" else "${stringResource(R.string.select)} (${allSelectedUris.size})",
-                modifier = Modifier.fillMaxWidth().padding(15.dp),
-                enabled = allSelectedUris.isNotEmpty(),
-                textColor = if (allSelectedUris.isNotEmpty()) Color.White else Color.Black,
+                text = buildString {
+                    append(stringResource(R.string.select))
+                    append(" (")
+                    append(selectedUris.size)
+                    if (maxCount > 0) {
+                        append("/$maxCount")
+                    }
+                    append(")")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
+                enabled = selectedUris.isNotEmpty(),
+                textColor = if (selectedUris.isNotEmpty()) Color.White else Color.Black,
                 containerColor = FF0967DF,
                 roundedCornerShape = 10.dp,
-                onClick = {
-                    onSendClick(allSelectedUris)
-
-                }
+                onClick = { onSendClick(selectedUris.toList()) }
             )
         }
     }
 }
 
+private fun checkAllPermissionsGranted(context: android.content.Context, allowImage: Boolean, allowVideo: Boolean): Boolean {
+    val permissions = getPermissionsArray(allowImage, allowVideo)
+    return permissions.all { ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
+}
+
+private fun getPermissionsArray(allowImage: Boolean, allowVideo: Boolean): Array<String> {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        buildList {
+            if (allowImage) add(Manifest.permission.READ_MEDIA_IMAGES)
+            if (allowVideo) add(Manifest.permission.READ_MEDIA_VIDEO)
+        }.toTypedArray()
+    } else {
+        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+    }
+}
+
+private fun formatDuration(durationMs: Long): String {
+    val totalSeconds = durationMs / 1000
+    val minutes = totalSeconds / 60
+    val seconds = totalSeconds % 60
+    return "%02d:%02d".format(minutes, seconds)
+}

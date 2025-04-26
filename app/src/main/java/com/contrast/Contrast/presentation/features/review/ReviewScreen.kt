@@ -25,7 +25,7 @@ fun ReviewScreen(
     ) {
         reviews.forEach { item ->
             ReviewItem(
-                evaluate = item,
+                review = item,
                 domain = domain,
                 onDownloadClick = { fileUrl ->
                     onDownloadClick(fileUrl)

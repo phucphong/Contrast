@@ -46,23 +46,18 @@ class ReviewViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val useCase: ReviewUseCase,
     private val sellConfigUseCase: SellConfigUseCase,
-    private val promoCountdownUseCase: PromoCountdownUseCase,
     private val stringProvider: StringProvider,
     private val downloadImageUseCase: DownloadImageUseCase,
     private val mediaUrisUseCase: MediaUrisUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _allReviews = MutableStateFlow<List<ReviewDetail>>(emptyList())
-
-
-    val reviews: StateFlow<List<ReviewDetail>> = _allReviews.asStateFlow()
-
-
-
+    private val _reviews = MutableStateFlow<List<ReviewDetail>>(emptyList())
+    val reviews: StateFlow<List<ReviewDetail>> = _reviews.asStateFlow()
     private val _totalReview = MutableStateFlow(0)
     val totalReview: StateFlow<Int> = _totalReview.asStateFlow()
-
+    private val _domain = MutableStateFlow("")
+    val domain: StateFlow<String> = _domain
     private val _ratingScore = MutableStateFlow(0f)
     val ratingScore: StateFlow<Float> = _ratingScore.asStateFlow()
 
@@ -71,14 +66,83 @@ class ReviewViewModel @Inject constructor(
 
     private val _noteRating = MutableStateFlow("")
     val noteRating: StateFlow<String> = _noteRating.asStateFlow()
-    private val _filterType = MutableStateFlow(ReviewFilterType.ALL)
-    val filterType: StateFlow<ReviewFilterType> = _filterType.asStateFlow()
-    private val _selectedStar = MutableStateFlow<Int?>(null)
-    val selectedStar: StateFlow<Int?> = _selectedStar.asStateFlow()
-
 
     private val _selectedFilter = MutableStateFlow<ReviewSelectedFilter>(ReviewSelectedFilter.Type(ReviewFilterType.ALL))
     val selectedFilter: StateFlow<ReviewSelectedFilter> = _selectedFilter.asStateFlow()
+
+    private val _filteredReviews = MutableStateFlow<List<ReviewDetail>>(emptyList())
+    val filteredReviews: StateFlow<List<ReviewDetail>> = _filteredReviews.asStateFlow()
+
+
+    private val _reviewInput = MutableStateFlow(ReviewInput())
+    val reviewInput: StateFlow<ReviewInput> = _reviewInput
+
+    private val _compressedFiles = MutableStateFlow<List<File>>(emptyList())
+    val compressedFiles: StateFlow<List<File>> = _compressedFiles
+
+    private val _submitStatus = MutableStateFlow<Result<Unit>?>(null)
+    val submitStatus: StateFlow<Result<Unit>?> = _submitStatus
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _validationError = MutableStateFlow("")
+    val validationError: StateFlow<String> = _validationError
+
+    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
+    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
+    private val _filterCounts = MutableStateFlow<Map<ReviewFilterType, Int>>(emptyMap())
+    val filterCounts: StateFlow<Map<ReviewFilterType, Int>> = _filterCounts
+
+    private var currentUserInfo: CurrentUserInfo? = null
+    private var isLoaded = false
+    init {
+        // Tính filterCounts khi reviews thay đổi
+        reviews.onEach { reviewsList ->
+            _filterCounts.value = calculateFilterCounts(reviewsList)
+        }.launchIn(viewModelScope)
+
+        // Kết hợp reviews + selectedFilter để lọc + tính starCounts luôn
+        combine(reviews, selectedFilter) { reviews, filter ->
+            val filtered = applyFilter(reviews, filter)
+            filtered
+        }.onEach { filteredList ->
+            _filteredReviews.value = filteredList
+
+        }.launchIn(viewModelScope)
+
+
+    }
+    val ratingCountMap: StateFlow<Map<Int, Int>> = reviews.map { reviews ->
+        (5 downTo 1).associateWith { star ->
+            reviews.count { it.diem == star }
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        (5 downTo 1).associateWith { 0 }
+    )
+
+    private fun calculateFilterCounts(reviews: List<ReviewDetail>): Map<ReviewFilterType, Int> {
+        val all = reviews.size
+        val commentOnly = reviews.count { it.noidung?.isNotBlank() == true }
+        val imageOnly = reviews.count { it.lst_dinhkem.isNotEmpty() == true }
+
+        return mapOf(
+            ReviewFilterType.ALL to all,
+            ReviewFilterType.COMMENT_ONLY to commentOnly,
+            ReviewFilterType.IMAGE_ONLY to imageOnly
+        )
+    }
+
+
+
+    fun compressUris(uris: List<Uri>) {
+        viewModelScope.launch {
+            val result = mediaUrisUseCase.invoke(uris)
+            _compressedFiles.value = result
+        }
+    }
 
     fun setFilter(type: ReviewFilterType) {
         _selectedFilter.value = ReviewSelectedFilter.Type(type)
@@ -98,39 +162,10 @@ class ReviewViewModel @Inject constructor(
     }
 
 
-
-    val ratingCountMap = mapOf(5 to 1, 4 to 0, 3 to 0, 2 to 0, 1 to 0)
-
-    private val _reviewInput = MutableStateFlow(ReviewInput())
-    val reviewInput: StateFlow<ReviewInput> = _reviewInput
-
-    private val _compressedFiles = MutableStateFlow<List<File>>(emptyList())
-    val compressedFiles: StateFlow<List<File>> = _compressedFiles
-
-    private val _submitStatus = MutableStateFlow<Result<Unit>?>(null)
-    val submitStatus: StateFlow<Result<Unit>?> = _submitStatus
-
-    private val _domain = MutableStateFlow("")
-    val domain: StateFlow<String> = _domain
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    private val _validationError = MutableStateFlow("")
-    val validationError: StateFlow<String> = _validationError
-
-    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
-    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
-
-    private var currentUserInfo: CurrentUserInfo? = null
-    private var isLoaded = false
-
-    fun compressUris(context: Context, uris: List<Uri>) {
-        viewModelScope.launch {
-            val result = mediaUrisUseCase.invoke(uris)
-            _compressedFiles.value = result
-        }
+    private fun applyFilter(reviews: List<ReviewDetail>, filter: ReviewSelectedFilter): List<ReviewDetail> {
+        return useCase.filter(reviews, filter)
     }
+
 
     fun submitReview(productId: String) {
         viewModelScope.launch {
@@ -144,6 +179,7 @@ class ReviewViewModel @Inject constructor(
             }
         }
     }
+
 
     fun loadReview(idProduct: String, count: String) {
         if (isLoaded) return
@@ -170,7 +206,7 @@ class ReviewViewModel @Inject constructor(
             useCase.getReviews(user.isOfflineMode, idProduct, count, user.token).collect { result ->
                 when (result) {
                     is NetworkResponse.Success -> {
-                        _allReviews.value = result.data.reviewList
+                        _reviews.value = result.data.reviewList
                         _totalReview.value = result.data.totalReview
                         _ratingScore.value = result.data.ratingScore
                     }

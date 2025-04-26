@@ -4,9 +4,12 @@ package com.itechpro.domain.usecase.review
 
 
 
+import com.itechpro.domain.enumApp.ReviewFilterType
+import com.itechpro.domain.enumApp.ReviewSelectedFilter
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.review.ReviewAttach
+import com.itechpro.domain.model.review.ReviewDetail
 import com.itechpro.domain.model.review.ReviewResult
 
 import com.itechpro.domain.repository.ReviewRepository
@@ -56,7 +59,24 @@ class ReviewUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-
+    fun filter(reviews: List<ReviewDetail>, filter: ReviewSelectedFilter): List<ReviewDetail> {
+        return when (filter) {
+            is ReviewSelectedFilter.Type -> {
+                when (filter.type) {
+                    ReviewFilterType.ALL -> reviews
+                    ReviewFilterType.COMMENT_ONLY -> reviews.filter { it.noidung?.isNotBlank() == true }
+                    ReviewFilterType.IMAGE_ONLY -> reviews.filter { it.lst_dinhkem.isNotEmpty() }
+                    ReviewFilterType.STAR_5 -> reviews.filter { it.diem == 5 }
+                    ReviewFilterType.STAR_4 -> reviews.filter { it.diem == 4 }
+                    ReviewFilterType.STAR_3 -> reviews.filter { it.diem == 3 }
+                    ReviewFilterType.STAR_2 -> reviews.filter { it.diem == 2 }
+                    ReviewFilterType.STAR_1 -> reviews.filter { it.diem == 1 }
+                }
+            }
+            is ReviewSelectedFilter.Star -> reviews.filter { it.diem == filter.star }
+            ReviewSelectedFilter.None -> emptyList()
+        }
+    }
 
     fun addEditLike(
         url: String,

@@ -19,10 +19,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.navigator.AppNavHost
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AffiliateMainScreen() {
+fun AffiliateMainScreen(
+    idProductFromShare: String? = null,
+    idUnitFromShare: String? = null
+) {
     val navController = rememberNavController()
     var selectedIndex by remember { mutableIntStateOf(0) }
 
@@ -35,8 +37,8 @@ fun AffiliateMainScreen() {
             BottomNavigationBar(selectedIndex) { index ->
                 selectedIndex = index
                 when (index) {
-                    0 -> navController.navigate("home")
-                    1 -> navController.navigate("location")
+                    0 -> navController.navigate("affiliateHome")
+                    1 -> navController.navigate("category")
                     2 -> navController.navigate("storeList")
                     3 -> navController.navigate("membership")
                     4 -> navController.navigate("account")
@@ -45,7 +47,11 @@ fun AffiliateMainScreen() {
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            AppNavHost(navController = navController)
+            AppNavHost(
+                navController = navController,
+                idProductFromShare = idProductFromShare,
+                idUnitFromShare = idUnitFromShare
+            )
         }
     }
 }
@@ -54,10 +60,10 @@ fun AffiliateMainScreen() {
 fun BottomNavigationBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
     val items = listOf(
         BottomNavItem("Trang chủ", R.drawable.ic_home, true),
-        BottomNavItem("Địa điểm", R.drawable.ic_location, true),
-        BottomNavItem("Cửa hàng", R.drawable.ic_store, true),
-        BottomNavItem("Membership", R.drawable.ic_membership, true),
-        BottomNavItem("Contrast Box", R.drawable.contrast_box, true),
+        BottomNavItem("Danh mục", R.drawable.ic_location, true),
+        BottomNavItem("Video", R.drawable.ic_store, true),
+        BottomNavItem("Tin tức", R.drawable.ic_membership, true),
+        BottomNavItem("Toi", R.drawable.contrast_box, true),
     )
 
     NavigationBar(

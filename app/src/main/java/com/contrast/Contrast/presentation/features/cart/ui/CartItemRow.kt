@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -45,33 +47,50 @@ fun CartItemRow(
     itemName: String,
     price: String,
     imageResId: Int,
-    isChecked: Boolean,
-    quantity: Int,
-    onCheckedChange: (Boolean) -> Unit,
-    onQuantityChange: (Int) -> Unit
+    isChecked: Boolean = true,
+    quantity: Int = 1,
+    onCheckedChange: (Boolean) -> Unit = {},
+    onQuantityChange: (Int) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
-            .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp)),
+            .wrapContentHeight()
+            .background(Color.White)
+            .background(Color.White, shape = RoundedCornerShape(8.dp))
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CheckBoxColor(checked = isChecked, onCheckedChange = onCheckedChange)
+        CheckBoxColor(checked = isChecked,padding=1.dp, onCheckedChange = onCheckedChange)
 
-        Image(
+        Spacer(modifier = Modifier.width(8.dp))
+
+   Image(
             painter = painterResource(id = imageResId),
             contentDescription = null,
             modifier = Modifier
-                .height(60.dp)
-                .width(60.dp)
-                .padding(8.dp)
+                .width(72.dp)
+                .height(72.dp)
+                .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
         )
 
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = itemName, fontWeight = FontWeight.SemiBold)
-            Text(text = price, fontWeight = FontWeight.Bold)
-            QuantitySelector(quantity = quantity, onQuantityChange = onQuantityChange)
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Column(
+            modifier = Modifier.weight(1f)
+
+        ) {
+            Text(text = itemName, fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = price, fontWeight = FontWeight.Medium, fontSize = 14.sp)
+           Row(Modifier.padding(10.dp)) { Box (Modifier.weight(1f))
+               QuantitySelectorCart(
+
+                   quantity = quantity,
+               onQuantityChange = onQuantityChange
+               )}
         }
+
+
     }
 }

@@ -1,5 +1,8 @@
-package com.contrast.Contrast.presentation.features.product.detail.ui
+package com.contrast.Contrast.presentation.features.cart.ui
+
+
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,39 +28,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.theme.FFF5F5F5
 import com.contrast.Contrast.presentation.theme.FFFF9800
+import com.contrast.Contrast.presentation.theme.TealGreen
 
 @Preview(showBackground = true)
 @Composable
-fun QuantitySelector(
-
-    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+fun QuantitySelectorCart(
     quantity: Int,
-    onQuantityChange: (Int) -> Unit
+    onQuantityChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White, shape = RoundedCornerShape(6.dp))
-            .padding(vertical = 10.dp)
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp)).border(1.dp,TealGreen,RoundedCornerShape(8.dp))
+            .background(Color.White)
     ) {
-        Text(
-            text = stringResource(R.string.quantity),
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(start = 10.dp)
-        )
-
-        Spacer(modifier = Modifier.width(16.dp))
-
         // Nút trừ
         Box(
             modifier = Modifier
-                .width(28.dp)
-                .height(28.dp)
-                .padding(2.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(Color(0xFFF5F5F5))
+                .width(32.dp)
+                .height(32.dp).background(FFF5F5F5)
                 .clickable(enabled = quantity > 1) {
                     onQuantityChange(quantity - 1)
                 },
@@ -69,8 +61,8 @@ fun QuantitySelector(
         // Số lượng
         Box(
             modifier = Modifier
-                .width(35.dp)
-                .padding(horizontal = 8.dp),
+                .width(40.dp)
+                .height(32.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -83,11 +75,8 @@ fun QuantitySelector(
         // Nút cộng
         Box(
             modifier = Modifier
-                .width(28.dp)
-                .height(28.dp)
-                .padding(2.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(Color(0xFFF5F5F5))
+                .width(32.dp)
+                .height(32.dp).background(FFF5F5F5)
                 .clickable {
                     onQuantityChange(quantity + 1)
                 },

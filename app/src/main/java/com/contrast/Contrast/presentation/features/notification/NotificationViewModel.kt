@@ -87,7 +87,6 @@ class NotificationViewModel @Inject constructor(
         _navigationEvent.value = ProductNavEvent.GoToProductsCategory(category.id.orEmpty())
     }
 
-
     fun onNotificationItemClick(obj: Notification) {
         val navEvent = NotificationEventMapper.getEventFromNotification(obj)
         _navigationEvent.value = navEvent

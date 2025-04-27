@@ -20,6 +20,7 @@ import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 
@@ -191,19 +192,12 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
 
 
     }
-    fun onItemCart( category: Product) {
+    fun onItemCarts( ) {
 
-        // val  objCart = Product()
-        //        objCart.id=obj.id
-        //        objCart.iddonvichuan=obj.iddonvichuan
-        //        objCart.soluong=obj.countNumber
-        //        objCart.khuyenmai = obj.discount
-        //        objCart.sotien = obj.price
-        //        objCart.dongia = obj.price
-        //        addCart(objCart)
+        _navigationEvent.value = CartNavEvent.GoToCats
 
-       // callApAddCart
-
+    }
+    fun onItemAddCart( ) {
 
 
     }

@@ -11,12 +11,14 @@ sealed class NavRoutes(val route: String) {
     object AccountRoot : NavRoutes("accountRoot")
     object AffiliateRoot : NavRoutes("affiliateRoot")
     object Home : NavRoutes("home")
-    object Category : NavRoutes("category")
+    object category : NavRoutes("category")
     object Video : NavRoutes("video")
     object Location : NavRoutes("location")
     object StoreList : NavRoutes("storeList")
     object Membership : NavRoutes("membership")
     object Account : NavRoutes("account")
+    object Carts : NavRoutes("carts")
+
     object PersonalInfo : NavRoutes("personalInfo")
 //    object Notifications : NavRoutes("notifications")
     object NotificationDetail : NavRoutes("notificationDetail")
@@ -123,6 +125,7 @@ sealed class NavRoutes(val route: String) {
             navArgument("endDate") { type = NavType.StringType }
         )
     }
+
 
 
 }

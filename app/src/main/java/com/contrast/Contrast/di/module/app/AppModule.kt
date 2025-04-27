@@ -13,6 +13,7 @@ import com.itechpro.domain.repository.MediaRepository
 import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
+import com.itechpro.domain.usecase.share.HandleShareIntentUseCase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Binds
@@ -144,6 +145,10 @@ object AppModule {
         context: Context
     ): DownloadImageUseCase {
         return DownloadImageUseCaseImpl(context)
+    }
+    @Provides
+    fun provideHandleShareIntentUseCase(): HandleShareIntentUseCase {
+        return HandleShareIntentUseCase()
     }
 
 }

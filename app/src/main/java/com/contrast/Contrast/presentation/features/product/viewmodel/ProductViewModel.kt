@@ -19,6 +19,7 @@ import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.PromoUiData
+import com.itechpro.domain.model.ShareOption
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.product.ProductDetail
@@ -29,7 +30,16 @@ import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
 import com.itechpro.domain.usecase.product.ProductUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
-
+import dagger.hilt.android.internal.Contexts.getApplication
+import android.app.Application
+import android.content.Intent
+import android.net.Uri
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
@@ -72,6 +82,10 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
 
     private val _validationError = MutableStateFlow<String>("")
     val validationError: StateFlow<String> = _validationError
+
+    private val _employeeId = MutableStateFlow<String>("")
+    val employeeId: StateFlow<String> = _employeeId
+    
     private val _domain = MutableStateFlow<String>("")
     val domain: StateFlow<String> = _domain
     private val _displayProduct = MutableStateFlow<String>("")
@@ -104,6 +118,8 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
         get() = _promoUiDataMapInfo
 
 
+    private val _shareIntentChannel = Channel<Intent>()
+    val shareIntentFlow = _shareIntentChannel.receiveAsFlow()
 
     private var countdownJob: Job? = null
     private val _pagedProducts = MutableStateFlow<List<Product>>(emptyList())
@@ -112,7 +128,17 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     private var allProducts: List<Product> = emptyList()
     private var currentPage = 0
     private val pageSize = 10
-
+    fun share(option: ShareOption, shareUrl: String) {
+        viewModelScope.launch {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareUrl)
+                option.packageName?.let { setPackage(it) } // Chia sẻ thẳng vào app nếu biết package
+            }
+            val chooser = Intent.createChooser(intent, "Chia sẻ với:")
+            _shareIntentChannel.send(chooser)
+        }
+    }
 
     fun setInitialProducts(products: List<Product>) {
         allProducts = products
@@ -221,20 +247,9 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
 
 
     }
-    fun onItemCart( category: Product) {
+    fun onItemCarts( ) {
 
-        // val  objCart = Product()
-        //        objCart.id=obj.id
-        //        objCart.iddonvichuan=obj.iddonvichuan
-        //        objCart.soluong=obj.countNumber
-        //        objCart.khuyenmai = obj.discount
-        //        objCart.sotien = obj.price
-        //        objCart.dongia = obj.price
-        //        addCart(objCart)
-
-        // callApAddCart
-
-
+        _navigationEvent.value = CartNavEvent.GoToCats
 
     }
     fun onAddServiceRequestSelected( category: Product) {
@@ -268,6 +283,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
                 _displayProduct.value = user.displayProduct.orEmpty()
                 _displayService.value = user.displayService.orEmpty()
                 _displayPriority.value = user.displayPriority.orEmpty()
+                _employeeId.value = user.employeeId.orEmpty()
 
                 val result = sellConfigUseCase.generateConfig(
                     user.displayProduct.orEmpty(),

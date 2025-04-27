@@ -13,10 +13,14 @@ import com.contrast.Contrast.presentation.navigator.graph.reviewNavGraph
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppNavHost(navController: NavHostController) {
+fun AppNavHost(navController: NavHostController,
+               idProductFromShare: String? = null,
+               idUnitFromShare: String? = null) {
 
     NavHost(navController, startDestination = NavRoutes.AffiliateRoot.route) {
-        affiliateNavGraph(navController)
+        affiliateNavGraph(navController,
+            idProductFromShare = idProductFromShare,
+            idUnitFromShare = idUnitFromShare)
         contrastNavGraph(navController)
         reviewNavGraph(navController)// dùng chung viewModel để lấy dữ liệu ảnh
 

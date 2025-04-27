@@ -9,7 +9,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
+import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
 
 import com.contrast.Contrast.presentation.navigator.NavRoutes
@@ -21,6 +23,7 @@ fun NavGraphBuilder.productnavGraph(navController: NavHostController) {
     ) {
 
 
+
         composable(
             route = NavRoutes.ProductDetail.route,
             arguments = NavRoutes.ProductDetail.arguments
@@ -29,6 +32,7 @@ fun NavGraphBuilder.productnavGraph(navController: NavHostController) {
             val idUnit = backStackEntry.arguments?.getString("idUnit") ?: ""
             ProductDetailScreen(navController, id, idUnit)
         }
+
 
 
 

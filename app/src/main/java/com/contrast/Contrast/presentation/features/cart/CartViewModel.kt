@@ -3,12 +3,15 @@ package com.contrast.Contrast.presentation.features.cart
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigator
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.cart.CartUseCase
@@ -51,8 +54,8 @@ class CartViewModel @Inject constructor(
     private val _totalNotificationItems = MutableStateFlow(0)
     val totalNotificationItems: StateFlow<Int> = _totalNotificationItems
 
-    private val _navigationEvent = MutableStateFlow<ProductNavEvent>(ProductNavEvent.None)
-    val navigationEvent: StateFlow<ProductNavEvent> = _navigationEvent
+    private val _navigationEvent = MutableStateFlow<NavEvent>(CartNavEvent.None)
+    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
 
     private var currentUserInfo: CurrentUserInfo? = null
 
@@ -74,6 +77,14 @@ class CartViewModel @Inject constructor(
     fun onTabSelected(index: Int, category: Category) {
         _navigationEvent.value = ProductNavEvent.GoToProductsCategory(category.id.orEmpty())
     }
+
+
+    fun onItemAddCart( ) {
+
+
+
+    }
+
     fun getCarts() {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {

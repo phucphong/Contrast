@@ -12,6 +12,7 @@ import com.contrast.Contrast.presentation.components.media.MediaPickerScreenNew
 import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
+import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
 
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 
@@ -20,18 +21,23 @@ import com.contrast.Contrast.presentation.features.video.VideoScreen
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController,
+                                      idProductFromShare: String? = null,
+                                      idUnitFromShare: String? = null) {
     navigation(
         startDestination = NavRoutes.AffiliateHome.route, route = NavRoutes.AffiliateRoot.route
     ) {
         composable(NavRoutes.AffiliateHome.route) {
-            HomePage(navController)
+            HomePage(idProductFromShare, idUnitFromShare,navController)
         }
         composable(NavRoutes.Video.route) {
             VideoScreen(navController)
         }
-        composable(NavRoutes.NotificationDetail.route) {
+        composable(NavRoutes.Notifications.route) {
             NotificationScreen(navController)
+        }
+        composable(NavRoutes.Carts.route) {
+            CartScreen(navController)
         }
 
         productnavGraph(navController)

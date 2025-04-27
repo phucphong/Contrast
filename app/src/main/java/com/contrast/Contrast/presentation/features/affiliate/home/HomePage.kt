@@ -31,6 +31,7 @@ import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.contrast.Contrast.utils.NetworkMonitor
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import kotlinx.coroutines.delay
@@ -42,6 +43,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomePage(
+    idProductFromShare: String? = null,
+    idUnitFromShare: String? = null,
     navHostController: NavHostController,
     viewModel: HomeAffiliateViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
@@ -72,7 +75,13 @@ fun HomePage(
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         viewModel.loadHomeData()
     }
+    LaunchedEffect(idProductFromShare, idUnitFromShare) {
+        if (!idProductFromShare.isNullOrEmpty() && !idUnitFromShare.isNullOrEmpty()) {
+            delay(500)
+            navHostController.navigate("product_detail/$idProductFromShare/$idUnitFromShare")
 
+        }
+    }
     LaunchedEffect(listState) {
         snapshotFlow {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
@@ -99,6 +108,10 @@ fun HomePage(
                         endDate = event.endDate
                     )
                 )
+                viewModel.resetNavigation()
+            }
+            is CartNavEvent.GoToCats -> {
+                navHostController.navigate(NavRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
             is ProductNavEvent.GoToProductsCategory -> {
@@ -148,7 +161,7 @@ fun HomePage(
             onTextChanged = { searchText = it },
             onSearchClick = { },
             onNotificationClick = { viewModel.onItemNotificationSelected() },
-            onCartClick = { }
+            onCartClick = { viewModel.onItemCarts() }
         )
 
         LazyColumn(
@@ -228,7 +241,7 @@ fun HomePage(
                     rowProducts = row,
                     promoUiDataMap = promoUiDataMap,
                     onItemClick = { viewModel.onItemProductSelected(it) },
-                    onClickCart = { viewModel.onItemCart(it) },
+                    onClickCart = { cartViewModel.onItemAddCart() },
                     onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
                 )
             }

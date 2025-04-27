@@ -11,9 +11,13 @@ import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,6 +39,7 @@ import com.contrast.Contrast.presentation.features.notification.NotificationView
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductDetailHeader
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductPriceDetailSection
 import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProduct
+import com.contrast.Contrast.presentation.features.product.share.ShareBottomSheet
 
 import com.contrast.Contrast.presentation.features.product.viewmodel.ProductViewModel
 
@@ -46,12 +51,15 @@ import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF9800
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.contrast.Contrast.utils.NetworkMonitor
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
 
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -74,6 +82,7 @@ fun ProductDetailScreen(
     val ratingScore by reviewViewModel.ratingScore.collectAsState()
     val reviews by reviewViewModel.reviews.collectAsState()
     val domain by viewModel.domain.collectAsState()
+    val employeeId by viewModel.employeeId.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
@@ -83,6 +92,7 @@ fun ProductDetailScreen(
     var searchText by remember { mutableStateOf("") }
     var type by remember { mutableStateOf("huuhinh") }
     var bookService by remember { mutableStateOf(false) }
+    var shareClickDialog by remember { mutableStateOf(false) }
 
     var selectedCategory by remember { mutableStateOf(0) }
 
@@ -90,7 +100,22 @@ fun ProductDetailScreen(
 
     val listState = rememberLazyListState()
 
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+//
+//    LaunchedEffect(Unit) {
+//        viewModel.shareIntentFlow.collectLatest { intent ->
+//            context.startActivity(intent)
+//        }
+//    }
+
     LaunchedEffect(products) { viewModel.setInitialProducts(products) }
+
+
 
     LaunchedEffect(Unit) {
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
@@ -126,7 +151,10 @@ fun ProductDetailScreen(
                 )
                 viewModel.resetNavigation()
             }
-
+            is CartNavEvent.GoToCats -> {
+                navHostController.navigate(NavRoutes.Carts.route)
+                viewModel.resetNavigation()
+            }
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
                     NavRoutes.ProductDetail.withArgs(
@@ -176,6 +204,33 @@ fun ProductDetailScreen(
         }
     }
 
+    if(shareClickDialog){
+        ModalBottomSheetLayout(
+            sheetState = sheetState,
+            sheetContent = {
+                ShareBottomSheet(
+                    onDismissRequest = {
+                        coroutineScope.launch { sheetState.hide() }
+                    },
+                    onShareClick = { option ->
+
+                        val baseUrl = "$domain/sharelink.html?"
+                        val queryParams = "id=$id&iddonvi=$idUnit&idngt=$employeeId&domain=$domain"
+                        val shareLink = "$baseUrl$queryParams"
+                        coroutineScope.launch { sheetState.hide() }
+                        viewModel.share(
+                            option = option,
+                            shareUrl = shareLink
+                        )
+
+                    }
+                )
+            }
+        ) {
+
+        }
+    }
+
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -188,7 +243,7 @@ fun ProductDetailScreen(
 
             totalCartItems = totalCartItems,
             onShareClick = { viewModel.onItemNotificationSelected() },
-            onCartClick = { },
+            onCartClick = { viewModel.onItemCarts()},
                     onBackStack = { navHostController.popBackStack()}
         )
 

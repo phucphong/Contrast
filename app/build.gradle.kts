@@ -133,6 +133,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.compressor)
     implementation(libs.ffmpeg)
+    implementation(libs.androidx.foundation.layout)
 
     annotationProcessor(libs.glideCompiler)
     implementation(libs.circleimageview)

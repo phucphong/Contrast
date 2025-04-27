@@ -1,4 +1,6 @@
-package com.contrast.Contrast.presentation.features.main
+package com.contrast.Contrast.presentation.features.affiliate
+
+
 
 import android.os.Build
 import android.os.Bundle
@@ -11,15 +13,17 @@ import com.contrast.Contrast.presentation.features.main.ui.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ContrastActivity : ComponentActivity() {
+class AffiliateActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val idProduct = intent.getStringExtra("id")
+        val idUnit = intent.getStringExtra("idUnit")
 
 
         setContent {
 
-            MainScreen()
+            AffiliateMainScreen()
 
         }
     }

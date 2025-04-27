@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -24,11 +24,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourApp"
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.features.affiliate.AffiliateActivity"
+            android:exported="true" />
         <activity
             android:name=".presentation.components.youtube.FullScreenYoutubeActivity"
             android:exported="false" />
@@ -62,13 +64,11 @@
         <activity
             android:name=".presentation.features.payment.amountInput.ui.AmountInputActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.features.changepassword.ChangePasswordActivity"
             android:exported="false" />
-        <activity
-            android:name=".presentation.features.account.personalInfo.PersonalInfoActivity"
-            android:exported="false" />
+
+
         <activity
             android:name=".presentation.features.membership.policy.MembershipPolicyActivity"
             android:exported="false" />
@@ -94,9 +94,38 @@
             android:name=".presentation.features.main.ContrastActivity"
             android:exported="true" />
         <activity
-            android:name=".presentation.features.splas.SplashActivity"
+            android:name=".presentation.features.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.YourApp">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <!-- Include one or more domains that should be verified. -->
+                <data android:host="spa.ezmax.vn" />
+                <data android:host="mhg.ezmax.vn" />
+                <data android:host="hoavy.ezmax.vn" />
+                <data android:pathPrefix="/sanpham" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sanpham"
+                    android:scheme="ezmax" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

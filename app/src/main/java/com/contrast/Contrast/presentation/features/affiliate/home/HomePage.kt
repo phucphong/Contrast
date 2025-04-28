@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 fun HomePage(
     idProductFromShare: String? = null,
     idUnitFromShare: String? = null,
+    introducerId: String? = null,
     navHostController: NavHostController,
     viewModel: HomeAffiliateViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
@@ -56,6 +57,7 @@ fun HomePage(
     val tabs by viewModel.tabs.collectAsState()
     val products by viewModel.products.collectAsState()
     val pagedProducts by viewModel.pagedProducts.collectAsState()
+
     val domain by viewModel.domain.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
@@ -78,7 +80,7 @@ fun HomePage(
     LaunchedEffect(idProductFromShare, idUnitFromShare) {
         if (!idProductFromShare.isNullOrEmpty() && !idUnitFromShare.isNullOrEmpty()) {
             delay(500)
-            navHostController.navigate("product_detail/$idProductFromShare/$idUnitFromShare")
+            navHostController.navigate("product_detail/$idProductFromShare/$idUnitFromShare/$introducerId")
 
         }
     }
@@ -128,6 +130,7 @@ fun HomePage(
                     NavRoutes.ProductDetail.withArgs(
                         id = event.id,
                         idUnit = event.idUnit,
+                        introducerId = event.introducerId,
 
                     )
                 )
@@ -241,7 +244,7 @@ fun HomePage(
                     rowProducts = row,
                     promoUiDataMap = promoUiDataMap,
                     onItemClick = { viewModel.onItemProductSelected(it) },
-                    onClickCart = { cartViewModel.onItemAddCart() },
+                    onClickCart = { cartViewModel.onItemAddCart(it)},
                     onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
                 )
             }

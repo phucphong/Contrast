@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.product.detail.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -45,9 +46,12 @@ fun ProductPriceDetailSection(
     discountPercent: Double = 0.0,
     isFlashSale: Boolean = false,
     remainingTime: String = "",
-    quantity: Int,
-    onQuantityChange: (Int) -> Unit
+    quantity: Double,
+    increaseQuantity: () -> Unit,
+    decreaseQuantity: () -> Unit,
 ) {
+
+    Log.e("quantity",quantity.toString())
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -143,13 +147,16 @@ fun ProductPriceDetailSection(
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-            QuantitySelector(quantity = quantity, onQuantityChange = onQuantityChange)
+            QuantitySelector(quantity = quantity,
+                decreaseQuantity = decreaseQuantity,
+                increaseQuantity = increaseQuantity)
             }
 
             // Chọn số lượng
 
         }else{
-            QuantitySelector(quantity = quantity, onQuantityChange = onQuantityChange)
+            QuantitySelector(quantity = quantity,   decreaseQuantity = decreaseQuantity,
+                increaseQuantity = increaseQuantity)
         }
     }
 }

@@ -32,8 +32,9 @@ import com.contrast.Contrast.presentation.theme.FFFF9800
 fun QuantitySelector(
 
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
-    quantity: Int,
-    onQuantityChange: (Int) -> Unit
+    quantity: Double,
+    increaseQuantity: () -> Unit,
+    decreaseQuantity: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -58,8 +59,8 @@ fun QuantitySelector(
                 .padding(2.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color(0xFFF5F5F5))
-                .clickable(enabled = quantity > 1) {
-                    onQuantityChange(quantity - 1)
+                .clickable(enabled = quantity >= 1) {
+                    decreaseQuantity()
                 },
             contentAlignment = Alignment.Center
         ) {
@@ -74,7 +75,7 @@ fun QuantitySelector(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = quantity.toString(),
+                text = quantity.toString().replace(".0",""),
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center
             )
@@ -89,7 +90,7 @@ fun QuantitySelector(
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color(0xFFF5F5F5))
                 .clickable {
-                    onQuantityChange(quantity + 1)
+                    increaseQuantity()
                 },
             contentAlignment = Alignment.Center
         ) {

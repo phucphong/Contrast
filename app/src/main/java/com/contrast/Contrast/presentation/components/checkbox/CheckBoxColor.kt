@@ -20,13 +20,14 @@ import com.contrast.Contrast.presentation.theme.FF404040
 @Composable
 fun CheckBoxColor(
     checked: Boolean,
+    size: Dp =24.dp,
     padding: Dp =10.dp,
     background: Color=Color.Black,
     onCheckedChange: (Boolean) -> Unit
 ) {
     Box(
         modifier = Modifier.padding(padding)
-            .size(24.dp)
+            .size(size)
             .then(
                 if (checked) Modifier.background(background, RoundedCornerShape(4.dp))
                 else Modifier

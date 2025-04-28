@@ -48,15 +48,16 @@ sealed class NavRoutes(val route: String) {
 
 
     object ProductDetail {
-        const val route = "product_detail/{id}/{idUnit}"
+        const val route = "product_detail/{id}/{idUnit}/{introducerId}"
 
-        fun withArgs(id: String, idUnit: String): String {
-            return "product_detail/${Uri.encode(id)}/${Uri.encode(idUnit)}"
+        fun withArgs(id: String, idUnit: String, introducerId: String): String {
+            return "product_detail/${Uri.encode(id)}/${Uri.encode(idUnit)}/${Uri.encode(introducerId)}"
         }
 
         val arguments = listOf(
             navArgument("id") { type = NavType.StringType },
-            navArgument("idUnit") { type = NavType.StringType }
+            navArgument("idUnit") { type = NavType.StringType },
+            navArgument("introducerId") { type = NavType.StringType },
         )
     }
 

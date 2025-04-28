@@ -131,6 +131,28 @@ class CartUseCase @Inject constructor(
 
 
 
+    fun idsDeleteCart(carts: List<CartItem>): String {
+        val idsDelete = buildString {
+            carts.forEach { item ->
+                val idProduct = item.idsp.orEmpty()
+                val idUnit = "-" + item.iddonvi.orEmpty()
+                val ids = idProduct.replace(".0", "") + idUnit
+                if (!this.contains(ids)) {
+                    if (this.isNotEmpty()) append(",")
+                    append(ids)
+                }
+            }
+        }
+        return idsDelete
+    }
+
+    fun onCheckedChangeAll(carts: List<CartItem>, isChecked: Boolean): List<CartItem> {
+        return carts.map { item ->
+            item.copy(isChecked = isChecked)
+        }
+    }
+
+
 
 
 

@@ -17,6 +17,7 @@ val FFAFAFAF = Color(0xFFAFAFAF) // Xám vừa
 val FF888888 = Color(0xFF888888) // Xám trung bình
 val FF9E9E9E = Color(0xFF9E9E9E) // Xám đậm
 val FF333333 = Color(0xFF333333) // Xám rất đậm
+val FFFAFAFA = Color(0xFFFAFAFA) // Xám nhạt nn giỏ hàng
 val FF7C7C7C = Color(0xFF7C7C7C) // Xám tối
 val FF2D2D2D = Color(0xFF2D2D2D) // Xám đen
 val FF151515 = Color(0xFF151515) // Gần như đen

@@ -38,6 +38,7 @@ import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
 import com.contrast.Contrast.presentation.components.tab.TabBarRowCircle
 import com.contrast.Contrast.presentation.components.tab.TabBarRowPillStyle
+import com.contrast.Contrast.presentation.features.cart.CartViewModel
 
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
 import com.contrast.Contrast.presentation.theme.TealGreen
@@ -47,7 +48,8 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 fun CategoryAffiliatePage(
     navHostController: NavHostController,
     categoryId: String,
-    viewModel: CategoryAffiliateModel = hiltViewModel()
+    viewModel: CategoryAffiliateModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel(),
 ) {
     val products by viewModel.products.collectAsState()
 
@@ -184,7 +186,7 @@ fun CategoryAffiliatePage(
                                 rowProducts = row,
                                 promoUiDataMap = promoUiDataMap,
                                 onItemClick = { viewModel.onItemProductSelected(it) },
-                                onClickCart = { viewModel.onItemCart(it) },
+                                onClickCart = { cartViewModel.onItemAddCart(it) },
                                 onClickAddServiceRequest = {
                                     viewModel.onAddServiceRequestSelected(
                                         it

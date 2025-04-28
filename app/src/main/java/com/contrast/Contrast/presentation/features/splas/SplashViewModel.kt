@@ -67,14 +67,17 @@ class SplashViewModel @Inject constructor(
                 _navigation.value = SplashNavigation.ShowAffiliateInfo(
                     id = result.id,
                     idUnit = result.idUnit,
+                    introducerId = result.introducerId,
                     domain = result.domain
                 )
+
             } else {
                 AppModule.updateBaseUrl(result.domain)
                 appConfig.setDomain(result.domain)
                 _navigation.value = SplashNavigation.OpenAffiliatePage(
                     id = result.id,
-                    idUnit = result.idUnit
+                    idUnit = result.idUnit,
+                    introducerId = result.introducerId,
                 )
             }
         }

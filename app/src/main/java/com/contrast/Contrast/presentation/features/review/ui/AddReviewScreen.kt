@@ -39,7 +39,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatDuration
-import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
@@ -115,7 +115,7 @@ fun AddReviewScreen(
 
     if (showDialog) {
         if (validateMessage.isNotEmpty()) {
-            CustomAlertDialog(
+            CustomOkAlertDialog(
                 message = validateMessage,
                 onDismiss = {
                     showDialog = false

@@ -16,7 +16,7 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 @Composable
 fun RowAmount(label: String, amount: String, isBold: Boolean = false) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 5.dp, start = 10.dp, end = 10.dp),
+        modifier = Modifier.fillMaxWidth().padding(top = 6.dp, start = 10.dp, end = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.dateTimePicker.CustomDateTimePickerDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialog
@@ -136,7 +136,7 @@ fun CustomerScreen(
     }
 
     if (validationError != null) {
-        CustomAlertDialog(message = validationError!!, onDismiss = {
+        CustomOkAlertDialog(message = validationError!!, onDismiss = {
             viewModel.clearValidationError()
             isAlertDialogVisible = false
             isRegisterButton = false

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.itechpro.domain.model.NetworkResponse
 import kotlinx.coroutines.delay
 @Composable
@@ -74,7 +74,7 @@ fun <T> CustomCircularProgressIndicatorDialog(
 
     // ✅ Hiển thị Dialog nếu có lỗi hoặc timeout
     errorMessage?.let { message ->
-        CustomAlertDialog(
+        CustomOkAlertDialog(
             message = message,
             onDismiss = { errorMessage = null } // ✅ Đóng Dialog khi bấm OK
         )

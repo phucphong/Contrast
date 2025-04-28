@@ -39,7 +39,7 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
 import com.contrast.Contrast.presentation.components.PasswordRequirements
-import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
@@ -186,7 +186,7 @@ fun ChangePasswordScreen(
         // ✅ Hiển thị Dialog nếu có lỗi
         if (validationError != null ) {
 
-            CustomAlertDialog(
+            CustomOkAlertDialog(
                 message = validationError!!,
                 onDismiss = { } // ✅ Đóng Dialog khi bấm OK
             )

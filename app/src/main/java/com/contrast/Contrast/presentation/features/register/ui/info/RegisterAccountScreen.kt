@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.*
-import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertDialog
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
@@ -82,7 +82,7 @@ fun RegisterAccountScreen(
     }
 
     if (validationError != null) {
-        CustomAlertDialog(
+        CustomOkAlertDialog(
             message = validationError!!,
             onDismiss = {
                 viewModel.clearValidationError()

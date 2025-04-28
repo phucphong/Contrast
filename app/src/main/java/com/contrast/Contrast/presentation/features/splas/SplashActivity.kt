@@ -67,6 +67,7 @@ class SplashActivity : AppCompatActivity() {
                         val intent = Intent(this@SplashActivity, AffiliateActivity::class.java).apply {
                             putExtra("id", event.id)
                             putExtra("idUnit", event.idUnit)
+                            putExtra("introducerId", event.introducerId)
                         }
                         startActivity(intent)
                         finish()

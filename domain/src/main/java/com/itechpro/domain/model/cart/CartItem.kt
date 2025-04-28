@@ -3,21 +3,24 @@ package com.itechpro.domain.model.cart
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class CartItem(
-    val id: String?="",
-    val ido: String?="",
+    var id: String?="",
+    var ido: String?="",
+    val tensanpham: String?="",
     val idnguoigioithieu: String?="",
     val idsp: String?="",
     val iddonvi: String?="",
-    val loaicapnhat: String?="add",
+    val filetxt: String?="",
+    var loaicapnhat: String?="add",
     val Column1: String?="",
     val trangthai: String?="",
-    val mamenu: String?="giohang",
+    var mamenu: String?="giohang",
     val os: String?="android",
-    val hanhdong: String?="",
-    val device: String?="",
-    val soluong: Double?=0.0,
+    var hanhdong: String?="",
+    var device: String?="",
+    var soluong: Double?=0.0,
     val dongia: Double?=0.0,
     val ck: Double?=0.0,
+    var isChecked: Boolean?=false,
 
-)
+    )
 

@@ -30,7 +30,8 @@ fun NavGraphBuilder.productnavGraph(navController: NavHostController) {
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
             val idUnit = backStackEntry.arguments?.getString("idUnit") ?: ""
-            ProductDetailScreen(navController, id, idUnit)
+            val introducerId = backStackEntry.arguments?.getString("introducerId") ?: ""
+            ProductDetailScreen(navController, id, idUnit,introducerId)
         }
 
 

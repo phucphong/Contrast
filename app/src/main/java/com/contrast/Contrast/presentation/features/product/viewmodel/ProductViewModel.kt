@@ -220,6 +220,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
         _navigationEvent.value = ProductNavEvent.GoToProductDetail(
             id = obj.id ?: "",
             idUnit = obj.iddonvichuan ?: "",
+            introducerId = "0",
             )
     }
 
@@ -252,6 +253,25 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
         _navigationEvent.value = CartNavEvent.GoToCats
 
     }
+
+    fun increaseProductDetailQuantity(obj: ProductDetail) {
+        val newQuantity = (obj.soluong?: 1.0) + 1
+        updateQuantityProductDetailById(obj, newQuantity)
+    }
+
+    fun decreaseProductDetailQuantity(obj: ProductDetail) {
+        val currentQuantity = (obj.soluong?: 1.0)
+        if (currentQuantity >= 1) {
+            val newQuantity = currentQuantity - 1
+            updateQuantityProductDetailById(obj,newQuantity)
+        }
+    }
+
+    fun updateQuantityProductDetailById(product: ProductDetail, newQuantity: Double) {
+        _productInfo.value = product.copy(soluong = newQuantity)
+    }
+
+
     fun onAddServiceRequestSelected( category: Product) {
         _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
             id = category.id ?: "",

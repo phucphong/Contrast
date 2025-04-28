@@ -69,10 +69,10 @@ fun ProductDetailScreen(
     navHostController: NavHostController,
     id: String,
     idUnit: String,
+    introducerId: String,
     viewModel: ProductViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
-    reviewViewModel: ReviewViewModel = hiltViewModel(),
-    notificationViewModel: NotificationViewModel = hiltViewModel()
+    reviewViewModel: ReviewViewModel = hiltViewModel()
 ) {
     val productInfo by viewModel.productInfo.collectAsState()
 
@@ -86,7 +86,6 @@ fun ProductDetailScreen(
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
-    val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
     val isOnline by NetworkMonitor.isOnline.collectAsState()
     var searchText by remember { mutableStateOf("") }
@@ -160,6 +159,7 @@ fun ProductDetailScreen(
                     NavRoutes.ProductDetail.withArgs(
                         id = event.id,
                         idUnit = event.idUnit,
+                        introducerId = event.introducerId,
 
                         )
                 )
@@ -278,8 +278,9 @@ fun ProductDetailScreen(
                         discountPercent =productInfo?.khuyenmai?:0.0,
                         isFlashSale = isFlashSale,
                         remainingTime = "40:00:40:18",
-                        quantity = 1,
-                        onQuantityChange = { /* logic */ }
+                        quantity = productInfo?.soluong?:1.0,
+                        increaseQuantity={viewModel.increaseProductDetailQuantity(productInfo!!)},
+                        decreaseQuantity={viewModel.decreaseProductDetailQuantity(productInfo!!)},
                     )
 
                 }
@@ -355,7 +356,7 @@ fun ProductDetailScreen(
                 modifier = Modifier.weight(1f),
                 roundedCornerShape = 10.dp,
                 fontSize = 12.sp,
-                onClick = {}
+                onClick = { cartViewModel.onItemAddCartToProductDetail(productInfo!!,introducerId)}
             )
             if(bookService){
                 Spacer(modifier = Modifier.width(10.dp))

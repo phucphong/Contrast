@@ -14,6 +14,7 @@ data class Product(
     val denngay: String? = null,
     val sotien: Double? = null,
     val sotiensaukm: Double? = null,
+    val khuyenmai: Double? = null,
 
     @Json(ignore = true)
     val noidung: String? = null

@@ -19,6 +19,7 @@ class AffiliateActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val idProduct = intent.getStringExtra("id")
         val idUnit = intent.getStringExtra("idUnit")
+        val introducerId = intent.getStringExtra("introducerId")
 
 
         setContent {

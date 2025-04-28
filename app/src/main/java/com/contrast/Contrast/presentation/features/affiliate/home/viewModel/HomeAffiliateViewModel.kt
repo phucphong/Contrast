@@ -175,6 +175,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         _navigationEvent.value = ProductNavEvent.GoToProductDetail(
             id = category.id ?: "",
             idUnit = category.iddonvichuan ?: "",
+            introducerId = "0",
 
         )
 
@@ -197,10 +198,7 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
         _navigationEvent.value = CartNavEvent.GoToCats
 
     }
-    fun onItemAddCart( ) {
 
-
-    }
     fun onAddServiceRequestSelected( category: Product) {
         _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
             id = category.id ?: "",

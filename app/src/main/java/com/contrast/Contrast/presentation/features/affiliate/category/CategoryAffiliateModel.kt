@@ -32,7 +32,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
-
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
                                                  private val useCase: CategoryAffiliateUseCase,
@@ -243,22 +243,7 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
     }
 
-    fun onItemCart( category: Product) {
 
-        // val  objCart = Product()
-        //        objCart.id=obj.id
-        //        objCart.iddonvichuan=obj.iddonvichuan
-        //        objCart.soluong=obj.countNumber
-        //        objCart.khuyenmai = obj.discount
-        //        objCart.sotien = obj.price
-        //        objCart.dongia = obj.price
-        //        addCart(objCart)
-
-        // callApAddCart
-
-
-
-    }
     fun onAddServiceRequestSelected( category: Product) {
         _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
             id = category.id ?: "",
@@ -414,7 +399,8 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
 
 
-   private fun getProductsByIdParent(type: String,idParent: String) {
+
+   private fun getProductsByIdParent(type: String, idParent: String) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {

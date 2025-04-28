@@ -111,6 +111,7 @@
     <string name="optional_title">Tùy chọn</string>
     <string name="no_notification">Không có thông báo nào</string>
     <string name="no_data">Không có dữ liệu</string>
+    <string name="empty_cart">Giỏ hàng đang trống</string>
     <string name="no_review_data">Chưa có đánh giá nào</string>
     <string name="no_notification_desc">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
     <string name="delete">Xóa</string>
@@ -148,6 +149,7 @@
 
     <string name="cart_need_consultation">CẦN TƯ VẤN THÊM</string>
     <string name="cart_checkout">THANH TOÁN</string>
+    <string name="you_want_to_deleta_all_cart">Bạn có chắc chắn muốn xóa tất cả sản phảm giỏ hàng không?</string>
 
     <string name="cart_delivery_address">Địa chỉ nhận hàng</string>
     <string name="cart_empty">Giỏ hàng của bạn đang trống</string>

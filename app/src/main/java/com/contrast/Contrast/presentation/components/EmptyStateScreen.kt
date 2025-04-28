@@ -28,13 +28,14 @@ fun EmptyStateScreen(
     title: String="",
     message: String="",
     size: Dp=150.dp,
+    background :Color= Color.White,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(Color.White),
+            .background(background),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

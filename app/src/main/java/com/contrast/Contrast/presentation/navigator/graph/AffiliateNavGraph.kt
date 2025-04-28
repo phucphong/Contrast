@@ -23,12 +23,14 @@ import com.contrast.Contrast.presentation.navigator.NavRoutes
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController,
                                       idProductFromShare: String? = null,
-                                      idUnitFromShare: String? = null) {
+                                      idUnitFromShare: String? = null,
+                                      introducerId: String? = null,
+                                      ) {
     navigation(
         startDestination = NavRoutes.AffiliateHome.route, route = NavRoutes.AffiliateRoot.route
     ) {
         composable(NavRoutes.AffiliateHome.route) {
-            HomePage(idProductFromShare, idUnitFromShare,navController)
+            HomePage(idProductFromShare, idUnitFromShare,introducerId,navController)
         }
         composable(NavRoutes.Video.route) {
             VideoScreen(navController)

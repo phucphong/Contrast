@@ -14,6 +14,7 @@ sealed class ProductNavEvent: NavEvent {
     data class GoToProductDetail(
         val id: String,
         val idUnit: String,
+        val introducerId: String,
     ) : ProductNavEvent()
     data class GoToProductReviews(
         val id: String

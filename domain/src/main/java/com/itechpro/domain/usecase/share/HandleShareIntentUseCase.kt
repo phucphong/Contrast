@@ -11,9 +11,10 @@ class HandleShareIntentUseCase @Inject constructor() {
         val id = data.getQueryParameter("id").orEmpty()
         val idUnit = data.getQueryParameter("iddonvi").orEmpty()
         val domain = data.getQueryParameter("domain").orEmpty()
+        val introducerId = data.getQueryParameter("idngt").orEmpty()
 
         if (id.isEmpty() || idUnit.isEmpty()) return null
 
-        return ShareResult(id, idUnit, domain)
+        return ShareResult(id, idUnit,introducerId, domain)
     }
 }

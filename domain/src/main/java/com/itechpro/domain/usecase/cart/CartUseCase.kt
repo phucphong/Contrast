@@ -25,13 +25,21 @@ class CartUseCase @Inject constructor(
 
 
 
-    fun getCarts(authToken: String): Flow<NetworkResponse<CartResult>> {
+    fun getCarts(isTotalOder:Boolean,typeAccount:String, authToken: String): Flow<NetworkResponse<CartResult>> {
         return flow {
             emit(NetworkResponse.Loading)
             when (val result = repository.getCarts(authToken)) {
                 is NetworkResponse.Success -> {
                     val items = result.data.Table1
-                    emit(NetworkResponse.Success(CartResult(items, items.size)))
+
+                    if(isTotalOder){
+                        emit(NetworkResponse.Success( calculateCartTotal(items,true)))
+                    }else{
+                        emit(NetworkResponse.Success(CartResult(items, items.size,   totalValue = 0.0,
+                            totalIntoMoney = 0.0,
+                            amountMoneyDiscount = 0.0)))
+                    }
+
                 }
                 is NetworkResponse.Error -> {
                     emit(NetworkResponse.Error(result.message))
@@ -41,6 +49,40 @@ class CartUseCase @Inject constructor(
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    fun calculateCartTotal(carts: List<CartItem>,  init:Boolean): CartResult {
+        var totalValue = 0.0
+        var moneyDiscountValue = 0.0
+
+        carts.forEach { product ->
+
+            val quantity = product.soluong ?: 1.0
+            val pricePerItem = product.dongia ?: 0.0
+            val discountPerItem = product.sotienkm1sp ?: 0.0
+            if(init){
+                product.isChecked=true
+                totalValue += pricePerItem * quantity
+                moneyDiscountValue += discountPerItem * quantity
+            }else{
+                if (product.isChecked == true) {
+                    totalValue += pricePerItem * quantity
+                    moneyDiscountValue += discountPerItem * quantity
+                }
+            }
+
+        }
+
+        val totalIntoMoney = totalValue - moneyDiscountValue
+
+        return CartResult(
+            totalValue = totalValue,
+            totalIntoMoney = totalIntoMoney,
+            amountMoneyDiscount = moneyDiscountValue,
+            items = carts,
+            totalCount =carts.size
+        )
+    }
+
 
     fun getCheckOder(ids: String, authen: String): Flow<NetworkResponse<String>> {
         return flow {
@@ -150,6 +192,7 @@ class CartUseCase @Inject constructor(
         return carts.map { item ->
             item.copy(isChecked = isChecked)
         }
+
     }
 
 

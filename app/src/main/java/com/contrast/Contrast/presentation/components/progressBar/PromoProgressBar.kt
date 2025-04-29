@@ -33,7 +33,7 @@ fun PromoProgressBar(
     Box(
         modifier = Modifier
             .width(80.dp)
-            .height(10.dp)
+            .height(8.dp)
             .clip(RoundedCornerShape(4.dp))
             .background(Color.Transparent),
         contentAlignment = Alignment.Center
@@ -42,7 +42,7 @@ fun PromoProgressBar(
         Box(
             modifier = Modifier
                 .width(80.dp)
-                .height(8.dp)
+                .height(6.dp)
                 .background(
                     Brush.horizontalGradient(
                         colors = listOf(Color.Yellow, Color(0xFFFF9800)) // vàng → cam

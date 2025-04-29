@@ -4,6 +4,7 @@ package com.contrast.Contrast.presentation.features.product.detail
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -26,6 +27,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
+import com.contrast.Contrast.presentation.components.alertDialog.QuantityAlertDialog
 import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 
@@ -92,6 +95,7 @@ fun ProductDetailScreen(
     var type by remember { mutableStateOf("huuhinh") }
     var bookService by remember { mutableStateOf(false) }
     var shareClickDialog by remember { mutableStateOf(false) }
+    var isShowQuantity by remember { mutableStateOf(false) }
 
     var selectedCategory by remember { mutableStateOf(0) }
 
@@ -120,6 +124,7 @@ fun ProductDetailScreen(
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         viewModel.loadData(id, idUnit)
         reviewViewModel.loadReview(id, "3")
+        cartViewModel.getCarts(false)
     }
 
     LaunchedEffect(listState) {
@@ -231,6 +236,28 @@ fun ProductDetailScreen(
         }
     }
 
+    if(isShowQuantity){
+
+        QuantityAlertDialog(
+            title = stringResource(R.string.quantity),
+            quantity = productInfo?.soluong?:0.0,
+            onQuantityChange = {
+
+                Log.e("onQuantityChange", it.toString())
+
+                viewModel.updateQuantityProductDetailById(productInfo!!, it)
+
+            },
+            onConfirm = {
+                isShowQuantity = false
+            }, // ✅ Đóng Dialog khi bấm OK
+            onDismiss = {
+                isShowQuantity = false
+            } // ✅ Đóng Dialog khi bấm OK
+        )
+
+    }
+
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -259,7 +286,7 @@ fun ProductDetailScreen(
                     val fullUrl = domain.trimEnd('/') + (productInfo?.filetxt ?: "")
                     NetworkImage(
                         model = fullUrl,
-                        modifier = Modifier.fillMaxWidth().height(250.dp)
+                        modifier = Modifier.fillMaxWidth().height(350.dp)
                     )
                 }
             }
@@ -280,6 +307,7 @@ fun ProductDetailScreen(
                         remainingTime = "40:00:40:18",
                         quantity = productInfo?.soluong?:1.0,
                         increaseQuantity={viewModel.increaseProductDetailQuantity(productInfo!!)},
+                        showQuantity={isShowQuantity= true},
                         decreaseQuantity={viewModel.decreaseProductDetailQuantity(productInfo!!)},
                     )
 

@@ -63,7 +63,8 @@ fun HomePage(
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
     val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
-    val isOnline by NetworkMonitor.isOnline.collectAsState()
+
+
     var searchText by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(0) }
 
@@ -84,6 +85,11 @@ fun HomePage(
 
         }
     }
+    LaunchedEffect(Unit) {
+
+        cartViewModel.getCarts(false)
+    }
+
     LaunchedEffect(listState) {
         snapshotFlow {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()

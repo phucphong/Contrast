@@ -13,9 +13,10 @@ class AppConfig(context: Context) {
     fun getIdEmployee(): String = prefs.getString(KEY_ID_EMPLOYEE, "1") ?: "1"
     fun getIntroducerId(): String = prefs.getString(KEY_ID_INTRODUCER, "0") ?: "0"
     fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "ADMIN") ?: "ADMIN"
-    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluQGl0ZWNocHJvLnZuIiwidXNlcm5hbWUiOiJhZG1pbkBpdGVjaHByby52biIsImlkIjoiMSIsImlzYWRtaW4iOiJUcnVlIiwiYWN0aXZlIjoiVHJ1ZSIsImlkY29uZ3R5IjoiMSIsImlzYWRtaW5jb3NvIjoiVHJ1ZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiIwIiwibG9haWtoIjoiIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJuaGFudmllbiIsImhvdGVuIjoiQURNSU4iLCJkaWVudGhvYWkiOiIwOTY5NjY5OTY2IiwiZW1haWwiOiJhZG1pbkBpdGVjaHByby52biIsInRlbmtoYWNoaGFuZyI6IklURUNIUFJPIiwibWFraGFjaGhhbmciOiJpdHAiLCJpZGNoYXQiOiJpdHBfMSIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDU4MDM3ODEsImV4cCI6MTc1NDQ0Mzc4MSwiaWF0IjoxNzQ1ODAzNzgxLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAiLCJhdWQiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAifQ.Jii_a2AvXzUwrAbMvtcaKB-nZSDUHeP2MDVUT_YD36E") ?: ""
+    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5NzYxMzk5MzIiLCJ1c2VybmFtZSI6IjA5NzYxMzk5MzIiLCJpZCI6IjE4MTY4NTUiLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI3MTYyNDAwMjg5MTYxNjM0ODgxIiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjcxNjI0MDAyODkxNjE2MzQ4ODEiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDU4OTY2NTksImV4cCI6MTc1NDUzNjY1OSwiaWF0IjoxNzQ1ODk2NjU5LCJpc3MiOiJodHRwOi8vMTkyLjE2OC4xLjI1OjkyNSIsImF1ZCI6Imh0dHA6Ly8xOTIuMTY4LjEuMjU6OTI1In0.k5dXU4F1bbEucGLu-jsB-lpbUB-jWwXtJNW7iA68u_k")?:""
 
     fun getIdCompany(): String = prefs.getString(KEY_ID_COMPANY, "") ?: ""
+    fun getPointAffiliate(): String = prefs.getString(KEY_POINT_AFFILIATE, "") ?: ""
     fun getIdCompanyParent(): String = prefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""
     fun getAppType(): String = prefs.getString(KEY_APP_TYPE, "") ?: ""
     fun getEmail(): String = prefs.getString(KEY_EMAIL, "") ?: ""
@@ -24,7 +25,7 @@ class AppConfig(context: Context) {
     fun getSalesPointName(): String = prefs.getString(KEY_SALE_POINT_NAME, "") ?: ""
     fun getFullName(): String = prefs.getString(KEY_ID_FULL_NAME, "") ?: ""
     fun getPermissionMobile(): String = prefs.getString(KEY_PERMISSION, "") ?: ""
-    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "http://192.168.1.119:910") ?: ""
+    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "http://192.168.1.25:925") ?: ""
     fun getDomainCustomer(): String = prefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") ?: ""
     fun getDevice(): String = prefs.getString(KEY_DEVICE, "") ?: ""
     fun getDiscountAgency(): String = prefs.getString(KEY_DISCOUNT_AGENCY, "") ?: ""
@@ -45,6 +46,7 @@ class AppConfig(context: Context) {
 
     fun setIntroducerId(value: String) = prefs.edit().putString(KEY_ID_INTRODUCER, value).apply()
     fun setIdEmployee(value: String) = prefs.edit().putString(KEY_ID_EMPLOYEE, value).apply()
+    fun setPointAffiliate(value: String) = prefs.edit().putString(KEY_POINT_AFFILIATE, value).apply()
     fun setEmployeeName(value: String) = prefs.edit().putString(KEY_EMPLOYEE_NAME, value).apply()
     fun setToken(value: String) = prefs.edit().putString(KEY_TOKEN, value).apply()
     fun setIdCompany(value: String) = prefs.edit().putString(KEY_ID_COMPANY, value).apply()
@@ -82,6 +84,7 @@ class AppConfig(context: Context) {
         private const val KEY_EMPLOYEE_NAME = "employeeName"
         private const val KEY_TOKEN = "token"
         private const val KEY_ID_COMPANY = "IdCompany"
+        private const val KEY_POINT_AFFILIATE = "pointAffiliate"
         private const val KEY_ID_COMPANY_PARENT = "idCompanyParent"
         private const val KEY_APP_TYPE = "appType"
         private const val KEY_EMAIL = "email"

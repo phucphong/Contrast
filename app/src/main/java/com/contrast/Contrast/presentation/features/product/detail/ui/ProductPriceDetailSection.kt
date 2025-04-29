@@ -34,7 +34,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.extensions.formatDouble
 import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
-import com.contrast.Contrast.presentation.theme.FFFF5722
+import com.contrast.Contrast.presentation.theme.FFFF9800
 import com.contrast.Contrast.presentation.theme.FFFF9800
 
 @Preview(showBackground = true)
@@ -48,6 +48,7 @@ fun ProductPriceDetailSection(
     remainingTime: String = "",
     quantity: Double,
     increaseQuantity: () -> Unit,
+    showQuantity: () -> Unit,
     decreaseQuantity: () -> Unit,
 ) {
 
@@ -122,10 +123,10 @@ fun ProductPriceDetailSection(
 
         // Flash sale nếu có
         if (isFlashSale) {
-        Column (modifier = Modifier  .background( if(isFlashSale) FFFF9800 else Color.White, shape = RoundedCornerShape(6.dp)).padding(8.dp)){
+        Column (modifier = Modifier  .background( if(isFlashSale) FFFF9800 else Color.White, shape = RoundedCornerShape(4.dp))){
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth().padding(8.dp)
                         .background(FFFF9800, shape = RoundedCornerShape(6.dp))
 
                 ) {
@@ -136,7 +137,7 @@ fun ProductPriceDetailSection(
                             color = Color.White,
                             fontSize = 12.sp,
                         )
-                        Box (modifier = Modifier.width(10.dp).height(12.dp).padding(horizontal = 4.dp).background(Color.White))
+                        Box (modifier = Modifier.width(8.dp).height(12.dp).padding(horizontal = 4.dp).background(Color.White))
                         PromoProgressBar()
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
@@ -146,16 +147,22 @@ fun ProductPriceDetailSection(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-            QuantitySelector(quantity = quantity,
-                decreaseQuantity = decreaseQuantity,
-                increaseQuantity = increaseQuantity)
-            }
+
+           Box(modifier = Modifier.padding(
+                2.dp
+           )){
+               QuantitySelector(quantity = quantity,
+                   decreaseQuantity = decreaseQuantity,
+                   showQuantity = showQuantity,
+                   increaseQuantity = increaseQuantity)
+           }
+           }
 
             // Chọn số lượng
 
         }else{
             QuantitySelector(quantity = quantity,   decreaseQuantity = decreaseQuantity,
+                showQuantity = showQuantity,
                 increaseQuantity = increaseQuantity)
         }
     }

@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -48,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.theme.FF9E9E9E
 import com.contrast.Contrast.presentation.theme.FFF5F5F5
 import com.contrast.Contrast.presentation.theme.FFFF9800
 import com.contrast.Contrast.presentation.theme.TealGreen
@@ -75,87 +78,88 @@ fun QuantitySelectorCart(
             )
         }
     }
+   Column {  Box (Modifier.height(10.dp))
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, TealGreen, RoundedCornerShape(8.dp))
-            .background(Color.White)
-    ) {
-        // Nút trừ
-        Box(
-            modifier = Modifier
-                .width(22.dp)
-                .height(22.dp)
-                .background(FFF5F5F5)
-                .clickable { decreaseQuantity() },
-            contentAlignment = Alignment.Center
-        ) {
-            Text("-", fontSize = 14.sp, fontWeight = FontWeight.Bold)
-        }
+       Row(
+           verticalAlignment = Alignment.CenterVertically,
+           modifier = modifier
+               .clip(RoundedCornerShape(4.dp))
+               .border(1.dp, FF9E9E9E, RoundedCornerShape(4.dp))
+               .background(Color.White)
+       ) {
+           // Nút trừ
+           Box(
+               modifier = Modifier
+                   .width(21.dp)
+                   .height(21.dp)
 
-        // TextField
-        BasicTextField(
-            value = textFieldValue,
-            onValueChange = { newValue ->
-                textFieldValue = newValue
-                val input = newValue.text.filter { it.isDigit() }
-                val newQuantity = input.toDoubleOrNull()
-                if (newQuantity != null && newQuantity > 0) {
-                    onQuantityChange(newQuantity)
-                } else {
-                    onQuantityChange(quantity)
-                }
-            },
-            modifier = Modifier
-                .width(40.dp)
-                .height(22.dp)
-                .focusRequester(focusRequester)
-                .onFocusChanged { focusState ->
-                    if (focusState.isFocused) {
-                        shouldSelectAll = true
-                    }
-                },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            textStyle = TextStyle(
-                fontSize = 11.sp,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            ),
-            singleLine = true,
-            decorationBox = { innerTextField ->
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // ⭐ Sau khi click xong thì bôi đen toàn bộ
-                    if (shouldSelectAll) {
-                        LaunchedEffect(Unit) {
-                            textFieldValue = textFieldValue.copy(
-                                selection = TextRange(0, textFieldValue.text.length)
-                            )
-                            shouldSelectAll = false // reset để không lặp
-                        }
-                    }
-                    innerTextField()
-                }
-            }
-        )
+                   .clickable { decreaseQuantity() },
+               contentAlignment = Alignment.Center
+           ) {
+               Text("-", fontSize = 14.sp, color = TealGreen)
+           }
+           Box (Modifier.width(1.dp).height(20.dp).background(FF9E9E9E))
+           // TextField
+           BasicTextField(
+               value = textFieldValue,
+               onValueChange = { newValue ->
+                   textFieldValue = newValue
+                   val input = newValue.text.filter { it.isDigit() }
+                   val newQuantity = input.toDoubleOrNull()
+                   if (newQuantity != null && newQuantity > 0) {
+                       onQuantityChange(newQuantity)
+                   } else {
+                       onQuantityChange(quantity)
+                   }
+               },
+               modifier = Modifier
+                   .width(40.dp)
+                   .height(21.dp)
+                   .focusRequester(focusRequester)
+                   .onFocusChanged { focusState ->
+                       if (focusState.isFocused) {
+                           shouldSelectAll = true
+                       }
+                   },
+               keyboardOptions = KeyboardOptions(
+                   keyboardType = KeyboardType.Number,
+                   imeAction = ImeAction.Done
+               ),
+               textStyle = TextStyle(
+                   fontSize = 11.sp,
+                   color = Color.Black,
+                   textAlign = TextAlign.Center
+               ),
+               singleLine = true,
+               decorationBox = { innerTextField ->
+                   Box(
+                       modifier = Modifier.fillMaxSize(),
+                       contentAlignment = Alignment.Center
+                   ) {
+                       // ⭐ Sau khi click xong thì bôi đen toàn bộ
+                       if (shouldSelectAll) {
+                           LaunchedEffect(Unit) {
+                               textFieldValue = textFieldValue.copy(
+                                   selection = TextRange(0, textFieldValue.text.length)
+                               )
+                               shouldSelectAll = false // reset để không lặp
+                           }
+                       }
+                       innerTextField()
+                   }
+               }
+           )
+           Box (Modifier.width(1.dp).height(20.dp).background(FF9E9E9E))
+           // Nút cộng
+           Box(
+               modifier = Modifier
+                   .width(21.dp)
+                   .height(21.dp)
 
-        // Nút cộng
-        Box(
-            modifier = Modifier
-                .width(22.dp)
-                .height(22.dp)
-                .background(FFF5F5F5)
-                .clickable { increaseQuantity() },
-            contentAlignment = Alignment.Center
-        ) {
-            Text("+", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-        }
-    }
+                   .clickable { increaseQuantity() },
+               contentAlignment = Alignment.Center
+           ) {
+               Text("+", fontSize = 11.sp,  color = TealGreen)
+           }
+       } }
 }

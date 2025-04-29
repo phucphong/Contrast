@@ -57,8 +57,20 @@ class CartViewModel @Inject constructor(
 
     private val _totalCartItems = MutableStateFlow(0)
     val totalCartItems: StateFlow<Int> = _totalCartItems
+
+    private val _totalValue = MutableStateFlow(0.0)// tổng tiền
+    val totalValue: StateFlow<Double> = _totalValue
+
+    private val _totalIntoMoney = MutableStateFlow(0.0)// tổng tền thanh toán
+    val totalIntoMoney: StateFlow<Double> = _totalIntoMoney
+        private val _amountMoneyDiscount = MutableStateFlow(0.0)// tổng số tiền giảm  giá
+    val amountMoneyDiscount: StateFlow<Double> = _amountMoneyDiscount
+
+
     private val _totalNotificationItems = MutableStateFlow(0)
     val totalNotificationItems: StateFlow<Int> = _totalNotificationItems
+    private val _isAllSelected= MutableStateFlow(true)
+    val isAllSelected: StateFlow<Boolean> = _isAllSelected
 
     private val _navigationEvent = MutableStateFlow<NavEvent>(CartNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
@@ -73,8 +85,7 @@ class CartViewModel @Inject constructor(
                 _domain.value = currentUserInfo?.domain.orEmpty()
                 _device.value = currentUserInfo?.device.orEmpty()
 
-                val cartsDeferred = async { getCarts() }
-                cartsDeferred.await()
+
 
 
             } catch (e: Exception) {
@@ -87,6 +98,12 @@ class CartViewModel @Inject constructor(
     }
     fun onCheckedChangeAll(carts:  List<CartItem>, isChecked:Boolean) {
        _carts.value=useCase.onCheckedChangeAll(carts, isChecked)
+        updateCartTotal(_carts.value)
+    }
+    fun isAllSelected(carts:  List<CartItem>,  isChecked:Boolean) {
+       _isAllSelected.value=isChecked
+        _carts.value=useCase.onCheckedChangeAll(carts, isChecked)
+        updateCartTotal(_carts.value)
     }
 
 
@@ -97,7 +114,7 @@ class CartViewModel @Inject constructor(
                 else item
             }
         }
-        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,type,newQuantity)
+        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,type,newQuantity, true)
     }
 
 
@@ -134,7 +151,7 @@ class CartViewModel @Inject constructor(
             device =_device.value  ,
             )
 
-        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,"add",1.0)
+        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,"add",1.0, false)
     }
 
     fun onItemAddCartToProductDetail( product: ProductDetail, introducerId:String) {
@@ -151,7 +168,7 @@ class CartViewModel @Inject constructor(
             device =_device.value  ,
         )
 
-        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,"add",product.soluong?:1.0)
+        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,"add",product.soluong?:1.0, false)
     }
 
 
@@ -169,7 +186,7 @@ class CartViewModel @Inject constructor(
                     }
                     is NetworkResponse.Success -> {
                         _isLoading.value = false
-                        getCarts()
+                        getCarts(true)
                     }
                     is NetworkResponse.Error -> {
                         _isLoading.value = false
@@ -181,16 +198,35 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun getCarts() {
+
+    // Hàm update tổng
+    fun updateCartTotal(carts: List<CartItem>) {
+        val result = useCase.calculateCartTotal(carts, false)
+
+        _totalValue.value = result.totalValue
+        _totalIntoMoney.value = result.totalIntoMoney
+        _amountMoneyDiscount.value = result.amountMoneyDiscount
+    }
+
+
+
+    fun getCarts(isTotalOder:Boolean) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCarts(user.token).collect { result ->
+            useCase.getCarts(isTotalOder,user.typeAccount, user.token).collect { result ->
                 when (result) {
                     is NetworkResponse.Loading -> _isLoading.value = true
                     is NetworkResponse.Success -> {
                         _isLoading.value = false
                         _carts.value = result.data.items
-                        _totalCartItems.value = result.data.totalCount
+                        _totalCartItems.value = result.data.totalCount?:0
+                        _totalValue.value = result.data.totalValue?:0.0
+                        _totalIntoMoney.value = result.data.totalIntoMoney?:0.0
+                        _amountMoneyDiscount.value = result.data.amountMoneyDiscount?:0.0
+
+                        // val totalValue: Double,
+                        //    val totalIntoMoney: Double,
+                        //    val amountMoneyDiscount: Double
                     }
                     is NetworkResponse.Error -> {
                         _isLoading.value = false
@@ -234,7 +270,7 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun addEditCart(url: String, cartItem: CartItem, type:String, quantity:Double) {
+    fun addEditCart(url: String, cartItem: CartItem, type:String, quantity:Double, isTotalOder:Boolean) {
 
 
       if(type=="update"){
@@ -256,7 +292,7 @@ class CartViewModel @Inject constructor(
                     _validationError.value = result.message
                 }
                 if (result is NetworkResponse.Success) {
-                   getCarts()
+                   getCarts(isTotalOder)
                 }
             }
         }

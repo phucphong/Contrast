@@ -19,6 +19,9 @@ data class CartItem(
     var device: String?="",
     var soluong: Double?=0.0,
     val dongia: Double?=0.0,
+    val sotiensaukm: Double?=0.0,
+    val sotienkm: Double?=0.0,
+    val sotienkm1sp: Double?=0.0,
     val ck: Double?=0.0,
     var isChecked: Boolean?=false,
 

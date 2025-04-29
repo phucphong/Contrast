@@ -22,16 +22,17 @@ fun CheckBoxColor(
     checked: Boolean,
     size: Dp =24.dp,
     padding: Dp =10.dp,
-    background: Color=Color.Black,
+    backgroundChecked: Color=Color.Black,
+    backgroundUnChecked: Color=FF404040,
     onCheckedChange: (Boolean) -> Unit
 ) {
     Box(
         modifier = Modifier.padding(padding)
             .size(size)
             .then(
-                if (checked) Modifier.background(background, RoundedCornerShape(4.dp))
+                if (checked) Modifier.background(backgroundChecked, RoundedCornerShape(4.dp))
                 else Modifier
-                    .border(1.5.dp,FF404040, RoundedCornerShape(4.dp))
+                    .border(1.5.dp,backgroundUnChecked, RoundedCornerShape(4.dp))
                     .background(Color.White, RoundedCornerShape(4.dp))
             )
             .noRippleClickableComposable { onCheckedChange(!checked) },

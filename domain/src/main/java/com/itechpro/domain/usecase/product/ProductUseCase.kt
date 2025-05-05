@@ -82,6 +82,60 @@ class ProductUseCase @Inject constructor(
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
+    fun getProductsCategory(
+        offline: Boolean,
+        type: String,
+        idParent: String,
+        idProduct: String,
+        authen: String
+    ): Flow<NetworkResponse<List<Product>>> {
+        return flow {
+            emit(NetworkResponse.Loading)
+
+            val result = if (offline) {
+                repository.getProductsByIdParentOff(type, idParent)
+            } else {
+                repository.getProductsByIdParent(type, idParent, authen)
+            }
+
+            val filteredResult = when (result) {
+                is NetworkResponse.Success -> {
+                    val filteredList = result.data.filter { it.id != idProduct }
+                    NetworkResponse.Success(filteredList)
+                }
+                else -> result // giữ nguyên nếu là Loading, Error...
+            }
+
+            emit(filteredResult)
+        }.flowOn(Dispatchers.IO)
+    }
+    fun getProductsOther(
+        offline: Boolean,
+        type: String,
+        idParent: String,
+        idProduct: String,
+        authen: String
+    ): Flow<NetworkResponse<List<Product>>> {
+        return flow {
+            emit(NetworkResponse.Loading)
+
+            val result = if (offline) {
+                repository.getProductsByIdParentOff(type, idParent)
+            } else {
+                repository.getProductsByIdParent(type, idParent, authen)
+            }
+
+            val filteredResult = when (result) {
+                is NetworkResponse.Success -> {
+                    val filteredList = result.data.filter { it.id != idProduct }
+                    NetworkResponse.Success(filteredList)
+                }
+                else -> result // giữ nguyên nếu là Loading, Error...
+            }
+
+            emit(filteredResult)
+        }.flowOn(Dispatchers.IO)
+    }
 
 
 

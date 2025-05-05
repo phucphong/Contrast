@@ -49,7 +49,7 @@ class SplashActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.navigation.collectLatest { event ->
 
-                Log.e("event",event.toString())
+                Log.e("eventnavigation",event.toString())
                 when (event) {
                     is SplashNavigation.GoToLogin -> {
                         startActivity(Intent(this@SplashActivity, LoginActivity::class.java))

@@ -85,7 +85,7 @@ fun CartItemRow(
     val  productName = cart.tensanpham?:""
     val  isChecked = cart.isChecked?:false
 
-    Log.e("isChecked",isChecked.toString())
+
 
     val fullUrl = remember(cart.filetxt) {
         domain.trimEnd('/') + cart.filetxt.orEmpty()

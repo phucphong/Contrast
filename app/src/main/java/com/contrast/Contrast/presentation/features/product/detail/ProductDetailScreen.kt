@@ -1,8 +1,8 @@
 package com.contrast.Contrast.presentation.features.product.detail
 
 
-
-
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -11,9 +11,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,6 +39,7 @@ import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificati
 import com.contrast.Contrast.presentation.components.webview.WebViewProductXml
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
 
@@ -43,12 +47,15 @@ import com.contrast.Contrast.presentation.features.notification.NotificationView
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductDetailHeader
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductPriceDetailSection
 import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProduct
-import com.contrast.Contrast.presentation.features.product.share.ShareBottomSheet
+import com.contrast.Contrast.presentation.features.product.ui.ProductRow
+
 
 import com.contrast.Contrast.presentation.features.product.viewmodel.ProductViewModel
 
 import com.contrast.Contrast.presentation.features.review.ReviewScreen
 import com.contrast.Contrast.presentation.features.review.ui.ReviewHeader
+import com.contrast.Contrast.presentation.features.share.ShareDialog
+import com.contrast.Contrast.presentation.features.splas.SplashNavigation
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 
@@ -81,6 +88,7 @@ fun ProductDetailScreen(
     val productInfo by viewModel.productInfo.collectAsState()
 
     val products by viewModel.products.collectAsState()
+    val productsCategory by viewModel.productsCategory.collectAsState()
     val pagedProducts by viewModel.pagedProducts.collectAsState()
     val totalReview by reviewViewModel.totalReview.collectAsState()
     val ratingScore by reviewViewModel.ratingScore.collectAsState()
@@ -90,12 +98,12 @@ fun ProductDetailScreen(
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
-    val selectedTab by viewModel.selectedTab.collectAsState()
+    val isOfflineMode by viewModel.isOfflineMode.collectAsState()
     val isOnline by NetworkMonitor.isOnline.collectAsState()
     var searchText by remember { mutableStateOf("") }
     var type by remember { mutableStateOf("huuhinh") }
     var bookService by remember { mutableStateOf(false) }
-    var shareClickDialog by remember { mutableStateOf(false) }
+    var showShareDialog by remember { mutableStateOf(false) }
     var isShowQuantity by remember { mutableStateOf(false) }
 
     var selectedCategory by remember { mutableStateOf(0) }
@@ -104,10 +112,7 @@ fun ProductDetailScreen(
 
     val listState = rememberLazyListState()
 
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
-    )
+
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 //
@@ -126,6 +131,12 @@ fun ProductDetailScreen(
         viewModel.loadData(id, idUnit)
         reviewViewModel.loadReview(id, "3")
         cartViewModel.getCarts(false)
+        viewModel.  getProductsOther(  id)
+    }
+    LaunchedEffect(productInfo) {
+
+        viewModel.  getProductsCategory( productInfo?.idnhom?:"", id)
+
     }
 
     LaunchedEffect(listState) {
@@ -133,9 +144,7 @@ fun ProductDetailScreen(
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
             val totalItems = listState.layoutInfo.totalItemsCount
             lastVisibleItem?.index to totalItems
-        }
-            .distinctUntilChanged()
-            .debounce(300) // ✅ ngăn spam trigger khi scroll nhanh
+        }.distinctUntilChanged().debounce(300) // ✅ ngăn spam trigger khi scroll nhanh
             .collect { (lastIndex, total) ->
                 if (lastIndex != null && total > 0 && lastIndex >= total - 2) {
 
@@ -143,23 +152,28 @@ fun ProductDetailScreen(
                 }
             }
     }
+    LaunchedEffect(Unit) {
+        viewModel.navigateToLogin.collect {
+            val intent = Intent(context, LoginActivity::class.java)
+            context.startActivity(intent)
+            (context as? Activity)?.finish()
+        }
+    }
 
-
+    LaunchedEffect(Unit) {
+        viewModel.shareIntentFlow.collectLatest { intent ->
+            context.startActivity(intent)
+        }
+    }
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
-            is NotificationNavEvent.GoToNotifications -> {
-                navHostController.navigate(
-                    NavRoutes.Notifications.withArgs(
-                        startDate = event.startDate,
-                        endDate = event.endDate
-                    )
-                )
-                viewModel.resetNavigation()
-            }
+
+
             is CartNavEvent.GoToCats -> {
                 navHostController.navigate(NavRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
+
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
                     NavRoutes.ProductDetail.withArgs(
@@ -177,7 +191,7 @@ fun ProductDetailScreen(
                     NavRoutes.Reviews.withArgs(
                         id = event.id,
 
-                    )
+                        )
                 )
                 viewModel.resetNavigation()
             }
@@ -185,10 +199,12 @@ fun ProductDetailScreen(
             is ProductNavEvent.GoToAddReviews -> {
                 navHostController.navigate(
                     NavRoutes.AddReview.withArgs(
+
                         id = event.id,
                         idUnit = event.idUnit,
                         fileTxt = event.fileTxt,
                         name = event.name
+
                     )
                 )
                 viewModel.resetNavigation()
@@ -211,41 +227,26 @@ fun ProductDetailScreen(
         }
     }
 
-    if(shareClickDialog){
-        ModalBottomSheetLayout(
-            sheetState = sheetState,
-            sheetContent = {
-                ShareBottomSheet(
-                    onDismissRequest = {
-                        coroutineScope.launch { sheetState.hide() }
-                    },
-                    onShareClick = { option ->
+    if (showShareDialog) {
+        ShareDialog(
+            visible = showShareDialog,
+            onDismissRequest = { showShareDialog = false },
+            onShareClick = { option ->
+                showShareDialog = false
+                val shareLink = "$domain/sharelink.html?id=$id&iddonvi=$idUnit&idngt=$employeeId&domain=$domain"
+                viewModel.share(option, shareLink)
 
-                        val baseUrl = "$domain/sharelink.html?"
-                        val queryParams = "id=$id&iddonvi=$idUnit&idngt=$employeeId&domain=$domain"
-                        val shareLink = "$baseUrl$queryParams"
-                        coroutineScope.launch { sheetState.hide() }
-                        viewModel.share(
-                            option = option,
-                            shareUrl = shareLink
-                        )
-
-                    }
-                )
             }
-        ) {
+        )
 
-        }
     }
 
-    if(isShowQuantity){
+    if (isShowQuantity) {
 
-        QuantityAlertDialog(
-            title = stringResource(R.string.quantity),
-            quantity = productInfo?.soluong?:0.0,
+        QuantityAlertDialog(title = stringResource(R.string.quantity),
+            quantity = productInfo?.soluong ?: 0.0,
             onQuantityChange = {
 
-                Log.e("onQuantityChange", it.toString())
 
                 viewModel.updateQuantityProductDetailById(productInfo!!, it)
 
@@ -263,54 +264,70 @@ fun ProductDetailScreen(
 
 
     Column(modifier = Modifier.fillMaxSize()) {
-        type = productInfo?.loaichitiet?:""
-        bookService = productInfo?.cothedatlich?:false
-        TopTextNotificationShare(
-            painter=painterResource(R.drawable.quaylai),
+        type = productInfo?.loaichitiet ?: ""
+        bookService = productInfo?.cothedatlich ?: false
 
-            placeholder =if(type=="huuhinh") stringResource(R.string.product_detail)else stringResource(R.string.service_detail),
+        var  isFavoriteInit: Boolean =false
+
+        val favorite= productInfo?.yeuthich ?: 0
+        if(favorite==0){
+            isFavoriteInit = false
+        }else{
+            isFavoriteInit = true
+        }
+        TopTextNotificationShare(painter = painterResource(R.drawable.quaylai),
+
+            placeholder = if (type == "huuhinh") stringResource(R.string.product_detail) else stringResource(
+                R.string.service_detail
+            ),
 
             totalCartItems = totalCartItems,
-            onShareClick = { viewModel.onItemNotificationSelected() },
-            onCartClick = { viewModel.onItemCarts()},
-                    onBackStack = { navHostController.popBackStack()}
-        )
+            onShareClick = {
+                val shareLink = "$domain/sharelink.html?id=$id&iddonvi=$idUnit&idngt=$employeeId&domain=$domain"
+                viewModel.shareProduct( shareLink)
+//                showShareDialog = true
+                           Log.e("showShareDialog","showShareDialog")
+                           }
+            ,
+            onCartClick = { viewModel.onItemCarts() },
+            onBackStack = { navHostController.popBackStack() })
 
         LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .fillMaxSize().weight(1f)
+            state = listState, modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
                 .background(FAFAFA)
         ) {
             item {
-                if (productInfo!=null) {
+                if (productInfo != null) {
 
                     val fullUrl = domain.trimEnd('/') + (productInfo?.filetxt ?: "")
                     NetworkImage(
-                        model = fullUrl,
-                        modifier = Modifier.fillMaxWidth().height(350.dp)
+                        model = fullUrl, modifier = Modifier
+                            .fillMaxWidth()
+                            .height(350.dp)
                     )
                 }
             }
             item {
-                if (productInfo!=null) {
+                if (productInfo != null) {
 
-                    var  isFlashSale: Boolean = false
-                    val  discountPercent: Double = productInfo?.khuyenmai?:0.0
-                    if(discountPercent!=0.0){
+                    var isFlashSale: Boolean = false
+                    val discountPercent: Double = productInfo?.khuyenmai ?: 0.0
+                    if (discountPercent != 0.0) {
                         isFlashSale = true
                     }
-                    ProductPriceDetailSection (
-                        productName =productInfo?.ten?:"",
-                        priceDisCount = productInfo?.sotiensaukm?:0.0,
-                        price = productInfo?.sotien?:0.0,
-                        discountPercent =productInfo?.khuyenmai?:0.0,
+                    ProductPriceDetailSection(
+                        productName = productInfo?.ten ?: "",
+                        priceDisCount = productInfo?.sotiensaukm ?: 0.0,
+                        price = productInfo?.sotien ?: 0.0,
+                        discountPercent = productInfo?.khuyenmai ?: 0.0,
                         isFlashSale = isFlashSale,
                         remainingTime = "40:00:40:18",
-                        quantity = productInfo?.soluong?:1.0,
-                        increaseQuantity={viewModel.increaseProductDetailQuantity(productInfo!!)},
-                        showQuantity={isShowQuantity= true},
-                        decreaseQuantity={viewModel.decreaseProductDetailQuantity(productInfo!!)},
+                        quantity = productInfo?.soluong ?: 1.0,
+                        increaseQuantity = { viewModel.increaseProductDetailQuantity(productInfo!!) },
+                        showQuantity = { isShowQuantity = true },
+                        decreaseQuantity = { viewModel.decreaseProductDetailQuantity(productInfo!!) },
                     )
 
                 }
@@ -318,87 +335,127 @@ fun ProductDetailScreen(
 
 
             stickyHeader {
-                ReviewHeader(
-                    rating = ratingScore,
+                ReviewHeader(rating = ratingScore,
                     totalReviews = totalReview,
-                    onViewAllClick = {viewModel.onItemReviewsSelected(id) }
-                )
+                    onViewAllClick = { viewModel.onItemReviewsSelected(id) })
 
             }
             item {
                 if (reviews.isNotEmpty()) {
-                    ReviewScreen(
-                        reviews = reviews,
-                        domain = domain,
-                        onDownloadClick = { fileUrl ->
-                            viewModel.downloadImage(fileUrl)
-                        }
+                    ReviewScreen(reviews = reviews, domain = domain, onDownloadClick = { fileUrl ->
+                        viewModel.downloadImage(fileUrl)
+                    }
 
                     )
                 }
             }
 
-            if (productInfo!=null) {
+            if (productInfo != null) {
                 stickyHeader {
-                    ProductDetailHeader(
-                        type= productInfo?.loaichitiet?:"",
-                        favorite= productInfo?.yeuthich?:0,
-                        onFavorite = { },
+                    ProductDetailHeader(type = productInfo?.loaichitiet ?: "",
+                        isFavoriteInit =isFavoriteInit ,
+                        isOfflineMode =isOfflineMode ,
+                        onFavorite = {
+
+                            viewModel.onFavorite(it, id, idUnit)
+
+
+                        },
                         onReportClick = { },
+
                         onWriteReviewClick = { viewModel.onItemAddReviewsSelected(id, idUnit,"$domain${productInfo?.filetxt?:""}", productInfo?.ten?:"")}
                     )
+
 
                 }
             }
             item {
-                if (productInfo!=null) {
-                    WebViewProduct(
-                        htmlContent = productInfo?.noidung?:""
-
-                        )
+                if (productInfo != null) {
+                    WebViewProduct(htmlContent = productInfo?.noidung?:"")
                 }
             }
-//            val rows = pagedProducts.chunked(2)
-//            items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-//                ProductRow(
-//                    domain = domain,
-//                    rowProducts = row,
-//                    promoUiDataMap = promoUiDataMap,
-//                    onItemClick = { viewModel.onItemProductSelected(it) },
-//                    onClickCart = { viewModel.onItemCart(it) },
-//                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
-//                )
-//            }
+
+            stickyHeader {
+                Text(
+                    text = if (type == "huuhinh") stringResource(R.string.product_category) else stringResource(
+                        R.string.service_category
+                    ),
+                    fontWeight = FontWeight(450),
+                    fontSize = 14.sp,
+                    color = Color.Black,
+                    modifier = Modifier.background(Color.White).padding(10.dp).fillMaxWidth()
+                )
+
+
+            }
+            val rows = productsCategory.chunked(2)
+            items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                ProductRow(
+                    domain = domain,
+                    rowProducts = row,
+                    promoUiDataMap = promoUiDataMap,
+                    onItemClick = { viewModel.onItemProductSelected(it) },
+                    onClickCart = { cartViewModel.onItemAddCart(it)},
+                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
+                )
+            }
+
+            stickyHeader {
+                Text(
+                    text = if (type == "huuhinh") stringResource(R.string.product_other) else stringResource(
+                        R.string.service_other
+                    ),
+                    fontWeight = FontWeight(450),
+                    fontSize = 14.sp,
+                    color = Color.Black,
+                    modifier = Modifier.background(Color.White).padding(10.dp).fillMaxWidth()
+                )
+
+
+            }
+            val rowsOther = pagedProducts.chunked(2)
+            items(rowsOther, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                ProductRow(
+                    domain = domain,
+                    rowProducts = row,
+                    promoUiDataMap = promoUiDataMap,
+                    onItemClick = { viewModel.onItemProductSelected(it) },
+                    onClickCart = { cartViewModel.onItemAddCart(it)},
+                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
+                )
+            }
 
 
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
 
 
-        ) {
-            CustomButton(
-                text = stringResource(id = R.string.add_to_cart),
+            ) {
+            CustomButton(text = stringResource(id = R.string.add_to_cart),
                 textColor = Color.White,
                 containerColor = TealGreen,
                 modifier = Modifier.weight(1f),
                 roundedCornerShape = 10.dp,
                 fontSize = 12.sp,
-                onClick = { cartViewModel.onItemAddCartToProductDetail(productInfo!!,introducerId)}
-            )
-            if(bookService){
+                onClick = {
+                    cartViewModel.onItemAddCartToProductDetail(
+                        productInfo!!, introducerId
+                    )
+                })
+            if (bookService) {
                 Spacer(modifier = Modifier.width(10.dp))
-                CustomButton(
-                    text = stringResource(id = R.string.bookService),
+                CustomButton(text = stringResource(id = R.string.bookService),
                     textColor = Color.White,
                     containerColor = FFFF9800,
                     modifier = Modifier.weight(1f),
                     roundedCornerShape = 10.dp,
                     fontSize = 12.sp,
-                    onClick = {}
-                )
+                    onClick = {})
             }
 
         }

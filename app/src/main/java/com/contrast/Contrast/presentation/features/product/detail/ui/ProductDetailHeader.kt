@@ -20,6 +20,10 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,11 +48,15 @@ import com.contrast.Contrast.presentation.theme.iOSUnderlineGray
 @Composable
 fun ProductDetailHeader(
     type: String = "huuhinh",
-    favorite: Int = 0,
-    onFavorite: () -> Unit,
+    isFavoriteInit: Boolean,
+    isOfflineMode: Boolean,
+    onFavorite: (Boolean) -> Unit,
     onReportClick: () -> Unit,
     onWriteReviewClick: () -> Unit
 ) {
+
+
+    var isFavorite by remember { mutableStateOf(isFavoriteInit) }
     Column {
 
 Row(  modifier = Modifier
@@ -97,17 +105,23 @@ Row(  modifier = Modifier
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    imageVector = if (favorite == 1) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(FFE40000),
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color(0xFFE40000)),
                     modifier = Modifier
                         .size(20.dp)
-                        .noRippleClickableComposable { onFavorite() }
+                        .noRippleClickableComposable {
+                            if(!isOfflineMode){
+                                isFavorite = !isFavorite
+
+                            }
+                            onFavorite(isFavorite)
+                        }
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = stringResource(R.string.save),
-                    modifier = Modifier.noRippleClickableComposable { onFavorite() },
+                    modifier = Modifier.noRippleClickableComposable { },
                     fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.width(8.dp))

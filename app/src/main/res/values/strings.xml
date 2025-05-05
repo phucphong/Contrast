@@ -337,7 +337,11 @@
     <string name="membership_policy_heading">CHÍNH SÁCH THÀNH VIÊN</string>
     <string name="new_detail">Chi tiết tin tức</string>
     <string name="product_detail">Chi tiết sản phẩm</string>
+    <string name="product_other">Sản phẩm khác</string>
+    <string name="product_category">Sản phẩm liên quan</string>
     <string name="service_detail">Chi tiết dịch vụ</string>
+    <string name="service_other">Dịch vụ khác</string>
+    <string name="service_category">Dịch vụ liên quan</string>
     <string name="review">Đánh giá</string>
     <string name="review_product">Đánh giá sản phẩm</string>
     <string name="limited_access_message">Bạn vừa cấp quyền cho %1$s chọn một vài ảnh nhất định.</string>

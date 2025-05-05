@@ -13,7 +13,9 @@ class AppConfig(context: Context) {
     fun getIdEmployee(): String = prefs.getString(KEY_ID_EMPLOYEE, "1") ?: "1"
     fun getIntroducerId(): String = prefs.getString(KEY_ID_INTRODUCER, "0") ?: "0"
     fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "ADMIN") ?: "ADMIN"
+
     fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5NzYxMzk5MzAiLCJ1c2VybmFtZSI6IjA5NzYxMzk5MzAiLCJpZCI6IjE3OTUwMzciLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI5MjA3NTkyMjU4MTgxOTcyMTg5IiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDY0NDI1NTksImV4cCI6MTc1NTA4MjU1OSwiaWF0IjoxNzQ2NDQyNTU5LCJpc3MiOiJodHRwc3M6Ly9zcGEuZXptYXgudm4iLCJhdWQiOiJodHRwc3M6Ly9zcGEuZXptYXgudm4ifQ.jpOGs5kpxoEdSMnUlBKET0EdnvD_NSpArHmMY7JyHKk")?:""
+
     fun getIdCompany(): String = prefs.getString(KEY_ID_COMPANY, "") ?: ""
     fun getPointAffiliate(): String = prefs.getString(KEY_POINT_AFFILIATE, "") ?: ""
     fun getIdCompanyParent(): String = prefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""
@@ -33,7 +35,7 @@ class AppConfig(context: Context) {
     fun getDisplayProduct(): String = prefs.getString(KEY_DISPLAY_PRODUCT, "1") ?: ""
     fun getDisplayPriority(): String = prefs.getString(KEY_DISPLAY_PRIORITY, "1") ?: ""
     fun getCategory(): String = prefs.getString(KEY_CATEGORY, "") ?: ""
-    fun getTypeAccount(): String = prefs.getString(KEY_TYPE_ACCOUNT, "") ?: ""
+    fun getTypeAccount(): String = prefs.getString(KEY_TYPE_ACCOUNT, "nhanvien") ?: ""
     fun getShowPhoneKH(): String = prefs.getString(KEY_SHOW_PHONE, "") ?: ""
     fun getShowEmailKH(): String = prefs.getString(KEY_SHOW_EMAIL, "") ?: ""
     fun getShowAddressKH(): String = prefs.getString(KEY_SHOW_ADDRESS, "") ?: ""

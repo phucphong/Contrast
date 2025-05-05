@@ -5,17 +5,23 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Product(
-    val id: String? = null,
-    val iddonvi: String? = null,
-    val iddonvichuan: String? = null,
-    val ten: String? = null,
-    val filetxt: String? = null,
-    val tungay: String? = null,
-    val denngay: String? = null,
-    val sotien: Double? = null,
-    val sotiensaukm: Double? = null,
-    val khuyenmai: Double? = null,
+    val id: String? = "",
+    var iddonvi: String? = "",
+    var idsanpham: String? = "",
+    val iddonvichuan: String? = "",
+    val ten: String? = "",
+    val filetxt: String? = "",
+    val tungay: String? = "",
+    val denngay: String? = "",
+    var loaitk: String? = "",
+    var mamenu: String? = "",
+    var os: String? = "",
+    var device: String? = "",
+    var hanhdong: String? = "",
+    val sotien: Double? = 0.0,
+    val sotiensaukm: Double? = 0.0,
+    val khuyenmai: Double? = 0.0,
 
     @Json(ignore = true)
-    val noidung: String? = null
+    val noidung: String? = ""
 )

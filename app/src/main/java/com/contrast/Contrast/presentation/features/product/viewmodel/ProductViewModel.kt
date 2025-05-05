@@ -4,6 +4,7 @@ package com.contrast.Contrast.presentation.features.product.viewmodel
 
 
 
+import android.app.Activity
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -32,10 +33,15 @@ import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
 import dagger.hilt.android.internal.Contexts.getApplication
 import android.app.Application
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -46,7 +52,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -56,7 +64,8 @@ import kotlin.system.measureTimeMillis
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
+class ProductViewModel @Inject constructor(private val context: Context,
+private val getCurrentUserUseCase: GetCurrentUserUseCase,
                                            private val useCase: ProductUseCase,
                                            private val sellConfigUseCase: SellConfigUseCase,
                                            private val promoCountdownUseCase: PromoCountdownUseCase,
@@ -71,6 +80,13 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
+
+    private val _productsOther = MutableStateFlow<List<Product>>(emptyList())
+    val productsOther: StateFlow<List<Product>> = _productsOther
+    private val _productsCategory = MutableStateFlow<List<Product>>(emptyList())
+    val productsCategory: StateFlow<List<Product>> = _productsCategory
+
+
     private val _typeReports = MutableStateFlow<List<Product>>(emptyList())
     val typeReports: StateFlow<List<Product>> = _typeReports
 
@@ -83,11 +99,14 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     private val _validationError = MutableStateFlow<String>("")
     val validationError: StateFlow<String> = _validationError
 
+
+
     private val _employeeId = MutableStateFlow<String>("")
     val employeeId: StateFlow<String> = _employeeId
     
     private val _domain = MutableStateFlow<String>("")
     val domain: StateFlow<String> = _domain
+
     private val _displayProduct = MutableStateFlow<String>("")
     private val _displayService = MutableStateFlow<String>("")
 
@@ -98,7 +117,8 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     val type: StateFlow<String> = _type
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab: StateFlow<Int> = _selectedTab
-
+    private val _isOfflineMode = MutableStateFlow<Boolean>(false)
+    val isOfflineMode: StateFlow<Boolean> = _isOfflineMode
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -117,9 +137,11 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     val promoUiDataMapInfo: Map<String, StateFlow<PromoUiData>>
         get() = _promoUiDataMapInfo
 
+    private val _shareIntentFlow = MutableSharedFlow<Intent>()
+    val shareIntentFlow: SharedFlow<Intent> = _shareIntentFlow
 
-    private val _shareIntentChannel = Channel<Intent>()
-    val shareIntentFlow = _shareIntentChannel.receiveAsFlow()
+    private val _navigateToLogin = MutableSharedFlow<Unit>()
+    val navigateToLogin: SharedFlow<Unit> = _navigateToLogin
 
     private var countdownJob: Job? = null
     private val _pagedProducts = MutableStateFlow<List<Product>>(emptyList())
@@ -128,17 +150,72 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     private var allProducts: List<Product> = emptyList()
     private var currentPage = 0
     private val pageSize = 10
+
+
     fun share(option: ShareOption, shareUrl: String) {
-        viewModelScope.launch {
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareUrl)
-                option.packageName?.let { setPackage(it) } // Chia sẻ thẳng vào app nếu biết package
+        when (option) {
+            ShareOption.Zalo -> {
+                // Mở intent share tới Zalo
+                shareToApp("com.zing.zalo", shareUrl)
             }
-            val chooser = Intent.createChooser(intent, "Chia sẻ với:")
-            _shareIntentChannel.send(chooser)
+            ShareOption.Facebook -> {
+                // Mở intent share tới Facebook
+                shareToApp("com.facebook.katana", shareUrl)
+            }
+            ShareOption.CopyLink -> {
+                // Copy link vào clipboard
+                copyToClipboard(shareUrl)
+            }
         }
     }
+    private fun shareToApp(packageName: String, url: String) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, url)
+            setPackage(packageName) // ⚡ quan trọng: chỉ định đúng app
+        }
+
+        try {
+            _shareIntentFlow.tryEmit(intent)
+        } catch (e: Exception) {
+            fallbackShare(url)
+        }
+    }
+
+
+
+    fun shareProduct(shareLink: String) {
+
+
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareLink)
+        }
+
+        // Emit intent ra để Composable xử lý
+        viewModelScope.launch {
+            _shareIntentFlow.emit(Intent.createChooser(shareIntent, "Chia sẻ sản phẩm"))
+        }
+    }
+
+
+
+
+    private fun fallbackShare(url: String) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, url)
+        }
+        _shareIntentFlow.tryEmit(intent)
+    }
+
+    private fun copyToClipboard(text: String) {
+        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Link", text)
+        clipboardManager.setPrimaryClip(clip)
+        Toast.makeText(context, "Đã sao chép liên kết", Toast.LENGTH_SHORT).show()
+    }
+
 
     fun setInitialProducts(products: List<Product>) {
         allProducts = products
@@ -239,6 +316,20 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
             )
     }
 
+    fun onFavorite(isLike: Boolean,idProduct: String, idUnit: String) {
+        if (_isOfflineMode.value) {
+            // Chuyển màn hình login từ Activity
+            viewModelScope.launch {
+                _navigateToLogin.emit(Unit)
+            }
+        } else {
+            if (isLike) {
+                addEditLike(idProduct, idUnit )
+            } else {
+                getUnLike(idProduct, idUnit )
+            }
+        }
+    }
 
     fun onItemNotificationSelected( ) {
         _navigationEvent.value = NotificationNavEvent.GoToNotifications(
@@ -305,6 +396,7 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
                 _displayService.value = user.displayService.orEmpty()
                 _displayPriority.value = user.displayPriority.orEmpty()
                 _employeeId.value = user.employeeId.orEmpty()
+                _isOfflineMode.value = user.isOfflineMode
 
                 val result = sellConfigUseCase.generateConfig(
                     user.displayProduct.orEmpty(),
@@ -402,13 +494,13 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     }
 
     // lấy danh mực 3 cấp
-    fun getUnLike(type: String,idProduct: String,idUnit: String) {
+    fun getUnLike(idProduct: String,idUnit: String) {
         val user = currentUserInfo ?: return
 
         viewModelScope.launch(dispatcher) {
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
-                useCase.getUnLike(type ,idProduct,idUnit,user.token).collect { result ->
+                useCase.getUnLike(user.typeAccount ,idProduct,idUnit,user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
                         }
@@ -455,11 +547,24 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     }
 
 
-    fun addEditLike(url: String, obj: Product) {
+    fun addEditLike(idProduct: String, idUnit: String) {
         val user = currentUserInfo ?: return
 
+        val obj = Product()
+
+
+        obj.idsanpham =idProduct
+
+        obj.iddonvi=idUnit
+
+        obj.loaitk=user.typeAccount
+        obj.mamenu="yeuthich"
+        obj.os="android"
+        obj.device=user.device
+        obj.hanhdong = "add"
+
         viewModelScope.launch(dispatcher) {
-            useCase.addEditLike(url, obj, user.token).collect { result ->
+            useCase.addEditLike("/ex/api_Sanpham/addyeuthich", obj, user.token).collect { result ->
                 _isLoading.value = result is NetworkResponse.Loading
                 if (result is NetworkResponse.Error) {
                     _validationError.value = result.message
@@ -480,6 +585,83 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
                 currentPage = 0
                 allProducts = emptyList()
                 useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _isLoading.value = true
+                        }
+                        is NetworkResponse.Success -> {
+
+
+                            _isLoading.value = false
+                            _products.value = result.data
+
+                            startPromoCountdown(result.data)
+                        }
+                        is NetworkResponse.Error -> {
+                            _isLoading.value = false
+                            _validationError.value = result.message
+
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+
+    fun getProductsCategory(idParent: String,idProduct: String) {
+        val user = currentUserInfo ?: return
+
+
+        viewModelScope.launch(dispatcher) {
+            try {
+
+                // ✅ RESET phân trang mỗi lần gọi mới
+                _pagedProducts.value = emptyList()
+                currentPage = 0
+                allProducts = emptyList()
+                useCase.getProductsCategory(user.isOfflineMode,_type.value, idParent,idProduct,  user.token).collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {
+                            _isLoading.value = true
+                        }
+                        is NetworkResponse.Success -> {
+
+
+                            _isLoading.value = false
+                            _productsCategory.value = result.data
+
+                            startPromoCountdown(result.data)
+                        }
+                        is NetworkResponse.Error -> {
+                            _isLoading.value = false
+                            _validationError.value = result.message
+
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+
+                _isLoading.value = false
+                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+ fun getProductsOther(idProduct: String) {
+        val user = currentUserInfo ?: return
+
+
+        viewModelScope.launch(dispatcher) {
+            try {
+
+                // ✅ RESET phân trang mỗi lần gọi mới
+                _pagedProducts.value = emptyList()
+                currentPage = 0
+                allProducts = emptyList()
+                useCase.getProductsCategory(user.isOfflineMode,_type.value, "0",idProduct,  user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
                             _isLoading.value = true

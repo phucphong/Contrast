@@ -4,7 +4,7 @@ package com.itechpro.domain.model.navigationEvent
 sealed class ProductNavEvent: NavEvent {
     data class GoToProductsCategory(val categoryId: String) : ProductNavEvent()
     data class GoToNotifications(val categoryId: String) : ProductNavEvent()
-
+    object GoToLogin : ProductNavEvent()
     data class GoToAddServiceRequest(
         val id: String,
         val serviceName: String,

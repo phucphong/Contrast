@@ -99,7 +99,7 @@ object AppModule {
         return MoshiConverterFactory.create(moshi)
     }
     @Volatile
-    private var currentBaseUrl: String = "http://192.168.1.119:910"
+    private var currentBaseUrl: String = "https://spa.ezmax.vn"
     @Provides
     @Singleton
     fun provideRetrofitCustomDomain(

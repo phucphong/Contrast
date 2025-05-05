@@ -8,6 +8,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ProductDetail(
     val id: String? = null,
+    val idnhom: String? = null,
     val iddonvi: String? = null,
     val iddonvichuan: String? = null,
     val ten: String? = null,

@@ -1,12 +1,15 @@
 package com.contrast.Contrast.presentation.components.media
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -27,6 +30,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -44,9 +48,16 @@ import coil.compose.rememberAsyncImagePainter
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.isLimitedAccessGranted
 import com.contrast.Contrast.presentation.components.button.CustomButton
+import com.contrast.Contrast.presentation.components.camera.CameraScreen
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
 import com.contrast.Contrast.presentation.theme.FF0967DF
 import com.itechpro.domain.model.media.CustomMedia
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.io.File
 
 enum class MediaPermissionStatus { GRANTED_FULL, GRANTED_LIMITED, DENIED }
 
@@ -59,12 +70,13 @@ fun MediaPickerScreenNew(
     allowImage: Boolean = true,
     allowVideo: Boolean = true,
     compressedFiles: Boolean = true,
-    onSendClick: (List<CustomMedia>) -> Unit, // 🔥 trả về List<CustomMedia>
+    onSendClick: (List<CustomMedia>) -> Unit,
     viewModel: MediaPickerViewModelNew = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val mediaItems by viewModel.mediaItems.collectAsState()
-    val selectedMedia by viewModel.selectedMedia.collectAsState() // 🔥 lấy selectedMedia
+    val selectedMedia by viewModel.selectedMedia.collectAsState()
+    var openCamera by remember { mutableStateOf(false) }
     val gridState = rememberLazyGridState()
 
     var permissionStatus by remember { mutableStateOf(MediaPermissionStatus.DENIED) }
@@ -113,8 +125,31 @@ fun MediaPickerScreenNew(
             }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val file = viewModel.getCurrentCameraFile() ?: return@rememberLauncherForActivityResult
+            viewModel.scanFileToMediaStore(context, file) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(300)
+                    viewModel.loadMedia(allowImage, allowVideo)
+                }
+            }
+        }
+    }
+    val pickImagesLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(20) // <= max 20 ảnh
+    ) { uris: List<Uri> ->
+        if (uris.isNotEmpty()) {
+            Log.e("uris",uris.toString())
+            viewModel.addLimitedUris(context,uris) // hoặc xử lý tuỳ bạn
+        }
+    }
 
+
+
+    Column(modifier = Modifier.fillMaxSize()) {
         CustomBackTitle(
             title = stringResource(R.string.all_image),
             tint = Color.Black,
@@ -128,11 +163,15 @@ fun MediaPickerScreenNew(
             LimitedAccessBanner(
                 appName = "Contrast",
                 onPickMorePhotos = {
-                    val intent = Intent(MediaStore.ACTION_PICK_IMAGES).apply {
-                        putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, 20)
+                    if(allowVideo){
+                        pickImagesLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly))
+                    }else  if(allowImage){
+                        pickImagesLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     }
-                    context.startActivity(intent)
+
+
                 }
+
             )
         }
 
@@ -144,6 +183,27 @@ fun MediaPickerScreenNew(
                 horizontalArrangement = Arrangement.spacedBy(1.dp),
                 modifier = Modifier.fillMaxHeight()
             ) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .background(Color.White)
+                            .noRippleClickableComposable {
+
+                                // Khi nhấn vào camera icon
+                                val pair = viewModel.openCameraIntent(context, isVideo = allowVideo)
+                                pair?.second?.let { cameraLauncher.launch(it) }
+
+//                                openCamera = true
+
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(painter = painterResource(R.drawable.camera), contentDescription = "",
+                            modifier = Modifier.size(35.dp), colorFilter = ColorFilter.tint(Color.Gray))
+                    }
+                }
+
                 items(mediaItems) { item ->
                     val isSelected = selectedMedia.any { it.uri == item.uri }
 
@@ -152,7 +212,7 @@ fun MediaPickerScreenNew(
                             .aspectRatio(1f)
                             .clickable {
                                 if (maxCount > 0 && !isSelected && selectedMedia.size >= maxCount) return@clickable
-                                viewModel.toggleSelect(item) // 🔥 toggle bằng MediaItem
+                                viewModel.toggleSelect(item)
                             }
                     ) {
                         Image(
@@ -224,9 +284,18 @@ fun MediaPickerScreenNew(
                 textColor = if (selectedMedia.isNotEmpty()) Color.White else Color.Black,
                 containerColor = FF0967DF,
                 roundedCornerShape = 10.dp,
-                onClick = { onSendClick(selectedMedia) } // 🔥 trả List<CustomMedia>
+                onClick = { onSendClick(selectedMedia) }
             )
         }
+    }
+
+    if (openCamera) {
+        CameraScreen(
+            onCaptureCompleted = { photoUri ->
+                // xử lý ảnh chụp
+                openCamera = false
+            }
+        )
     }
 }
 

@@ -2,6 +2,7 @@ package com.itechpro.domain.model.review
 
 
 
+import com.itechpro.domain.model.FileUpload
 import okhttp3.MultipartBody
 
 data class ReviewAttach(
@@ -19,5 +20,5 @@ data class ReviewAttach(
     val hanhdong: String? = null,           // Hành động (thêm/sửa)
     val device: String? = null,            // Tên thiết bị
     val os: String? = null,                // Tên hệ điều hành
-    val files: List<MultipartBody.Part?>? = null           // Danh sách File đính kèm (ảnh/video)
+    val files: List<FileUpload>            // Danh sách File đính kèm (ảnh/video)
 )

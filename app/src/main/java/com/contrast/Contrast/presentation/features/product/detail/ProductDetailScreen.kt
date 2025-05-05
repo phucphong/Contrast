@@ -33,6 +33,7 @@ import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 
 import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificationShare
+import com.contrast.Contrast.presentation.components.webview.WebViewProductXml
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 
@@ -185,6 +186,7 @@ fun ProductDetailScreen(
                 navHostController.navigate(
                     NavRoutes.AddReview.withArgs(
                         id = event.id,
+                        idUnit = event.idUnit,
                         fileTxt = event.fileTxt,
                         name = event.name
                     )
@@ -343,7 +345,7 @@ fun ProductDetailScreen(
                         favorite= productInfo?.yeuthich?:0,
                         onFavorite = { },
                         onReportClick = { },
-                        onWriteFeedbackClick = { viewModel.onItemAddReviewsSelected(id, "$domain${productInfo?.filetxt?:""}", productInfo?.ten?:"")}
+                        onWriteReviewClick = { viewModel.onItemAddReviewsSelected(id, idUnit,"$domain${productInfo?.filetxt?:""}", productInfo?.ten?:"")}
                     )
 
                 }
@@ -351,7 +353,7 @@ fun ProductDetailScreen(
             item {
                 if (productInfo!=null) {
                     WebViewProduct(
-                        htmlContent = productInfo?.noidung?:"",
+                        htmlContent = productInfo?.noidung?:""
 
                         )
                 }

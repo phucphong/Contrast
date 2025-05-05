@@ -63,7 +63,8 @@ fun ReviewsFilterScreen(navHostController: NavHostController, id: String, viewMo
            isRefreshing = isRefreshing,
            onRefresh = {  viewModel.loadReview(id, "0") })
        {
-         Column {   ReviewFilterSection(
+         Column {
+             ReviewFilterSection(
              selectedFilter = selectedFilter,
              filterCounts = filterCounts,
              starCounts = ratingCountMap,

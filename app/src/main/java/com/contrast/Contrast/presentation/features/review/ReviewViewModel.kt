@@ -14,11 +14,14 @@ import com.itechpro.domain.enumApp.ReviewFilterType
 import com.itechpro.domain.enumApp.ReviewSelectedFilter
 
 import com.itechpro.domain.model.CurrentUserInfo
+import com.itechpro.domain.model.FileUpload
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.PromoUiData
+import com.itechpro.domain.model.media.CustomMedia
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.review.ReviewAttach
 import com.itechpro.domain.model.review.ReviewDetail
 import com.itechpro.domain.model.review.ReviewFilter
 import com.itechpro.domain.model.review.ReviewInput
@@ -209,6 +212,36 @@ class ReviewViewModel @Inject constructor(
                         _reviews.value = result.data.reviewList
                         _totalReview.value = result.data.totalReview
                         _ratingScore.value = result.data.ratingScore
+                    }
+                    is NetworkResponse.Error -> _validationError.value = result.message
+                    else -> {}
+                }
+            }
+        }
+    }
+  fun uploadReviewFile(idProduct:String,idUnit:String, rank:String, review: List<FileUpload>) {
+        val user = currentUserInfo ?: return
+        viewModelScope.launch(dispatcher) {
+
+            //  val noidung: String? = null,          // Nội dung đánh giá
+            //    val idsFileXoa: String? = null,        // ID file cần xoá nếu có
+            //    val diem: String? = null,              // Số điểm đánh giá (1-5 sao)
+            //    val idProduct: String? = null,         // ID sản phẩm
+            //    val idUnit: String? = null,            // ID đơn vị (cửa hàng)
+            //    val typeAccount: String? = null,       // Loại tài khoản (ví dụ khách hàng / admin)
+            //    val idsfilexoa: String? = null,       // Loại tài khoản (ví dụ khách hàng / admin)
+            //    val rank: String? = null,       // Loại tài khoản (ví dụ khách hàng / admin)
+            //    val mamenu: String? = null,             // Mã menu (nếu có)
+            //    val hanhdong: String? = null,           // Hành động (thêm/sửa)
+            //    val device: String? = null,            // Tên thiết bị
+            //    val os: String? = null,                // Tên hệ điều hành
+            //    val files: List<FileUpload>? = null
+
+            val  obj =ReviewAttach (description="android",ido="0",idProduct=idProduct,idUnit=idUnit,diem=rank,mamenu="danhgia",device=user.device,os="android",hanhdong="add",noidung="",idsFileXoa="" ,files =review  )
+            useCase.uploadReviewFile(obj, user.token).collect { result ->
+                when (result) {
+                    is NetworkResponse.Success -> {
+
                     }
                     is NetworkResponse.Error -> _validationError.value = result.message
                     else -> {}

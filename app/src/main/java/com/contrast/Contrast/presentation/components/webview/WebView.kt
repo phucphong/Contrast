@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.components.webview
 
+import android.content.Context
 import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
@@ -24,21 +25,25 @@ fun WebView(
     htmlContent: String,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
+    AndroidView(
+        factory = {
+            WebView(it).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                settings.javaScriptEnabled = true
+                webViewClient = WebViewClient()
+                webChromeClient = WebChromeClient()
+                loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
+            }
+        },
+
+        modifier = modifier
+    )
 
 
-
-
-        AndroidView(
-            factory = { context ->
-                WebView(context).apply {
-                    settings.javaScriptEnabled = true
-                    webChromeClient = WebChromeClient()
-                    webViewClient = WebViewClient()
-                    alpha = 0.99F
-                    loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
-                }
-            },
-            modifier = modifier
-        )
 
 }

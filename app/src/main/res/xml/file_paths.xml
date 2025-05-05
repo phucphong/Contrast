@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Thư mục ảnh -->
+    <external-path
+        name="external_pictures_ezmax"
+        path="Pictures/EZMAX/" />
+
+    <!-- Thư mục video -->
+    <external-path
+        name="external_movies_ezmax"
+        path="Movies/EZMAX/" />
+</paths>

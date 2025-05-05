@@ -134,6 +134,7 @@ dependencies {
     implementation(libs.compressor)
     implementation(libs.ffmpeg)
     implementation(libs.androidx.foundation.layout)
+    implementation(libs.androidx.ui.viewbinding)
 
     annotationProcessor(libs.glideCompiler)
     implementation(libs.circleimageview)

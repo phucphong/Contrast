@@ -2,6 +2,7 @@ package com.itechpro.data.api
 
 
 
+import com.itechpro.domain.model.FileUpload
 import com.itechpro.domain.model.review.Review
 import com.itechpro.domain.model.Product
 import okhttp3.MultipartBody
@@ -75,7 +76,7 @@ interface ReviewAPI {
     @Multipart
     @POST("/ex/api_DanhGiaSanPham/adddanhgia")
     suspend fun uploadReviewFile(
-        @Part file: List<MultipartBody.Part?>?,
+        @Part file: List<FileUpload>?,
         @Query("description") description: String?,
         @Query("ido") ido: String?,
         @Query("noidung") noidung: String?,

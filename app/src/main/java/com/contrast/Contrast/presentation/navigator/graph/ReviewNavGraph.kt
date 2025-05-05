@@ -33,11 +33,13 @@ fun NavGraphBuilder.reviewNavGraph(navController: NavHostController) {
             }
             val sharedViewModel = hiltViewModel<MediaCreateViewModel>(parentEntry)
             val id = backStackEntry.arguments?.getString("id") ?: ""
+            val idUnit =backStackEntry.arguments?.getString("idUnit") ?: ""
             val fileTxt = backStackEntry.arguments?.getString("fileTxt") ?: ""
             val name = backStackEntry.arguments?.getString("name") ?: ""
             AddReviewScreen(
                 navHostController = navController,
                 id = id,
+                idUnit = idUnit,
                 fileTxt = fileTxt,
                 name = name,
                 mediaCreateViewModel = sharedViewModel

@@ -1,6 +1,7 @@
 package com.contrast.Contrast.presentation.features.review.ui
 
 import android.os.Build
+import android.util.Log
 
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,12 +59,14 @@ import com.contrast.Contrast.presentation.features.review.ReviewViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FF28A745
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
+import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddReviewScreen(
     navHostController: NavHostController,
     id: String,
+    idUnit: String,
     fileTxt: String,
     name: String,
     viewModel: ReviewViewModel = hiltViewModel(),
@@ -75,13 +79,16 @@ fun AddReviewScreen(
     val imageSelect by mediaCreateViewModel.imageSelect.collectAsState()
     val videoSelect by mediaCreateViewModel.videoSelect.collectAsState()
     val totalSizeInMB by mediaCreateViewModel.totalSizeInMB.collectAsState()
+    val fileUploadList by mediaCreateViewModel.fileUploadList.collectAsState()
 
-    var isRegisterButton by remember { mutableStateOf(true) }
+    var isRegisterButton by remember { mutableStateOf(false) }
     val rating by viewModel.rating.collectAsState()
     val noteRating by viewModel.noteRating.collectAsState()
     var note by remember { mutableStateOf("") }
     var fullUrl by remember { mutableStateOf("") }
+    var rank by remember { mutableStateOf("5") }
     var showDialog by remember { mutableStateOf(false) }
+
 
     var showDialogImageVideo by remember { mutableStateOf(false) }
     var isVideo by remember { mutableStateOf<Boolean>(false) }
@@ -92,6 +99,40 @@ fun AddReviewScreen(
     //    CustomMedia(remoteUrl = "https://example.com/image1.jpg", isVideo = false), // ảnh từ server
     //    CustomMedia(remoteUrl = "https://example.com/video.mp4", isVideo = true, durationMs = 12000L) // video từ server
     //)
+
+    val showSizeMaxDialog = remember { mutableStateOf(false) }
+
+    LaunchedEffect(totalSizeInMB) {
+        Log.e("MediaSizeCheck", "totalSizeInMB = $totalSizeInMB")
+       if(isRegisterButton){
+           if (totalSizeInMB > 25) {
+               showSizeMaxDialog.value = true
+               Log.e("MediaSizeCheck", "File quá lớn! Hiển thị Toast")
+           } else {
+               Log.e("MediaSizeCheck", "Dung lượng hợp lệ, tiến hành convert file")
+               mediaCreateViewModel.uriListToFileUploadList(selectedMedia)
+           }
+       }
+    }
+
+    LaunchedEffect(fileUploadList) {
+
+       if(fileUploadList.size>0){
+           viewModel.uploadReviewFile(id,idUnit, rank, fileUploadList)
+       }
+    }
+
+    if (showSizeMaxDialog.value) {
+        CustomToastTop(
+            message = stringResource(R.string.total_file_25),
+            showToast = true
+        )
+        // Reset sau khi hiển thị 1 lần (nếu muốn ẩn sau 2s chẳng hạn)
+        LaunchedEffect(Unit) {
+            delay(2000)
+            showSizeMaxDialog.value = false
+        }
+    }
 
 
     if (showDialogImageVideo) {
@@ -157,6 +198,7 @@ fun AddReviewScreen(
                fontSize = 14.sp,
                onBackClick = { navHostController.popBackStack() },
                onSaveClick = {
+                   isRegisterButton = true
                    mediaCreateViewModel.getTotalMediaSize(selectedMedia)
                },
            )
@@ -239,16 +281,8 @@ fun AddReviewScreen(
            }
        }
 
-       if(isRegisterButton){
-           if(totalSizeInMB>25){
-               CustomToastTop(
-                   message = stringResource(R.string.total_file_25),
-                   showToast = isRegisterButton
-               )
-           }else{
-               mediaCreateViewModel.selectedMedia
 
-           }
-       }
+
+
    }
 }

@@ -230,9 +230,10 @@ class ProductViewModel @Inject constructor(private val getCurrentUserUseCase: Ge
     }
 
 
-    fun onItemAddReviewsSelected( id: String, fileTxt:String, name:String) {
+    fun onItemAddReviewsSelected( id: String,idUnit: String, fileTxt:String, name:String) {
         _navigationEvent.value = ProductNavEvent.GoToAddReviews(
             id = id,
+            idUnit = idUnit,
             fileTxt = fileTxt,
             name = name,
             )

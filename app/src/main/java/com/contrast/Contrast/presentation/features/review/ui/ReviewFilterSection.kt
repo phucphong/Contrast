@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.itechpro.domain.enumApp.ReviewFilterType
 import com.itechpro.domain.enumApp.ReviewSelectedFilter
 
@@ -59,7 +60,7 @@ fun ReviewFilterSection(
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp)
-                        .clickable { onFilterSelect(type) }
+                        .noRippleClickableComposable { onFilterSelect(type) }
                         .border(
                             width = 1.dp,
                             color = if (isSelected) Color(0xFF00BCD4) else Color.LightGray,
@@ -98,7 +99,7 @@ fun ReviewFilterSection(
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp)
-                        .clickable { onStarSelect(star) }
+                        .noRippleClickableComposable { onStarSelect(star) }
                         .border(
                             width = 1.dp,
                             color = if (isSelected) Color(0xFF00BCD4) else Color.LightGray,

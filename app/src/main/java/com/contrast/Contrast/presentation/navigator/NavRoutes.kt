@@ -87,14 +87,15 @@ sealed class NavRoutes(val route: String) {
             "media_picker/$maxCount/$allowImage/$allowVideo/$compressedFiles"
     }
     object AddReview {
-        const val route = "add_Review/{id}/{fileTxt}/{name}"
+        const val route = "add_Review/{id}/{idUnit}/{fileTxt}/{name}"
         val arguments = listOf(
             navArgument("id") { type = NavType.StringType },
+            navArgument("idUnit") { type = NavType.StringType },
             navArgument("fileTxt") { type = NavType.StringType },
             navArgument("name") { type = NavType.StringType }
         )
-        fun withArgs(id: String, fileTxt: String, name: String): String {
-            return "add_Review/${Uri.encode(id)}/${Uri.encode(fileTxt)}/${Uri.encode(name)}"
+        fun withArgs(id: String,idUnit: String, fileTxt: String, name: String): String {
+            return "add_Review/${Uri.encode(id)}/${Uri.encode(idUnit)}/${Uri.encode(fileTxt)}/${Uri.encode(name)}"
         }
 
     }

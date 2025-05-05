@@ -47,7 +47,7 @@ fun ProductDetailHeader(
     favorite: Int = 0,
     onFavorite: () -> Unit,
     onReportClick: () -> Unit,
-    onWriteFeedbackClick: () -> Unit
+    onWriteReviewClick: () -> Unit
 ) {
     Column {
 
@@ -55,7 +55,7 @@ Row(  modifier = Modifier
     .fillMaxWidth()
     .background(FAFAFA)
     .padding(horizontal = 16.dp, vertical = 10.dp).
-    noRippleClickableComposable { onWriteFeedbackClick() },
+    noRippleClickableComposable { onWriteReviewClick() },
     verticalAlignment = Alignment.CenterVertically) {
     Text(
     text = stringResource(R.string.write_feedback),

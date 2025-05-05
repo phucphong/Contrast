@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.extensions.formatSizeInMB
 import com.contrast.Contrast.utils.StringProvider
+import com.itechpro.domain.model.FileUpload
 import com.itechpro.domain.model.media.CustomMedia
 import com.itechpro.domain.usecase.media.MediaUrisUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,11 @@ class MediaCreateViewModel @Inject constructor(private val context: Context,
                                                  private val stringProvider: StringProvider, private val mediaUrisUseCase: MediaUrisUseCase) : ViewModel() {
     private val _selectedMedia = MutableStateFlow<List<CustomMedia>>(emptyList())
     val selectedMedia: StateFlow<List<CustomMedia>> = _selectedMedia
+
+        private val _fileUploads = MutableStateFlow<List<CustomMedia>>(emptyList())
+    val fileUploads: StateFlow<List<CustomMedia>> = _fileUploads
+
+
   private val _validateMessage = MutableStateFlow<String>("")
     val validateMessage: StateFlow<String> = _validateMessage
     private val _imageSelect = MutableStateFlow<Int>(0)
@@ -28,6 +34,8 @@ class MediaCreateViewModel @Inject constructor(private val context: Context,
     val videoSelect: StateFlow<Int> = _videoSelect
     private val _totalSizeInMB = MutableStateFlow<Double>(0.0)
     val totalSizeInMB: StateFlow<Double> = _totalSizeInMB
+    private val _fileUploadList = MutableStateFlow<List<FileUpload>>(emptyList())
+    val fileUploadList: StateFlow<List<FileUpload>> = _fileUploadList
 
     fun setSelectedMedia(uris: List<CustomMedia>) {
         _selectedMedia.value = uris
@@ -63,6 +71,45 @@ class MediaCreateViewModel @Inject constructor(private val context: Context,
 
     fun clearValidationError() {
         _validateMessage.value = ""
+    }
+
+
+    fun uriListToFileUploadList(uris: List<CustomMedia>) {
+        val files = uris.mapNotNull { uri -> uriToFileUpload(uri) }
+        _fileUploadList.value = files
+    }
+
+
+    fun uriToFileUpload(media: CustomMedia): FileUpload? {
+        return try {
+            val contentResolver = context.contentResolver
+            val inputStream = contentResolver.openInputStream(media.uri) ?: return null
+            val byteArray = inputStream.readBytes()
+            inputStream.close()
+
+            val fileName = context.getFileNameFromUri(media.uri)
+            val mimeType = contentResolver.getType(media.uri) ?: "application/octet-stream"
+
+            FileUpload(
+                name = fileName,
+                mimeType = mimeType,
+                byteArray = byteArray
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun Context.getFileNameFromUri(uri: Uri): String {
+        var name = "file"
+        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+            if (cursor.moveToFirst() && nameIndex != -1) {
+                name = cursor.getString(nameIndex)
+            }
+        }
+        return name
     }
 
 

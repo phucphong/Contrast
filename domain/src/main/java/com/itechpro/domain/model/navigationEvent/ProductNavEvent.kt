@@ -21,6 +21,7 @@ sealed class ProductNavEvent: NavEvent {
     ) : ProductNavEvent()
     data class GoToAddReviews(
         val id: String,
+        val idUnit: String,
         val fileTxt: String,
         val name: String,
 

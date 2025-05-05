@@ -13,8 +13,7 @@ class AppConfig(context: Context) {
     fun getIdEmployee(): String = prefs.getString(KEY_ID_EMPLOYEE, "1") ?: "1"
     fun getIntroducerId(): String = prefs.getString(KEY_ID_INTRODUCER, "0") ?: "0"
     fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "ADMIN") ?: "ADMIN"
-    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5NzYxMzk5MzIiLCJ1c2VybmFtZSI6IjA5NzYxMzk5MzIiLCJpZCI6IjE4MTY4NTUiLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI3MTYyNDAwMjg5MTYxNjM0ODgxIiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjcxNjI0MDAyODkxNjE2MzQ4ODEiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDU4OTY2NTksImV4cCI6MTc1NDUzNjY1OSwiaWF0IjoxNzQ1ODk2NjU5LCJpc3MiOiJodHRwOi8vMTkyLjE2OC4xLjI1OjkyNSIsImF1ZCI6Imh0dHA6Ly8xOTIuMTY4LjEuMjU6OTI1In0.k5dXU4F1bbEucGLu-jsB-lpbUB-jWwXtJNW7iA68u_k")?:""
-
+    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5NzYxMzk5MzAiLCJ1c2VybmFtZSI6IjA5NzYxMzk5MzAiLCJpZCI6IjE3OTUwMzciLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI5MjA3NTkyMjU4MTgxOTcyMTg5IiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDY0NDI1NTksImV4cCI6MTc1NTA4MjU1OSwiaWF0IjoxNzQ2NDQyNTU5LCJpc3MiOiJodHRwc3M6Ly9zcGEuZXptYXgudm4iLCJhdWQiOiJodHRwc3M6Ly9zcGEuZXptYXgudm4ifQ.jpOGs5kpxoEdSMnUlBKET0EdnvD_NSpArHmMY7JyHKk")?:""
     fun getIdCompany(): String = prefs.getString(KEY_ID_COMPANY, "") ?: ""
     fun getPointAffiliate(): String = prefs.getString(KEY_POINT_AFFILIATE, "") ?: ""
     fun getIdCompanyParent(): String = prefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""
@@ -25,7 +24,7 @@ class AppConfig(context: Context) {
     fun getSalesPointName(): String = prefs.getString(KEY_SALE_POINT_NAME, "") ?: ""
     fun getFullName(): String = prefs.getString(KEY_ID_FULL_NAME, "") ?: ""
     fun getPermissionMobile(): String = prefs.getString(KEY_PERMISSION, "") ?: ""
-    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "http://192.168.1.25:925") ?: ""
+    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "https://spa.ezmax.vn") ?: ""
     fun getDomainCustomer(): String = prefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") ?: ""
     fun getDevice(): String = prefs.getString(KEY_DEVICE, "") ?: ""
     fun getDiscountAgency(): String = prefs.getString(KEY_DISCOUNT_AGENCY, "") ?: ""

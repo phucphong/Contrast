@@ -12,11 +12,9 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.unit.dp
 
-import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
 import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleItemCard
 import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleSeeAllCard
-import com.contrast.Contrast.presentation.theme.FFFF9800
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import kotlinx.coroutines.flow.StateFlow
 

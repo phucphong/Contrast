@@ -14,16 +14,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.presentation.theme.FF28A745
-import com.google.android.material.behavior.SwipeDismissBehavior.OnDismissListener
+import com.itechpro.domain.model.ToastPosition
 import kotlinx.coroutines.delay
-import java.lang.Error
+
 @Composable
 fun CustomToast(
     message: String = "",
-    isError: Boolean = true,
+    textAlign: TextAlign = TextAlign.Left,
+    background: Color = FF28A745,
+    textColor: Color = Color.Black,
     showToast: Boolean = true,
     toastPosition: ToastPosition = ToastPosition.TOP,
-    modifier: Modifier = Modifier,
+    modifier: Modifier ,
     durationMillis: Long = 4000,
     onDismiss: () -> Unit,
 ) {
@@ -70,14 +72,14 @@ fun CustomToast(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(if (isError) Color.Red else FF28A745)
+                    .background(background)
                     .padding(vertical = 20.dp, horizontal = 20.dp)
             ) {
                 Text(
                     text = message,
-                    color = Color.White,
+                    color = textColor,
                     fontSize = 14.sp,
-                    textAlign = TextAlign.Left,
+                    textAlign = textAlign,
                     modifier = Modifier.fillMaxWidth()
                 )
             }

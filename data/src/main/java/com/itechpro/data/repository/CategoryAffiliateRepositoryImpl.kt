@@ -4,7 +4,7 @@ import com.itechpro.data.api.CategoryAffiliateAPI
 import com.itechpro.domain.model.Category
 
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 
 import com.itechpro.domain.repository.CategoryAffiliateRepository
 

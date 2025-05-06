@@ -38,7 +38,10 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.theme.F6F6F6
 import com.contrast.Contrast.presentation.theme.FAFAFA
+import com.contrast.Contrast.presentation.theme.FF7C7C7C
+import com.contrast.Contrast.presentation.theme.FFDC143C
 import com.contrast.Contrast.presentation.theme.FFE40000
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
 import com.contrast.Contrast.presentation.theme.TealGreen
@@ -107,7 +110,7 @@ Row(  modifier = Modifier
                 Image(
                     imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(Color(0xFFE40000)),
+                    colorFilter = if (isFavorite) ColorFilter.tint(FFDC143C) else ColorFilter.tint(FF7C7C7C) ,
                     modifier = Modifier
                         .size(20.dp)
                         .noRippleClickableComposable {

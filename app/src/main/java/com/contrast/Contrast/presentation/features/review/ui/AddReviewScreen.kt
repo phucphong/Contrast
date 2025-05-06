@@ -6,10 +6,13 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,11 +31,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -52,13 +58,17 @@ import com.contrast.Contrast.presentation.components.media.VideoPlayerDialog
 
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.text.CustomText
-import com.contrast.Contrast.presentation.components.toast.CustomToastTop
+import com.contrast.Contrast.presentation.components.toast.CustomToast
+import com.contrast.Contrast.presentation.components.toast.toastCollect
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
 
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FF28A745
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
+import com.contrast.Contrast.presentation.theme.FFD9D9D9
+import com.contrast.Contrast.presentation.theme.FFFFFFFF
+import com.itechpro.domain.model.ToastPosition
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -84,7 +94,7 @@ fun AddReviewScreen(
     var isRegisterButton by remember { mutableStateOf(false) }
     val rating by viewModel.rating.collectAsState()
     val noteRating by viewModel.noteRating.collectAsState()
-    var note by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
     var fullUrl by remember { mutableStateOf("") }
     var rank by remember { mutableStateOf("5") }
     var showDialog by remember { mutableStateOf(false) }
@@ -93,65 +103,28 @@ fun AddReviewScreen(
     var showDialogImageVideo by remember { mutableStateOf(false) }
     var isVideo by remember { mutableStateOf<Boolean>(false) }
     var pendingNavigation by remember { mutableStateOf<String?>(null) }
-    // dữ liệu mẫu api trả về + local
-    //val mediaList = listOf(
-    //    CustomMedia(localUri = uriFromDevice, isVideo = false), // ảnh mới chọn
-    //    CustomMedia(remoteUrl = "https://example.com/image1.jpg", isVideo = false), // ảnh từ server
-    //    CustomMedia(remoteUrl = "https://example.com/video.mp4", isVideo = true, durationMs = 12000L) // video từ server
-    //)
+    var toastMessage by remember { mutableStateOf("") }
+    var showToast by remember { mutableStateOf(false) }
+    var showToastTotalMaxFile by remember { mutableStateOf(false) }
 
-    val showSizeMaxDialog = remember { mutableStateOf(false) }
-
-    LaunchedEffect(totalSizeInMB) {
-        Log.e("MediaSizeCheck", "totalSizeInMB = $totalSizeInMB")
-       if(isRegisterButton){
-           if (totalSizeInMB > 25) {
-               showSizeMaxDialog.value = true
-               Log.e("MediaSizeCheck", "File quá lớn! Hiển thị Toast")
-           } else {
-               Log.e("MediaSizeCheck", "Dung lượng hợp lệ, tiến hành convert file")
-               mediaCreateViewModel.uriListToFileUploadList(selectedMedia)
-           }
-       }
+// Thu thập từ nhiều ViewModel
+    viewModel.notificationToast.toastCollect {
+        if (!showToast) {
+            toastMessage = it
+            showToast = true
+        }
+    }
+    mediaCreateViewModel.notificationToast.toastCollect {
+        if (!showToastTotalMaxFile) {
+            toastMessage = it
+            showToastTotalMaxFile = true
+        }
     }
 
     LaunchedEffect(fileUploadList) {
-
        if(fileUploadList.size>0){
-           viewModel.uploadReviewFile(id,idUnit, rank, fileUploadList)
+           viewModel.uploadReviewFile(id,idUnit, rank,content, fileUploadList)
        }
-    }
-
-    if (showSizeMaxDialog.value) {
-        CustomToastTop(
-            message = stringResource(R.string.total_file_25),
-            showToast = true
-        )
-        // Reset sau khi hiển thị 1 lần (nếu muốn ẩn sau 2s chẳng hạn)
-        LaunchedEffect(Unit) {
-            delay(2000)
-            showSizeMaxDialog.value = false
-        }
-    }
-
-
-    if (showDialogImageVideo) {
-        if(!isVideo){
-        ImageFullDialog(
-            imageUrl = fullUrl,
-            local = true,
-            onDismiss = { showDialogImageVideo = false },
-            onDownloadClick={
-
-            }
-        )}else {
-            VideoPlayerDialog(
-                videoUrl = fullUrl, // hoặc "file:///storage/emulated/0/Download/video.mp4"
-                local = true, // true nếu là local file
-                onDismiss = { showDialogImageVideo = false }
-            )
-        }
-
     }
 
     if (showDialog) {
@@ -198,8 +171,13 @@ fun AddReviewScreen(
                fontSize = 14.sp,
                onBackClick = { navHostController.popBackStack() },
                onSaveClick = {
-                   isRegisterButton = true
-                   mediaCreateViewModel.getTotalMediaSize(selectedMedia)
+
+                   if(selectedMedia.size>0){
+                       mediaCreateViewModel.getTotalMediaSize(selectedMedia)
+                   }else{
+                       viewModel.uploadReview(id,idUnit,rating.toString(),content)
+                   }
+
                },
            )
 
@@ -254,10 +232,20 @@ fun AddReviewScreen(
 
            CustomTextField(
                modifier = Modifier.heightIn(120.dp).padding(10.dp),
-               value = note,
-               onValueChange = { note = it },
+               value = content,
+               onValueChange = { content = it },
                placeholder = stringResource(id = R.string.write_feedback_you),
-               keyboardType = KeyboardType.Text
+               keyboardType = KeyboardType.Text,
+               imeAction =  ImeAction.Done,
+               keyboardActions = KeyboardActions(
+                   onSend = {
+                       if(selectedMedia.size>0){
+                           mediaCreateViewModel.getTotalMediaSize(selectedMedia)
+                       }else{
+                           viewModel.uploadReview(id,idUnit,rating.toString(),content)
+                       }
+                   }
+               )
            )
 
            Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -281,7 +269,74 @@ fun AddReviewScreen(
            }
        }
 
+       if (showToast) {
+           CustomToast(
+               message =toastMessage ,
+               textAlign = TextAlign.Center,
+               background = FFFFFFFF,
+               textColor = Color.Black,
+               showToast = true,
+               toastPosition = ToastPosition.CENTER,
+               durationMillis= 2000,
+               onDismiss = {
+                   showToast = false
+                   navHostController.popBackStack()
+               },
+               modifier = Modifier
+                   .padding(horizontal = 50.dp)
+                   .wrapContentHeight()
+                   .shadow(elevation = 6.dp, shape = RoundedCornerShape(8.dp)) // ✅ Đổ bóng
+                   .clip(RoundedCornerShape(8.dp)) // ✅ Bo góc sau khi đổ bóng
+                   .background(FFFFFFFF) // ✅ Bắt buộc: set lại màu nền sau khi clip
+                   .border(1.dp, FFFFFFFF, RoundedCornerShape(8.dp))
 
+           )
+
+       }
+       if (showToastTotalMaxFile) {
+           CustomToast(
+               message =toastMessage ,
+               textAlign = TextAlign.Center,
+               background = FFFFFFFF,
+               textColor = Color.Black,
+               showToast = true,
+               toastPosition = ToastPosition.CENTER,
+               durationMillis= 2000,
+               onDismiss = {
+                   showToast = false
+
+               },
+               modifier = Modifier
+                   .padding(horizontal = 50.dp)
+                   .wrapContentHeight()
+                   .shadow(elevation = 6.dp, shape = RoundedCornerShape(8.dp)) // ✅ Đổ bóng
+                   .clip(RoundedCornerShape(8.dp)) // ✅ Bo góc sau khi đổ bóng
+                   .background(FFFFFFFF) // ✅ Bắt buộc: set lại màu nền sau khi clip
+                   .border(1.dp, FFFFFFFF, RoundedCornerShape(8.dp))
+
+           )
+
+       }
+
+
+       if (showDialogImageVideo) {
+           if(!isVideo){
+               ImageFullDialog(
+                   imageUrl = fullUrl,
+                   local = true,
+                   onDismiss = { showDialogImageVideo = false },
+                   onDownloadClick={
+
+                   }
+               )}else {
+               VideoPlayerDialog(
+                   videoUrl = fullUrl, // hoặc "file:///storage/emulated/0/Download/video.mp4"
+                   local = true, // true nếu là local file
+                   onDismiss = { showDialogImageVideo = false }
+               )
+           }
+
+       }
 
 
    }

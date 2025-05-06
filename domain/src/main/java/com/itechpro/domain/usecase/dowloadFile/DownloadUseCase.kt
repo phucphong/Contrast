@@ -2,6 +2,6 @@ package com.itechpro.domain.usecase.dowloadFile
 
 
 
-interface DownloadImageUseCase {
+interface DownloadUseCase {
     operator fun invoke(url: String, fileName: String)
 }

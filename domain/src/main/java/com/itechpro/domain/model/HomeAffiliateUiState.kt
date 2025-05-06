@@ -1,5 +1,6 @@
 package com.itechpro.domain.model
 
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductSection
 
 

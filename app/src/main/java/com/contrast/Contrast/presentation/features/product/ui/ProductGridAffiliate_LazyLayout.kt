@@ -15,7 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.unit.Constraints
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 
 @RequiresApi(Build.VERSION_CODES.O)

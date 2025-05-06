@@ -5,14 +5,19 @@ package com.contrast.Contrast.presentation.navigator.graph
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
+import com.contrast.Contrast.presentation.features.report.AddReportProductScreen
+import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
 
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 @RequiresApi(Build.VERSION_CODES.O)
@@ -34,7 +39,27 @@ fun NavGraphBuilder.productnavGraph(navController: NavHostController) {
             ProductDetailScreen(navController, id, idUnit,introducerId)
         }
 
+        composable(
+            route = NavRoutes.AddReportProduct.route,
+            arguments = NavRoutes.AddReportProduct.arguments
+        ) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry(NavRoutes.ReviewRoot.route)
+            }
+            val sharedViewModel = hiltViewModel<MediaCreateViewModel>(parentEntry)
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+            val idUnit =backStackEntry.arguments?.getString("idUnit") ?: ""
+            val fileTxt = backStackEntry.arguments?.getString("fileTxt") ?: ""
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            AddReportProductScreen(
+                navHostController = navController,
+                id = id,
+                idUnit = idUnit,
+                fileTxt = fileTxt,
+                name = name
 
+            )
+        }
 
 
         composable(

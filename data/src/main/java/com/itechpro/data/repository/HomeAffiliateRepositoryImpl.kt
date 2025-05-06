@@ -2,24 +2,18 @@ package com.itechpro.data.repository
 
 
 
-import android.util.Log
-import com.itechpro.data.api.CategoryAffiliateAPI
 import com.itechpro.data.api.HomeAffiliateAPI
 import com.itechpro.domain.model.Category
 
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.SliderHome
 
-import com.itechpro.domain.repository.CategoryAffiliateRepository
 import com.itechpro.domain.repository.HomeAffiliateRepository
-import com.squareup.moshi.KotlinJsonAdapterFactory
-import com.squareup.moshi.Moshi
 
 
 import javax.inject.Inject
-import com.squareup.moshi.Types
 
 
 class HomeAffiliateRepositoryImpl @Inject constructor(

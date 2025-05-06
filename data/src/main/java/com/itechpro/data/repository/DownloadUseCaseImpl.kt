@@ -8,7 +8,7 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
+import com.itechpro.domain.usecase.dowloadFile.DownloadUseCase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +17,9 @@ import java.io.InputStream
 import java.net.URL
 import javax.inject.Inject
 
-class DownloadImageUseCaseImpl @Inject constructor(
+class DownloadUseCaseImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) : DownloadImageUseCase {
+) : DownloadUseCase {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun invoke(url: String, fileName: String) {

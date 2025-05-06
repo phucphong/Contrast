@@ -4,7 +4,6 @@ package com.contrast.Contrast.presentation.features.product.viewmodel
 
 
 
-import android.app.Activity
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -18,33 +17,27 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.ShareOption
 import com.itechpro.domain.model.navigationEvent.NavEvent
-import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
+
 import com.itechpro.domain.model.product.ProductDetail
 
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
-import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
+import com.itechpro.domain.usecase.dowloadFile.DownloadUseCase
 
 import com.itechpro.domain.usecase.product.ProductUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
-import dagger.hilt.android.internal.Contexts.getApplication
-import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
+import com.itechpro.domain.model.LikeProductService
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
+import com.itechpro.domain.model.report.ReportProduct
 import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -56,8 +49,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.system.measureTimeMillis
@@ -65,12 +58,12 @@ import kotlin.system.measureTimeMillis
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class ProductViewModel @Inject constructor(private val context: Context,
-private val getCurrentUserUseCase: GetCurrentUserUseCase,
+                                           private val getCurrentUserUseCase: GetCurrentUserUseCase,
                                            private val useCase: ProductUseCase,
                                            private val sellConfigUseCase: SellConfigUseCase,
                                            private val promoCountdownUseCase: PromoCountdownUseCase,
                                            private val stringProvider: StringProvider,
-                                           private val downloadImageUseCase: DownloadImageUseCase,
+                                           private val downloadUseCase: DownloadUseCase,
                                            @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
 
 
@@ -87,8 +80,8 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
     val productsCategory: StateFlow<List<Product>> = _productsCategory
 
 
-    private val _typeReports = MutableStateFlow<List<Product>>(emptyList())
-    val typeReports: StateFlow<List<Product>> = _typeReports
+    private val _typeReports = MutableStateFlow<List<ReportProduct>>(emptyList())
+    val typeReports: StateFlow<List<ReportProduct>> = _typeReports
 
     private val _productInfo = MutableStateFlow<ProductDetail?>(null)
     val productInfo: StateFlow<ProductDetail?> = _productInfo
@@ -98,7 +91,6 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
 
     private val _validationError = MutableStateFlow<String>("")
     val validationError: StateFlow<String> = _validationError
-
 
 
     private val _employeeId = MutableStateFlow<String>("")
@@ -123,6 +115,7 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
     private var currentUserInfo: CurrentUserInfo? = null
+    var user: CurrentUserInfo? = null
 
     private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
@@ -150,6 +143,12 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private var allProducts: List<Product> = emptyList()
     private var currentPage = 0
     private val pageSize = 10
+    private val _notificationToast = MutableSharedFlow<String>()
+    val notificationToast = _notificationToast.asSharedFlow()
+
+    suspend fun showNotificationToast(message: String) {
+        _notificationToast.emit(message)
+    }
 
 
     fun share(option: ShareOption, shareUrl: String) {
@@ -223,7 +222,7 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
         _pagedProducts.value = products.take(pageSize)
     }
     fun downloadImage(url: String) {
-        downloadImageUseCase(url, url)
+        downloadUseCase(url, url)
     }
     private var isLoadingNextPage = false
 
@@ -307,6 +306,8 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
     }
 
 
+
+
     fun onItemAddReviewsSelected( id: String,idUnit: String, fileTxt:String, name:String) {
         _navigationEvent.value = ProductNavEvent.GoToAddReviews(
             id = id,
@@ -316,6 +317,21 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
             )
     }
 
+    fun onItemReportSelected( id: String,idUnit: String, fileTxt:String, name:String) {
+        if (_isOfflineMode.value) {
+
+            viewModelScope.launch {
+                _navigateToLogin.emit(Unit)
+            }
+        } else {
+            _navigationEvent.value = ProductNavEvent.GoToReportProduct(
+                id = id,
+                idUnit = idUnit,
+                fileTxt = fileTxt,
+                name = name,
+            )
+        }
+    }
     fun onFavorite(isLike: Boolean,idProduct: String, idUnit: String) {
         if (_isOfflineMode.value) {
             // Chuyển màn hình login từ Activity
@@ -324,22 +340,14 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
             }
         } else {
             if (isLike) {
-                addEditLike(idProduct, idUnit )
+                addEditLikeReport("/ex/api_Sanpham/addyeuthich",idProduct, idUnit,"","","" )
             } else {
                 getUnLike(idProduct, idUnit )
             }
         }
     }
 
-    fun onItemNotificationSelected( ) {
-        _navigationEvent.value = NotificationNavEvent.GoToNotifications(
-            startDate = "",
-            endDate = "",
 
-            )
-
-
-    }
     fun onItemCarts( ) {
 
         _navigationEvent.value = CartNavEvent.GoToCats
@@ -381,6 +389,19 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
         _navigationEvent.value = ProductNavEvent.None
     }
 
+    init {   viewModelScope.launch(dispatcher) {
+        currentUserInfo = getCurrentUserUseCase()
+         user = currentUserInfo ?: return@launch
+
+        _domain.value = user?.domain.orEmpty()
+        _displayProduct.value = user?.displayProduct.orEmpty()
+        _displayService.value = user?.displayService.orEmpty()
+        _displayPriority.value = user?.displayPriority.orEmpty()
+        _employeeId.value = user?.employeeId.orEmpty()
+        _isOfflineMode.value = user?.isOfflineMode?:false
+    }
+    }
+
 
     fun loadData(idParent: String,idUnit: String) {
         if (isLoaded) return
@@ -388,25 +409,15 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
 
         viewModelScope.launch(dispatcher) {
             try {
-                currentUserInfo = getCurrentUserUseCase()
-                val user = currentUserInfo ?: return@launch
 
-                _domain.value = user.domain.orEmpty()
-                _displayProduct.value = user.displayProduct.orEmpty()
-                _displayService.value = user.displayService.orEmpty()
-                _displayPriority.value = user.displayPriority.orEmpty()
-                _employeeId.value = user.employeeId.orEmpty()
-                _isOfflineMode.value = user.isOfflineMode
 
                 val result = sellConfigUseCase.generateConfig(
-                    user.displayProduct.orEmpty(),
-                    user.displayService.orEmpty(),
-                    user.displayPriority.orEmpty()
+                    user?.displayProduct.orEmpty(),
+                    user?.displayService.orEmpty(),
+                    user?.displayPriority.orEmpty()
                 )
 
 
-
-                Log.d("Timing", "🚀 Bắt đầu loadHomeData song song")
 
                 val totalDuration = measureTimeMillis {
                     val InfoProductJob = async {
@@ -425,12 +436,11 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
 
                     awaitAll(InfoProductJob, productJob)
                 }
+                isLoaded = false
 
-                Log.d("Timing", "✅ Tất cả API hoàn tất trong ${totalDuration}ms")
 
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-                Log.e("loadHomeData", "❌ Exception tổng: ${e.localizedMessage}")
             }
         }
     }
@@ -505,7 +515,7 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
                         is NetworkResponse.Loading -> {
                         }
                         is NetworkResponse.Success -> {
-//                            _flashSales.value = result.data
+                            showNotificationToast(stringProvider.getString(R.string.un_like_product))
 
                         }
                         is NetworkResponse.Error -> {
@@ -520,7 +530,7 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
         }
     }
 
-    fun getTypeReport(obj: String,mode: String) {
+    fun getTypeReport() {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
 
@@ -535,44 +545,55 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
 
                         }
                         is NetworkResponse.Error -> {
-                            _validationError.value = result.message
+                            showNotificationToast(result.message)
                         }
                     }
                 }
             } catch (e: Exception) {
-                _isLoading.value = false
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+
+
+                showNotificationToast(stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}")
+
             }
         }
     }
 
 
-    fun addEditLike(idProduct: String, idUnit: String) {
+    fun addEditLikeReport( url:String,idProduct: String, idUnit: String, type: String, idReson:String, content:String) {
         val user = currentUserInfo ?: return
-
-        val obj = Product()
-
-
+        val obj = LikeProductService()
         obj.idsanpham =idProduct
-
         obj.iddonvi=idUnit
+        if(type=="report"){
+            obj.idlydobaocao=idReson
+            obj.noidung=content
+        }
 
         obj.loaitk=user.typeAccount
         obj.mamenu="yeuthich"
         obj.os="android"
         obj.device=user.device
         obj.hanhdong = "add"
-
         viewModelScope.launch(dispatcher) {
-            useCase.addEditLike("/ex/api_Sanpham/addyeuthich", obj, user.token).collect { result ->
+            useCase.addEditLikeReport(url, obj, user.token).collect { result ->
                 _isLoading.value = result is NetworkResponse.Loading
-                if (result is NetworkResponse.Error) {
-                    _validationError.value = result.message
+                if (result is NetworkResponse.Success) {
+                    if(type=="report"){
+                        showNotificationToast(stringProvider.getString(R.string.report_product_success))
+
+                    }else{
+                        showNotificationToast(stringProvider.getString(R.string.like_product))
+
+                    }
+
+
+                }else if (result is NetworkResponse.Error) {
+                    showNotificationToast(result.message)
+
                 }
             }
         }
     }
-
     fun getProductsByIdParent(type: String,idParent: String) {
         val user = currentUserInfo ?: return
 
@@ -599,15 +620,15 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
                         }
                         is NetworkResponse.Error -> {
                             _isLoading.value = false
-                            _validationError.value = result.message
+                            showNotificationToast(result.message)
 
                         }
                     }
                 }
             } catch (e: Exception) {
-
+                showNotificationToast( stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}")
                 _isLoading.value = false
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+
             }
         }
     }
@@ -661,7 +682,7 @@ private val getCurrentUserUseCase: GetCurrentUserUseCase,
                 _pagedProducts.value = emptyList()
                 currentPage = 0
                 allProducts = emptyList()
-                useCase.getProductsCategory(user.isOfflineMode,_type.value, "0",idProduct,  user.token).collect { result ->
+                useCase.getProductsOther(user.isOfflineMode,_type.value, "0",idProduct,  user.token).collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
                             _isLoading.value = true

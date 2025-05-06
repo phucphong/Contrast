@@ -1,7 +1,9 @@
 package com.itechpro.data.api
 
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.LikeProductService
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
+import com.itechpro.domain.model.report.ReportProduct
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -42,7 +44,7 @@ interface ProductAPI {
         @Query("obj") laythongtin: String?,
         @Query("mode") laydsdanhgia: String?,
         @Header("Authorization") authen: String?
-    ): Response<List<Product>>
+    ): Response<List<ReportProduct>>
 
     //http://192.168.1.9:666/ex/api_Sanpham/getobj?idsanpham=11&mode=deletes&iddonvi=2&loaitk=khachhang&obj=laydulieu
     @Headers("Content-Type: application/json")
@@ -60,11 +62,11 @@ interface ProductAPI {
 
     @Headers("Content-Type: application/json")
     @POST
-    suspend fun addEditLike(
+    suspend fun addEditLikeReport(
         @Url url: String,
-        @Body body: Product?,
+        @Body body: LikeProductService?,
         @Header("Authorization") authen: String?
-    ): Response<List<Product>>
+    ): Response<List<LikeProductService>>
 
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobj")

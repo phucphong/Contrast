@@ -1,47 +1,33 @@
 package com.contrast.Contrast.presentation.features.review
 
-import android.content.Context
-import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
-import com.contrast.Contrast.utils.NetworkMonitor
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.enumApp.ReviewFilterType
 import com.itechpro.domain.enumApp.ReviewSelectedFilter
 
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.FileUpload
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.PromoUiData
-import com.itechpro.domain.model.media.CustomMedia
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.model.review.ReviewAttach
 import com.itechpro.domain.model.review.ReviewDetail
-import com.itechpro.domain.model.review.ReviewFilter
-import com.itechpro.domain.model.review.ReviewInput
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
-import com.itechpro.domain.usecase.dowloadFile.DownloadImageUseCase
+import com.itechpro.domain.usecase.dowloadFile.DownloadUseCase
 import com.itechpro.domain.usecase.media.MediaUrisUseCase
-import com.itechpro.domain.usecase.product.PromoCountdownUseCase
 import com.itechpro.domain.usecase.review.ReviewUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import java.io.File
 import javax.inject.Inject
-import kotlin.system.measureTimeMillis
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
@@ -50,7 +36,7 @@ class ReviewViewModel @Inject constructor(
     private val useCase: ReviewUseCase,
     private val sellConfigUseCase: SellConfigUseCase,
     private val stringProvider: StringProvider,
-    private val downloadImageUseCase: DownloadImageUseCase,
+    private val downloadImageUseCase: DownloadUseCase,
     private val mediaUrisUseCase: MediaUrisUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -77,9 +63,6 @@ class ReviewViewModel @Inject constructor(
     val filteredReviews: StateFlow<List<ReviewDetail>> = _filteredReviews.asStateFlow()
 
 
-    private val _reviewInput = MutableStateFlow(ReviewInput())
-    val reviewInput: StateFlow<ReviewInput> = _reviewInput
-
     private val _compressedFiles = MutableStateFlow<List<File>>(emptyList())
     val compressedFiles: StateFlow<List<File>> = _compressedFiles
 
@@ -96,9 +79,17 @@ class ReviewViewModel @Inject constructor(
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
     private val _filterCounts = MutableStateFlow<Map<ReviewFilterType, Int>>(emptyMap())
     val filterCounts: StateFlow<Map<ReviewFilterType, Int>> = _filterCounts
-
+    var user: CurrentUserInfo? = null
     private var currentUserInfo: CurrentUserInfo? = null
     private var isLoaded = false
+
+    private val _notificationToast = MutableSharedFlow<String>()
+    val notificationToast = _notificationToast.asSharedFlow()
+
+    suspend fun showNotificationToast(message: String) {
+        _notificationToast.emit(message)
+    }
+
     init {
         // Tính filterCounts khi reviews thay đổi
         reviews.onEach { reviewsList ->
@@ -113,7 +104,12 @@ class ReviewViewModel @Inject constructor(
             _filteredReviews.value = filteredList
 
         }.launchIn(viewModelScope)
+        viewModelScope.launch(dispatcher) {
+            currentUserInfo = getCurrentUserUseCase()
+            user = currentUserInfo ?: return@launch
+            _domain.value = user?.domain.orEmpty()
 
+        }
 
     }
     val ratingCountMap: StateFlow<Map<Int, Int>> = reviews.map { reviews ->
@@ -140,12 +136,6 @@ class ReviewViewModel @Inject constructor(
 
 
 
-    fun compressUris(uris: List<Uri>) {
-        viewModelScope.launch {
-            val result = mediaUrisUseCase.invoke(uris)
-            _compressedFiles.value = result
-        }
-    }
 
     fun setFilter(type: ReviewFilterType) {
         _selectedFilter.value = ReviewSelectedFilter.Type(type)
@@ -170,33 +160,14 @@ class ReviewViewModel @Inject constructor(
     }
 
 
-    fun submitReview(productId: String) {
-        viewModelScope.launch {
-            val input = _reviewInput.value
-            if (input.rating == 0) {
-                _submitStatus.value = Result.failure(Exception("Chưa chọn sao đánh giá"))
-                return@launch
-            }
-            _submitStatus.value = runCatching {
-                // useCase.addEditLike(productId, input).getOrThrow()
-            }
-        }
-    }
+
 
 
     fun loadReview(idProduct: String, count: String) {
-        if (isLoaded) return
-        isLoaded = true
-
         viewModelScope.launch(dispatcher) {
             try {
-                currentUserInfo = getCurrentUserUseCase()
-                val user = currentUserInfo ?: return@launch
-                _domain.value = user.domain.orEmpty()
-                val reviewJob = async {
-                    getReviews(idProduct, count)
-                }
-                awaitAll(reviewJob)
+
+                getReviews(idProduct, count)
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
@@ -204,9 +175,9 @@ class ReviewViewModel @Inject constructor(
     }
 
   fun getReviews(idProduct: String, count: String) {
-        val user = currentUserInfo ?: return
+
         viewModelScope.launch(dispatcher) {
-            useCase.getReviews(user.isOfflineMode, idProduct, count, user.token).collect { result ->
+            useCase.getReviews(user?.isOfflineMode ?:false, idProduct, count, user?.token.orEmpty()).collect { result ->
                 when (result) {
                     is NetworkResponse.Success -> {
                         _reviews.value = result.data.reviewList
@@ -219,28 +190,30 @@ class ReviewViewModel @Inject constructor(
             }
         }
     }
-  fun uploadReviewFile(idProduct:String,idUnit:String, rank:String, review: List<FileUpload>) {
-        val user = currentUserInfo ?: return
+  fun uploadReviewFile(idProduct:String,idUnit:String, rank:String, content:String, review: List<MultipartBody.Part>) {
+
         viewModelScope.launch(dispatcher) {
 
-            //  val noidung: String? = null,          // Nội dung đánh giá
-            //    val idsFileXoa: String? = null,        // ID file cần xoá nếu có
-            //    val diem: String? = null,              // Số điểm đánh giá (1-5 sao)
-            //    val idProduct: String? = null,         // ID sản phẩm
-            //    val idUnit: String? = null,            // ID đơn vị (cửa hàng)
-            //    val typeAccount: String? = null,       // Loại tài khoản (ví dụ khách hàng / admin)
-            //    val idsfilexoa: String? = null,       // Loại tài khoản (ví dụ khách hàng / admin)
-            //    val rank: String? = null,       // Loại tài khoản (ví dụ khách hàng / admin)
-            //    val mamenu: String? = null,             // Mã menu (nếu có)
-            //    val hanhdong: String? = null,           // Hành động (thêm/sửa)
-            //    val device: String? = null,            // Tên thiết bị
-            //    val os: String? = null,                // Tên hệ điều hành
-            //    val files: List<FileUpload>? = null
-
-            val  obj =ReviewAttach (description="android",ido="0",idProduct=idProduct,idUnit=idUnit,diem=rank,mamenu="danhgia",device=user.device,os="android",hanhdong="add",noidung="",idsFileXoa="" ,files =review  )
-            useCase.uploadReviewFile(obj, user.token).collect { result ->
+            val  obj =ReviewAttach (description="android",ido="0", idsanpham =idProduct,iddonvi=idUnit,diem=rank,idsfilexoa ="" ,loaitk =user?.typeAccount.orEmpty() ,mamenu="danhgia",device=user?.device.orEmpty(),os="android",hanhdong="add",noidung="", files =review  )
+            useCase.uploadReviewFile(obj, user?.token.orEmpty()).collect { result ->
                 when (result) {
                     is NetworkResponse.Success -> {
+                        showNotificationToast(stringProvider.getString(R.string.review_success))
+                    }
+                    is NetworkResponse.Error -> _validationError.value = result.message
+                    else -> {}
+                }
+            }
+        }
+    }
+    fun uploadReview(idProduct:String,idUnit:String, rank:String, content:String) {
+        viewModelScope.launch(dispatcher) {
+            val  obj =ReviewAttach (description="android",ido="0",idsanpham=idProduct,iddonvi=idUnit,diem=rank, loaitk =user?.typeAccount.orEmpty() ,idsfilexoa="" ,mamenu="danhgia",device=user?.device.orEmpty(),os="android",hanhdong="add",noidung=content )
+            useCase.uploadReview(obj, user?.token.orEmpty()).collect { result ->
+                when (result) {
+                    is NetworkResponse.Success -> {
+
+                        showNotificationToast(stringProvider.getString(R.string.review_success))
 
                     }
                     is NetworkResponse.Error -> _validationError.value = result.message
@@ -254,25 +227,8 @@ class ReviewViewModel @Inject constructor(
         _navigationEvent.value = ProductNavEvent.None
     }
 
-    fun setComment(comment: String) {
-        _reviewInput.update { it.copy(comment = comment) }
-    }
 
-    fun addImage(uri: Uri) {
-        _reviewInput.update {
-            if (it.imageUris.size < 5) it.copy(imageUris = it.imageUris + uri) else it
-        }
-    }
 
-    fun removeImage(uri: Uri) {
-        _reviewInput.update { it.copy(imageUris = it.imageUris - uri) }
-    }
 
-    fun setVideo(uri: Uri) {
-        _reviewInput.update { it.copy(videoUri = uri) }
-    }
 
-    fun removeVideo() {
-        _reviewInput.update { it.copy(videoUri = null) }
-    }
 }

@@ -23,6 +23,7 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 @Composable
 fun CustomTopAppBarBackTitleSave(
     title: String,
+    text: String=stringResource(R.string.save),
     painter: Painter= painterResource(id = R.drawable.back),
     fontSize: TextUnit = 14.sp,
     titleColor: Color = Color.Black,
@@ -56,7 +57,7 @@ fun CustomTopAppBarBackTitleSave(
             if (isSave && onSaveClick != null) {
                 TextButton(onClick = onSaveClick) {
                     Text(
-                        text = stringResource(R.string.save),
+                        text = text,
                         color = TealGreen,
                         fontWeight = FontWeight.Medium
                     )

@@ -8,7 +8,6 @@ import com.itechpro.data.api.ReviewAPI
 import com.itechpro.domain.model.review.Review
 
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.review.ReviewAttach
 import com.itechpro.domain.repository.ReviewRepository
 
@@ -56,20 +55,7 @@ class ReviewRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun addEditLike(url: String, obj: Product, authen: String): NetworkResponse<List<Product>> {
-        return try {
-            val response = api.addEditLike(url, obj,authen)
-            if (response.isSuccessful) {
-                NetworkResponse.Success(response.body() ?: emptyList())
-            } else {
-                NetworkResponse.Error("Lỗi: ${response.message()}")
-            }
-        } catch (e: Exception) {
-            NetworkResponse.Error("Exception: ${e.message}")
 
-
-        }
-    }
 
     override suspend fun uploadReviewFile(url: String, obj: ReviewAttach, authen: String): NetworkResponse<ResponseBody> {
         return try {
@@ -79,11 +65,41 @@ class ReviewRepositoryImpl @Inject constructor(
                 description = obj.description,
                 ido = obj.ido,
                 noidung = obj.noidung,
-                idsfilexoa = obj.idsFileXoa,
+                idsfilexoa = obj.idsfilexoa,
                 rank = obj.diem,
-                idProduct = obj.idProduct,
-                idUnit = obj.idUnit,
-                typeAccount = obj.typeAccount,
+                idProduct = obj.idsanpham,
+                idUnit = obj.iddonvi,
+                typeAccount = obj.loaitk,
+                mamenu = obj.mamenu,
+                hanhdong = obj.hanhdong,
+                device = obj.device,
+                os = obj.os,
+                authen = authen
+            )
+
+            val body = response.body()
+            if (body != null) {
+                NetworkResponse.Success(body)
+            } else {
+                NetworkResponse.Error("Cart data is null")
+            }
+        } catch (e: Exception) {
+            NetworkResponse.Error("Exception: ${e.message}")
+        }
+    }
+
+    override suspend fun uploadReview(url: String, obj: ReviewAttach, authen: String): NetworkResponse<ResponseBody> {
+        return try {
+
+            val response = api.uploadReview(
+                description = obj.description,
+                ido = obj.ido,
+                noidung = obj.noidung,
+                idsfilexoa = obj.idsfilexoa,
+                rank = obj.diem,
+                idProduct = obj.idsanpham,
+                idUnit = obj.iddonvi,
+                typeAccount = obj.loaitk,
                 mamenu = obj.mamenu,
                 hanhdong = obj.hanhdong,
                 device = obj.device,

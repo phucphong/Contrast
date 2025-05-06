@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import kotlinx.coroutines.flow.StateFlow
 

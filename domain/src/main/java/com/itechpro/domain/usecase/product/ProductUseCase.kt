@@ -3,10 +3,12 @@ package com.itechpro.domain.usecase.product
 
 
 
+import com.itechpro.domain.model.LikeProductService
 import com.itechpro.domain.model.NetworkResponse
 
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
+import com.itechpro.domain.model.report.ReportProduct
 import com.itechpro.domain.repository.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -58,7 +60,7 @@ class ProductUseCase @Inject constructor(
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
-    fun getTypeReport(authen: String): Flow<NetworkResponse<List<Product>>> {
+    fun getTypeReport(authen: String): Flow<NetworkResponse<List<ReportProduct>>> {
         return flow {
             emit(NetworkResponse.Loading)
             val result =  repository.getTypeReport(authen)
@@ -139,15 +141,15 @@ class ProductUseCase @Inject constructor(
 
 
 
-    fun addEditLike(
+    fun addEditLikeReport(
         url: String,
-        obj: Product,
+        obj: LikeProductService,
         authen: String
-    ): Flow<NetworkResponse<List<Product>>> {
+    ): Flow<NetworkResponse<List<LikeProductService>>> {
         return flow {
             emit(NetworkResponse.Loading)
             try {
-                val result = repository.addEditLike(url, obj, authen)
+                val result = repository.addEditLikeReport(url, obj, authen)
                 emit(result)
             } catch (e: Exception) {
                 emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))

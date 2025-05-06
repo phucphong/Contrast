@@ -109,8 +109,8 @@ fun ReviewItem(
         }
         Text(
             text = name,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Medium,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal,
             modifier = Modifier.padding(16.dp)
         )
         if (list.isNotEmpty()) {

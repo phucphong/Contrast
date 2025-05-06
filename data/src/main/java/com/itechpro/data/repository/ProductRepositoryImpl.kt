@@ -4,10 +4,12 @@ package com.itechpro.data.repository
 
 
 import com.itechpro.data.api.ProductAPI
+import com.itechpro.domain.model.LikeProductService
 
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
+import com.itechpro.domain.model.report.ReportProduct
 
 import com.itechpro.domain.repository.ProductRepository
 
@@ -54,7 +56,7 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getTypeReport( authen: String): NetworkResponse<List<Product>> {
+    override suspend fun getTypeReport( authen: String): NetworkResponse<List<ReportProduct>> {
         val response = api.getTypeReport("laydulieu","laydslydobaocao",  authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
@@ -83,9 +85,9 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun addEditLike(url: String, obj: Product, authen: String): NetworkResponse<List<Product>> {
+    override suspend fun addEditLikeReport(url: String, obj: LikeProductService, authen: String): NetworkResponse<List<LikeProductService>> {
         return try {
-            val response = api.addEditLike(url, obj,authen)
+            val response = api.addEditLikeReport(url, obj,authen)
             if (response.isSuccessful) {
                 NetworkResponse.Success(response.body() ?: emptyList())
             } else {

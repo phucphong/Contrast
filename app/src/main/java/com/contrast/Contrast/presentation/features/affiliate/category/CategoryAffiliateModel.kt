@@ -2,7 +2,6 @@ package com.contrast.Contrast.presentation.features.affiliate.category
 
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,7 @@ import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
 
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent

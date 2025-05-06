@@ -1,6 +1,6 @@
 package com.itechpro.data.api
 import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.SliderHome
 import retrofit2.Response

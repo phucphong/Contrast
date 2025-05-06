@@ -99,6 +99,19 @@ sealed class NavRoutes(val route: String) {
         }
 
     }
+    object AddReportProduct {
+        const val route = "add_Report_Product/{id}/{idUnit}/{fileTxt}/{name}"
+        val arguments = listOf(
+            navArgument("id") { type = NavType.StringType },
+            navArgument("idUnit") { type = NavType.StringType },
+            navArgument("fileTxt") { type = NavType.StringType },
+            navArgument("name") { type = NavType.StringType }
+        )
+        fun withArgs(id: String,idUnit: String, fileTxt: String, name: String): String {
+            return "add_Report_Product/${Uri.encode(id)}/${Uri.encode(idUnit)}/${Uri.encode(fileTxt)}/${Uri.encode(name)}"
+        }
+
+    }
 
     object AddServiceRequest {
         const val route = "add_service_request/{id}/{serviceName}/{idUnit}/{discount}"

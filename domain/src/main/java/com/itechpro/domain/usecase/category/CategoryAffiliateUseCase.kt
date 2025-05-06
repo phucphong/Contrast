@@ -2,7 +2,7 @@ package com.itechpro.domain.usecase.category
 
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.repository.CategoryAffiliateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

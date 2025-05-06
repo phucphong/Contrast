@@ -4,10 +4,10 @@ package com.itechpro.domain.usecase.review
 
 
 
+import android.util.Log
 import com.itechpro.domain.enumApp.ReviewFilterType
 import com.itechpro.domain.enumApp.ReviewSelectedFilter
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
 import com.itechpro.domain.model.review.ReviewAttach
 import com.itechpro.domain.model.review.ReviewDetail
 import com.itechpro.domain.model.review.ReviewResult
@@ -78,21 +78,7 @@ class ReviewUseCase @Inject constructor(
         }
     }
 
-    fun addEditLike(
-        url: String,
-        obj: Product,
-        authen: String
-    ): Flow<NetworkResponse<List<Product>>> {
-        return flow {
-            emit(NetworkResponse.Loading)
-            try {
-                val result = repository.addEditLike(url, obj, authen)
-                emit(result)
-            } catch (e: Exception) {
-                emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+
 
     fun uploadReviewFile(
 
@@ -103,6 +89,24 @@ class ReviewUseCase @Inject constructor(
             emit(NetworkResponse.Loading)
             try {
                 val result = repository.uploadReviewFile("/ex/api_DanhGiaSanPham/adddanhgia", obj, authen)
+                Log.d("uploadReviewFile", "response = $result") // 👈 Thêm log
+                emit(result)
+            } catch (e: Exception) {
+                emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+
+    fun uploadReview(
+
+        obj: ReviewAttach,
+        authen: String
+    ): Flow<NetworkResponse<ResponseBody>> {
+        return flow {
+            emit(NetworkResponse.Loading)
+            try {
+                val result = repository.uploadReview("/ex/api_DanhGiaSanPham/adddanhgia", obj, authen)
                 emit(result)
             } catch (e: Exception) {
                 emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))

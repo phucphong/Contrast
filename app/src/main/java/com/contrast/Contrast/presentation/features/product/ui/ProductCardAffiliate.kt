@@ -20,7 +20,7 @@ import com.contrast.Contrast.presentation.components.media.NetworkImage
 
 
 import com.contrast.Contrast.presentation.features.affiliate.home.ProductPriceSection
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import kotlinx.coroutines.flow.StateFlow
 

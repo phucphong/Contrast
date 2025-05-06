@@ -1,28 +1,26 @@
 package com.contrast.Contrast.presentation.features.cart
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.Navigator
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
-import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
-import com.itechpro.domain.model.cart.CartAdd
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.cart.CartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -67,13 +65,21 @@ class CartViewModel @Inject constructor(
     val amountMoneyDiscount: StateFlow<Double> = _amountMoneyDiscount
 
 
-    private val _totalNotificationItems = MutableStateFlow(0)
-    val totalNotificationItems: StateFlow<Int> = _totalNotificationItems
+    private val _totalnotificationToastItems = MutableStateFlow(0)
+    val totalnotificationToastItems: StateFlow<Int> = _totalnotificationToastItems
     private val _isAllSelected= MutableStateFlow(true)
     val isAllSelected: StateFlow<Boolean> = _isAllSelected
 
     private val _navigationEvent = MutableStateFlow<NavEvent>(CartNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
+
+    private val _notificationToast = MutableSharedFlow<String>()
+    val notificationToast = _notificationToast.asSharedFlow()
+
+    suspend fun showNotificationToast(message: String) {
+        _notificationToast.emit(message)
+    }
+
 
     private var currentUserInfo: CurrentUserInfo? = null
 
@@ -138,7 +144,7 @@ class CartViewModel @Inject constructor(
 
 
 
-    fun onItemAddCart( product: Product ) {
+    fun onItemAddCart( product: Product) {
 
         val cartItem= CartItem(id= "0",idsp =product.id ,
             iddonvi =product.iddonvichuan ,
@@ -293,6 +299,8 @@ class CartViewModel @Inject constructor(
                 }
                 if (result is NetworkResponse.Success) {
                    getCarts(isTotalOder)
+
+                    showNotificationToast(stringProvider.getString(R.string.add_product_on_cart))
                 }
             }
         }

@@ -16,7 +16,7 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.SliderHome

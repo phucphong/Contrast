@@ -1,18 +1,13 @@
 package com.itechpro.data.repository
 
 import com.itechpro.data.api.SettingAPi
-import com.itechpro.domain.model.Category
 
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Product
-import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.Setting
-import com.itechpro.domain.model.SliderHome
 import com.itechpro.domain.repository.SettingRepository
 
 
 import javax.inject.Inject
-import com.squareup.moshi.Types
 
 
 class SettingRepositoryImpl @Inject constructor(

@@ -2,11 +2,10 @@ package com.itechpro.domain.usecase.product
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.itechpro.domain.model.Product
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.product.ProductDetail
 import java.time.Duration
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject

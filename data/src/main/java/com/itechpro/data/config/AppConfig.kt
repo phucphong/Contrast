@@ -10,12 +10,11 @@ class AppConfig(context: Context) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-    fun getIdEmployee(): String = prefs.getString(KEY_ID_EMPLOYEE, "1") ?: "1"
+    fun getIdEmployee(): String = prefs.getString(KEY_ID_EMPLOYEE, "1816841") ?: ""
     fun getIntroducerId(): String = prefs.getString(KEY_ID_INTRODUCER, "0") ?: "0"
     fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "ADMIN") ?: "ADMIN"
 
-    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5NzYxMzk5MzAiLCJ1c2VybmFtZSI6IjA5NzYxMzk5MzAiLCJpZCI6IjE3OTUwMzciLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI5MjA3NTkyMjU4MTgxOTcyMTg5IiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjAiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDY0NDI1NTksImV4cCI6MTc1NTA4MjU1OSwiaWF0IjoxNzQ2NDQyNTU5LCJpc3MiOiJodHRwc3M6Ly9zcGEuZXptYXgudm4iLCJhdWQiOiJodHRwc3M6Ly9zcGEuZXptYXgudm4ifQ.jpOGs5kpxoEdSMnUlBKET0EdnvD_NSpArHmMY7JyHKk")?:""
-
+    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5NzYxMzk5MzAiLCJ1c2VybmFtZSI6IjA5NzYxMzk5MzAiLCJpZCI6IjE4MTY4NDEiLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI3MzQwNjE0OTM1MTkxNzI0NjQwIiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjczNDA2MTQ5MzUxOTE3MjQ2NDAiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDY1MTg2MzIsImV4cCI6MTc1NTE1ODYzMiwiaWF0IjoxNzQ2NTE4NjMyLCJpc3MiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAiLCJhdWQiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAifQ.cOY5HdQZFp8YQwkRlphEZcZcfIvUulUwD03NChagUQ0")?:""
     fun getIdCompany(): String = prefs.getString(KEY_ID_COMPANY, "") ?: ""
     fun getPointAffiliate(): String = prefs.getString(KEY_POINT_AFFILIATE, "") ?: ""
     fun getIdCompanyParent(): String = prefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""
@@ -26,7 +25,7 @@ class AppConfig(context: Context) {
     fun getSalesPointName(): String = prefs.getString(KEY_SALE_POINT_NAME, "") ?: ""
     fun getFullName(): String = prefs.getString(KEY_ID_FULL_NAME, "") ?: ""
     fun getPermissionMobile(): String = prefs.getString(KEY_PERMISSION, "") ?: ""
-    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "https://spa.ezmax.vn") ?: ""
+    fun getDomain(): String = prefs.getString(KEY_DOMAIN, "http://192.168.1.119:910") ?: ""
     fun getDomainCustomer(): String = prefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") ?: ""
     fun getDevice(): String = prefs.getString(KEY_DEVICE, "") ?: ""
     fun getDiscountAgency(): String = prefs.getString(KEY_DISCOUNT_AGENCY, "") ?: ""
@@ -35,7 +34,7 @@ class AppConfig(context: Context) {
     fun getDisplayProduct(): String = prefs.getString(KEY_DISPLAY_PRODUCT, "1") ?: ""
     fun getDisplayPriority(): String = prefs.getString(KEY_DISPLAY_PRIORITY, "1") ?: ""
     fun getCategory(): String = prefs.getString(KEY_CATEGORY, "") ?: ""
-    fun getTypeAccount(): String = prefs.getString(KEY_TYPE_ACCOUNT, "nhanvien") ?: ""
+    fun getTypeAccount(): String = prefs.getString(KEY_TYPE_ACCOUNT, "khachhang") ?: ""
     fun getShowPhoneKH(): String = prefs.getString(KEY_SHOW_PHONE, "") ?: ""
     fun getShowEmailKH(): String = prefs.getString(KEY_SHOW_EMAIL, "") ?: ""
     fun getShowAddressKH(): String = prefs.getString(KEY_SHOW_ADDRESS, "") ?: ""

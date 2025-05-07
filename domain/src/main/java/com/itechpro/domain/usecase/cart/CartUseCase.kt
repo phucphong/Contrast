@@ -10,6 +10,8 @@ import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.cart.CartResult
+import com.itechpro.domain.model.payment.InfoPayment
+import com.itechpro.domain.model.payment.OrderPayment
 import com.itechpro.domain.repository.CartRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -122,12 +124,12 @@ class CartUseCase @Inject constructor(
     }
 
 
-    fun getCheckProduct(ids: String,authen: String): Flow<NetworkResponse<String>> {
+    fun checkProductBeforePayment(ids: String,authen: String): Flow<NetworkResponse<String>> {
         return flow {
             emit(NetworkResponse.Loading)
-            when (val result = repository.getCheckProduct(ids ,authen)) {
+            when (val result = repository.checkProductBeforePayment(ids ,authen)) {
                 is NetworkResponse.Success -> {
-                    val items = result.data.Table1
+                    val items = result.data.table
                     val status = items.firstOrNull()?.Column1 ?: ""
                     emit(NetworkResponse.Success(status))
                 }
@@ -155,21 +157,39 @@ class CartUseCase @Inject constructor(
             }
         }.flowOn(Dispatchers.IO)
     }
-    fun addOder(
-        url: String,
-        obj: CartItem,
-        authen: String
-    ): Flow<NetworkResponse<List<CartItem>>> {
-        return flow {
-            emit(NetworkResponse.Loading)
-            try {
-                val result = repository.addOder(url, obj, authen)
-                emit(result)
-            } catch (e: Exception) {
-                emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))
+    fun addOrder(
+        isOpportunity: Boolean,
+        order: OrderPayment,
+        authToken: String
+    ): Flow<NetworkResponse<InfoPayment>> = flow {
+        emit(NetworkResponse.Loading)
+        try {
+            val url = if (isOpportunity) {
+                "/ex/api/adddonhang_cohoi"
+            } else {
+                "/ex/api/adddonhang_aff"
             }
-        }.flowOn(Dispatchers.IO)
-    }
+
+            when (val result = repository.addOder(url, order, authToken)) {
+                is NetworkResponse.Success -> {
+                    val firstItem = result.data.firstOrNull()
+                    if (firstItem != null) {
+                        emit(NetworkResponse.Success(firstItem))
+                    } else {
+                        emit(NetworkResponse.Error("Danh sách trả về rỗng"))
+                    }
+                }
+
+                is NetworkResponse.Error -> {
+                    emit(NetworkResponse.Error(result.message))
+                }
+
+                else -> Unit
+            }
+        } catch (e: Exception) {
+            emit(NetworkResponse.Error("Lỗi: ${e.localizedMessage ?: "Không xác định"}"))
+        }
+    }.flowOn(Dispatchers.IO)
 
 
 

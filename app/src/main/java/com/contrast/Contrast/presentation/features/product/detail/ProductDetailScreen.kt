@@ -105,7 +105,7 @@ fun ProductDetailScreen(
     val employeeId by viewModel.employeeId.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
-    val totalCartItems by cartViewModel.totalCartItems.collectAsState()
+    val uiState by cartViewModel.uiState.collectAsState()
     val isOfflineMode by viewModel.isOfflineMode.collectAsState()
     val pointAffiliate by viewModel.pointAffiliate.collectAsState()
 
@@ -325,7 +325,7 @@ fun ProductDetailScreen(
                     R.string.service_detail
                 ),
 
-                totalCartItems = totalCartItems,
+                totalCartItems = uiState.totalCartItems,
                 onShareClick = {
                     val shareLink =
                         "$domain/sharelink.html?id=$id&iddonvi=$idUnit&idngt=$employeeId&domain=$domain"

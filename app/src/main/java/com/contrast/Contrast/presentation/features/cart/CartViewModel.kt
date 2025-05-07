@@ -1,3 +1,5 @@
+// 📦 Tên file: CartViewModel.kt (Full Refactor)
+
 package com.contrast.Contrast.presentation.features.cart
 
 import androidx.lifecycle.ViewModel
@@ -8,351 +10,298 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
+import com.itechpro.domain.model.cart.CartUiState
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.payment.OrderPayment
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.cart.CartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val useCase: CartUseCase,
+    private val cartUseCase: CartUseCase,
     private val stringProvider: StringProvider,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _carts = MutableStateFlow<List<CartItem>>(emptyList())
-    val carts: StateFlow<List<CartItem>> = _carts
-
-    private val _cartTable = MutableStateFlow<Cart?>(null)
-    val cartTable: StateFlow<Cart?> = _cartTable
-
-    private val _validationError = MutableStateFlow("")
-    val validationError: StateFlow<String> = _validationError
-
-    private val _device = MutableStateFlow("")
-
-    private val _domain = MutableStateFlow("")
-    val domain: StateFlow<String> = _domain
-
-    private val _statusMessage = MutableStateFlow("")
-    val statusMessage: StateFlow<String> = _statusMessage
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    private val _totalCartItems = MutableStateFlow(0)
-    val totalCartItems: StateFlow<Int> = _totalCartItems
-
-    private val _totalValue = MutableStateFlow(0.0)// tổng tiền
-    val totalValue: StateFlow<Double> = _totalValue
-
-    private val _totalIntoMoney = MutableStateFlow(0.0)// tổng tền thanh toán
-    val totalIntoMoney: StateFlow<Double> = _totalIntoMoney
-
-    private val _discount = MutableStateFlow(0.0)// tổng tền thanh toán
-    val discount: StateFlow<Double> = _discount
-
-        private val _amountMoneyDiscount = MutableStateFlow(0.0)// tổng số tiền giảm  giá
-    val amountMoneyDiscount: StateFlow<Double> = _amountMoneyDiscount
-
-
-    private val _totalnotificationToastItems = MutableStateFlow(0)
-    val totalnotificationToastItems: StateFlow<Int> = _totalnotificationToastItems
-    private val _isAllSelected= MutableStateFlow(true)
-    val isAllSelected: StateFlow<Boolean> = _isAllSelected
-
+    private val _uiState = MutableStateFlow(CartUiState())
+    val uiState: StateFlow<CartUiState> = _uiState
     private val _navigationEvent = MutableStateFlow<NavEvent>(CartNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
-
     private val _notificationToast = MutableSharedFlow<String>()
     val notificationToast = _notificationToast.asSharedFlow()
-
-    suspend fun showNotificationToast(message: String) {
-        _notificationToast.emit(message)
-    }
-
 
     private var currentUserInfo: CurrentUserInfo? = null
 
     init {
         viewModelScope.launch(dispatcher) {
-            try {
-                currentUserInfo = getCurrentUserUseCase()
-                _domain.value = currentUserInfo?.domain.orEmpty()
-                _domain.value = currentUserInfo?.domain.orEmpty()
-                _device.value = currentUserInfo?.device.orEmpty()
+            runCatching { getCurrentUserUseCase() }
+                .onSuccess { user ->
+                    currentUserInfo = user
+                    _uiState.update { it.copy(domain = user.domain.orEmpty(), device = user.device.orEmpty(),
+                        typeAccount = user.typeAccount.orEmpty(),
+                        customerId = user.customerId.orEmpty(),
+                        employeeId = user.employeeId.orEmpty())
+                    }
 
-
-
-
-            } catch (e: Exception) {
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage.orEmpty()}"
-            }
-        }
-    }
-    fun onTabSelected(index: Int, category: Category) {
-        _navigationEvent.value = ProductNavEvent.GoToProductsCategory(category.id.orEmpty())
-    }
-    fun onCheckedChangeAll(carts:  List<CartItem>, isChecked:Boolean) {
-       _carts.value=useCase.onCheckedChangeAll(carts, isChecked)
-        updateCartTotal(_carts.value)
-    }
-    fun isAllSelected(carts:  List<CartItem>,  isChecked:Boolean) {
-       _isAllSelected.value=isChecked
-        _carts.value=useCase.onCheckedChangeAll(carts, isChecked)
-        updateCartTotal(_carts.value)
-    }
-
-
-    fun updateQuantityById(cartItem: CartItem,idsp: String,type: String, newQuantity: Double) {
-        _carts.update { list ->
-            list.map { item ->
-                if (item.idsp == idsp) item.copy(soluong = newQuantity)
-                else item
-            }
-        }
-        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,type,newQuantity, true)
-    }
-
-
-    fun increaseCartQuantity(cartItem: CartItem,type: String) {
-        val newQuantity = (cartItem.soluong?: 1.0) + 1
-        updateQuantityById(cartItem,cartItem.idsp.orEmpty(),type, newQuantity)
-    }
-
-    fun onQuantityChange(cartItem: CartItem,type: String, newQuantity: Double) {
-
-        updateQuantityById(cartItem,cartItem.idsp.orEmpty(),type, newQuantity)
-    }
-
-    fun decreaseCartQuantity(cartItem: CartItem,type: String) {
-        val currentQuantity = (cartItem.soluong?: 1.0)
-        if (currentQuantity >= 1.0) {
-            val newQuantity = currentQuantity - 1
-            updateQuantityById(cartItem,cartItem.idsp.orEmpty(), type,newQuantity)
+                }
+                .onFailure {
+                    _uiState.update {
+                        it.copy(validationError = stringProvider.getString(R.string.error_connection))
+                    }
+                }
         }
     }
 
-
-
-    fun onItemAddCart( product: Product) {
-
-        val cartItem= CartItem(id= "0",idsp =product.id ,
-            iddonvi =product.iddonvichuan ,
-            soluong =1.0 ,
-            dongia =product.sotien  ,
-            ck =product.khuyenmai  ,
-            loaicapnhat ="add"  ,
-            mamenu ="giohang"  ,
-            hanhdong ="add"  ,
-            device =_device.value  ,
-            )
-
-        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,"add",1.0, false)
-    }
-
-    fun onItemAddCartToProductDetail( product: ProductDetail, introducerId:String) {
-
-        val cartItem= CartItem(id= "0",idsp =product.id ,
-            iddonvi =product.iddonvichuan ,
-            idnguoigioithieu =introducerId ,
-            soluong =product.soluong?:1.0 ,
-            dongia =product.sotien  ,
-            ck =product.khuyenmai  ,
-            loaicapnhat ="add"  ,
-            mamenu ="giohang"  ,
-            hanhdong ="add"  ,
-            device =_device.value  ,
-        )
-
-        addEditCart("/ex/apiaffiliate/addgiohang", cartItem,"add",product.soluong?:1.0, false)
-    }
-
-
-
-
-
-    fun deleteAll(carts: List<CartItem>) {
-        val ids = useCase.idsDeleteCart(carts)
+    fun getCarts(isTotalOrder: Boolean) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getDeleteCart(ids, user.device, "", user.token).collect { result ->
+            cartUseCase.getCarts(isTotalOrder, user.typeAccount, user.token).collect { result ->
                 when (result) {
-                    is NetworkResponse.Loading -> {
-                        _isLoading.value = true
-                    }
+                    is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
                     is NetworkResponse.Success -> {
-                        _isLoading.value = false
-                        getCarts(true)
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                carts = result.data.items,
+                                totalCartItems = result.data.totalCount ?: 0,
+                                totalValue = result.data.totalValue ?: 0.0,
+                                totalIntoMoney = result.data.totalIntoMoney ?: 0.0,
+                                amountMoneyDiscount = result.data.amountMoneyDiscount ?: 0.0
+                            )
+                        }
                     }
-                    is NetworkResponse.Error -> {
-                        _isLoading.value = false
-
+                    is NetworkResponse.Error -> _uiState.update {
+                        it.copy(isLoading = false, validationError = result.message)
                     }
                 }
             }
         }
     }
 
-
-
-    // Hàm update tổng
-    fun updateCartTotal(carts: List<CartItem>) {
-        val result = useCase.calculateCartTotal(carts, false)
-
-        _totalValue.value = result.totalValue
-        _totalIntoMoney.value = result.totalIntoMoney
-        _amountMoneyDiscount.value = result.amountMoneyDiscount
-    }
-
-
-
-    fun getCarts(isTotalOder:Boolean) {
+    fun addEditCart(url: String, cartItem: CartItem, type: String, quantity: Double, isTotalOrder: Boolean, isToast: Boolean) {
         val user = currentUserInfo ?: return
+        cartItem.apply {
+            ido = if (type == "update") id else "0"
+            soluong = quantity
+            loaicapnhat = type
+            mamenu = "giohang"
+            hanhdong = if (type == "add") "add" else "edit"
+            device = _uiState.value.device
+        }
+
         viewModelScope.launch(dispatcher) {
-            useCase.getCarts(isTotalOder,user.typeAccount, user.token).collect { result ->
+            cartUseCase.addEditCart(url, cartItem, user.token).collect { result ->
                 when (result) {
-                    is NetworkResponse.Loading -> _isLoading.value = true
+                    is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
+                    is NetworkResponse.Error -> _uiState.update { it.copy(validationError = result.message) }
                     is NetworkResponse.Success -> {
-                        _isLoading.value = false
-                        _carts.value = result.data.items
-                        _totalCartItems.value = result.data.totalCount?:0
-                        _totalValue.value = result.data.totalValue?:0.0
-                        _totalIntoMoney.value = result.data.totalIntoMoney?:0.0
-                        _amountMoneyDiscount.value = result.data.amountMoneyDiscount?:0.0
-
-                        // val totalValue: Double,
-                        //    val totalIntoMoney: Double,
-                        //    val amountMoneyDiscount: Double
-                    }
-                    is NetworkResponse.Error -> {
-                        _isLoading.value = false
-                        _validationError.value = result.message
-                    }
-                }
-            }
-        }
-    }
-
-    fun getCheckOder(ids: String) {
-        val user = currentUserInfo ?: return
-        viewModelScope.launch(dispatcher) {
-            useCase.getCheckOder(ids, user.token).collect { result ->
-                _isLoading.value = result is NetworkResponse.Loading
-                if (result is NetworkResponse.Success) _statusMessage.value = result.data
-                if (result is NetworkResponse.Error) _validationError.value = result.message
-            }
-        }
-    }
-
-    fun getDeleteCart(ids: String, content: String) {
-        val user = currentUserInfo ?: return
-        viewModelScope.launch(dispatcher) {
-            useCase.getDeleteCart(ids, user.device, content, user.token).collect { result ->
-                _isLoading.value = result is NetworkResponse.Loading
-                if (result is NetworkResponse.Success) _statusMessage.value = result.data
-                if (result is NetworkResponse.Error) _validationError.value = result.message
-            }
-        }
-    }
-
-    fun getCheckProduct(ids: String,address: String, isOpportitue:Boolean) {
-        val user = currentUserInfo ?: return
-        viewModelScope.launch(dispatcher) {
-            useCase.getCheckProduct(ids, user.token).collect { result ->
-                _isLoading.value = result is NetworkResponse.Loading
-                if (result is NetworkResponse.Success){
-                    _statusMessage.value = result.data
-                    if(result.data.isEmpty()){
-                        if(isOpportitue){
-                            _navigationEvent.value = CartNavEvent.GoToPayment(totalIntoMoney.value.toString(), discount.value.toString(),address,isOpportitue.toString() )
-
+                        getCarts(isTotalOrder)
+                        if(isToast){
+                            _notificationToast.emit(stringProvider.getString(R.string.add_product_on_cart))
                         }
 
-                    }else{
-                        showNotificationToast(result.data)
                     }
-
                 }
-                if (result is NetworkResponse.Error) _validationError.value = result.message
             }
         }
     }
+    fun addOrder( carts: List<CartItem> ,idCustomer: String, note: String,
 
-    fun addEditCart(url: String, cartItem: CartItem, type:String, quantity:Double, isTotalOder:Boolean) {
-
-
-      if(type=="update"){
-          cartItem.ido = cartItem.id
-      }else{
-          cartItem.ido="0"
-      }
-        cartItem.soluong = quantity
-        cartItem.loaicapnhat = type
-        cartItem. mamenu = "giohang"
-        cartItem.  device = _device.value
-        cartItem. hanhdong = if(type=="add") "add" else "edit"
+                address: String, typeAccount: String,discount:String, isToast: Boolean, isOpportunity: Boolean) {
         val user = currentUserInfo ?: return
+        val salesPointId = user.salesPointId
 
+
+
+
+        val orderPayment = OrderPayment(
+            idCustomer,
+            salesPointId,
+            "",
+            note,
+            address,
+            typeAccount,
+            discount,
+            carts
+        )
         viewModelScope.launch(dispatcher) {
-            useCase.addEditCart(url, cartItem, user.token).collect { result ->
-                _isLoading.value = result is NetworkResponse.Loading
-                if (result is NetworkResponse.Error) {
-                    _validationError.value = result.message
-                }
-                if (result is NetworkResponse.Success) {
-                   getCarts(isTotalOder)
+            cartUseCase.addOrder(isOpportunity, orderPayment, user.token).collect { result ->
+                when (result) {
+                    is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
+                    is NetworkResponse.Error -> _uiState.update { it.copy(validationError = result.message) }
+                    is NetworkResponse.Success -> {
+                        deleteAll(carts)
+                        if(isToast){
+                            _notificationToast.emit(stringProvider.getString(R.string.add_oder_success))
 
-                    showNotificationToast(stringProvider.getString(R.string.add_product_on_cart))
+                            _navigationEvent.value = CartNavEvent.GoToPayment(
+                                totalIntoMoney = result.data.tongtien,
+                                oderKey = result.data.madonhang,
+                                idOder = result.data.iddonhang,
+                                discount = _uiState.value.discount.toString(),
+                                address = address,
+                                isOpportunity = isOpportunity.toString()
+                            )
+                        }
+
+                    }
                 }
             }
         }
     }
 
-    fun payment(address:String, carts: List<CartItem>, isOpportitue:Boolean){
-        viewModelScope.launch(dispatcher) {
-        if(address.isEmpty()){
-            showNotificationToast(stringProvider.getString(R.string.address_oder_emtry))
-        }else{
-            val  ids = useCase.idsProductCheckActive(carts)
-            getCheckProduct(ids,address,isOpportitue)
-        }
 
-        }
-
+    fun onItemAddCartToProductDetail(product: ProductDetail, introducerId: String) {
+        val cartItem = CartItem(
+            id = "0",
+            idsp = product.id,
+            iddonvi = product.iddonvichuan,
+            idnguoigioithieu = introducerId,
+            soluong = product.soluong ?: 1.0,
+            dongia = product.sotien,
+            ck = product.khuyenmai,
+            loaicapnhat = "add",
+            mamenu = "giohang",
+            hanhdong = "add",
+            device = _uiState.value.device
+        )
+        addEditCart("/ex/apiaffiliate/addgiohang", cartItem, "add", product.soluong ?: 1.0, false, true)
+    }
+    fun deleteAll(carts: List<CartItem>) {
+        val ids = cartUseCase.idsDeleteCart(carts)
+        deleteCart(ids)
     }
 
-
-    fun addOder(url: String, obj: CartItem) {
+    fun deleteCart(ids: String, content: String = "") {
         val user = currentUserInfo ?: return
-
         viewModelScope.launch(dispatcher) {
-            useCase.addOder(url, obj, user.token).collect { result ->
-                _isLoading.value = result is NetworkResponse.Loading
-                if (result is NetworkResponse.Error) {
-                    _validationError.value = result.message
+            cartUseCase.getDeleteCart(ids, user.device, content, user.token).collect { result ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = result is NetworkResponse.Loading,
+                        validationError = if (result is NetworkResponse.Error) result.message else it.validationError,
+                        statusMessage = if (result is NetworkResponse.Success) result.data else it.statusMessage
+                    )
                 }
             }
         }
     }
 
+    fun checkProductBeforePayment(ids: String,carts: List<CartItem>, typeAccount: String,address: String,  customerId: String, note: String, isOpportunity: Boolean) {
+        val user = currentUserInfo ?: return
+        viewModelScope.launch(dispatcher) {
+            cartUseCase.checkProductBeforePayment(ids, user.token).collect { result ->
+                _uiState.update { it.copy(isLoading = result is NetworkResponse.Loading) }
+                when (result) {
+                    is NetworkResponse.Success -> {
+                        if (result.data.isEmpty() ) {
 
 
+                            addOrder( carts , customerId,note,address, typeAccount,"0", true,isOpportunity)
+
+                        } else {
+
+
+
+                        }
+                    }
+                    is NetworkResponse.Error -> _uiState.update { it.copy(validationError = result.message) }
+                    NetworkResponse.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun payment(typeAccount: String,address: String,customerId: String, note: String, carts: List<CartItem>, isOpportunity: Boolean) {
+        viewModelScope.launch(dispatcher) {
+            if (address.isEmpty()) {
+                _notificationToast.emit(stringProvider.getString(R.string.address_oder_emtry))
+            } else {
+                val ids = cartUseCase.idsProductCheckActive(carts)
+                checkProductBeforePayment(ids,carts, typeAccount,address,customerId,note, isOpportunity)
+            }
+        }
+    }
+
+    fun onItemAddCart(product: Product) {
+        val cartItem = CartItem(
+            id = "0",
+            idsp = product.id,
+            iddonvi = product.iddonvichuan,
+            soluong = 1.0,
+            dongia = product.sotien,
+            ck = product.khuyenmai,
+            loaicapnhat = "add",
+            mamenu = "giohang",
+            hanhdong = "add",
+            device = _uiState.value.device
+        )
+        addEditCart("/ex/apiaffiliate/addgiohang", cartItem, "add", 1.0, false, true)
+    }
+
+    fun updateCartQuantity(cartItem: CartItem, type: String, newQuantity: Double, ) {
+        _uiState.update { state ->
+            state.copy(carts = state.carts.map {
+                if (it.idsp == cartItem.idsp) it.copy(soluong = newQuantity) else it
+            })
+        }
+        addEditCart("/ex/apiaffiliate/addgiohang", cartItem, type, newQuantity, true, false)
+    }
+    fun isAllSelected(carts: List<CartItem>, isChecked: Boolean) {
+        val updatedCarts = cartUseCase.onCheckedChangeAll(carts, isChecked)
+        _uiState.update {
+            it.copy(
+                carts = updatedCarts,
+                isAllSelected = isChecked
+            )
+        }
+        updateCartTotal(updatedCarts)
+    }
+
+    fun increaseQuantity(item: CartItem, type: String) {
+        val newQuantity = (item.soluong ?: 1.0) + 1
+        updateCartQuantity(item, type, newQuantity)
+    }
+    fun onQuantityChange(cartItem: CartItem, type: String, newQuantity: Double) {
+        updateCartQuantity(cartItem, type, newQuantity)
+    }
+
+    fun decreaseQuantity(item: CartItem, type: String) {
+        val quantity = (item.soluong ?: 1.0)
+        if (quantity >= 1.0) updateCartQuantity(item, type, quantity - 1)
+    }
+
+    fun onCheckedChangeAll(carts: List<CartItem>, isChecked: Boolean) {
+        val updatedCarts = cartUseCase.onCheckedChangeAll(carts, isChecked)
+        _uiState.update { it.copy(carts = updatedCarts, isAllSelected = isChecked) }
+        updateCartTotal(updatedCarts)
+    }
+
+    fun updateCartTotal(carts: List<CartItem>) {
+        val result = cartUseCase.calculateCartTotal(carts, false)
+        _uiState.update {
+            it.copy(
+                totalValue = result.totalValue,
+                totalIntoMoney = result.totalIntoMoney,
+                amountMoneyDiscount = result.amountMoneyDiscount
+            )
+        }
+    }
 
     fun resetNavigation() {
-        _navigationEvent.value = ProductNavEvent.None
+        _navigationEvent.value = CartNavEvent.None
     }
 }
+

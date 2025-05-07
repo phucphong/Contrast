@@ -62,18 +62,20 @@ sealed class NavRoutes(val route: String) {
     }
 
     object Payment {
-       
-        const val route = "payment/{totalIntoMoney}/{discount}/{address}/{isOpportitue}"
 
-        fun withArgs(totalIntoMoney: String, discount: String, address: String, isOpportitue: String): String {
-            return "payment/${Uri.encode(totalIntoMoney)}/${Uri.encode(discount)}/${Uri.encode(address)}/${Uri.encode(isOpportitue)}"
+        const val route = "payment/{totalIntoMoney}/{oderKey}/{idOder}/{discount}/{address}/{isOpportunity}"
+
+        fun withArgs(totalIntoMoney: String,oderKey: String, idOder: String, discount: String, address: String, isOpportunity: String): String {
+            return "payment/${Uri.encode(totalIntoMoney)}/${Uri.encode(oderKey)}/${Uri.encode(idOder)}/${Uri.encode(discount)}/${Uri.encode(address)}/${Uri.encode(isOpportunity)}"
         }
 
         val arguments = listOf(
             navArgument("totalIntoMoney") { type = NavType.StringType },
+            navArgument("oderKey") { type = NavType.StringType },
+            navArgument("idOder") { type = NavType.StringType },
             navArgument("discount") { type = NavType.StringType },
             navArgument("address") { type = NavType.StringType },
-            navArgument("isOpportitue") { type = NavType.BoolType },
+            navArgument("isOpportunity") { type = NavType.StringType },
         )
     }
 

@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.cart.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -44,6 +46,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatCurrency
@@ -59,6 +64,7 @@ import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.features.product.detail.callApi
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF5722
@@ -77,11 +83,7 @@ fun CartScreen(
     profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
 
-    val totalValue by viewModel.totalValue.collectAsState()
-    val totalIntoMoney by viewModel.totalIntoMoney.collectAsState()
-    val amountMoneyDiscount by viewModel.amountMoneyDiscount.collectAsState()
-    val isAllSelected by viewModel.isAllSelected.collectAsState()
-    val statusMessage by viewModel.statusMessage.collectAsState()
+
     val navEvent by viewModel.navigationEvent.collectAsState()
 
     var isDeleteAll by remember { mutableStateOf(false) }
@@ -89,13 +91,13 @@ fun CartScreen(
     var note by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
 
-    val carts by viewModel.carts.collectAsState()
-    val domain by viewModel.domain.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
     var toastMessage by remember { mutableStateOf("") }
     var showToast by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
 
-        viewModel.onCheckedChangeAll(carts, isAllSelected)
+        viewModel.onCheckedChangeAll(uiState.carts, uiState.isAllSelected)
     }
     LaunchedEffect(Unit) {
 
@@ -110,9 +112,11 @@ fun CartScreen(
                 navHostController.navigate(
                     NavRoutes.Payment.withArgs(
                         totalIntoMoney = event.totalIntoMoney,
+                        oderKey = event.oderKey,
+                        idOder = event.idOder,
                         discount = event.discount,
                         address = event.address,
-                        isOpportitue = event.isOpportitue,
+                        isOpportunity = event.isOpportunity,
 
                         )
                 )
@@ -130,6 +134,19 @@ fun CartScreen(
             toastMessage = it
             showToast = true
         }
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.getCarts(true)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
    Box {  Column(
        modifier = Modifier
@@ -174,7 +191,7 @@ fun CartScreen(
 
 
        // Danh sách sản phẩm
-       if (carts.isNotEmpty()) {
+       if (uiState.carts.isNotEmpty()) {
 
            // Chọn tất cả / Xóa tất cả
            Row(
@@ -186,19 +203,19 @@ fun CartScreen(
                verticalAlignment = Alignment.CenterVertically
            ) {
                Row(verticalAlignment = Alignment.CenterVertically) {
-                   CheckBoxColor(checked = isAllSelected,
+                   CheckBoxColor(checked = uiState.isAllSelected,
                        padding = 8.dp,
                        size = 15.dp,
                        backgroundChecked = TealGreen,
                        backgroundUnChecked = TealGreen,
                        onCheckedChange = { isChecked ->
-                           viewModel.isAllSelected(carts, isChecked)
+                           viewModel.isAllSelected(uiState.carts, isChecked)
                        })
                    Spacer(modifier = Modifier.width(6.dp))
                    Text(stringResource(R.string.cart_select_all),
                        color = TealGreen,
                        modifier = Modifier.noRippleClickableComposable {
-                           viewModel.isAllSelected(carts, !isAllSelected)
+                           viewModel.isAllSelected(uiState.carts, !uiState.isAllSelected)
                        }
 
                    )
@@ -215,15 +232,15 @@ fun CartScreen(
                    .background(Color(0xFFFAFAFA))
                    .padding(horizontal = 10.dp),
            ) {
-               items(carts) { cart ->
+               items(uiState.carts) { cart ->
 
                    CartItemRow(
                        cart = cart,
-                       domain = domain,
+                       domain = uiState.domain,
                        onCheckedChange = {},
-                       increaseQuantity = { viewModel.increaseCartQuantity(cart, "update") },
+                       increaseQuantity = { viewModel.increaseQuantity(cart, "update") },
                        onQuantityChange = { viewModel.onQuantityChange(cart, "update", it) },
-                       decreaseQuantity = { viewModel.decreaseCartQuantity(cart, "update") },
+                       decreaseQuantity = { viewModel.decreaseQuantity(cart, "update") },
                    )
                    Spacer(modifier = Modifier.height(12.dp))
                }
@@ -283,16 +300,16 @@ fun CartScreen(
 
        ) {
            RowAmount(
-               stringResource(R.string.cart_total_amount), "", totalValue.formatDouble(), true
+               stringResource(R.string.cart_total_amount), "", uiState.totalValue.formatDouble(), true
            )
            RowAmount(
                stringResource(R.string.cart_discount),
                "-",
-               amountMoneyDiscount.formatDouble(),
+               uiState.amountMoneyDiscount.formatDouble(),
                textColor = FFFF5722
            )
            RowAmount(
-               stringResource(R.string.cart_final_amount), "", totalIntoMoney.formatDouble(), true
+               stringResource(R.string.cart_final_amount), "",uiState. totalIntoMoney.formatDouble(), true
            )
 
 
@@ -318,7 +335,14 @@ fun CartScreen(
 
                Button(
                    onClick = {
-                       viewModel.payment(address, carts,isOpportitue)
+
+                       var  customerId = ""
+                       if(uiState.typeAccount=="daily"){
+                           customerId =uiState.employeeId
+                       }else{
+                           customerId = uiState.customerId
+                       }
+                       viewModel.payment(uiState.typeAccount,address,customerId, note,uiState.carts,isOpportitue)
 
                    },
                    modifier = Modifier
@@ -362,7 +386,7 @@ fun CartScreen(
             message = stringResource(R.string.you_want_to_deleta_all_cart),
             onOk = {
                 isDeleteAll = false
-                viewModel.deleteAll(carts)
+                viewModel.deleteAll(uiState.carts)
             },
             onDismiss = { isDeleteAll = false },
         )

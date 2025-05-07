@@ -9,6 +9,9 @@ import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
 
 import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.cart.CheckProductActive
+import com.itechpro.domain.model.payment.InfoPayment
+import com.itechpro.domain.model.payment.OrderPayment
 
 import com.itechpro.domain.repository.CartRepository
 
@@ -47,8 +50,8 @@ class CartRepositoryImpl @Inject constructor(
     }
 
 //    suspend fun checkOder(ids:String) = apiService.checkOder("checkgiavakm", "checkgiavakm",ids, authen)
-    override suspend fun getCheckProduct( ids: String,authen: String): NetworkResponse<Cart> {
-        val response = api.getCheckProduct("giohang","checksphoatdong",ids,authen)
+    override suspend fun checkProductBeforePayment( ids: String,authen: String): NetworkResponse<CheckProductActive> {
+        val response = api.checkProductBeforePayment("giohang","checksphoatdong",ids,authen)
     return if (response.isSuccessful) {
         val body = response.body()
         if (body != null) {
@@ -90,7 +93,7 @@ class CartRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun addOder(url: String, obj: CartItem, authen: String): NetworkResponse<List<CartItem>> {
+    override suspend fun addOder(url: String, obj: OrderPayment, authen: String): NetworkResponse<List<InfoPayment>> {
         return try {
             val response = api.addOder(url, obj,authen)
             if (response.isSuccessful) {

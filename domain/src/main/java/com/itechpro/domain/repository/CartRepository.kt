@@ -9,6 +9,9 @@ import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
 import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.cart.CheckProductActive
+import com.itechpro.domain.model.payment.InfoPayment
+import com.itechpro.domain.model.payment.OrderPayment
 
 interface CartRepository {
 
@@ -21,8 +24,8 @@ interface CartRepository {
     suspend fun getCheckOder(ids: String,authen: String
     ): NetworkResponse<List<CartItem>>
 
-    suspend fun getCheckProduct(ids: String,authen: String
-    ): NetworkResponse<Cart>
+    suspend fun checkProductBeforePayment(ids: String,authen: String
+    ): NetworkResponse<CheckProductActive>
 
 
 
@@ -33,7 +36,7 @@ interface CartRepository {
     suspend fun addEditCart(url: String, obj: CartItem, authen: String): NetworkResponse<List<CartItem>>
 
 
-   suspend fun addOder(url: String, obj: CartItem, authen: String): NetworkResponse<List<CartItem>>
+   suspend fun addOder(url: String, obj: OrderPayment, authen: String): NetworkResponse<List<InfoPayment>>
 
 
 

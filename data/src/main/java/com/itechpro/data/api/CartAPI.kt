@@ -2,6 +2,9 @@ package com.itechpro.data.api
 
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
+import com.itechpro.domain.model.cart.CheckProductActive
+import com.itechpro.domain.model.payment.InfoPayment
+import com.itechpro.domain.model.payment.OrderPayment
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -43,12 +46,12 @@ interface CartAPI {
 
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobj")
-    suspend fun getCheckProduct(
+    suspend fun checkProductBeforePayment(
         @Query("obj") giohang: String?,
         @Query("mode") checksphoatdong: String?,
         @Query("ids") ids: String?,
         @Header("Authorization") authen: String?
-    ): Response<Cart>
+    ): Response<CheckProductActive>
 
 
     @Headers("Content-Type: application/json")
@@ -84,9 +87,9 @@ interface CartAPI {
     @POST("{endpoint}")
     suspend fun addOder(
         @Path("endpoint") endpoint: String,
-        @Body body: CartItem,
+        @Body body: OrderPayment,
         @Header("Authorization") authen: String?
-    ): Response<List<CartItem>>
+    ): Response<List<InfoPayment>>
 
 
 }

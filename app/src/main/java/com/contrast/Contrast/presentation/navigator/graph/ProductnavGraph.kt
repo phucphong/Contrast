@@ -45,10 +45,12 @@ fun NavGraphBuilder.productnavGraph(navController: NavHostController) {
             arguments = NavRoutes.Payment.arguments
         ) { backStackEntry ->
             val totalIntoMoney = backStackEntry.arguments?.getString("totalIntoMoney") ?: ""
+            val oderKey = backStackEntry.arguments?.getString("oderKey") ?: ""
+            val idOder = backStackEntry.arguments?.getString("idOder") ?: ""
             val discount = backStackEntry.arguments?.getString("discount") ?: ""
             val address = backStackEntry.arguments?.getString("address") ?: ""
-            val isOpportitue = backStackEntry.arguments?.getString("isOpportitue") ?: ""
-            PaymentScreen(navController, totalIntoMoney, discount,address,isOpportitue)
+            val isOpportunity = backStackEntry.arguments?.getString("isOpportunity") ?: ""
+            PaymentScreen(navController, totalIntoMoney,oderKey,idOder, discount,address,isOpportunity)
         }
 
 

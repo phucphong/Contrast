@@ -64,7 +64,7 @@ fun HomePage(
     val token by viewModel.token.collectAsState()
     val pointAffiliate by viewModel.pointAffiliate.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
-    val totalCartItems by cartViewModel.totalCartItems.collectAsState()
+    val uiState by cartViewModel.uiState.collectAsState()
     val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
 
@@ -170,7 +170,7 @@ fun HomePage(
             isTexField = true,
             text = searchText,
             totalNotificationItems = totalNotificationItems,
-            totalCartItems = totalCartItems,
+            totalCartItems = uiState.totalCartItems,
             onTextChanged = { searchText = it },
             onSearchClick = { },
             onNotificationClick = { viewModel.onItemNotificationSelected() },

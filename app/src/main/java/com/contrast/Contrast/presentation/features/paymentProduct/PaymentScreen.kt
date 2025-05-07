@@ -100,7 +100,7 @@ fun PaymentScreen(
             if (uiState.qrCodes.isNotEmpty()) {
                 ImageSliderPaymentFromUrl(
                     domain = uiState.domain,
-                    autoScroll = true,
+                    autoScroll = false,
                     slides = uiState.qrCodes,
                     modifier = Modifier.fillMaxSize().padding(10.dp),
                     onDownloadClick={

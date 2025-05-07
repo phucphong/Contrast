@@ -20,11 +20,15 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun ProductRow(
     domain: String,
+    token: String,
+    pointAffiliate: String,
+    isShare: Boolean=false,
     rowProducts: List<Product>,
     promoUiDataMap: Map<String, StateFlow<PromoUiData>>,
     onItemClick: (Product) -> Unit,
     onClickCart: (Product) -> Unit,
     onClickAddServiceRequest: (Product) -> Unit,
+    onClickShare: (Product) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -41,11 +45,15 @@ fun ProductRow(
                     .noRippleClickableComposable { onItemClick(product) }
                     .padding(2.dp),
                 domain = domain,
+                token = token,
+                isShare = isShare,
+                pointAffiliate = pointAffiliate,
                 product = product,
                 promoUiDataFlow = promoUiDataMap[product.id],
                 onClick = { onItemClick(product) },
                 onClickCart = { onClickCart(product) },
-                onClickAddServiceRequest = { onClickAddServiceRequest(product) }
+                onClickAddServiceRequest = { onClickAddServiceRequest(product) },
+                onClickShare = { onClickShare(product) },
             )
         }
 

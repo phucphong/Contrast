@@ -5,10 +5,10 @@ fun Int.formatCurrency(): String {
 }
 
 fun Double.formatCurrency(): String {
-    return "%,.0f đ".format(this).replace(',', '.')
+    return "%,.0fđ".format(this).replace(',', '.')
 }
 fun Float.formatCurrency(): String {
-    return "%,.0f đ".format(this).replace(',', '.')
+    return "%,.0fđ".format(this).replace(',', '.')
 }
 
 

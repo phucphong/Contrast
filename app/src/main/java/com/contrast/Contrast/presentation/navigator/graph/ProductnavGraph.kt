@@ -15,6 +15,7 @@ import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
+import com.contrast.Contrast.presentation.features.paymentProduct.PaymentScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
 import com.contrast.Contrast.presentation.features.report.AddReportProductScreen
 import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
@@ -38,6 +39,19 @@ fun NavGraphBuilder.productnavGraph(navController: NavHostController) {
             val introducerId = backStackEntry.arguments?.getString("introducerId") ?: ""
             ProductDetailScreen(navController, id, idUnit,introducerId)
         }
+
+        composable(
+            route = NavRoutes.Payment.route,
+            arguments = NavRoutes.Payment.arguments
+        ) { backStackEntry ->
+            val totalIntoMoney = backStackEntry.arguments?.getString("totalIntoMoney") ?: ""
+            val discount = backStackEntry.arguments?.getString("discount") ?: ""
+            val address = backStackEntry.arguments?.getString("address") ?: ""
+            val isOpportitue = backStackEntry.arguments?.getString("isOpportitue") ?: ""
+            PaymentScreen(navController, totalIntoMoney, discount,address,isOpportitue)
+        }
+
+
 
         composable(
             route = NavRoutes.AddReportProduct.route,

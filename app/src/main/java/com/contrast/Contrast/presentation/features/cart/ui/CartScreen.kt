@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.features.cart.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,10 +35,13 @@ import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -49,33 +54,45 @@ import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertOkCa
 import com.contrast.Contrast.presentation.components.checkbox.CheckBoxColor
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileViewModel
+import com.contrast.Contrast.presentation.components.toast.CustomToast
+import com.contrast.Contrast.presentation.components.toast.toastCollect
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF5722
+import com.contrast.Contrast.presentation.theme.FFFFFFFF
 import com.contrast.Contrast.presentation.theme.TealGreen
 
 import com.contrast.Contrast.presentation.theme.UltraLightGray
+import com.itechpro.domain.model.ToastPosition
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 @Composable
 fun CartScreen(
     navHostController: NavHostController,
     viewModel: CartViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
 
     val totalValue by viewModel.totalValue.collectAsState()
     val totalIntoMoney by viewModel.totalIntoMoney.collectAsState()
     val amountMoneyDiscount by viewModel.amountMoneyDiscount.collectAsState()
     val isAllSelected by viewModel.isAllSelected.collectAsState()
-
+    val statusMessage by viewModel.statusMessage.collectAsState()
+    val navEvent by viewModel.navigationEvent.collectAsState()
 
     var isDeleteAll by remember { mutableStateOf(false) }
+    var isOpportitue by remember { mutableStateOf(false) }
     var note by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
 
     val carts by viewModel.carts.collectAsState()
     val domain by viewModel.domain.collectAsState()
-
+    var toastMessage by remember { mutableStateOf("") }
+    var showToast by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
 
         viewModel.onCheckedChangeAll(carts, isAllSelected)
@@ -86,204 +103,259 @@ fun CartScreen(
     }
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(FFFAFAFA) // nền xám nhạt
-    ) {
-        // Header
-        CartHeader(onBackPress = { navHostController.popBackStack() }, onBackHome = {
+    LaunchedEffect(navEvent) {
+        when (val event = navEvent) {
 
-        })
+            is CartNavEvent.GoToPayment -> {
+                navHostController.navigate(
+                    NavRoutes.Payment.withArgs(
+                        totalIntoMoney = event.totalIntoMoney,
+                        discount = event.discount,
+                        address = event.address,
+                        isOpportitue = event.isOpportitue,
 
-
-        // Địa chỉ nhận hàng
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(vertical = 6.dp, horizontal = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(Icons.Default.LocationOn, contentDescription = null, tint = TealGreen)
-            Spacer(modifier = Modifier.width(6.dp))
-
-
-            BasicTextField(value = address,
-
-                onValueChange = { address = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(8.dp),
-                decorationBox = { innerTextField ->
-                    if (address.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.cart_delivery_address),
-                            color = Color.Gray
                         )
-                    }
-                    innerTextField()
-                })
-        }
-
-
-        // Danh sách sản phẩm
-        if (carts.isNotEmpty()) {
-
-            // Chọn tất cả / Xóa tất cả
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFFAFAFA))
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    CheckBoxColor(checked = isAllSelected,
-                        padding = 8.dp,
-                        size = 15.dp,
-                        backgroundChecked = TealGreen,
-                        backgroundUnChecked = TealGreen,
-                        onCheckedChange = { isChecked ->
-                            viewModel.isAllSelected(carts, isChecked)
-                        })
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(stringResource(R.string.cart_select_all),
-                        color = TealGreen,
-                        modifier = Modifier.noRippleClickableComposable {
-                            viewModel.isAllSelected(carts, !isAllSelected)
-                        }
-
-                    )
-                }
-                Text(text = stringResource(R.string.cart_delete_all),
-                    color = Color.Red,
-                    modifier = Modifier.noRippleClickableComposable { isDeleteAll = true })
-            }
-
-
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .background(Color(0xFFFAFAFA))
-                    .padding(horizontal = 10.dp),
-            ) {
-                items(carts) { cart ->
-
-                    CartItemRow(
-                        cart = cart,
-                        domain = domain,
-                        onCheckedChange = {},
-                        increaseQuantity = { viewModel.increaseCartQuantity(cart, "update") },
-                        onQuantityChange = { viewModel.onQuantityChange(cart, "update", it) },
-                        decreaseQuantity = { viewModel.decreaseCartQuantity(cart, "update") },
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
-            }
-        } else {
-            Box(modifier = Modifier.weight(1f)) {
-
-                EmptyStateScreen(
-                    imageRes = R.drawable.emptycart,
-                    size = 90.dp,
-                    title = stringResource(R.string.empty_cart),
-                    background = FFFAFAFA,
-                    modifier = Modifier.padding(40.dp)
                 )
+                viewModel.resetNavigation()
             }
-        }
-
-        // Ghi chú đơn hàng
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-
-            Image(
-                painter = painterResource(R.drawable.note_pad), contentDescription = null,
-
-                modifier = Modifier.size(20.dp)
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            BasicTextField(value = note,
-
-                onValueChange = { note = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(8.dp),
-                decorationBox = { innerTextField ->
-                    if (note.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.cart_item_note), color = Color.Gray
-                        )
-                    }
-                    innerTextField()
-                })
-        }
-
-
-        // Tổng tiền + nút
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-
-        ) {
-            RowAmount(
-                stringResource(R.string.cart_total_amount), "", totalValue.formatDouble(), true
-            )
-            RowAmount(
-                stringResource(R.string.cart_discount),
-                "-",
-                amountMoneyDiscount.formatDouble(),
-                textColor = FFFF5722
-            )
-            RowAmount(
-                stringResource(R.string.cart_final_amount), "", totalIntoMoney.formatDouble(), true
-            )
 
 
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(
-                    onClick = { /* TODO: tư vấn thêm */ },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(44.dp),
-                    shape = RoundedCornerShape(0.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
-                ) {
-                    Text(
-                        text = stringResource(R.string.cart_need_consultation), color = Color.White
-                    )
-                }
-
-                Button(
-                    onClick = { /* TODO: thanh toán */ },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(44.dp),
-                    shape = RoundedCornerShape(0.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF009688))
-                ) {
-                    Text(text = stringResource(R.string.cart_checkout), color = Color.White)
-                }
-            }
+            else -> Unit
         }
     }
+
+    viewModel.notificationToast.toastCollect {
+        if (!showToast) {
+            toastMessage = it
+            showToast = true
+        }
+    }
+   Box {  Column(
+       modifier = Modifier
+           .fillMaxSize()
+           .background(FFFAFAFA) // nền xám nhạt
+   ) {
+       // Header
+       CartHeader(onBackPress = { navHostController.popBackStack() }, onBackHome = {
+
+       })
+
+
+       // Địa chỉ nhận hàng
+       Row(
+           modifier = Modifier
+               .fillMaxWidth()
+               .background(Color.White)
+               .padding(vertical = 6.dp, horizontal = 10.dp),
+           verticalAlignment = Alignment.CenterVertically
+       ) {
+           Icon(Icons.Default.LocationOn, contentDescription = null, tint = TealGreen)
+           Spacer(modifier = Modifier.width(6.dp))
+
+
+           BasicTextField(value = address,
+
+               onValueChange = { address = it },
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .background(Color.White)
+                   .padding(8.dp),
+               decorationBox = { innerTextField ->
+                   if (address.isEmpty()) {
+                       Text(
+                           text = stringResource(R.string.cart_delivery_address),
+                           color = Color.Gray
+                       )
+                   }
+                   innerTextField()
+               })
+       }
+
+
+       // Danh sách sản phẩm
+       if (carts.isNotEmpty()) {
+
+           // Chọn tất cả / Xóa tất cả
+           Row(
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .background(Color(0xFFFAFAFA))
+                   .padding(10.dp),
+               horizontalArrangement = Arrangement.SpaceBetween,
+               verticalAlignment = Alignment.CenterVertically
+           ) {
+               Row(verticalAlignment = Alignment.CenterVertically) {
+                   CheckBoxColor(checked = isAllSelected,
+                       padding = 8.dp,
+                       size = 15.dp,
+                       backgroundChecked = TealGreen,
+                       backgroundUnChecked = TealGreen,
+                       onCheckedChange = { isChecked ->
+                           viewModel.isAllSelected(carts, isChecked)
+                       })
+                   Spacer(modifier = Modifier.width(6.dp))
+                   Text(stringResource(R.string.cart_select_all),
+                       color = TealGreen,
+                       modifier = Modifier.noRippleClickableComposable {
+                           viewModel.isAllSelected(carts, !isAllSelected)
+                       }
+
+                   )
+               }
+               Text(text = stringResource(R.string.cart_delete_all),
+                   color = Color.Red,
+                   modifier = Modifier.noRippleClickableComposable { isDeleteAll = true })
+           }
+
+
+           LazyColumn(
+               modifier = Modifier
+                   .weight(1f)
+                   .background(Color(0xFFFAFAFA))
+                   .padding(horizontal = 10.dp),
+           ) {
+               items(carts) { cart ->
+
+                   CartItemRow(
+                       cart = cart,
+                       domain = domain,
+                       onCheckedChange = {},
+                       increaseQuantity = { viewModel.increaseCartQuantity(cart, "update") },
+                       onQuantityChange = { viewModel.onQuantityChange(cart, "update", it) },
+                       decreaseQuantity = { viewModel.decreaseCartQuantity(cart, "update") },
+                   )
+                   Spacer(modifier = Modifier.height(12.dp))
+               }
+           }
+       } else {
+           Box(modifier = Modifier.weight(1f)) {
+
+               EmptyStateScreen(
+                   imageRes = R.drawable.emptycart,
+                   size = 90.dp,
+                   title = stringResource(R.string.empty_cart),
+                   background = FFFAFAFA,
+                   modifier = Modifier.padding(40.dp)
+               )
+           }
+       }
+
+       // Ghi chú đơn hàng
+       Row(
+           modifier = Modifier
+               .fillMaxWidth()
+               .background(Color.White)
+               .padding(horizontal = 12.dp, vertical = 8.dp),
+           verticalAlignment = Alignment.CenterVertically
+       ) {
+
+
+           Image(
+               painter = painterResource(R.drawable.note_pad), contentDescription = null,
+
+               modifier = Modifier.size(20.dp)
+           )
+           Spacer(modifier = Modifier.width(6.dp))
+           BasicTextField(value = note,
+
+               onValueChange = { note = it },
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .background(Color.White)
+                   .padding(8.dp),
+               decorationBox = { innerTextField ->
+                   if (note.isEmpty()) {
+                       Text(
+                           text = stringResource(R.string.cart_item_note), color = Color.Gray
+                       )
+                   }
+                   innerTextField()
+               })
+       }
+
+
+       // Tổng tiền + nút
+       Column(
+           modifier = Modifier
+               .fillMaxWidth()
+               .background(Color.White)
+
+       ) {
+           RowAmount(
+               stringResource(R.string.cart_total_amount), "", totalValue.formatDouble(), true
+           )
+           RowAmount(
+               stringResource(R.string.cart_discount),
+               "-",
+               amountMoneyDiscount.formatDouble(),
+               textColor = FFFF5722
+           )
+           RowAmount(
+               stringResource(R.string.cart_final_amount), "", totalIntoMoney.formatDouble(), true
+           )
+
+
+
+           Row(
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .padding(top = 5.dp),
+               horizontalArrangement = Arrangement.SpaceBetween
+           ) {
+               Button(
+                   onClick = { isOpportitue = true},
+                   modifier = Modifier
+                       .weight(1f)
+                       .height(44.dp),
+                   shape = RoundedCornerShape(0.dp),
+                   colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+               ) {
+                   Text(
+                       text = stringResource(R.string.cart_need_consultation), color = Color.White
+                   )
+               }
+
+               Button(
+                   onClick = {
+                       viewModel.payment(address, carts,isOpportitue)
+
+                   },
+                   modifier = Modifier
+                       .weight(1f)
+                       .height(44.dp),
+                   shape = RoundedCornerShape(0.dp),
+                   colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF009688))
+               ) {
+                   Text(text = stringResource(R.string.cart_checkout), color = Color.White)
+               }
+           }
+       }
+   }
+
+       if (showToast) {
+           CustomToast(
+               message = toastMessage,
+               textAlign = TextAlign.Center,
+               background = FFFFFFFF,
+               textColor = Color.Black,
+               showToast = true,
+               toastPosition = ToastPosition.CENTER,
+               durationMillis = 2000,
+               onDismiss = {
+                   showToast = false
+               },
+               modifier = Modifier
+                   .padding(horizontal = 50.dp)
+                   .wrapContentHeight()
+                   .shadow(elevation = 6.dp, shape = RoundedCornerShape(8.dp)) // ✅ Đổ bóng
+                   .clip(RoundedCornerShape(8.dp)) // ✅ Bo góc sau khi đổ bóng
+                   .background(FFFFFFFF) // ✅ Bắt buộc: set lại màu nền sau khi clip
+                   .border(1.dp, FFFFFFFF, RoundedCornerShape(8.dp))
+
+           )
+
+       } }
 
     if (isDeleteAll) {
         CustomAlertOkCancelDialog(

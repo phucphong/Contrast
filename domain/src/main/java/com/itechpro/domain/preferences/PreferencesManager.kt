@@ -17,6 +17,7 @@ interface PreferencesManager {
     fun getSalesPointName(): String
     fun getCategory(): String
     fun getTypeAccount(): String
+    fun getPointAffiliate(): String
 
     // 🌐 Domain & Auth
     fun getToken(): String

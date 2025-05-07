@@ -19,8 +19,10 @@ fun ProductPriceSection(
     promoUiData: PromoUiData?,
     price: Double,
     promoPrice: Double,
+    isShare: Boolean,
     onClickCart: () -> Unit,
-    onClickAddServiceRequest: () -> Unit
+    onClickAddServiceRequest: () -> Unit,
+    onClickShare: () -> Unit
 ) {
     if (promoUiData != null) {
         val countdownText by rememberUpdatedState(promoUiData.remainingTime)
@@ -38,8 +40,10 @@ fun ProductPriceSection(
         }else{
             PriceBar(
                 price = price.formatCurrency(),
+                isShare = isShare,
                 onClickCart = onClickCart,
                 onClickAddServiceRequest = onClickAddServiceRequest,
+                onClickShare = onClickShare,
             )
 
         }
@@ -49,8 +53,10 @@ fun ProductPriceSection(
     } else {
         PriceBar(
             price = price.formatCurrency(),
+            isShare = isShare,
             onClickCart = onClickCart,
             onClickAddServiceRequest = onClickAddServiceRequest,
+            onClickShare = onClickShare,
         )
     }
 }

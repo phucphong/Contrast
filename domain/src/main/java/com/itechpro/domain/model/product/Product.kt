@@ -21,6 +21,10 @@ data class Product(
     val sotien: Double? = 0.0,
     val sotiensaukm: Double? = 0.0,
     val khuyenmai: Double? = 0.0,
+    val diem: Double? = 0.0,
+    val sotienhoahong: Double? = 0.0,
+    val tylehoahong: Double? = 0.0,
+
 
     @Json(ignore = true)
     val noidung: String? = ""

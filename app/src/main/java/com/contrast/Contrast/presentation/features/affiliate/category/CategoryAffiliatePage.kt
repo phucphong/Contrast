@@ -57,6 +57,8 @@ fun CategoryAffiliatePage(
     val category2 by viewModel.category2.collectAsState()
     val category3 by viewModel.category3.collectAsState()
     val domain by viewModel.domain.collectAsState()
+    val token by viewModel.token.collectAsState()
+    val pointAffiliate by viewModel.pointAffiliate.collectAsState()
     val displayProduct by viewModel.displayProduct.collectAsState()
     val displayService by viewModel.displayService.collectAsState()
     val displayPriority by viewModel.displayPriority.collectAsState()
@@ -183,6 +185,8 @@ fun CategoryAffiliatePage(
                       items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
                             ProductRow(
                                 domain = domain,
+                                token = token,
+                                pointAffiliate = pointAffiliate,
                                 rowProducts = row,
                                 promoUiDataMap = promoUiDataMap,
                                 onItemClick = { viewModel.onItemProductSelected(it) },
@@ -191,6 +195,8 @@ fun CategoryAffiliatePage(
                                     viewModel.onAddServiceRequestSelected(
                                         it
                                     )
+                                }, onClickShare = {
+
                                 }
                             )
                         }

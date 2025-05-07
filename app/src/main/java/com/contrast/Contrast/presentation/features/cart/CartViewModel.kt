@@ -61,6 +61,10 @@ class CartViewModel @Inject constructor(
 
     private val _totalIntoMoney = MutableStateFlow(0.0)// tổng tền thanh toán
     val totalIntoMoney: StateFlow<Double> = _totalIntoMoney
+
+    private val _discount = MutableStateFlow(0.0)// tổng tền thanh toán
+    val discount: StateFlow<Double> = _discount
+
         private val _amountMoneyDiscount = MutableStateFlow(0.0)// tổng số tiền giảm  giá
     val amountMoneyDiscount: StateFlow<Double> = _amountMoneyDiscount
 
@@ -265,12 +269,24 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun getCheckProduct(ids: String) {
+    fun getCheckProduct(ids: String,address: String, isOpportitue:Boolean) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             useCase.getCheckProduct(ids, user.token).collect { result ->
                 _isLoading.value = result is NetworkResponse.Loading
-                if (result is NetworkResponse.Success) _statusMessage.value = result.data
+                if (result is NetworkResponse.Success){
+                    _statusMessage.value = result.data
+                    if(result.data.isEmpty()){
+                        if(isOpportitue){
+                            _navigationEvent.value = CartNavEvent.GoToPayment(totalIntoMoney.value.toString(), discount.value.toString(),address,isOpportitue.toString() )
+
+                        }
+
+                    }else{
+                        showNotificationToast(result.data)
+                    }
+
+                }
                 if (result is NetworkResponse.Error) _validationError.value = result.message
             }
         }
@@ -304,6 +320,19 @@ class CartViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun payment(address:String, carts: List<CartItem>, isOpportitue:Boolean){
+        viewModelScope.launch(dispatcher) {
+        if(address.isEmpty()){
+            showNotificationToast(stringProvider.getString(R.string.address_oder_emtry))
+        }else{
+            val  ids = useCase.idsProductCheckActive(carts)
+            getCheckProduct(ids,address,isOpportitue)
+        }
+
+        }
+
     }
 
 

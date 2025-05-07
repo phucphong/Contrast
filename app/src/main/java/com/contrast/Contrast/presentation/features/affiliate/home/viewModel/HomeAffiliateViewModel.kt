@@ -81,6 +81,12 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
     val validationError: StateFlow<String> = _validationError
     private val _domain = MutableStateFlow<String>("")
     val domain: StateFlow<String> = _domain
+        private val _token = MutableStateFlow<String>("")
+    val token: StateFlow<String> = _token
+        private val _pointAffiliate = MutableStateFlow<String>("")
+    val pointAffiliate: StateFlow<String> = _pointAffiliate
+
+
     private val _displayProduct = MutableStateFlow<String>("")
     private val _displayService = MutableStateFlow<String>("")
 
@@ -217,16 +223,17 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
     }
 
 
-    fun loadHomeData() {
-        if (isLoaded) return
+    fun loadHomeData(forceRefresh: Boolean = false) {
+        if (isLoaded && !forceRefresh) return
         isLoaded = true
-
         viewModelScope.launch(dispatcher) {
             try {
                 currentUserInfo = getCurrentUserUseCase()
                 val user = currentUserInfo ?: return@launch
 
                 _domain.value = user.domain.orEmpty()
+                _token.value = user.token.orEmpty()
+                _pointAffiliate.value = user.pointAffiliate.orEmpty()
                 _displayProduct.value = user.displayProduct.orEmpty()
                 _displayService.value = user.displayService.orEmpty()
                 _displayPriority.value = user.displayPriority.orEmpty()
@@ -277,6 +284,9 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
             } catch (e: Exception) {
                 _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
                 Log.e("loadHomeData", "❌ Exception tổng: ${e.localizedMessage}")
+            } finally {
+                isLoaded = false
+                _isLoading.value = false
             }
         }
     }
@@ -356,6 +366,9 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                         }
                         is NetworkResponse.Success -> {
                             _flashSales.value = result.data
+                            if(selectedTab.value>0){
+                                _selectedTab.value = 0
+                            }
 
                         }
                         is NetworkResponse.Error -> {
@@ -404,7 +417,9 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
             try {
 
                 // ✅ RESET phân trang mỗi lần gọi mới
+                _products. value = emptyList()
                 _pagedProducts.value = emptyList()
+
                 currentPage = 0
                 allProducts = emptyList()
                 useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
@@ -413,8 +428,6 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
                             _isLoading.value = true
                         }
                         is NetworkResponse.Success -> {
-
-
                             _isLoading.value = false
                             _products.value = result.data
 

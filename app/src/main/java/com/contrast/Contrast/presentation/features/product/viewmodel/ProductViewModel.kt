@@ -99,6 +99,9 @@ class ProductViewModel @Inject constructor(private val context: Context,
     private val _domain = MutableStateFlow<String>("")
     val domain: StateFlow<String> = _domain
 
+    private val _token = MutableStateFlow<String>("")
+    val token: StateFlow<String> = _token
+
     private val _displayProduct = MutableStateFlow<String>("")
     private val _displayService = MutableStateFlow<String>("")
 
@@ -107,6 +110,9 @@ class ProductViewModel @Inject constructor(private val context: Context,
     private var isLoaded = false
     private val _type = MutableStateFlow<String>("")
     val type: StateFlow<String> = _type
+        private val _pointAffiliate = MutableStateFlow<String>("")
+    val pointAffiliate: StateFlow<String> = _pointAffiliate
+
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab: StateFlow<Int> = _selectedTab
     private val _isOfflineMode = MutableStateFlow<Boolean>(false)
@@ -394,10 +400,12 @@ class ProductViewModel @Inject constructor(private val context: Context,
          user = currentUserInfo ?: return@launch
 
         _domain.value = user?.domain.orEmpty()
+        _token.value = user?.token.orEmpty()
         _displayProduct.value = user?.displayProduct.orEmpty()
         _displayService.value = user?.displayService.orEmpty()
         _displayPriority.value = user?.displayPriority.orEmpty()
         _employeeId.value = user?.employeeId.orEmpty()
+        _pointAffiliate.value = user?.pointAffiliate.orEmpty()
         _isOfflineMode.value = user?.isOfflineMode?:false
     }
     }

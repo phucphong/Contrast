@@ -28,19 +28,27 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun ProductCardAffiliate(
     modifier: Modifier = Modifier, // 👈 nhận modifier từ bên ngoài
+
+
     domain: String,
+    token: String,
+    pointAffiliate: String,
+    isShare: Boolean = false,
     product: Product,
     promoUiDataFlow: StateFlow<PromoUiData>?, // 🔁 truyền flow riêng
     onClick: () -> Unit,
     onClickCart: () -> Unit,
-    onClickAddServiceRequest: () -> Unit
+    onClickAddServiceRequest: () -> Unit,
+    onClickShare: () -> Unit,
 ) {
     val totalPrice = product.sotien ?: 0.0
     val promoPrice = product.sotiensaukm ?: 0.0
     val fullUrl = remember(product.filetxt) {
         domain.trimEnd('/') + product.filetxt.orEmpty()
     }
-
+    val coin = product.diem ?: 0.0
+    val commissionRate = product.tylehoahong ?: 0.0
+    val commissionMoney = product.sotienhoahong ?: 0.0
     val promoUiData by promoUiDataFlow?.collectAsState() ?: remember { mutableStateOf(PromoUiData()) }
 
 
@@ -75,9 +83,24 @@ fun ProductCardAffiliate(
             promoUiData = promoUiData,
             price = totalPrice,
             promoPrice = promoPrice,
+            isShare = isShare,
             onClickCart = onClickCart,
-            onClickAddServiceRequest = onClickAddServiceRequest
+            onClickAddServiceRequest = onClickAddServiceRequest,
+            onClickShare = onClickShare,
         )
+        if(token.isNotEmpty()){
+            if(commissionMoney>0){
+                EarnProduct(
+                    commissionMoney = commissionMoney,
+                    commissionRate = commissionRate,
+                    coin = coin,
+                    pointAffiliate = pointAffiliate
+                )
+            }else{
+                Box(Modifier.size(30.dp))
+            }
+        }
+
 
 
         Spacer(Modifier.height(5.dp))

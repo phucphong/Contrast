@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
+import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.tab.TabBarPagedGridScrollable
 import com.contrast.Contrast.presentation.components.tab.TabBarRowLocal
 import com.contrast.Contrast.presentation.features.affiliate.home.viewModel.HomeAffiliateViewModel
@@ -26,6 +27,7 @@ import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
 import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
+import com.contrast.Contrast.presentation.features.product.detail.callApi
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
@@ -59,12 +61,14 @@ fun HomePage(
     val pagedProducts by viewModel.pagedProducts.collectAsState()
 
     val domain by viewModel.domain.collectAsState()
+    val token by viewModel.token.collectAsState()
+    val pointAffiliate by viewModel.pointAffiliate.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
     val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
 
-
+    val isRefreshing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(0) }
 
@@ -173,89 +177,98 @@ fun HomePage(
             onCartClick = { viewModel.onItemCarts() }
         )
 
-        LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(FAFAFA),
-            contentPadding = PaddingValues(bottom = 80.dp)
-        ) {
-            item {
-                if (slides.isNotEmpty()) {
-                    ImageSliderFromUrl(
-                        domain = domain,
-                        autoScroll = true,
-                        slides = slides,
-                        modifier = Modifier.height(220.dp)
-                    )
-                }
-            }
+        CustomSwipeRefresh(isRefreshing = isRefreshing,
+            onRefresh = { viewModel.loadHomeData(forceRefresh = true) } ) {
 
-            item {
-                if (categorys.isNotEmpty()) {
-                    TabBarPagedGridScrollable(
-                        tabs = categorys,
-                        selectedTab = selectedCategory,
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(FAFAFA),
+                contentPadding = PaddingValues(bottom = 80.dp)
+            ) {
+                item {
+                    if (slides.isNotEmpty()) {
+                        ImageSliderFromUrl(
+                            domain = domain,
+                            autoScroll = true,
+                            slides = slides,
+                            modifier = Modifier.height(220.dp)
+                        )
+                    }
+                }
+
+                item {
+                    if (categorys.isNotEmpty()) {
+                        TabBarPagedGridScrollable(
+                            tabs = categorys,
+                            selectedTab = selectedCategory,
+                            domain = domain,
+                            type = "name",
+                            onTabSelected = { index ->
+                                selectedCategory = index
+                                viewModel.onTabSelected(index, categorys[index])
+                            }
+                        )
+                    }
+                }
+                if (flashSales.size > 1) {
+                    stickyHeader {
+                        FlashSaleHeader()
+                    }
+                }
+                item {
+                    if (flashSales.isNotEmpty()) {
+                        FlashSaleHome(
+                            flashSales = flashSales,
+                            promoUiDataMap = promoUiDataMap,
+                            domain = domain,
+                            onItemProductSelected = { index ->
+                                viewModel.onItemProductSelected(index)
+                            },
+                            onSeeAllClicked = {
+
+                            }
+                        )
+                    }
+                }
+
+                item {
+                    CustomDividerColor(color = FFD9D9D9, padding = 5.dp)
+                }
+
+
+                if (tabs.size > 1) {
+                    stickyHeader {
+                        TabBarRowLocal(
+                            tabs = tabs,
+                            selectedTab = selectedTab,
+                            onTabSelected = {
+                                viewModel.onCategorySelected(it, tabs)
+                            }
+                        )
+                    }
+                }
+
+                val rows = pagedProducts.chunked(2)
+                Log.e("pagedProducts",pagedProducts.size.toString())
+                items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                    ProductRow(
                         domain = domain,
-                        type = "name",
-                        onTabSelected = { index ->
-                            selectedCategory = index
-                            viewModel.onTabSelected(index, categorys[index])
-                        }
-                    )
-                }
-            }
-            if (flashSales.size > 1) {
-                stickyHeader {
-                    FlashSaleHeader()
-                }
-            }
-            item {
-                if (flashSales.isNotEmpty()) {
-                    FlashSaleHome(
-                        flashSales = flashSales,
+                        token = token,
+                        pointAffiliate = pointAffiliate,
+                        rowProducts = row,
                         promoUiDataMap = promoUiDataMap,
-                        domain = domain,
-                        onItemProductSelected = { index ->
-                            viewModel.onItemProductSelected(index)
-                        },
-                        onSeeAllClicked = {
+                        onItemClick = { viewModel.onItemProductSelected(it) },
+                        onClickCart = { cartViewModel.onItemAddCart(it) },
+                        onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }, onClickShare = {
 
                         }
                     )
                 }
+
+
             }
-
-            item {
-                CustomDividerColor(color = FFD9D9D9, padding = 5.dp)
-            }
-
-
-            if (tabs.size > 1) {
-                stickyHeader {
-                    TabBarRowLocal(
-                        tabs = tabs,
-                        selectedTab = selectedTab,
-                        onTabSelected = {
-                            viewModel.onCategorySelected(it, tabs)
-                        }
-                    )
-                }
-            }
-
-            val rows = pagedProducts.chunked(2)
-            items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                ProductRow(
-                    domain = domain,
-                    rowProducts = row,
-                    promoUiDataMap = promoUiDataMap,
-                    onItemClick = { viewModel.onItemProductSelected(it) },
-                    onClickCart = { cartViewModel.onItemAddCart(it)},
-                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }
-                )
-            }
-
-
         }
     }
 }

@@ -62,10 +62,10 @@ fun VideoItem(
         CustomText(
             text = video.ten,
             fontSize = 14.sp,
-            paddingStart =10.dp,
-            paddingTop =10.dp,
-            paddingEnd =10.dp,
-            paddingBottom =10.dp,
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
 
         )
     }

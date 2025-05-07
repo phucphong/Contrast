@@ -62,6 +62,15 @@ interface CartAPI {
     ): Response<List<CartItem>>
 
     @Headers("Content-Type: application/json")
+    @GET("/ex/apiaffiliate/getobj")
+    suspend fun getDisCountAgency(
+        @Query("obj") dailyaf: String?,
+        @Query("mode") layphantramckcanhan: String?,
+        @Header("Authorization") authen: String?
+    ): Response<List<CartItem>>
+
+
+    @Headers("Content-Type: application/json")
     @POST
     suspend fun addEditCart(
         @Url url: String,

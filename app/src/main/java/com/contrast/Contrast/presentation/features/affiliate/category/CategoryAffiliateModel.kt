@@ -68,6 +68,13 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
     val validationError: StateFlow<String> = _validationError
     private val _domain = MutableStateFlow<String>("")
     val domain: StateFlow<String> = _domain
+    private val _token = MutableStateFlow<String>("")
+    val token: StateFlow<String> = _token
+
+        private val _pointAffiliate = MutableStateFlow<String>("")
+    val pointAffiliate: StateFlow<String> = _pointAffiliate
+
+
     private val _displayProduct = MutableStateFlow<String>("")
     val displayProduct: StateFlow<String> = _displayProduct
     private val _displayService = MutableStateFlow<String>("")
@@ -118,6 +125,8 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
             try {
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo!!.domain?:""
+                _token.value = currentUserInfo!!.token?:""
+                _pointAffiliate.value = currentUserInfo!!.pointAffiliate?:""
                 _displayProduct.value = currentUserInfo!!.displayProduct?:""
                 _displayService.value = currentUserInfo!!.displayService?:""
                 _displayPriority.value = currentUserInfo!!.displayPriority?:""

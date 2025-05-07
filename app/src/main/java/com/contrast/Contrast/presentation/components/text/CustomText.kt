@@ -32,17 +32,17 @@ fun CustomText(
     colorUnderline: Color = Color.Black,
     textAlign: TextAlign = TextAlign.Left,
     showUnderline: Boolean = false,
-            weight: Boolean = false,
-    paddingStart: Dp = 0.dp,
-    paddingTop: Dp = 0.dp,
-    paddingEnd: Dp = 0.dp,
-    paddingBottom: Dp = 5.dp,
+
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(0.dp,0.dp,0.dp, 5.dp)
+
 ) {
     val customFontFamily = FontFamily(
         Font(R.font.inter)
     )
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column() {
         if (showUnderline) {
             Spacer(modifier = Modifier.height(6.dp))
         }
@@ -54,19 +54,8 @@ fun CustomText(
                 fontWeight = fontWeight,
                 fontSize = fontSize,
                 color = color,
-                textAlign = textAlign,
-
-            ),
-
-
-
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(paddingStart,paddingTop,paddingEnd,paddingBottom)
-                .let {
-                    if (weight) it.weight(1f)
-                    else it
-                }
+                textAlign = textAlign,),
+            modifier = modifier
 
         )
 
@@ -81,26 +70,24 @@ fun CustomText(
     text: String,
     fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit = 14.sp,
-
     color: Color = FF000000,
     textAlign: TextAlign = TextAlign.Left,
     showUnderline: Boolean = false,
-    weight: Boolean = false,
-    paddingStart: Dp = 0.dp,
-    paddingTop: Dp = 0.dp,
-    paddingEnd: Dp = 0.dp,
-    paddingBottom: Dp = 5.dp,
+    isLowercase: Boolean = false, // ✅ thêm mới
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(0.dp,0.dp,0.dp, 5.dp)
+
 ) {
+
+    val displayText = if (isLowercase) text.lowercase() else text
     CustomText(
-        text = AnnotatedString(text),
+        text = AnnotatedString(displayText),
         fontWeight = fontWeight,
         fontSize = fontSize,
         color = color,
         textAlign = textAlign,
         showUnderline = showUnderline,
-                paddingStart = paddingStart,
-        paddingTop = paddingTop,
-        paddingEnd = paddingEnd,
-        paddingBottom = paddingBottom,
+        modifier = modifier
     )
 }

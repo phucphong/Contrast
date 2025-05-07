@@ -26,6 +26,7 @@ class LocalDataSource @Inject constructor(
             typeAccount = getTypeAccount(),
 
             token = getToken(),
+            pointAffiliate = getPointAffiliate(),
             permissionMobile = getPermissionMobile(),
             domain = getDomain(),
             domainCustomer = getDomainCustomer(),

@@ -22,11 +22,15 @@ import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 @Composable
 fun PriceBar(
     price: String,
+    isShare: Boolean = false,
     onClickCart: () -> Unit,
     onClickAddServiceRequest: () -> Unit,
+    onClickShare: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(Modifier.padding(5.dp), verticalAlignment = Alignment.CenterVertically) {
+
+
 
         Text(
             text = price,
@@ -35,21 +39,32 @@ fun PriceBar(
             color = Color(0xFF00BFA6),
             modifier = Modifier.weight(1f)
         )
-        Icon(
-            painter = painterResource(id = R.drawable.cart),
-            contentDescription = "Cart",
-            tint = Color(0xFF00BFA6),
-            modifier = Modifier
-                .padding(end = 6.dp)
-                .size(20.dp).noRippleClickableComposable { onClickCart() }
-        )
-        Box(Modifier.size(10.dp))
-        Icon(
-            painter = painterResource(id = R.drawable.calendar_service),
-            contentDescription = "Buy Package",
-            tint = Color(0xFF00BFA6),
-            modifier = Modifier.size(20.dp).noRippleClickableComposable { onClickAddServiceRequest() }
-        )
+        if(!isShare){
+            Icon(
+                painter = painterResource(id = R.drawable.cart),
+                contentDescription = "Cart",
+                tint = Color(0xFF00BFA6),
+                modifier = Modifier
+                    .padding(end = 6.dp)
+                    .size(20.dp).noRippleClickableComposable { onClickCart() }
+            )
+            Box(Modifier.size(10.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.calendar_service),
+                contentDescription = "Buy Package",
+                tint = Color(0xFF00BFA6),
+                modifier = Modifier.size(20.dp).noRippleClickableComposable { onClickAddServiceRequest() }
+            )
+        }else{
+            Icon(
+                painter = painterResource(id = R.drawable.share),
+                contentDescription = "share",
+                tint = Color(0xFF00BFA6),
+                modifier = Modifier.size(20.dp).noRippleClickableComposable { onClickShare() }
+            )
+        }
+
+
 
     }
 }

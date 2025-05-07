@@ -128,7 +128,7 @@ class CartUseCase @Inject constructor(
             when (val result = repository.getCheckProduct(ids ,authen)) {
                 is NetworkResponse.Success -> {
                     val items = result.data.Table1
-                    val status = items.firstOrNull()?.trangthai ?: ""
+                    val status = items.firstOrNull()?.Column1 ?: ""
                     emit(NetworkResponse.Success(status))
                 }
                 is NetworkResponse.Error -> {
@@ -195,7 +195,16 @@ class CartUseCase @Inject constructor(
 
     }
 
-
+    fun idsProductCheckActive(listModel: List<CartItem>): String {
+        return listModel
+            .mapNotNull { item ->
+                val idProduct = item.idsp?.replace(".0", "") ?: return@mapNotNull null
+                val idUnit = item.iddonvi ?: return@mapNotNull null
+                "$idProduct-$idUnit"
+            }
+            .distinct()
+            .joinToString(",")
+    }
 
 
 

@@ -15,6 +15,7 @@ class PreferencesManagerImpl @Inject constructor(
     override fun getEmployeeName(): String = appConfig.getEmployeeName()
     override fun getToken(): String = appConfig.getToken()
     override fun getIdCompany(): String = appConfig.getIdCompany()
+    override fun getPointAffiliate(): String = appConfig.getPointAffiliate()
     override fun getIdCompanyParent(): String = appConfig.getIdCompanyParent()
     override fun getAppType(): String = appConfig.getAppType()
     override fun getEmail(): String = appConfig.getEmail()

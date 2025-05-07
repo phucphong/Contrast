@@ -16,6 +16,7 @@ data class CurrentUserInfo(
     val salesPointName: String,
     val category: String,
     val typeAccount: String,
+    val pointAffiliate: String,
 
     val token: String,
     val permissionMobile: String,

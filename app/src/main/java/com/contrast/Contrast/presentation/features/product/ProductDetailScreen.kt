@@ -90,9 +90,6 @@ fun ProductDetailScreen(productId: String
                         modifier = Modifier
                             .size(30.dp)
                             .noRippleClickableComposable {
-
-
-
                             },
                     )
                         Text(

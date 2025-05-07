@@ -22,6 +22,8 @@ data class ProductDetail(
     val sotienkm: Double? = 0.0,
     val sotiensaukm: Double? = 0.0,
     val sotienhoahong: Double? = 0.0,
+    val diem: Double? = 0.0,
+    val tylehoahong: Double? = 0.0,
     val yeuthich: Int? = 0,
     var soluong: Double? = 1.0,
     val cothedatlich: Boolean? = false,

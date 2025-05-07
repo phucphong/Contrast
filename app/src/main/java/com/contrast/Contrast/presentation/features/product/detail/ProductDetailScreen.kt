@@ -15,10 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,26 +35,22 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.isLimitedAccessGranted
-import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.alertDialog.QuantityAlertDialog
 import com.contrast.Contrast.presentation.components.button.CustomButton
-import com.contrast.Contrast.presentation.components.media.MediaPermissionStatus
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 
 
 import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificationShare
-import com.contrast.Contrast.presentation.components.toast.CollectToast
+import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
+import com.contrast.Contrast.presentation.features.product.detail.ui.EarnTextRow
 import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
-import com.contrast.Contrast.presentation.components.webview.WebViewProductXml
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
 
-import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductDetailHeader
 import com.contrast.Contrast.presentation.features.product.detail.ui.ProductPriceDetailSection
 import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProduct
@@ -69,7 +62,6 @@ import com.contrast.Contrast.presentation.features.product.viewmodel.ProductView
 import com.contrast.Contrast.presentation.features.review.ReviewScreen
 import com.contrast.Contrast.presentation.features.review.ui.ReviewHeader
 import com.contrast.Contrast.presentation.features.share.ShareDialog
-import com.contrast.Contrast.presentation.features.splas.SplashNavigation
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 
@@ -85,7 +77,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -110,11 +101,13 @@ fun ProductDetailScreen(
     val ratingScore by reviewViewModel.ratingScore.collectAsState()
     val reviews by reviewViewModel.reviews.collectAsState()
     val domain by viewModel.domain.collectAsState()
+    val token by viewModel.token.collectAsState()
     val employeeId by viewModel.employeeId.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
     val totalCartItems by cartViewModel.totalCartItems.collectAsState()
     val isOfflineMode by viewModel.isOfflineMode.collectAsState()
+    val pointAffiliate by viewModel.pointAffiliate.collectAsState()
 
     var type by remember { mutableStateOf("huuhinh") }
     var bookService by remember { mutableStateOf(false) }
@@ -123,6 +116,8 @@ fun ProductDetailScreen(
     val navEvent by viewModel.navigationEvent.collectAsState()
     val listState = rememberLazyListState()
     val context = LocalContext.current
+
+    val isRefreshing by remember { mutableStateOf(false) }
 //
 //    LaunchedEffect(Unit) {
 //        viewModel.shareIntentFlow.collectLatest { intent ->
@@ -245,6 +240,7 @@ fun ProductDetailScreen(
                 )
                 viewModel.resetNavigation()
             }
+
             is ProductNavEvent.GoToReportProduct -> {
                 navHostController.navigate(
                     NavRoutes.AddReportProduct.withArgs(
@@ -311,6 +307,10 @@ fun ProductDetailScreen(
             type = productInfo?.loaichitiet ?: ""
             bookService = productInfo?.cothedatlich ?: false
 
+            val coin = productInfo?.diem ?: 0.0
+            val commissionRate = productInfo?.tylehoahong ?: 0.0
+            val commissionMoney = productInfo?.sotienhoahong ?: 0.0
+
             var isFavoriteInit: Boolean = false
 
             val favorite = productInfo?.yeuthich ?: 0
@@ -335,192 +335,234 @@ fun ProductDetailScreen(
                 },
                 onCartClick = { viewModel.onItemCarts() },
                 onBackStack = { navHostController.popBackStack() })
+            CustomSwipeRefresh(isRefreshing = isRefreshing,
+                onRefresh = { callApi(viewModel, reviewViewModel, cartViewModel, id, idUnit) }) {
+                Column {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f)
+                            .background(FAFAFA)
+                    ) {
+                        item {
+                            if (productInfo != null) {
 
-            LazyColumn(
-                state = listState, modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-                    .background(FAFAFA)
-            ) {
-                item {
-                    if (productInfo != null) {
-
-                        val fullUrl = domain.trimEnd('/') + (productInfo?.filetxt ?: "")
-                        NetworkImage(
-                            model = fullUrl, modifier = Modifier
-                                .fillMaxWidth()
-                                .height(350.dp)
-                        )
-                    }
-                }
-                item {
-                    if (productInfo != null) {
-
-                        var isFlashSale: Boolean = false
-                        val discountPercent: Double = productInfo?.khuyenmai ?: 0.0
-                        if (discountPercent != 0.0) {
-                            isFlashSale = true
-                        }
-                        ProductPriceDetailSection(
-                            productName = productInfo?.ten ?: "",
-                            priceDisCount = productInfo?.sotiensaukm ?: 0.0,
-                            price = productInfo?.sotien ?: 0.0,
-                            discountPercent = productInfo?.khuyenmai ?: 0.0,
-                            isFlashSale = isFlashSale,
-                            remainingTime = "40:00:40:18",
-                            quantity = productInfo?.soluong ?: 1.0,
-                            increaseQuantity = { viewModel.increaseProductDetailQuantity(productInfo!!) },
-                            showQuantity = { isShowQuantity = true },
-                            decreaseQuantity = { viewModel.decreaseProductDetailQuantity(productInfo!!) },
-                        )
-
-                    }
-                }
-
-
-                stickyHeader {
-                    ReviewHeader(rating = ratingScore,
-                        totalReviews = totalReview,
-                        onViewAllClick = { viewModel.onItemReviewsSelected(id) })
-
-                }
-                item {
-                    if (reviews.isNotEmpty()) {
-                        ReviewScreen(reviews = reviews,
-                            domain = domain,
-                            onDownloadClick = { fileUrl ->
-                                viewModel.downloadImage(fileUrl)
+                                val fullUrl = domain.trimEnd('/') + (productInfo?.filetxt ?: "")
+                                NetworkImage(
+                                    model = fullUrl,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(350.dp)
+                                )
                             }
+                        }
+                        item {
+                            if (productInfo != null) {
 
-                        )
-                    }
-                }
-
-                if (productInfo != null) {
-                    stickyHeader {
-                        ProductDetailHeader(type = productInfo?.loaichitiet ?: "",
-                            isFavoriteInit = isFavoriteInit,
-                            isOfflineMode = isOfflineMode,
-                            onFavorite = {
-
-                                viewModel.onFavorite(it, id, idUnit)
-
-                            },
-                            onReportClick = {
-                                viewModel.onItemReportSelected(
-                                    id,
-                                    idUnit,
-                                    "$domain${productInfo?.filetxt ?: ""}",
-                                    productInfo?.ten ?: ""
+                                var isFlashSale: Boolean = false
+                                val discountPercent: Double = productInfo?.khuyenmai ?: 0.0
+                                if (discountPercent != 0.0) {
+                                    isFlashSale = true
+                                }
+                                ProductPriceDetailSection(
+                                    productName = productInfo?.ten ?: "",
+                                    priceDisCount = productInfo?.sotiensaukm ?: 0.0,
+                                    price = productInfo?.sotien ?: 0.0,
+                                    discountPercent = productInfo?.khuyenmai ?: 0.0,
+                                    isFlashSale = isFlashSale,
+                                    remainingTime = "40:00:40:18",
+                                    quantity = productInfo?.soluong ?: 1.0,
+                                    increaseQuantity = {
+                                        viewModel.increaseProductDetailQuantity(
+                                            productInfo!!
+                                        )
+                                    },
+                                    showQuantity = { isShowQuantity = true },
+                                    decreaseQuantity = {
+                                        viewModel.decreaseProductDetailQuantity(
+                                            productInfo!!
+                                        )
+                                    },
                                 )
 
-                            },
+                            }
+                        }
 
-                            onWriteReviewClick = {
-                                viewModel.onItemAddReviewsSelected(
-                                    id,
-                                    idUnit,
-                                    "$domain${productInfo?.filetxt ?: ""}",
-                                    productInfo?.ten ?: ""
+
+                        stickyHeader {
+                            ReviewHeader(rating = ratingScore,
+                                totalReviews = totalReview,
+                                onViewAllClick = { viewModel.onItemReviewsSelected(id) })
+
+                        }
+                        item {
+                            if (reviews.isNotEmpty()) {
+                                ReviewScreen(reviews = reviews,
+                                    domain = domain,
+                                    onDownloadClick = { fileUrl ->
+                                        viewModel.downloadImage(fileUrl)
+                                    }
+
+                                )
+                            }
+                        }
+
+                        if (productInfo != null) {
+                            stickyHeader {
+                                ProductDetailHeader(type = productInfo?.loaichitiet ?: "",
+                                    isFavoriteInit = isFavoriteInit,
+                                    isOfflineMode = isOfflineMode,
+                                    onFavorite = {
+
+                                        viewModel.onFavorite(it, id, idUnit)
+
+                                    },
+                                    onReportClick = {
+                                        viewModel.onItemReportSelected(
+                                            id,
+                                            idUnit,
+                                            "$domain${productInfo?.filetxt ?: ""}",
+                                            productInfo?.ten ?: ""
+                                        )
+
+                                    },
+
+                                    onWriteReviewClick = {
+                                        viewModel.onItemAddReviewsSelected(
+                                            id,
+                                            idUnit,
+                                            "$domain${productInfo?.filetxt ?: ""}",
+                                            productInfo?.ten ?: ""
+                                        )
+                                    })
+
+
+                            }
+                        }
+                        item {
+                            if (productInfo != null) {
+                                WebViewProduct(htmlContent = productInfo?.noidung ?: "")
+                            }
+                        }
+
+                        stickyHeader {
+                            Text(
+                                text = if (type == "huuhinh") stringResource(R.string.product_category) else stringResource(
+                                    R.string.service_category
+                                ),
+                                fontWeight = FontWeight(450),
+                                fontSize = 14.sp,
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .background(Color.White)
+                                    .padding(10.dp)
+                                    .fillMaxWidth()
+                            )
+
+
+                        }
+                        val rows = productsCategory.chunked(2)
+                        items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                            ProductRow(domain = domain,
+                                token = token,
+                                pointAffiliate = pointAffiliate,
+
+                                rowProducts = row,
+                                promoUiDataMap = promoUiDataMap,
+                                onItemClick = { viewModel.onItemProductSelected(it) },
+                                onClickCart = { cartViewModel.onItemAddCart(it) },
+                                onClickAddServiceRequest = {
+                                    viewModel.onAddServiceRequestSelected(
+                                        it
+                                    )
+                                }, onClickShare = {
+
+                                })
+                        }
+
+                        stickyHeader {
+                            Text(
+                                text = if (type == "huuhinh") stringResource(R.string.product_other) else stringResource(
+                                    R.string.service_other
+                                ),
+                                fontWeight = FontWeight(450),
+                                fontSize = 14.sp,
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .background(Color.White)
+                                    .padding(10.dp)
+                                    .fillMaxWidth()
+                            )
+
+
+                        }
+                        val rowsOther = pagedProducts.chunked(2)
+                        items(rowsOther, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                            ProductRow(domain = domain,
+                                token = token,
+                                pointAffiliate = pointAffiliate,
+                                rowProducts = row,
+                                promoUiDataMap = promoUiDataMap,
+                                onItemClick = { viewModel.onItemProductSelected(it) },
+                                onClickCart = { cartViewModel.onItemAddCart(it) },
+                                onClickAddServiceRequest = {
+                                    viewModel.onAddServiceRequestSelected(
+                                        it
+                                    )
+                                }, onClickShare = {
+
+                                })
+                        }
+
+
+                    }
+                    if(token.isNotEmpty()) {
+                        if (commissionMoney >= 0) {
+                            EarnTextRow(
+                                commissionMoney = commissionMoney,
+                                commissionRate = commissionRate,
+                                coin = coin,
+                                pointAffiliate = pointAffiliate
+                            )
+
+
+                        }
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+
+
+                        ) {
+                        CustomButton(text = stringResource(id = R.string.add_to_cart),
+                            textColor = Color.White,
+                            containerColor = TealGreen,
+                            modifier = Modifier.weight(1f),
+                            roundedCornerShape = 10.dp,
+                            fontSize = 12.sp,
+                            onClick = {
+                                cartViewModel.onItemAddCartToProductDetail(
+                                    productInfo!!, introducerId
                                 )
                             })
-
+                        if (bookService) {
+                            Spacer(modifier = Modifier.width(10.dp))
+                            CustomButton(text = stringResource(id = R.string.bookService),
+                                textColor = Color.White,
+                                containerColor = FFFF9800,
+                                modifier = Modifier.weight(1f),
+                                roundedCornerShape = 10.dp,
+                                fontSize = 12.sp,
+                                onClick = {})
+                        }
 
                     }
                 }
-                item {
-                    if (productInfo != null) {
-                        WebViewProduct(htmlContent = productInfo?.noidung ?: "")
-                    }
-                }
-
-                stickyHeader {
-                    Text(
-                        text = if (type == "huuhinh") stringResource(R.string.product_category) else stringResource(
-                            R.string.service_category
-                        ),
-                        fontWeight = FontWeight(450),
-                        fontSize = 14.sp,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .background(Color.White)
-                            .padding(10.dp)
-                            .fillMaxWidth()
-                    )
-
-
-                }
-                val rows = productsCategory.chunked(2)
-                items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                    ProductRow(domain = domain,
-                        rowProducts = row,
-                        promoUiDataMap = promoUiDataMap,
-                        onItemClick = { viewModel.onItemProductSelected(it) },
-                        onClickCart = { cartViewModel.onItemAddCart(it) },
-                        onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) })
-                }
-
-                stickyHeader {
-                    Text(
-                        text = if (type == "huuhinh") stringResource(R.string.product_other) else stringResource(
-                            R.string.service_other
-                        ),
-                        fontWeight = FontWeight(450),
-                        fontSize = 14.sp,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .background(Color.White)
-                            .padding(10.dp)
-                            .fillMaxWidth()
-                    )
-
-
-                }
-                val rowsOther = pagedProducts.chunked(2)
-                items(rowsOther, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                    ProductRow(domain = domain,
-                        rowProducts = row,
-                        promoUiDataMap = promoUiDataMap,
-                        onItemClick = { viewModel.onItemProductSelected(it) },
-                        onClickCart = { cartViewModel.onItemAddCart(it) },
-                        onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) })
-                }
-
 
             }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-
-
-                ) {
-                CustomButton(text = stringResource(id = R.string.add_to_cart),
-                    textColor = Color.White,
-                    containerColor = TealGreen,
-                    modifier = Modifier.weight(1f),
-                    roundedCornerShape = 10.dp,
-                    fontSize = 12.sp,
-                    onClick = {
-                        cartViewModel.onItemAddCartToProductDetail(
-                            productInfo!!, introducerId
-                        )
-                    })
-                if (bookService) {
-                    Spacer(modifier = Modifier.width(10.dp))
-                    CustomButton(text = stringResource(id = R.string.bookService),
-                        textColor = Color.White,
-                        containerColor = FFFF9800,
-                        modifier = Modifier.weight(1f),
-                        roundedCornerShape = 10.dp,
-                        fontSize = 12.sp,
-                        onClick = {})
-                }
-
-            }
-
         }
         if (showToast) {
             CustomToast(

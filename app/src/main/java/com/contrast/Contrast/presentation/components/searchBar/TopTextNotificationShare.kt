@@ -95,7 +95,7 @@ fun TopTextNotificationShare(
             contentDescription = "Cart",
             modifier = Modifier
                 .noRippleClickableComposable { onShareClick()}
-                .size(30.dp).padding(5.dp),
+                .size(40.dp).padding(5.dp),
             colorFilter = ColorFilter.tint(TealGreen)
         )
 

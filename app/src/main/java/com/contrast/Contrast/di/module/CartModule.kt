@@ -1,4 +1,4 @@
-package com.contrast.Contrast.di
+package com.contrast.Contrast.di.module
 
 import com.itechpro.data.api.CartAPI
 import com.itechpro.data.repository.CartRepositoryImpl

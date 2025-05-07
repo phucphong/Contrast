@@ -11,7 +11,8 @@ class PreferencesManagerImpl @Inject constructor(
     private val appConfig: AppConfig
 ) : PreferencesManager {
 
-    override fun getEmployeeId(): String = appConfig.getIdEmployee()
+    override fun getEmployeeId(): String = appConfig.getEmployeeId()
+    override fun getCustomerId(): String = appConfig.getCustomerId()
     override fun getEmployeeName(): String = appConfig.getEmployeeName()
     override fun getToken(): String = appConfig.getToken()
     override fun getIdCompany(): String = appConfig.getIdCompany()

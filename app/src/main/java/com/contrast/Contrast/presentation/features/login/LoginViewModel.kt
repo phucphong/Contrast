@@ -118,7 +118,8 @@ class LoginViewModel @Inject constructor(
     }
     fun saveLoginOptions(result: Login) {
         appConfig.setToken(result.token?:"")
-        appConfig.setIdEmployee(result.idnhanvien?:"")
+        appConfig.setEmployeeId(result.idnhanvien?:"")
+        appConfig.setCustomerId(result.idkh?:"")
         appConfig.setEmployeeName(result.hoten?:"")
         appConfig.setTypeAccount(result.loaikh?:"")
         appConfig.setPermissionMobile(result.permissionmobile?:"")

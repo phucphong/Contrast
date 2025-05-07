@@ -342,6 +342,7 @@
     <string name="membership_policy_heading">CHÍNH SÁCH THÀNH VIÊN</string>
     <string name="new_detail">Chi tiết tin tức</string>
     <string name="product_detail">Chi tiết sản phẩm</string>
+    <string name="info_payment">Thông tin thanh toán</string>
     <string name="product_other">Sản phẩm khác</string>
     <string name="product_category">Sản phẩm liên quan</string>
     <string name="service_detail">Chi tiết dịch vụ</string>
@@ -352,6 +353,9 @@
     <string name="review_product">Đánh giá sản phẩm</string>
     <string name="like_product">Đã lưu sản phẩm</string>
     <string name="add_product_on_cart">Đã thêm vào giỏ hàng</string>
+    <string name="add_oder_success">Đặt hàng thành công</string>
+    <string name="save_image_to_gallery">Đã lưu ảnh vào thư viện</string>
+    <string name="save_image_to_gallery_error">Lưu ảnh thất bại</string>
     <string name="un_like_product">Bỏ lưu sản phẩm</string>
     <string name="limited_access_message">Bạn vừa cấp quyền cho %1$s chọn một vài ảnh nhất định.</string>
     <string name="change_permission_here">Thay đổi quyền tại đây</string>

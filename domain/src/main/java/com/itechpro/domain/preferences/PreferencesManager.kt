@@ -4,6 +4,7 @@ interface PreferencesManager {
 
     // 👤 User Info
     fun getEmployeeId(): String
+    fun getCustomerId(): String
     fun getEmployeeName(): String
     fun getFullName(): String
     fun getEmail(): String

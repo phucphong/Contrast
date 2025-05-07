@@ -3,6 +3,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class CurrentUserInfo(
     val employeeId: String,
+    val customerId: String,
 
     val employeeName: String,
     val fullName: String,

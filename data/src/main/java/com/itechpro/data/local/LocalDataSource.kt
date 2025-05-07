@@ -12,6 +12,7 @@ class LocalDataSource @Inject constructor(
     fun getCurrentUser(): CurrentUserInfo = with(preferencesManager) {
         CurrentUserInfo(
             employeeId = getEmployeeId(),
+            customerId = getCustomerId(),
             employeeName = getEmployeeName(),
             fullName = getFullName(),
             email = getEmail(),

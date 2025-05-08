@@ -15,9 +15,9 @@ import com.contrast.Contrast.presentation.navigator.NavRoutes
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.contrastNavGraph(navController: NavHostController) {
-    navigation(startDestination = NavRoutes.Home.route, route = NavRoutes.MainRoot.route) {
+    navigation(startDestination = NavRoutes.Home.route, route = NavRoutes.Main.route) {
         composable(NavRoutes.Home.route) { HomePage(navController) }
-        composable(NavRoutes.Video.route) { VideoScreen(navController) }
+        composable(NavRoutes.Videos.route) { VideoScreen(navController) }
         composable(NavRoutes.Location.route) { LocationScreen(navController) }
         composable(NavRoutes.StoreList.route) { StoreListScreen(navController) }
         composable(NavRoutes.Membership.route) { RewardsScreen(navController) }

@@ -13,7 +13,16 @@ class LoginUseCase @Inject constructor(
     private val repository: LoginRepository
 ) {
 
-    suspend operator fun invoke(account: Login): NetworkResponse<List<Login>> {
-        return repository.login( account)
+    suspend operator fun invoke(account: Login): NetworkResponse<Login> {
+        return when (val result = repository.login(account)) {
+            is NetworkResponse.Success -> {
+                NetworkResponse.Success(result.data)
+            }
+            is NetworkResponse.Error -> {
+                NetworkResponse.Error(result.message)
+            }
+            else -> NetworkResponse.Error("Đã xảy ra lỗi không xác định")
+        }
     }
+
 }

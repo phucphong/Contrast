@@ -81,7 +81,7 @@ fun TabBarRow(tabs: List<Category>,
                 Text(
                     text = name,
                     fontSize = 14.sp,
-                    fontWeight = if (index == selectedTab) FontWeight.Bold else FontWeight.Normal,
+                    fontWeight = FontWeight.Normal,
                     color = if (index == selectedTab) textCorSelect else Color.Gray,
                     modifier = Modifier.onGloballyPositioned {
                         textWidth = it.size.width

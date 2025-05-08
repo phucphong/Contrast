@@ -51,7 +51,7 @@ fun CustomOkAlertDialog(
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(20.dp).wrapContentHeight().background(Color.White, shape = RoundedCornerShape(16.dp))
+            modifier = Modifier.padding( 20.dp).wrapContentHeight().background(Color.White, shape = RoundedCornerShape(16.dp))
         ) {
             Text(
                 text = stringResource(id = R.string.alert_title),
@@ -81,7 +81,7 @@ fun CustomOkAlertDialog(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+
 
 
 
@@ -90,7 +90,7 @@ fun CustomOkAlertDialog(
                 fontWeight = FontWeight.Bold,
                 color = TealGreen,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.weight(1f).noRippleClickableComposable {   onDismiss()}
+                modifier = Modifier.wrapContentHeight().padding(20.dp).noRippleClickableComposable {   onDismiss()}
             )
         }
 

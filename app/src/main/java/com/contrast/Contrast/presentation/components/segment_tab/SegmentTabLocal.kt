@@ -49,7 +49,6 @@ import com.itechpro.domain.model.Category
 fun SegmentTabLocal(
     tabs: List<Category>,
     selectedTab: Int,
-    type: String,
     onTabSelected: (Int) -> Unit
 ) {
     Row(
@@ -96,7 +95,7 @@ fun SegmentTabLocal(
                 Text(
                     text = obj.label(),
                     fontSize = 12.sp,
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                    fontWeight = FontWeight.Normal,
                     color = Color.Black
                 )
             }

@@ -16,17 +16,38 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.media3.common.util.Log
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.navigator.AppNavHost
+import com.contrast.Contrast.presentation.navigator.NavRoutes
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AffiliateMainScreen(
-    idProductFromShare: String? = null,
-    idUnitFromShare: String? = null
+    navHostController: NavHostController,
+    idProductFromShare: String = "0",
+    idUnitFromShare: String = "0",
+    introducerId: String = "0",
 ) {
     val navController = rememberNavController()
     var selectedIndex by remember { mutableIntStateOf(0) }
+    val hasNavigatedToProduct = remember { mutableStateOf(false) }
+
+    if (idProductFromShare != "0" && !hasNavigatedToProduct.value) {
+        LaunchedEffect(idProductFromShare) {
+            hasNavigatedToProduct.value = true
+            navController.navigate(
+                NavRoutes.ProductDetail.withArgs(
+                    id = idProductFromShare,
+                    idUnit = idUnitFromShare,
+                    introducerId = introducerId
+                )
+            )
+        }
+    }
+
 
     Scaffold(
         modifier = Modifier
@@ -37,11 +58,11 @@ fun AffiliateMainScreen(
             BottomNavigationBar(selectedIndex) { index ->
                 selectedIndex = index
                 when (index) {
-                    0 -> navController.navigate("affiliateHome")
-                    1 -> navController.navigate("category")
-                    2 -> navController.navigate("storeList")
-                    3 -> navController.navigate("membership")
-                    4 -> navController.navigate("account")
+                    0 -> navController.navigate(NavRoutes.AffiliateHome.route)
+                    1 -> navController.navigate(NavRoutes.Category.route)
+                    2 -> navController.navigate(NavRoutes.Videos.route)
+                    3 -> navController.navigate(NavRoutes.News.route)
+                    4 -> navController.navigate(NavRoutes.Account.route)
                 }
             }
         }
@@ -50,7 +71,8 @@ fun AffiliateMainScreen(
             AppNavHost(
                 navController = navController,
                 idProductFromShare = idProductFromShare,
-                idUnitFromShare = idUnitFromShare
+                idUnitFromShare = idUnitFromShare,
+                introducerId = introducerId,
             )
         }
     }

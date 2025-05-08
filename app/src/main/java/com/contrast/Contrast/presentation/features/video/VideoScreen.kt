@@ -26,10 +26,15 @@ import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotifica
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
+import com.contrast.Contrast.presentation.features.main.home.viewmodel.HomeViewModel
 import com.contrast.Contrast.presentation.features.video.ui.VideoItem
 import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
+import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.Video
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 @Composable
 fun VideoScreen(navHostController: NavHostController,
@@ -37,6 +42,7 @@ fun VideoScreen(navHostController: NavHostController,
 ) {
     val videos by viewModel.videos.collectAsState()
     val categoryNews by viewModel.categoryNews.collectAsState()
+
     val domain by viewModel.domain.collectAsState()
 
     val selectedTab by viewModel.selectedTab.collectAsState()
@@ -44,6 +50,8 @@ fun VideoScreen(navHostController: NavHostController,
     var idCategory by remember { mutableStateOf("0") }
 
     val isLoading by viewModel.isLoading.collectAsState()
+
+    val navEvent by viewModel.navigationEvent.collectAsState()
     var searchText by remember { mutableStateOf("") }
     LaunchedEffect(selectedTab, categoryNews) {
         if (categoryNews.isNotEmpty() && selectedTab in categoryNews.indices) {
@@ -51,7 +59,28 @@ fun VideoScreen(navHostController: NavHostController,
             viewModel.getVideos(idCategory)
         }
     }
+    LaunchedEffect(navEvent) {
+        when (val event = navEvent) {
+            is NotificationNavEvent.GoToNotifications -> {
+                navHostController.navigate(
+                    NavRoutes.Notifications.withArgs(
+                        startDate = event.startDate,
+                        endDate = event.endDate
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+            is CartNavEvent.GoToCats -> {
+                navHostController.navigate(NavRoutes.Carts.route)
+                viewModel.resetNavigation()
+            }
 
+
+
+
+            else -> Unit
+        }
+    }
     Column(modifier = Modifier.fillMaxSize()) {
 
         // 🔍 TopBar tìm kiếm + icon
@@ -59,9 +88,9 @@ fun VideoScreen(navHostController: NavHostController,
             isTexField = true,
             text = searchText,
             onTextChanged = { searchText = it },
-            onSearchClick = { /* mở trang tìm kiếm */ },
-            onNotificationClick = { /* xử lý noti */ },
-            onCartClick = { /* xử lý cart */ }
+            onNotificationClick = { viewModel.onItemNotificationSelected() },
+            onCartClick = { viewModel.onItemCarts() },
+
         )
 
         if (isLoading) {

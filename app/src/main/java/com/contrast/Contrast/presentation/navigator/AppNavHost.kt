@@ -14,9 +14,9 @@ import com.contrast.Contrast.presentation.navigator.graph.reviewNavGraph
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController,
-               idProductFromShare: String? = null,
-               idUnitFromShare: String? = null,
-               introducerId: String? = null,
+               idProductFromShare: String= "0",
+               idUnitFromShare: String= "0",
+               introducerId: String= "0",
                ) {
 
     NavHost(navController, startDestination = NavRoutes.AffiliateRoot.route) {

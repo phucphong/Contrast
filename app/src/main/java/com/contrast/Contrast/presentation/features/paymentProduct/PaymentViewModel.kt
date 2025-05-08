@@ -15,13 +15,14 @@ import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
 import com.itechpro.domain.model.cart.CartUiState
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.HomeNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.model.payment.PaymentUiState
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
-import com.itechpro.domain.usecase.cart.CartUseCase
+
 import com.itechpro.domain.usecase.dowloadFile.DownloadUseCase
 import com.itechpro.domain.usecase.payment.PaymentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,15 +35,20 @@ import javax.inject.Inject
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val cartUseCase: PaymentUseCase,
+    private val useCase: PaymentUseCase,
     private val downloadUseCase: DownloadUseCase,
     private val stringProvider: StringProvider,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
+    private val _selectedTabIndex = MutableStateFlow(0)
+    val selectedTabIndex: StateFlow<Int> = _selectedTabIndex
+    private val _selectedCategoryName = MutableStateFlow("")
+    val selectedCategoryName: StateFlow<String> = _selectedCategoryName
+
     private val _uiState = MutableStateFlow(PaymentUiState())
     val uiState: StateFlow<PaymentUiState> = _uiState
-    private val _navigationEvent = MutableStateFlow<NavEvent>(CartNavEvent.None)
+    private val _navigationEvent = MutableStateFlow<NavEvent>(HomeNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
     private val _notificationToast = MutableSharedFlow<String>()
     val notificationToast = _notificationToast.asSharedFlow()
@@ -55,6 +61,8 @@ class PaymentViewModel @Inject constructor(
                 .onSuccess { user ->
                     currentUserInfo = user
                     _uiState.update { it.copy(domain = user.domain.orEmpty(), device = user.device.orEmpty()) }
+
+
                 }
                 .onFailure {
                     _uiState.update {
@@ -64,10 +72,26 @@ class PaymentViewModel @Inject constructor(
         }
     }
 
+    fun generateCategory(isOpportunity: Boolean) {
+        val user = currentUserInfo ?: return
+        viewModelScope.launch(dispatcher) {
+
+            _uiState.update { it.copy(tabs = useCase.generateCategory(isOpportunity)) }
+            updateCategoryName(_selectedTabIndex.value)
+        }
+    }
+    fun updateSelectedTab(index: Int) {
+        _selectedTabIndex.value = index
+        updateCategoryName(_selectedTabIndex.value)
+    }
+ fun updateCategoryName(index: Int) {
+      _selectedCategoryName.value=uiState.value.tabs.getOrNull(index)?.code.orEmpty()
+    }
+
     fun getInfoPayment(money: String, oderKey:String) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            cartUseCase.getInfoPayment(money, oderKey, user.token).collect { result ->
+            useCase.getInfoPayment(money, oderKey, user.token).collect { result ->
                 when (result) {
                     is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
                     is NetworkResponse.Success -> {
@@ -97,7 +121,7 @@ class PaymentViewModel @Inject constructor(
     fun getUpdateOder(idCustomer: String, idOder:String, ghichu:String) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            cartUseCase.getUpdateOder(idCustomer, idOder, ghichu,user.token).collect { result ->
+            useCase.getUpdateOder(idCustomer, idOder, ghichu,user.token).collect { result ->
                 when (result) {
                     is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
                     is NetworkResponse.Success -> {
@@ -121,7 +145,11 @@ class PaymentViewModel @Inject constructor(
 
 
     fun resetNavigation() {
-        _navigationEvent.value = CartNavEvent.None
+        _navigationEvent.value = HomeNavEvent.None
+    }
+
+    fun gotoHome() {
+        _navigationEvent.value = HomeNavEvent.GoToHome
     }
 }
 

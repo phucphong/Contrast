@@ -84,6 +84,7 @@ fun ProductCardAffiliate(
             price = totalPrice,
             promoPrice = promoPrice,
             isShare = isShare,
+            bookService = product.cothedatlich?:false,
             onClickCart = onClickCart,
             onClickAddServiceRequest = onClickAddServiceRequest,
             onClickShare = onClickShare,

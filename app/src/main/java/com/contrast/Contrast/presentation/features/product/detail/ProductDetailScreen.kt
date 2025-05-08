@@ -47,7 +47,6 @@ import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
-import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
 
@@ -73,6 +72,7 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.ToastPosition
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -183,13 +183,7 @@ fun ProductDetailScreen(
                 }
             }
     }
-    LaunchedEffect(Unit) {
-        viewModel.navigateToLogin.collect {
-            val intent = Intent(context, LoginActivity::class.java)
-            context.startActivity(intent)
-            (context as? Activity)?.finish()
-        }
-    }
+
 
     LaunchedEffect(Unit) {
         viewModel.shareIntentFlow.collectLatest { intent ->
@@ -200,6 +194,10 @@ fun ProductDetailScreen(
         when (val event = navEvent) {
 
 
+            is SplashNaEvent.GoToLogIn -> {
+                navHostController.navigate(NavRoutes.Login.route)
+                viewModel.resetNavigation()
+            }
             is CartNavEvent.GoToCats -> {
                 navHostController.navigate(NavRoutes.Carts.route)
                 viewModel.resetNavigation()

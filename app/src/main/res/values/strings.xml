@@ -464,6 +464,8 @@
     <string name="service">Dịch vụ</string>
     <string name="timeline">Timeline</string>
     <string name="exchange">Trao đổi</string>
+    <string name="qrcode">Mã QR</string>
+    <string name="paymentInfo">Thông tin thanh toán</string>
     <string name="task">Công việc</string>
     <string name="events_happening">Sự kiện đang diễn ra</string>
     <string name="store_list">Danh sách cửa hàng</string>

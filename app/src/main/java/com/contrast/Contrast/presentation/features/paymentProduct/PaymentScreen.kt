@@ -1,6 +1,7 @@
 package com.contrast.Contrast.presentation.features.paymentProduct
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 
 
 import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificationShare
+import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
 import com.contrast.Contrast.presentation.components.slider.ImageSliderPaymentFromUrl
 import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
@@ -40,13 +42,16 @@ import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
 
 import com.contrast.Contrast.presentation.features.product.viewmodel.ProductViewModel
+import com.contrast.Contrast.presentation.navigator.NavRoutes
 
 
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
 import com.contrast.Contrast.presentation.theme.TealGreen
 
 import com.itechpro.domain.model.ToastPosition
-
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.HomeNavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -63,11 +68,12 @@ fun PaymentScreen(
     viewModel: PaymentViewModel = hiltViewModel()
 
 ) {
-    var type by remember { mutableStateOf("huuhinh") }
-
+    val selectedTab by viewModel.selectedTabIndex.collectAsState()
+    val categoryName by viewModel.selectedCategoryName.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
     var toastMessage by remember { mutableStateOf("") }
     var showToast by remember { mutableStateOf(false) }
+    val navEvent by viewModel.navigationEvent.collectAsState()
     val context = LocalContext.current
 // Thu thập từ nhiều ViewModel
     viewModel.notificationToast.toastCollect {
@@ -81,9 +87,26 @@ fun PaymentScreen(
     LaunchedEffect(Unit) {
 
         viewModel.getInfoPayment(totalIntoMoney, oderKey)
+        viewModel.generateCategory(isOpportunity.toBoolean())
     }
 
+    LaunchedEffect(navEvent) {
+        when (val event = navEvent) {
 
+
+            is HomeNavEvent.GoToHome -> {
+                navHostController.navigate(NavRoutes.AffiliateHome.route) {
+                    popUpTo(NavRoutes.AffiliateHome.route) { inclusive = true }
+                    launchSingleTop = true
+                }
+                viewModel.resetNavigation()
+            }
+
+
+
+            else -> Unit
+        }
+    }
 
     Box {
 
@@ -93,11 +116,20 @@ fun PaymentScreen(
 
                 placeholder = stringResource(R.string.info_payment) ,
                 onBackStack = { navHostController.popBackStack() },
-                onHomeClick = { navHostController.popBackStack() }
+                onHomeClick = { viewModel.gotoHome() }
             )
             CustomDividerColor()
 
-            if (uiState.qrCodes.isNotEmpty()) {
+            if (uiState.tabs.size > 1&&uiState.typeAccount!="khachhang") {
+                SegmentTabLocal(
+                    tabs = uiState.tabs,
+                    selectedTab = selectedTab,
+
+                    onTabSelected = { viewModel.updateSelectedTab(it) }
+                )
+            }
+
+            if (uiState.qrCodes.isNotEmpty()&&categoryName=="qrcode") {
                 ImageSliderPaymentFromUrl(
                     domain = uiState.domain,
                     autoScroll = false,
@@ -107,6 +139,18 @@ fun PaymentScreen(
                         viewModel.saveBase64Image(it, context)
                     }
                 )
+            }
+
+            if (categoryName=="payment_info") {
+//                ImageSliderPaymentFromUrl(
+//                    domain = uiState.domain,
+//                    autoScroll = false,
+//                    slides = uiState.qrCodes,
+//                    modifier = Modifier.fillMaxSize().padding(10.dp),
+//                    onDownloadClick={
+//                        viewModel.saveBase64Image(it, context)
+//                    }
+//                )
             }
 
         }
@@ -136,17 +180,4 @@ fun PaymentScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun callApi(
-    viewModel: ProductViewModel,
-    reviewViewModel: ReviewViewModel,
-    cartViewModel: CartViewModel,
-    id: String,
-    idUnit: String
-) {
-    viewModel.loadData(id, idUnit)
-    reviewViewModel.loadReview(id, "3")
-    cartViewModel.getCarts(false)
-    viewModel.getProductsOther(id)
-}
 

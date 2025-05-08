@@ -12,6 +12,10 @@ import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.News
 import com.itechpro.domain.model.UserModel
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.news.NewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,7 +52,8 @@ class NewsViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
     private var currentUserInfo: CurrentUserInfo? = null
-
+    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
+    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
     init {
         viewModelScope.launch(dispatcher) {
             try {
@@ -66,6 +71,20 @@ class NewsViewModel @Inject constructor(
         _selectedTab.value = index
     }
 
+    fun onItemNotificationSelected( ) {
+        _navigationEvent.value = NotificationNavEvent.GoToNotifications(
+            startDate = "",
+            endDate = "",
+
+            )
+    }
+    fun onItemCarts( ) {
+        _navigationEvent.value = CartNavEvent.GoToCats
+    }
+    // Sau khi navigate xong, reset lại state
+    fun resetNavigation() {
+        _navigationEvent.value = ProductNavEvent.None
+    }
 
     fun getNewDetail( ido: String) {
         viewModelScope.launch(dispatcher) {

@@ -43,7 +43,7 @@ interface PreferencesManager {
     fun getShowAddressKH(): String
 
     // 🛡️ Admin Info
-    fun getAdmin(): String
-    fun getAdminRoot(): String
+    fun getAdmin(): Boolean
+    fun getAdminRoot(): Boolean
     fun getModuleOff(): String
 }

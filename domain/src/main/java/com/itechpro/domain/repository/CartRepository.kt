@@ -24,6 +24,9 @@ interface CartRepository {
     suspend fun getCheckOder(ids: String,authen: String
     ): NetworkResponse<List<CartItem>>
 
+    suspend fun getDisCountAgency(authen: String
+    ): NetworkResponse<List<CartItem>>
+
     suspend fun checkProductBeforePayment(ids: String,authen: String
     ): NetworkResponse<CheckProductActive>
 

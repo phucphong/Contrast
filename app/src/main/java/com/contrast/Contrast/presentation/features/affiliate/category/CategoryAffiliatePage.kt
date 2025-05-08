@@ -41,7 +41,11 @@ import com.contrast.Contrast.presentation.components.tab.TabBarRowPillStyle
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
+import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -66,11 +70,10 @@ fun CategoryAffiliatePage(
     val type by viewModel.type.collectAsState()
 
     var selectedTabIndex by remember { mutableStateOf(0) }
-    val selectedTab by viewModel.selectedTab.collectAsState()
+
     val selectedTab1 by viewModel.selectedTab1.collectAsState()
     val selectedTab2 by viewModel.selectedTab2.collectAsState()
     val selectedTab3 by viewModel.selectedTab3.collectAsState()
-    val pagedProducts by viewModel.pagedProducts.collectAsState()
     val isRefreshing by remember { mutableStateOf(false) }
     var isBackStack by remember { mutableStateOf(false) }
 
@@ -79,6 +82,8 @@ fun CategoryAffiliatePage(
     var searchText by remember { mutableStateOf("") }
     val tabs by viewModel.tabs.collectAsState()
     val isInit = remember { mutableStateOf(false) }
+
+    val navEvent by viewModel.navigationEvent.collectAsState()
     LaunchedEffect(products) { viewModel.setInitialProducts(products) }
     LaunchedEffect(Unit) {
 
@@ -90,7 +95,7 @@ fun CategoryAffiliatePage(
     }
 
     LaunchedEffect(categoryId) {
-        Log.e("categoryId",categoryId)
+
 
         if(categoryId!="0"){
             isBackStack = true
@@ -98,7 +103,57 @@ fun CategoryAffiliatePage(
 
     }
 
+    LaunchedEffect(navEvent) {
+        when (val event = navEvent) {
+            is NotificationNavEvent.GoToNotifications -> {
+                navHostController.navigate(
+                    NavRoutes.Notifications.withArgs(
+                        startDate = event.startDate,
+                        endDate = event.endDate
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+            is CartNavEvent.GoToCats -> {
+                navHostController.navigate(NavRoutes.Carts.route)
+                viewModel.resetNavigation()
+            }
+            is ProductNavEvent.GoToProductsCategory -> {
+                navHostController.navigate(
+                    NavRoutes.ProductByCategory.withArgs(
+                        categoryId = event.categoryId,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
 
+            is ProductNavEvent.GoToProductDetail -> {
+                navHostController.navigate(
+                    NavRoutes.ProductDetail.withArgs(
+                        id = event.id,
+                        idUnit = event.idUnit,
+                        introducerId = event.introducerId,
+
+                        )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProductNavEvent.GoToAddServiceRequest -> {
+                navHostController.navigate(
+                    NavRoutes.AddServiceRequest.withArgs(
+                        id = event.id,
+                        serviceName = event.serviceName,
+                        idUnit = event.idUnit,
+                        discount = event.discount
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            else -> Unit
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopSearchNotificationCart(
@@ -107,8 +162,8 @@ fun CategoryAffiliatePage(
             text = searchText,
             onTextChanged = { searchText = it },
             onSearchClick = { /* mở trang tìm kiếm */ },
-            onNotificationClick = { /* xử lý noti */ },
-            onCartClick = { },
+            onNotificationClick = { viewModel.onItemNotificationSelected() },
+            onCartClick = { viewModel.onItemCarts() },
             onBackStack = {   navHostController.popBackStack() }
         )
 
@@ -126,7 +181,7 @@ fun CategoryAffiliatePage(
             SegmentTabLocal(
                 tabs = tabs,
                 selectedTab = selectedTabIndex,
-                type = "name",
+
                 onTabSelected = {
                     selectedTabIndex = it
 //                    viewModel.getCategory1("tatcanhomsp", "tatcanhomsp", type, "0", 1)

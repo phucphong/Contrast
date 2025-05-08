@@ -15,6 +15,7 @@ import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
+import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.paymentProduct.PaymentScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
 import com.contrast.Contrast.presentation.features.report.AddReportProductScreen

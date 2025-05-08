@@ -45,9 +45,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomePage(
-    idProductFromShare: String? = null,
-    idUnitFromShare: String? = null,
-    introducerId: String? = null,
+    idProductFromShare: String = "0",
+    idUnitFromShare: String= "0",
+    introducerId: String= "0",
     navHostController: NavHostController,
     viewModel: HomeAffiliateViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
@@ -82,13 +82,8 @@ fun HomePage(
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         viewModel.loadHomeData()
     }
-    LaunchedEffect(idProductFromShare, idUnitFromShare) {
-        if (!idProductFromShare.isNullOrEmpty() && !idUnitFromShare.isNullOrEmpty()) {
-            delay(500)
-            navHostController.navigate("product_detail/$idProductFromShare/$idUnitFromShare/$introducerId")
 
-        }
-    }
+
     LaunchedEffect(Unit) {
 
         cartViewModel.getCarts(false)

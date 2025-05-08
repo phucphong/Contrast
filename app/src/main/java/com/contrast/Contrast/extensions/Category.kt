@@ -14,6 +14,8 @@ fun Category.label(): String {
         "other" -> stringResource(R.string.other)
         "timeline" -> stringResource(R.string.timeline)
         "exchange" -> stringResource(R.string.exchange)
+        "payment_info" -> stringResource(R.string.paymentInfo)
+        "qrcode" -> stringResource(R.string.qrcode)
         else -> name.orEmpty()
     }
 }

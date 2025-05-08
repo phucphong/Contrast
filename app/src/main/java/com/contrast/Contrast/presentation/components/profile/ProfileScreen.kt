@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,13 +55,40 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.logout.LogoutButton
+import com.contrast.Contrast.presentation.components.profile.ui.OrderStatusItem
+import com.contrast.Contrast.presentation.components.profile.ui.OrderStatusRow
+import com.contrast.Contrast.presentation.components.profile.ui.ProfileHeader
+import com.contrast.Contrast.presentation.components.profile.ui.ProfileOptionItem
+import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.itechpro.domain.model.navigationEvent.HomeNavEvent
 
 
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navHostController: NavHostController) {
+
+
+//    LaunchedEffect(navEvent) {
+//        when (val event = navEvent) {
+//
+//
+//            is HomeNavEvent.GoToLogout -> {
+//                navHostController.navigate(NavRoutes.Logout.route) {
+//                    popUpTo(NavRoutes.Logout.route) { inclusive = true }
+//                    launchSingleTop = true
+//                }
+////                viewModel.resetNavigation()
+//            }
+//
+//
+//
+//            else -> Unit
+//        }
+//    }
    Column {
        ProfileHeader()
 
@@ -72,10 +100,6 @@ fun ProfileScreen() {
        ) {
 
 
-           // trong lady cố định khi scroll
-//           stickyHeader {
-//               ProfileHeader()
-//           }
 
            item {
                OrderStatusRow()
@@ -88,104 +112,13 @@ fun ProfileScreen() {
 
        }
 
-       LogoutButton()
+       LogoutButton(onClickLogout = {
+
+       })
    }
 }
 
-@Composable
-fun ProfileHeader() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFF00BFA5))
-            .padding(16.dp)
-    ) {
-        Box(Modifier.size(30.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.nodata), // Thay icon avatar ở đây
-                contentDescription = null,
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(Color.White)
-            )
 
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text("Admin", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Color.Yellow, modifier = Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text("0%", color = Color.White)
-                }
-            }
-
-            Icon(
-                imageVector = Icons.Default.QrCode,
-                contentDescription = "QR",
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun OrderStatusRow() {
-    Column { Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        OrderStatusItem(
-            icon = R.drawable.ic_edit, // drawable của bạn
-            title = "Đặt hàng\nchờ xác nhận"
-        )
-        OrderStatusItem(
-            icon = R.drawable.ic_edit,
-            title = "Đơn hàng\nđã xác nhận"
-        )
-        OrderStatusItem(
-            icon = R.drawable.ic_edit,
-            title = "Đơn hàng\nđã mua"
-        )
-    }
-        SectionDivider() }
-}
-
-@Composable
-fun OrderStatusItem(
-    icon: Int,
-    title: String,
-    onClick: () -> Unit = {}
-) {
-    Column(
-        modifier = Modifier
-            .width(100.dp)
-            .clickable { onClick() },
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = icon),
-            contentDescription = null,
-            modifier = Modifier.size(36.dp),
-            colorFilter = ColorFilter.tint(Color(0xFF00BFA5))
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = title,
-            textAlign = TextAlign.Center,
-            fontSize = 14.sp,
-            color = Color.Gray
-        )
-    }
-}
 
 
 @Composable
@@ -212,31 +145,5 @@ val profileOptions = listOf(
     "Hướng dẫn spa tại nhà"
 )
 
-@Composable
-fun ProfileOptionItem(title: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { /* TODO */ }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(Icons.Default.ArrowForward, contentDescription = null, tint = Color(0xFF00BFA5))
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(title, fontSize = 16.sp)
-    }
-    Divider(color = Color(0xFFF0F0F0))
-}
 
-@Composable
-fun LogoutButton() {
-    Button(
-        onClick = { /* TODO */ },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding( 16.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)
-    ) {
-        Text("Đăng xuất", color = Color.Black)
-    }
-}
+

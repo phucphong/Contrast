@@ -10,7 +10,7 @@ import com.itechpro.domain.model.NetworkResponse
 
 interface LoginRepository {
 
-    suspend fun login(account: Login): NetworkResponse<List<Login>>
+    suspend fun login(account: Login): NetworkResponse<Login>
 
 
 

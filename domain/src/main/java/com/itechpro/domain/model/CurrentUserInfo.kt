@@ -37,7 +37,7 @@ data class CurrentUserInfo(
     val showEmailKH: String,
     val showAddressKH: String,
 
-    val admin: String,
-    val adminRoot: String,
+    val admin: Boolean,
+    val adminRoot: Boolean,
     val moduleOff: String
 )

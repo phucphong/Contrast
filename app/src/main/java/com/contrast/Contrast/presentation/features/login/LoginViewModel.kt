@@ -14,6 +14,9 @@ import com.itechpro.domain.enumApp.ValidationErrorType
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.Login
 import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 
@@ -36,13 +39,14 @@ class LoginViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val _registerState = MutableStateFlow<NetworkResponse<List<Login>>>(NetworkResponse.Loading)
-    val registerState: StateFlow<NetworkResponse<List<Login>>> = _registerState
+    private val _registerState = MutableStateFlow<NetworkResponse<Login>>(NetworkResponse.Loading)
+    val registerState: StateFlow<NetworkResponse<Login>> = _registerState
 
     private val _validationError = MutableStateFlow<String?>(null)
     val validationError: StateFlow<String?> = _validationError
 
-
+    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
+    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
 
     private val _domainLogin = MutableStateFlow("")
     val domainLogin: StateFlow<String> = _domainLogin
@@ -99,23 +103,33 @@ class LoginViewModel @Inject constructor(
     }
 
 
- 
-  
-    private fun login( Login: Login) {
+
+    private fun login(login: Login) {
         viewModelScope.launch(dispatcher) {
             _registerState.value = NetworkResponse.Loading
             try {
-              
-                val result = loginUseCase.invoke( Login)
+                when (val result = loginUseCase.invoke(login)) {
+                    is NetworkResponse.Success -> {
+                        val user = result.data
+                        saveLoginOptions(user)
+                        _registerState.value = NetworkResponse.Success(user)
+                    }
 
-//                saveLoginOptions(result)
-                _registerState.value = result
-
+                    is NetworkResponse.Error -> {
+                        _registerState.value = NetworkResponse.Error(result.message)
+                    }
+                    else -> {
+                        _registerState.value = NetworkResponse.Error(stringProvider.getString(R.string.error_unknown))
+                    }
+                }
             } catch (e: Exception) {
-                _registerState.value = NetworkResponse.Error(stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}")
+                _registerState.value = NetworkResponse.Error(
+                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+                )
             }
         }
     }
+
     fun saveLoginOptions(result: Login) {
         appConfig.setToken(result.token?:"")
         appConfig.setEmployeeId(result.idnhanvien?:"")
@@ -125,8 +139,14 @@ class LoginViewModel @Inject constructor(
         appConfig.setPermissionMobile(result.permissionmobile?:"")
         appConfig.  setSalesPointId(result.iddiembanle?:"")
         appConfig.  setSalesPointName(result.tendiambanle?:"")
-        appConfig. setAdmin(result.isadmincoso?:false)
-        appConfig.setAdminRoot(result.isadmin?:false)
+        appConfig. setAdmin((result.isadmincoso?:"False").toBoolean())
+        appConfig.setAdminRoot((result.isadmin?:"False").toBoolean())
+        _navigationEvent.value = SplashNaEvent.GoToMain(
+            id = "0",
+            idUnit = "0",
+            introducerId = "0",
+        )
+
     }
 
     fun clearValidationError() {

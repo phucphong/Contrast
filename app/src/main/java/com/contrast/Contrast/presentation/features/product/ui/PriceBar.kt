@@ -23,6 +23,7 @@ import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 fun PriceBar(
     price: String,
     isShare: Boolean = false,
+    bookService: Boolean = false,
     onClickCart: () -> Unit,
     onClickAddServiceRequest: () -> Unit,
     onClickShare: () -> Unit,
@@ -49,12 +50,15 @@ fun PriceBar(
                     .size(20.dp).noRippleClickableComposable { onClickCart() }
             )
             Box(Modifier.size(10.dp))
-            Icon(
-                painter = painterResource(id = R.drawable.calendar_service),
-                contentDescription = "Buy Package",
-                tint = Color(0xFF00BFA6),
-                modifier = Modifier.size(20.dp).noRippleClickableComposable { onClickAddServiceRequest() }
-            )
+            if(bookService){
+                Icon(
+                    painter = painterResource(id = R.drawable.calendar_service),
+                    contentDescription = "Buy Package",
+                    tint = Color(0xFF00BFA6),
+                    modifier = Modifier.size(20.dp).noRippleClickableComposable { onClickAddServiceRequest() }
+                )
+            }
+
         }else{
             Icon(
                 painter = painterResource(id = R.drawable.share),

@@ -23,6 +23,7 @@ data class CartItem(
     val sotienkm: Double?=0.0,
     val sotienkm1sp: Double?=0.0,
     val ck: Double?=0.0,
+    val phantram: Double?=0.0,
     var isChecked: Boolean?=false,
 
     )

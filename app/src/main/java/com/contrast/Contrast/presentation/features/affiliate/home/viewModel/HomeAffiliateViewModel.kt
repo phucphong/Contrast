@@ -196,13 +196,9 @@ class HomeAffiliateViewModel @Inject constructor(private val getCurrentUserUseCa
             endDate = "",
 
         )
-
-
     }
     fun onItemCarts( ) {
-
         _navigationEvent.value = CartNavEvent.GoToCats
-
     }
 
     fun onAddServiceRequestSelected( category: Product) {

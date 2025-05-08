@@ -26,31 +26,65 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
 import com.contrast.Contrast.presentation.components.PasswordRequirements
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckBox
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
+import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.features.login.LoginViewModel
+import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 
 @Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    val navController = rememberNavController()
-    LoginScreen(navController = navController)
-}
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navHostController: NavHostController,
+                viewModel: LoginViewModel = hiltViewModel(), ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var rememberMe by remember { mutableStateOf(false) }
+    var isRegisterButton by remember { mutableStateOf(false) }
+    val navEvent by viewModel.navigationEvent.collectAsState()
+    val validationError by viewModel.validationError.collectAsState()
+
+    if (validationError != null) {
+        CustomOkAlertDialog(message = validationError!!, onDismiss = {
+            viewModel.clearValidationError()
+            isRegisterButton = false
+        })
+    }
+
+    // Xử lý navigation event
+    LaunchedEffect(navEvent) {
+        when (val event = navEvent) {
+
+
+            is SplashNaEvent.GoToMain -> {
+                navHostController.navigate(
+                    NavRoutes.Main.withArgs(
+                        id = "0",
+                        idUnit = "0",
+                        introducerId = "0"
+                    )
+                )
+            }
+
+            else -> Unit
+
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -76,6 +110,7 @@ fun LoginScreen(navController: NavController) {
                   contentDescription = "close",
                   modifier = Modifier
                       .size(30.dp).noRippleClickableComposable {
+                          navHostController.popBackStack()
 
                       }
 
@@ -122,7 +157,10 @@ fun LoginScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(24.dp))
 Row (verticalAlignment = Alignment.CenterVertically){
     Button(
-        onClick = { /* login logic */ },
+        onClick = {
+            isRegisterButton = true
+            viewModel.validateAndLogin(username, password)
+        },
         modifier = Modifier
             .fillMaxWidth().weight(1f)
             .height(50.dp),
@@ -136,7 +174,7 @@ Row (verticalAlignment = Alignment.CenterVertically){
         painter = painterResource(id = R.drawable.fingerprintscan),
         contentDescription = "EZMAX Logo",
         modifier = Modifier
-            .height(50.dp).padding(start = 15.dp)
+            .height(35.dp).padding(start = 15.dp)
             .noRippleClickableComposable {  }
 
 
@@ -162,7 +200,7 @@ Row (verticalAlignment = Alignment.CenterVertically){
                     text = stringResource(R.string.forgot_password),
                     color = FF000000,
                     modifier = Modifier.padding(5.dp,2.dp,2.dp,2.dp).clickable {
-                        navController.navigate("forgotPassword")
+
                     }
                 )
             }
@@ -176,12 +214,16 @@ Row (verticalAlignment = Alignment.CenterVertically){
                 Text(
                     text = stringResource(R.string.register),
                     color = Color(0xFF00AA88),
-                    modifier = Modifier.clickable { navController.navigate("register") }
+                    modifier = Modifier.clickable {
+//                        navController.navigate("register")
+                    }
                 )
                 Text(
                     text = stringResource(R.string.connect_code),
                     color = Color(0xFF00AA88),
-                    modifier = Modifier.clickable { navController.navigate("connectCode") }
+                    modifier = Modifier.clickable {
+//                        navController.navigate("connectCode")
+                    }
                 )
             }
 

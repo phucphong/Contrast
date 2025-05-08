@@ -24,6 +24,7 @@ data class Product(
     val diem: Double? = 0.0,
     val sotienhoahong: Double? = 0.0,
     val tylehoahong: Double? = 0.0,
+    val cothedatlich: Boolean? = false,
 
 
     @Json(ignore = true)

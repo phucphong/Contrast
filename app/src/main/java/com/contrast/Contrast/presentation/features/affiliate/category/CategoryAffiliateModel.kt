@@ -14,7 +14,9 @@ import com.itechpro.domain.model.NetworkResponse
 
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.category.CategoryAffiliateUseCase
@@ -143,6 +145,20 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
         _pagedProducts.value = products.take(pageSize)
     }
 
+    // Sau khi navigate xong, reset lại state
+    fun resetNavigation() {
+        _navigationEvent.value = ProductNavEvent.None
+    }
+    fun onItemNotificationSelected( ) {
+        _navigationEvent.value = NotificationNavEvent.GoToNotifications(
+            startDate = "",
+            endDate = "",
+
+            )
+    }
+    fun onItemCarts( ) {
+        _navigationEvent.value = CartNavEvent.GoToCats
+    }
     fun handleIdParentResult(idParent1: String, idParent2: String, idParent3: String, type: String) {
         _idParent.value = when {
             idParent3.isNotEmpty() -> idParent3
@@ -241,12 +257,12 @@ class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCa
 
     }
     fun onItemProductSelected( category: Product) {
-        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
+        _navigationEvent.value = ProductNavEvent.GoToProductDetail(
             id = category.id ?: "",
-            serviceName = category.ten ?: "",
             idUnit = category.iddonvichuan ?: "",
-            discount = category.iddonvichuan ?: ""
-        )
+            introducerId = "0",
+
+            )
 
 
     }

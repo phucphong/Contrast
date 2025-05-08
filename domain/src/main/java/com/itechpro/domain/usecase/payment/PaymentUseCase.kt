@@ -1,9 +1,11 @@
 package com.itechpro.domain.usecase.payment
 
+import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.payment.InfoPayment
 import com.itechpro.domain.repository.PaymentRepository
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -95,6 +97,12 @@ class PaymentUseCase @Inject constructor(
 
 
 
+
+    fun generateCategory(isOpportunity: Boolean) = if (isOpportunity) {
+        listOf(Category(code = "payment_info"), Category(code = "qrcode"))
+    } else {
+        listOf(Category(code = "qrcode"), Category(code = "payment_info"))
+    }
 
 
 

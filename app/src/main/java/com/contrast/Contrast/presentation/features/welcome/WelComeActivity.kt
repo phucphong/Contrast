@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 import com.contrast.Contrast.presentation.features.register.ui.phone.RegisterPhoneActivity
 
 class WelcomeActivity : ComponentActivity() {
@@ -13,8 +12,8 @@ class WelcomeActivity : ComponentActivity() {
         setContent {
             WelcomeScreen(
                 onLoginClick = {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
+//                    val intent = Intent(this, LoginActivity::class.java)
+//                    startActivity(intent)
                 },
                 onRegisterClick = {
                     val intent = Intent(this, RegisterPhoneActivity::class.java)

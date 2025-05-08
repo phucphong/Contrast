@@ -50,6 +50,16 @@ class CartRepositoryImpl @Inject constructor(
     }
 
 //    suspend fun checkOder(ids:String) = apiService.checkOder("checkgiavakm", "checkgiavakm",ids, authen)
+    override suspend fun getDisCountAgency( authen: String): NetworkResponse<List<CartItem>> {
+        val response = api.getDisCountAgency("dailyaf","layphantramckcanhan",authen)
+    return if (response.isSuccessful) {
+        NetworkResponse.Success(response.body() ?: emptyList())
+    } else {
+        NetworkResponse.Error("Lỗi: ${response.message()}")
+    }
+    }
+
+//    suspend fun checkOder(ids:String) = apiService.checkOder("checkgiavakm", "checkgiavakm",ids, authen)
     override suspend fun checkProductBeforePayment( ids: String,authen: String): NetworkResponse<CheckProductActive> {
         val response = api.checkProductBeforePayment("giohang","checksphoatdong",ids,authen)
     return if (response.isSuccessful) {

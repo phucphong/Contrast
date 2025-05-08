@@ -20,7 +20,7 @@ interface LoginAPI {
     @POST("/ex/api/login")
     suspend fun login(
         @Body body: Login,
-    ): Response<List<Login>>
+    ): Response<Login>
 
 
 

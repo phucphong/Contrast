@@ -42,6 +42,7 @@ import com.contrast.Contrast.presentation.components.circularProgressIndicatorCe
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
+import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
@@ -51,7 +52,11 @@ import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable
-fun NotificationScreen(navHostController: NavHostController, viewModel: NotificationViewModel = hiltViewModel()) {
+fun NotificationScreen(navHostController: NavHostController,
+                       startDateInit:String,
+                       endDatenit:String,
+
+                       viewModel: NotificationViewModel = hiltViewModel()) {
     val notifications by viewModel.notifications.collectAsState()
 
     val domain by viewModel.domain.collectAsState()
@@ -59,8 +64,8 @@ fun NotificationScreen(navHostController: NavHostController, viewModel: Notifica
 
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
-    var startDate by remember { mutableStateOf("") }
-    var endDate by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf(startDateInit) }
+    var endDate by remember { mutableStateOf(endDatenit) }
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
     var isAlertDialogVisible by remember { mutableStateOf(false) }
 
@@ -96,7 +101,7 @@ fun NotificationScreen(navHostController: NavHostController, viewModel: Notifica
 
 
 
-        CustomTitleBack(
+        CustomBackTitle  (
             title = stringResource(R.string.notification_title),
             onBackPress = { navHostController.popBackStack()}
         )

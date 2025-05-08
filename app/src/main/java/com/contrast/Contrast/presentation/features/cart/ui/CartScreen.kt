@@ -124,7 +124,6 @@ fun CartScreen(
             }
 
 
-
             else -> Unit
         }
     }
@@ -169,7 +168,6 @@ fun CartScreen(
        ) {
            Icon(Icons.Default.LocationOn, contentDescription = null, tint = TealGreen)
            Spacer(modifier = Modifier.width(6.dp))
-
 
            BasicTextField(value = address,
 
@@ -342,7 +340,9 @@ fun CartScreen(
                        }else{
                            customerId = uiState.customerId
                        }
-                       viewModel.payment(uiState.typeAccount,address,customerId, note,uiState.carts,isOpportitue)
+
+
+                       viewModel.payment(uiState.carts,uiState.typeAccount,address,customerId, note,uiState.discount,isOpportitue)
 
                    },
                    modifier = Modifier

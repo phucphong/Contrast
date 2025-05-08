@@ -8,13 +8,15 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.di.module.app.AppModule
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.presentation.base.BaseViewModel
-import com.contrast.Contrast.presentation.features.login.ui.LoginActivity
 import com.contrast.Contrast.presentation.features.main.ContrastActivity
 import com.contrast.Contrast.utils.NetworkChecker
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.data.config.AppConfig
 import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.home.HomeAffiliateUseCase
 import com.itechpro.domain.usecase.setting.SettingUseCase
@@ -42,8 +44,9 @@ class SplashViewModel @Inject constructor(
     private val _validationError = MutableStateFlow("")
     val validationError: StateFlow<String> = _validationError
 
-    private val _navigation = MutableStateFlow<SplashNavigation?>(null)
-    val navigation: StateFlow<SplashNavigation?> = _navigation
+
+    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
+    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
 
     private val _domain = MutableStateFlow("")
     val domain: StateFlow<String> = _domain
@@ -62,9 +65,11 @@ class SplashViewModel @Inject constructor(
     fun handleShareIntent(intent: Intent) {
         val result = handleShareIntentUseCase.execute(intent) ?: return
 
-        viewModelScope.launch {
+
             if (result.domain.isNotEmpty() && result.domain != _domain.value) {
-                _navigation.value = SplashNavigation.ShowAffiliateInfo(
+                AppModule.updateBaseUrl(result.domain)
+                appConfig.setDomain(result.domain)
+                _navigationEvent.value = SplashNaEvent.ShowAffiliateInfo(
                     id = result.id,
                     idUnit = result.idUnit,
                     introducerId = result.introducerId,
@@ -72,14 +77,17 @@ class SplashViewModel @Inject constructor(
                 )
 
             } else {
-                AppModule.updateBaseUrl(result.domain)
-                appConfig.setDomain(result.domain)
-                _navigation.value = SplashNavigation.OpenAffiliatePage(
+
+                Log.e("_navigationEvent", "${result.id} ${result.idUnit}")
+                _navigationEvent.value = SplashNaEvent.GoToMain(
                     id = result.id,
                     idUnit = result.idUnit,
                     introducerId = result.introducerId,
                 )
-            }
+
+
+
+
         }
     }
 
@@ -89,7 +97,7 @@ class SplashViewModel @Inject constructor(
             if (isLoggedIn) {
                 getSettingViewOff()
             } else {
-                _navigation.value = SplashNavigation.GoToLogin
+                _navigationEvent.value = SplashNaEvent.GoToLogIn
             }
         }
     }
@@ -101,7 +109,11 @@ class SplashViewModel @Inject constructor(
                     when (result) {
                         is NetworkResponse.Loading -> {}
                         is NetworkResponse.Success -> {
-                            _navigation.value = SplashNavigation.GoToMain
+                            _navigationEvent.value = SplashNaEvent.GoToMain(
+                                id = "0",
+                                idUnit = "0",
+                                introducerId = "0",
+                            )
                         }
                         is NetworkResponse.Error -> {
                             _validationError.value = result.message

@@ -20,6 +20,7 @@ fun ProductPriceSection(
     price: Double,
     promoPrice: Double,
     isShare: Boolean,
+    bookService: Boolean,
     onClickCart: () -> Unit,
     onClickAddServiceRequest: () -> Unit,
     onClickShare: () -> Unit
@@ -42,6 +43,7 @@ fun ProductPriceSection(
                 price = price.formatCurrency(),
                 isShare = isShare,
                 onClickCart = onClickCart,
+                bookService = bookService,
                 onClickAddServiceRequest = onClickAddServiceRequest,
                 onClickShare = onClickShare,
             )

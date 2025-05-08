@@ -127,7 +127,7 @@ fun CustomerDetailScreen(
                 item {
                     SegmentTabLocal(
                         tabs = tabs,
-                        type="name",
+
                         selectedTab = selectedTabIndex,
                         onTabSelected = { selectedTabIndex = it }
                     )

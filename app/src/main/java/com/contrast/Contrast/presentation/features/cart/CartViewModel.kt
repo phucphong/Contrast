@@ -2,10 +2,12 @@
 
 package com.contrast.Contrast.presentation.features.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
+import com.contrast.Contrast.extensions.toJson
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
 import com.itechpro.domain.model.cart.CartItem
@@ -79,6 +81,11 @@ class CartViewModel @Inject constructor(
                                 amountMoneyDiscount = result.data.amountMoneyDiscount ?: 0.0
                             )
                         }
+                        if(_uiState.value.typeAccount=="daily"){
+
+                            getDisCountAgency()
+                        }
+
                     }
                     is NetworkResponse.Error -> _uiState.update {
                         it.copy(isLoading = false, validationError = result.message)
@@ -117,13 +124,9 @@ class CartViewModel @Inject constructor(
     }
     fun addOrder( carts: List<CartItem> ,idCustomer: String, note: String,
 
-                address: String, typeAccount: String,discount:String, isToast: Boolean, isOpportunity: Boolean) {
+                address: String, typeAccount: String,discount:Double, isToast: Boolean, isOpportunity: Boolean) {
         val user = currentUserInfo ?: return
         val salesPointId = user.salesPointId
-
-
-
-
         val orderPayment = OrderPayment(
             idCustomer,
             salesPointId,
@@ -131,10 +134,12 @@ class CartViewModel @Inject constructor(
             note,
             address,
             typeAccount,
-            discount,
+            discount.toString(),
             carts
         )
         viewModelScope.launch(dispatcher) {
+
+            Log.d("addOrder", "Order JSON = ${orderPayment.toJson()}")
             cartUseCase.addOrder(isOpportunity, orderPayment, user.token).collect { result ->
                 when (result) {
                     is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
@@ -143,7 +148,6 @@ class CartViewModel @Inject constructor(
                         deleteAll(carts)
                         if(isToast){
                             _notificationToast.emit(stringProvider.getString(R.string.add_oder_success))
-
                             _navigationEvent.value = CartNavEvent.GoToPayment(
                                 totalIntoMoney = result.data.tongtien,
                                 oderKey = result.data.madonhang,
@@ -196,8 +200,43 @@ class CartViewModel @Inject constructor(
             }
         }
     }
+    fun getDisCountAgency() {
+        val user = currentUserInfo ?: return
+        viewModelScope.launch(dispatcher) {
+            cartUseCase.getDisCountAgency(user.token).collect { result ->
+                when (result) {
+                    is NetworkResponse.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                discount = result.data,
+                                isLoading = false
+                            )
+                        }
+                    }
 
-    fun checkProductBeforePayment(ids: String,carts: List<CartItem>, typeAccount: String,address: String,  customerId: String, note: String, isOpportunity: Boolean) {
+                    is NetworkResponse.Loading -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true
+                            )
+                        }
+                    }
+
+                    is NetworkResponse.Error -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                statusMessage = result.message
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    fun checkProductBeforePayment(ids: String,carts: List<CartItem>, typeAccount: String,address: String,  customerId: String, note: String,discount: Double, isOpportunity: Boolean) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             cartUseCase.checkProductBeforePayment(ids, user.token).collect { result ->
@@ -205,13 +244,7 @@ class CartViewModel @Inject constructor(
                 when (result) {
                     is NetworkResponse.Success -> {
                         if (result.data.isEmpty() ) {
-
-
-                            addOrder( carts , customerId,note,address, typeAccount,"0", true,isOpportunity)
-
-                        } else {
-
-
+                            addOrder( carts , customerId,note,address, typeAccount,discount, true,isOpportunity)
 
                         }
                     }
@@ -224,13 +257,14 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun payment(typeAccount: String,address: String,customerId: String, note: String, carts: List<CartItem>, isOpportunity: Boolean) {
+    fun payment( carts: List<CartItem>,typeAccount: String,address: String,customerId: String, note: String, discount: Double,isOpportunity: Boolean) {
         viewModelScope.launch(dispatcher) {
             if (address.isEmpty()) {
                 _notificationToast.emit(stringProvider.getString(R.string.address_oder_emtry))
             } else {
                 val ids = cartUseCase.idsProductCheckActive(carts)
-                checkProductBeforePayment(ids,carts, typeAccount,address,customerId,note, isOpportunity)
+
+                checkProductBeforePayment(ids,carts, typeAccount,address,customerId,note,discount, isOpportunity)
             }
         }
     }

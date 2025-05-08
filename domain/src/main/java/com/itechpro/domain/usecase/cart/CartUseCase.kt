@@ -5,6 +5,7 @@ package com.itechpro.domain.usecase.cart
 
 
 
+import android.util.Log
 import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
@@ -104,6 +105,28 @@ class CartUseCase @Inject constructor(
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    fun getDisCountAgency( authen: String): Flow<NetworkResponse<Double>> {
+        return flow {
+            emit(NetworkResponse.Loading)
+            when (val result = repository.getDisCountAgency( authen)) {
+                is NetworkResponse.Success -> {
+                    val obj: List<CartItem> = result.data
+                    val status = obj.firstOrNull()?.phantram ?:0.0
+                    emit(NetworkResponse.Success(status))
+                }
+
+                is NetworkResponse.Error -> {
+                    emit(NetworkResponse.Error(result.message))
+                }
+
+                else -> Unit
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+
+
 
     fun getDeleteCart(ids: String,device: String,content: String, authen: String): Flow<NetworkResponse<String>> {
         return flow {

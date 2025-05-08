@@ -13,6 +13,6 @@ class GetCurrentUserUseCase @Inject constructor(
 
     suspend fun isLoggedIn(): Boolean {
         val user = repository.getCurrentUser()
-        return !user?.token.isNullOrEmpty()
+        return user.token.isNotEmpty()
     }
 }

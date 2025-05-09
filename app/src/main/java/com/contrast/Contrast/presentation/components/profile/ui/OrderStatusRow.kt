@@ -8,30 +8,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.profile.SectionDivider
 
+import com.itechpro.domain.model.Category
 
 @Composable
-fun OrderStatusRow() {
-    Column { Row(
+fun OrderStatusRow(statusList: List<Category>) {
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        OrderStatusItem(
-            icon = R.drawable.ic_edit, // drawable của bạn
-            title = "Đặt hàng\nchờ xác nhận"
-        )
-        OrderStatusItem(
-            icon = R.drawable.ic_edit,
-            title = "Đơn hàng\nđã xác nhận"
-        )
-        OrderStatusItem(
-            icon = R.drawable.ic_edit,
-            title = "Đơn hàng\nđã mua"
-        )
+        statusList.forEach { status ->
+            status.icon?.let {
+                OrderStatusItem(
+                    icon = it,
+                    title = status.ten?:""
+                )
+            }
+        }
     }
-        SectionDivider() }
 }

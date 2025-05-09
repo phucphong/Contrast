@@ -10,10 +10,19 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
+import retrofit2.http.POST
 
 import retrofit2.http.Query
 
 interface ProfileAPI {
+
+
+    @Headers("Content-Type: application/json")
+    @POST("/ex/api/Nhan_vien")
+    suspend  fun getInfoAccountEmployee(
+        @Query("listparajson") listparajson: String?,
+        @Header("Authorization") authen: String?
+    ): Response<List<Account>>
 
 
     @Headers("Content-Type: application/json")

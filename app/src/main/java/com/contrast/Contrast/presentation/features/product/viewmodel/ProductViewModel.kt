@@ -37,6 +37,7 @@ import android.content.Intent
 import android.widget.Toast
 import com.itechpro.domain.model.LikeProductService
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import com.itechpro.domain.model.report.ReportProduct
 import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -139,8 +140,6 @@ class ProductViewModel @Inject constructor(private val context: Context,
     private val _shareIntentFlow = MutableSharedFlow<Intent>()
     val shareIntentFlow: SharedFlow<Intent> = _shareIntentFlow
 
-    private val _navigateToLogin = MutableSharedFlow<Unit>()
-    val navigateToLogin: SharedFlow<Unit> = _navigateToLogin
 
     private var countdownJob: Job? = null
     private val _pagedProducts = MutableStateFlow<List<Product>>(emptyList())
@@ -293,7 +292,6 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
     fun onTabSelected(index: Int, category: Category) {
         _selectedTab.value =index
-
         _navigationEvent.value = ProductNavEvent.GoToProductsCategory(category.id?:"")
 
     }
@@ -325,9 +323,8 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
     fun onItemReportSelected( id: String,idUnit: String, fileTxt:String, name:String) {
         if (_isOfflineMode.value) {
-
             viewModelScope.launch {
-                _navigateToLogin.emit(Unit)
+                _navigationEvent.value = SplashNaEvent.GoToLogIn
             }
         } else {
             _navigationEvent.value = ProductNavEvent.GoToReportProduct(
@@ -342,7 +339,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
         if (_isOfflineMode.value) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
-                _navigateToLogin.emit(Unit)
+                _navigationEvent.value = SplashNaEvent.GoToLogIn
             }
         } else {
             if (isLike) {

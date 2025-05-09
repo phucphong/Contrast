@@ -61,7 +61,7 @@ fun NewsScreen(navHostController: NavHostController, viewModel: NewsViewModel = 
 
     LaunchedEffect(selectedTab, categoryNews) {
         if (categoryNews.isNotEmpty() && selectedTab in categoryNews.indices) {
-            idCategory =categoryNews[selectedTab].id ?: "0"
+            idCategory = categoryNews[selectedTab].id ?: "0"
             viewModel.getNews(idCategory)
         }
     }
@@ -76,44 +76,43 @@ fun NewsScreen(navHostController: NavHostController, viewModel: NewsViewModel = 
                 )
                 viewModel.resetNavigation()
             }
+
             is CartNavEvent.GoToCats -> {
                 navHostController.navigate(NavRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
-
-
-
-
+            
             else -> Unit
         }
     }
+    CustomSwipeRefresh(
+        isRefreshing = isRefreshing,
+        onRefresh = { viewModel.getNews(idCategory) }
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            TopSearchNotificationCart(
+                isTexField = true,
+                text = searchText,
+                onTextChanged = { searchText = it },
+                onNotificationClick = { viewModel.onItemNotificationSelected() },
+                onCartClick = { viewModel.onItemCarts() },
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopSearchNotificationCart(
-            isTexField = true,
-            text = searchText,
-            onTextChanged = { searchText = it },
-            onNotificationClick = { viewModel.onItemNotificationSelected() },
-            onCartClick = { viewModel.onItemCarts() },
+                )
+            if (isLoading) {
+                // Hiển thị loading, ví dụ:
+                CustomCircularProgressIndicator()
+            }
 
-        )
-        if (isLoading) {
-            // Hiển thị loading, ví dụ:
-            CustomCircularProgressIndicator()
-        }
+            TabBarRow(
+                tabs = categoryNews,
+                color = TealGreen,
+                textCorSelect = TealGreen,
+                selectedTab = selectedTab,
+                type = "",
+                onTabSelected = viewModel::onTabSelected
+            )
 
-        TabBarRow(
-            tabs = categoryNews,
-            color = TealGreen,
-            textCorSelect = TealGreen,
-            selectedTab = selectedTab,
-            type = "",
-            onTabSelected = viewModel::onTabSelected
-        )
-        CustomSwipeRefresh(
-            isRefreshing = isRefreshing,
-            onRefresh = { viewModel.getNews(idCategory) }
-        ) {
+
             if (news.isEmpty()) {
                 EmptyStateScreen(
                     imageRes = R.drawable.nodata,

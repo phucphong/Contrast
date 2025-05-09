@@ -8,9 +8,13 @@ data class Account(
     val os: String? = "android",
 
     var hoten: String? = null,
+    var kq: String? = null,
     var id: String? = null,
     var ido: String? = null,
     var mamenu: String? = null,
+    var anhdaidientxt: String? = null,
+    var tencapdaily: String? = null,
+    var thuongtrusonha: String? = null,
 
     var device: String? = null,
     var hanhdong: String? = null,
@@ -28,6 +32,7 @@ data class Account(
     var diachi: String? = null,
     var password: String? = null,
     var idnguoigioithieu: String? = null,
+    var phantramchietkhau: Double? = 0.0,
 
     var key: String? = null
 

@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.text.CustomText
 
 @Composable
 fun LogoutButton(onClickLogout :()->Unit) {
@@ -21,6 +23,6 @@ fun LogoutButton(onClickLogout :()->Unit) {
             .padding( 16.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)
     ) {
-        Text(stringResource(R.string.logout), color = Color.Black)
+        CustomText(stringResource(R.string.logout), color = Color.Black, textAlign = TextAlign.Center, modifier = Modifier.padding(5.dp))
     }
 }

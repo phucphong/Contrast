@@ -35,7 +35,8 @@
 
     <string name="remember_me">Lưu mật khẩu</string>
 
-    <string name="register">Đăng ký tài khoản</string>
+    <string name="register">Đăng ký</string>
+    <string name="registerAccount">Đăng ký tài khoản</string>
     <string name="connect_code">Mã kết nối</string>
     <string name="copyright">Copyright © 2025 by ITECHPRO</string>
     <string name="version">Phiên bản: 5.4</string>

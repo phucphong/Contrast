@@ -17,6 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.text.CustomText
+import com.contrast.Contrast.presentation.theme.TealGreen
 
 @Composable
 fun OrderStatusItem(
@@ -29,19 +32,23 @@ fun OrderStatusItem(
             .width(100.dp)
             .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    ) {if (icon != 0) {
         Image(
             painter = painterResource(id = icon),
             contentDescription = null,
-            modifier = Modifier.size(36.dp),
-            colorFilter = ColorFilter.tint(Color(0xFF00BFA5))
+            colorFilter = ColorFilter.tint(TealGreen),
+            modifier = Modifier.size(25.dp)
+
         )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
+    }
+        Spacer(modifier = Modifier.height(8.dp))
+        CustomText(
             text = title,
             textAlign = TextAlign.Center,
-            fontSize = 14.sp,
+            fontSize = 12.sp,
             color = Color.Gray
         )
+
+
     }
 }

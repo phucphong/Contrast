@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +56,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 import com.contrast.Contrast.R
@@ -63,87 +66,102 @@ import com.contrast.Contrast.presentation.components.profile.ui.OrderStatusItem
 import com.contrast.Contrast.presentation.components.profile.ui.OrderStatusRow
 import com.contrast.Contrast.presentation.components.profile.ui.ProfileHeader
 import com.contrast.Contrast.presentation.components.profile.ui.ProfileOptionItem
+import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileViewModel
+import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
+import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 
 
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable
-fun ProfileScreen(navHostController: NavHostController) {
-
-
-//    LaunchedEffect(navEvent) {
-//        when (val event = navEvent) {
-//
-//
-//            is HomeNavEvent.GoToLogout -> {
-//                navHostController.navigate(NavRoutes.Logout.route) {
-//                    popUpTo(NavRoutes.Logout.route) { inclusive = true }
-//                    launchSingleTop = true
-//                }
-////                viewModel.resetNavigation()
-//            }
-//
-//
-//
-//            else -> Unit
-//        }
-//    }
-   Column {
-       ProfileHeader()
-
-       LazyColumn(
-           modifier = Modifier
-               .fillMaxSize()
-               .background(Color.White).weight(1f),
-           contentPadding = PaddingValues(bottom = 80.dp)
-       ) {
+fun ProfileScreen(
+                  navHostController: NavHostController,
+                  viewModel: ProfileViewModel = hiltViewModel(),
+) {
+    val isRefreshing by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsState()
+    val navEvent by viewModel.navigationEvent.collectAsState()
+    LaunchedEffect(navEvent) {
+        when (val event = navEvent) {
+            is SplashNaEvent.GoToLogIn -> {
+                navHostController.navigate(NavRoutes.Login.route) {
+                    popUpTo(NavRoutes.Logout.route) { inclusive = true }
+                    launchSingleTop = true
+                }
+                viewModel.resetNavigation()
+            }
+            is SplashNaEvent.GoToLogout -> {
+                navHostController.navigate(NavRoutes.Logout.route) {
+                    popUpTo(NavRoutes.Logout.route) { inclusive = true }
+                    launchSingleTop = true
+                }
+                viewModel.resetNavigation()
+            }
 
 
 
-           item {
-               OrderStatusRow()
-           }
+            else -> Unit
+        }
+    }
 
-           items(profileOptions) { option ->
-               ProfileOptionItem(option)
-           }
+    LaunchedEffect(Unit) {
+//        viewModel.getQrCodeEmployee()
+        viewModel.getQrCodeCustomer()
+        viewModel.getInfoAccount(uiState.customerId)
+        viewModel.getMenuApp()
+    }
+    CustomSwipeRefresh(
+        isRefreshing = isRefreshing,
+        onRefresh = { //        viewModel.getQrCodeEmployee()
+            viewModel.getQrCodeCustomer()
+            viewModel.getInfoAccount(uiState.customerId)
+            viewModel.getMenuApp() }
+    ) {
+        Column {
+
+            ProfileHeader(
+                uiState.avartar,
+                uiState.fullName,
+                uiState.qrCode,
+                uiState.agencyName,
+                uiState.discount,
+                uiState.isLogin,
+                onLoginClick = { viewModel.onLoginClick() },
+                onRegisterClick = { viewModel.onRegisterClick()}
+            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White).weight(1f),
+                contentPadding = PaddingValues(bottom = 80.dp)
+            ) {
 
 
-       }
+                item {
+                    OrderStatusRow(uiState.oders)
+                }
 
-       LogoutButton(onClickLogout = {
+                items(uiState.categorys) { option ->
+                    ProfileOptionItem(option)
+                }
 
-       })
-   }
+
+            }
+
+            LogoutButton(onClickLogout = {
+
+            })
+        }
+    }
 }
 
 
 
 
-@Composable
-fun SectionDivider() {
-    Divider(color = Color(0xFFE0E0E0), thickness = 1.dp)
-}
 
-val profileOptions = listOf(
-    "Sản phẩm đã xem",
-    "Sản phẩm đã lưu",
-    "Liệu trình đang thực hiện",
-    "Lịch thực hiện dịch vụ",
-    "Hướng dẫn spa tại nhà","Sản phẩm đã xem",
-    "Sản phẩm đã lưu",
-    "Liệu trình đang thực hiện",
-    "Lịch thực hiện dịch vụ",
-    "Hướng dẫn spa tại nhà",
-    "Liệu trình đang thực hiện",
-    "Lịch thực hiện dịch vụ",
-    "Hướng dẫn spa tại nhà","Sản phẩm đã xem",
-    "Sản phẩm đã lưu",
-    "Liệu trình đang thực hiện",
-    "Lịch thực hiện dịch vụ",
-    "Hướng dẫn spa tại nhà"
-)
 
 
 

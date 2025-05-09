@@ -10,13 +10,12 @@ class AppConfig(context: Context) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-    fun getEmployeeId(): String = prefs.getString(KEY_EMPLOYEE_ID, "1816841") ?: ""
-    fun getCustomerId(): String = prefs.getString(KEY_ID_CUSTOMER, "6132620681848433612") ?: ""
-    fun getIntroducerId(): String = prefs.getString(KEY_INTRODUCER_ID, "0") ?: "0"
-    fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "ADMIN") ?: "ADMIN"
+    fun getEmployeeId(): String = prefs.getString(KEY_EMPLOYEE_ID, "0") ?: ""
+    fun getCustomerId(): String = prefs.getString(KEY_ID_CUSTOMER, "0") ?: ""
+    fun getIntroducerId(): String = prefs.getString(KEY_INTRODUCER_ID, "0") ?: ""
+    fun getEmployeeName(): String = prefs.getString(KEY_EMPLOYEE_NAME, "") ?: ""
 
-    fun getToken(): String = prefs.getString(KEY_TOKEN,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjA5ODg4ODY2NjYiLCJ1c2VybmFtZSI6IjA5ODg4ODY2NjYiLCJpZCI6IjE4MTY4NzAiLCJpc2FkbWluIjoiRmFsc2UiLCJhY3RpdmUiOiJUcnVlIiwiaWRjb25ndHkiOiIxIiwiaXNhZG1pbmNvc28iOiJGYWxzZSIsImlkZGllbWJhbmxlIjoiMyIsImlka2giOiI2MTMyNjIwNjgxODQ4NDMzNjEyIiwibG9haWtoIjoiY2FuaGFuIiwiaWRsaCI6IjYxMzI2MjA2ODE4NDg0MzM2MTIiLCJsb2FpdGsiOiJraGFjaGhhbmciLCJob3RlbiI6IiIsImRpZW50aG9haSI6IiIsImVtYWlsIjoiIiwidGVua2hhY2hoYW5nIjoiSVRFQ0hQUk8iLCJtYWtoYWNoaGFuZyI6Iml0cCIsImlkY2hhdCI6IiIsInNlcnZlcmNoYXQiOiIiLCJuYmYiOjE3NDY2NzEzMDksImV4cCI6MTc1NTMxMTMwOSwiaWF0IjoxNzQ2NjcxMzA5LCJpc3MiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAiLCJhdWQiOiJodHRwOi8vMTkyLjE2OC4xLjExOTo5MTAifQ.FU2P4zeKuF1-SHJT1s08llN6VdtHktJY0E6El1_SQKg")?:""
-
+    fun getToken(): String = prefs.getString(KEY_TOKEN,"")?:""
     fun getIdCompany(): String = prefs.getString(KEY_ID_COMPANY, "") ?: ""
     fun getPointAffiliate(): String = prefs.getString(KEY_POINT_AFFILIATE, "0") ?: ""
     fun getIdCompanyParent(): String = prefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""

@@ -76,6 +76,6 @@ fun SplashScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center
     ) {
-     Image(painter = painterResource(R.drawable.logo), contentDescription = "", modifier = Modifier.padding(10.dp))
+     Image(painter = painterResource(R.drawable.logo), contentDescription = "", modifier = Modifier.padding(20.dp))
     }
 }

@@ -17,6 +17,18 @@ interface ProfileRepository {
         authen: String
     ): NetworkResponse<List<Account>>
 
+    suspend fun getInfoAccount(
+        idCustomer: String,
+        typeAccount: String,
+        authen: String
+    ): NetworkResponse<List<Account>>
+
+    suspend fun getInfoAccountEmployee(
+
+        listparajson: String,
+        authen: String
+    ): NetworkResponse<List<Account>>
+
     suspend fun getQrCodeCustomer(
         obj: String,
         mode: String,

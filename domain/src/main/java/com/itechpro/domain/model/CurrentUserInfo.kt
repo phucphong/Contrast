@@ -4,6 +4,8 @@ import com.squareup.moshi.JsonClass
 data class CurrentUserInfo(
     val employeeId: String,
     val customerId: String,
+    val account: String,
+    val password: String,
 
     val employeeName: String,
     val fullName: String,
@@ -37,6 +39,7 @@ data class CurrentUserInfo(
     val showEmailKH: String,
     val showAddressKH: String,
 
+    val rememberPassword: Boolean,
     val admin: Boolean,
     val adminRoot: Boolean,
     val moduleOff: String

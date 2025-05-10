@@ -1,9 +1,6 @@
 package com.itechpro.data.repository
-
-import android.content.Context
 import com.itechpro.data.config.AppConfig
 import com.itechpro.domain.preferences.PreferencesManager
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
@@ -11,10 +8,14 @@ class PreferencesManagerImpl @Inject constructor(
     private val appConfig: AppConfig
 ) : PreferencesManager {
 
+    override fun getAccount(): String = appConfig.getAccount()
+    override fun getPassword(): String = appConfig.getPassword()
+
     override fun getEmployeeId(): String = appConfig.getEmployeeId()
     override fun getCustomerId(): String = appConfig.getCustomerId()
     override fun getEmployeeName(): String = appConfig.getEmployeeName()
     override fun getToken(): String = appConfig.getToken()
+    override fun getRememberPassword(): Boolean = appConfig.getRememberPassword()
     override fun getIdCompany(): String = appConfig.getIdCompany()
     override fun getPointAffiliate(): String = appConfig.getPointAffiliate()
     override fun getIdCompanyParent(): String = appConfig.getIdCompanyParent()

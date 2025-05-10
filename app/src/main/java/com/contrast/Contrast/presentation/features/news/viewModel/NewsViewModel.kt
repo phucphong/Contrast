@@ -1,6 +1,5 @@
 package com.contrast.Contrast.presentation.features.news.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
@@ -8,10 +7,8 @@ import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
-import com.itechpro.domain.model.UserModel
+import com.itechpro.domain.model.news.News
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent

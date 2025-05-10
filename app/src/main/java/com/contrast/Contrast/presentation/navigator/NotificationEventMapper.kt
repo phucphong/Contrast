@@ -1,6 +1,6 @@
 package com.contrast.Contrast.presentation.navigator
 
-import com.itechpro.domain.model.Notification
+import com.itechpro.domain.model.notifications.Notification
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 
 

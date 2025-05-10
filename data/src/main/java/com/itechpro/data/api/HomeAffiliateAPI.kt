@@ -2,7 +2,7 @@ package com.itechpro.data.api
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.home.SliderHome
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -49,7 +49,7 @@ interface HomeAffiliateAPI {
 
 
     @Headers("Content-Type: application/json")
-    @GET("/ex/apiaffiliate/getobjpublic")
+    @GET("/ex/apiaffiliate/getobj")
     suspend   fun getFlashSale(
         @Query("obj") tatcasp: String?,
         @Query("mode") modetatcasp: String?,

@@ -19,7 +19,7 @@ import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
 
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.home.SliderHome
 
 
 @OptIn(ExperimentalPagerApi::class)

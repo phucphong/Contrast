@@ -1,4 +1,4 @@
-package com.itechpro.domain.model
+package com.itechpro.domain.model.agency
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Agency(

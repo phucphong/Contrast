@@ -34,6 +34,9 @@ sealed class NavRoutes(val route: String) {
     // Affiliate + Product
     object AffiliateHome : NavRoutes("affiliateHome")
     object Logout : NavRoutes("logout")
+    object Register : NavRoutes("register")
+    object Domain : NavRoutes("domain")
+    object ForgotPassword : NavRoutes("forgotPassword")
     object Login : NavRoutes("login")
 
 

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.*
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
@@ -44,7 +45,7 @@ import com.itechpro.domain.model.NetworkResponse
 @Preview(showBackground = true)
 @Composable
 fun RegisterAccountScreen(
-    navController: NavController,
+    navController: NavHostController,
     viewModel: RegisterAccountViewModel = hiltViewModel()
 ) {
     val registerState by viewModel.registerState.collectAsState()
@@ -110,7 +111,11 @@ fun RegisterAccountScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            RegisterHeader(navController)
+            RegisterHeader( onBackClick={
+                navController.popBackStack()
+            })
+
+
         }
 
         item {
@@ -192,12 +197,12 @@ fun RegisterWarningBox() {
 
 
 @Composable
-private fun RegisterHeader(navController: NavController) {
+private fun RegisterHeader( onBackClick:()->Unit) {
     Spacer(modifier = Modifier.height(16.dp))
     CustomTopAppBarBackTitle(
         title = stringResource(id = R.string.register_account),
         titleColor = FFD91E18,
-        onBackClick = { navController.popBackStack() }
+        onBackClick = { onBackClick()}
     )
 
     Spacer(modifier = Modifier.height(16.dp))

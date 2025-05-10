@@ -62,13 +62,6 @@ class ReviewViewModel @Inject constructor(
     private val _filteredReviews = MutableStateFlow<List<ReviewDetail>>(emptyList())
     val filteredReviews: StateFlow<List<ReviewDetail>> = _filteredReviews.asStateFlow()
 
-
-    private val _compressedFiles = MutableStateFlow<List<File>>(emptyList())
-    val compressedFiles: StateFlow<List<File>> = _compressedFiles
-
-    private val _submitStatus = MutableStateFlow<Result<Unit>?>(null)
-    val submitStatus: StateFlow<Result<Unit>?> = _submitStatus
-
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 

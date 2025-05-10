@@ -7,8 +7,11 @@ package com.itechpro.domain.model.navigationEvent
 
 
 sealed class SplashNaEvent : NavEvent {
-    object GoToLogIn : SplashNaEvent()  // ✅ KHÔNG cần tham số nữa
-    object GoToLogout : SplashNaEvent()  // ✅ KHÔNG cần tham số nữa
+    object GoToLogIn : SplashNaEvent()
+
+    object GoToRegister : SplashNaEvent()
+    object GoToDomain : SplashNaEvent()
+    object GoToForgotPassword : SplashNaEvent()
 
 
     data class GoToMain(

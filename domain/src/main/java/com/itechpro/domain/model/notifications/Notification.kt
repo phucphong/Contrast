@@ -1,4 +1,4 @@
-package com.itechpro.domain.model
+package com.itechpro.domain.model.notifications
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Notification(

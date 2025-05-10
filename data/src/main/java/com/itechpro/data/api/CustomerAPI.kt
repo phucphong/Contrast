@@ -2,9 +2,8 @@ package com.itechpro.data.api
 
 
 
-import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Column1
-import com.itechpro.domain.model.Customer
+import com.itechpro.domain.model.customer.Customer
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

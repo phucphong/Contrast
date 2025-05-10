@@ -3,7 +3,7 @@ package com.itechpro.domain.repository
 
 
 import com.itechpro.domain.model.Column1
-import com.itechpro.domain.model.Customer
+import com.itechpro.domain.model.customer.Customer
 import com.itechpro.domain.model.NetworkResponse
 
 
@@ -11,7 +11,7 @@ interface CustomerRepository {
 
 
 
-    suspend fun addEditCustomer(url: String, obj: Customer,authen: String): NetworkResponse<List<Customer>>
+    suspend fun addEditCustomer(url: String, obj: Customer, authen: String): NetworkResponse<List<Customer>>
 
 
 

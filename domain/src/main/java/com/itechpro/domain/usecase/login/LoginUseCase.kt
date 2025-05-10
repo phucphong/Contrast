@@ -1,10 +1,8 @@
 package com.itechpro.domain.usecase.login
 
-import com.itechpro.domain.model.Account
-import com.itechpro.domain.model.Login
+import com.itechpro.domain.model.login.Login
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.repository.LoginRepository
-import com.itechpro.domain.repository.RegisterAccountRepository
 import javax.inject.Inject
 
 

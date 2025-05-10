@@ -15,10 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.formatDateTimeDDMMYYYY
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
-import com.itechpro.domain.model.Notification
-import com.itechpro.domain.model.NotificationType
+import com.itechpro.domain.model.notifications.Notification
+import com.itechpro.domain.model.notifications.NotificationType
 
 @Composable
 fun NotificationItem(notification: Notification) {

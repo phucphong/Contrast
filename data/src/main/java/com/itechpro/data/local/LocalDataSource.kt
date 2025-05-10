@@ -13,6 +13,9 @@ class LocalDataSource @Inject constructor(
         CurrentUserInfo(
             employeeId = getEmployeeId(),
             customerId = getCustomerId(),
+            account = getAccount(),
+            password = getPassword(),
+
             employeeName = getEmployeeName(),
             fullName = getFullName(),
             email = getEmail(),
@@ -45,6 +48,7 @@ class LocalDataSource @Inject constructor(
             showEmailKH = getShowEmailKH(),
             showAddressKH = getShowAddressKH(),
 
+            rememberPassword = getRememberPassword(),
             admin = getAdmin(),
             adminRoot = getAdminRoot(),
             moduleOff = getModuleOff(),

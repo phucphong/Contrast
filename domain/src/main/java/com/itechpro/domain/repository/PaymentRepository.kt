@@ -1,9 +1,5 @@
 package com.itechpro.domain.repository
-import com.itechpro.domain.model.Customer
-import com.itechpro.domain.model.cart.CartItem
-import com.itechpro.domain.model.cart.Cart
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.cart.CheckProductActive
 import com.itechpro.domain.model.payment.InfoPayment
 
 interface PaymentRepository {

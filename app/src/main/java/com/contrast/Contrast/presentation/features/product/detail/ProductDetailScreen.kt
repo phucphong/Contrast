@@ -91,41 +91,39 @@ fun ProductDetailScreen(
     cartViewModel: CartViewModel = hiltViewModel(),
     reviewViewModel: ReviewViewModel = hiltViewModel()
 ) {
-    val productInfo by viewModel.productInfo.collectAsState()
 
-    val products by viewModel.products.collectAsState()
-    val productsCategory by viewModel.productsCategory.collectAsState()
 
     val pagedProducts by viewModel.pagedProducts.collectAsState()
+
+
+
+
+    val promoUiDataMap = viewModel.promoUiDataMap
+    val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
+
+    val uiState by viewModel.uiState.collectAsState()
+
+
+    val navEvent by viewModel.navigationEvent.collectAsState()
+
+    val uiStateCart by cartViewModel.uiState.collectAsState()
+
     val totalReview by reviewViewModel.totalReview.collectAsState()
     val ratingScore by reviewViewModel.ratingScore.collectAsState()
     val reviews by reviewViewModel.reviews.collectAsState()
-    val domain by viewModel.domain.collectAsState()
-    val token by viewModel.token.collectAsState()
-    val employeeId by viewModel.employeeId.collectAsState()
-    val promoUiDataMap = viewModel.promoUiDataMap
-    val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
-    val uiState by cartViewModel.uiState.collectAsState()
-    val isOfflineMode by viewModel.isOfflineMode.collectAsState()
-    val pointAffiliate by viewModel.pointAffiliate.collectAsState()
 
     var type by remember { mutableStateOf("huuhinh") }
     var bookService by remember { mutableStateOf(false) }
     var showShareDialog by remember { mutableStateOf(false) }
     var isShowQuantity by remember { mutableStateOf(false) }
-    val navEvent by viewModel.navigationEvent.collectAsState()
+
     val listState = rememberLazyListState()
     val context = LocalContext.current
 
     val isRefreshing by remember { mutableStateOf(false) }
-//
-//    LaunchedEffect(Unit) {
-//        viewModel.shareIntentFlow.collectLatest { intent ->
-//            context.startActivity(intent)
-//        }
-//    }
 
-    LaunchedEffect(products) { viewModel.setInitialProducts(products) }
+
+    LaunchedEffect(uiState.products) { viewModel.setInitialProducts(uiState.products) }
 
 
 
@@ -133,9 +131,9 @@ fun ProductDetailScreen(
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         callApi(viewModel, reviewViewModel, cartViewModel, id, idUnit)
     }
-    LaunchedEffect(productInfo) {
+    LaunchedEffect(uiState.productInfo) {
 
-        viewModel.getProductsCategory(productInfo?.idnhom ?: "", id)
+        viewModel.getProductsCategory(uiState.productInfo?.idnhom ?: "", id)
 
     }
     var toastMessage by remember { mutableStateOf("") }
@@ -178,12 +176,10 @@ fun ProductDetailScreen(
         }.distinctUntilChanged().debounce(300) // ✅ ngăn spam trigger khi scroll nhanh
             .collect { (lastIndex, total) ->
                 if (lastIndex != null && total > 0 && lastIndex >= total - 2) {
-
                     viewModel.loadNextPage()
                 }
             }
     }
-
 
     LaunchedEffect(Unit) {
         viewModel.shareIntentFlow.collectLatest { intent ->
@@ -276,7 +272,7 @@ fun ProductDetailScreen(
             onShareClick = { option ->
                 showShareDialog = false
                 val shareLink =
-                    "$domain/sharelink.html?id=$id&iddonvi=$idUnit&idngt=$employeeId&domain=$domain"
+                    "${uiState.domain}/sharelink.html?id=$id&iddonvi=$idUnit&idngt=${uiState.employeeId}&domain=${uiState.domain}"
                 viewModel.share(option, shareLink)
 
             })
@@ -286,9 +282,9 @@ fun ProductDetailScreen(
     if (isShowQuantity) {
 
         QuantityAlertDialog(title = stringResource(R.string.quantity),
-            quantity = productInfo?.soluong ?: 0.0,
+            quantity = uiState.productInfo?.soluong ?: 0.0,
             onQuantityChange = {
-                viewModel.updateQuantityProductDetailById(productInfo!!, it)
+                viewModel.updateQuantityProductDetailById(uiState.productInfo!!, it)
             },
             onConfirm = {
                 isShowQuantity = false
@@ -302,16 +298,16 @@ fun ProductDetailScreen(
     Box {
 
         Column(modifier = Modifier.fillMaxSize()) {
-            type = productInfo?.loaichitiet ?: ""
-            bookService = productInfo?.cothedatlich ?: false
+            type = uiState.productInfo?.loaichitiet ?: ""
+            bookService = uiState.productInfo?.cothedatlich ?: false
 
-            val coin = productInfo?.diem ?: 0.0
-            val commissionRate = productInfo?.tylehoahong ?: 0.0
-            val commissionMoney = productInfo?.sotienhoahong ?: 0.0
+            val coin =uiState. productInfo?.diem ?: 0.0
+            val commissionRate = uiState.productInfo?.tylehoahong ?: 0.0
+            val commissionMoney = uiState.productInfo?.sotienhoahong ?: 0.0
 
             var isFavoriteInit: Boolean = false
 
-            val favorite = productInfo?.yeuthich ?: 0
+            val favorite =uiState. productInfo?.yeuthich ?: 0
             if (favorite == 0) {
                 isFavoriteInit = false
             } else {
@@ -323,13 +319,11 @@ fun ProductDetailScreen(
                     R.string.service_detail
                 ),
 
-                totalCartItems = uiState.totalCartItems,
+                totalCartItems = uiStateCart.totalCartItems,
                 onShareClick = {
                     val shareLink =
-                        "$domain/sharelink.html?id=$id&iddonvi=$idUnit&idngt=$employeeId&domain=$domain"
+                        "${{ uiState.domain }}/sharelink.html?id=$id&iddonvi=$idUnit&idngt=${uiState.employeeId}&domain=${uiState.domain}"
                     viewModel.shareProduct(shareLink)
-//                showShareDialog = true
-                    Log.e("showShareDialog", "showShareDialog")
                 },
                 onCartClick = { viewModel.onItemCarts() },
                 onBackStack = { navHostController.popBackStack() })
@@ -344,9 +338,9 @@ fun ProductDetailScreen(
                             .background(FAFAFA)
                     ) {
                         item {
-                            if (productInfo != null) {
+                            if (uiState.productInfo != null) {
 
-                                val fullUrl = domain.trimEnd('/') + (productInfo?.filetxt ?: "")
+                                val fullUrl = (uiState.domain).trimEnd('/') + (uiState.productInfo?.filetxt ?: "")
                                 NetworkImage(
                                     model = fullUrl,
                                     modifier = Modifier
@@ -356,30 +350,30 @@ fun ProductDetailScreen(
                             }
                         }
                         item {
-                            if (productInfo != null) {
+                            if (uiState.productInfo != null) {
 
                                 var isFlashSale: Boolean = false
-                                val discountPercent: Double = productInfo?.khuyenmai ?: 0.0
+                                val discountPercent: Double = uiState.productInfo?.khuyenmai ?: 0.0
                                 if (discountPercent != 0.0) {
                                     isFlashSale = true
                                 }
                                 ProductPriceDetailSection(
-                                    productName = productInfo?.ten ?: "",
-                                    priceDisCount = productInfo?.sotiensaukm ?: 0.0,
-                                    price = productInfo?.sotien ?: 0.0,
-                                    discountPercent = productInfo?.khuyenmai ?: 0.0,
+                                    productName = uiState.productInfo?.ten ?: "",
+                                    priceDisCount = uiState.productInfo?.sotiensaukm ?: 0.0,
+                                    price = uiState.productInfo?.sotien ?: 0.0,
+                                    discountPercent = uiState.productInfo?.khuyenmai ?: 0.0,
                                     isFlashSale = isFlashSale,
                                     remainingTime = "40:00:40:18",
-                                    quantity = productInfo?.soluong ?: 1.0,
+                                    quantity = uiState.productInfo?.soluong ?: 1.0,
                                     increaseQuantity = {
                                         viewModel.increaseProductDetailQuantity(
-                                            productInfo!!
+                                            uiState.productInfo!!
                                         )
                                     },
                                     showQuantity = { isShowQuantity = true },
                                     decreaseQuantity = {
                                         viewModel.decreaseProductDetailQuantity(
-                                            productInfo!!
+                                            uiState.productInfo!!
                                         )
                                     },
                                 )
@@ -397,7 +391,7 @@ fun ProductDetailScreen(
                         item {
                             if (reviews.isNotEmpty()) {
                                 ReviewScreen(reviews = reviews,
-                                    domain = domain,
+                                    domain = uiState.domain?:"",
                                     onDownloadClick = { fileUrl ->
                                         viewModel.downloadImage(fileUrl)
                                     }
@@ -406,11 +400,11 @@ fun ProductDetailScreen(
                             }
                         }
 
-                        if (productInfo != null) {
+                        if (uiState.productInfo != null) {
                             stickyHeader {
-                                ProductDetailHeader(type = productInfo?.loaichitiet ?: "",
+                                ProductDetailHeader(type = uiState.productInfo?.loaichitiet ?: "",
                                     isFavoriteInit = isFavoriteInit,
-                                    isOfflineMode = isOfflineMode,
+                                    isOfflineMode = uiState.isOfflineMode,
                                     onFavorite = {
 
                                         viewModel.onFavorite(it, id, idUnit)
@@ -420,8 +414,8 @@ fun ProductDetailScreen(
                                         viewModel.onItemReportSelected(
                                             id,
                                             idUnit,
-                                            "$domain${productInfo?.filetxt ?: ""}",
-                                            productInfo?.ten ?: ""
+                                            "${uiState.domain?:""}${uiState.productInfo?.filetxt ?: ""}",
+                                            uiState.productInfo?.ten ?: ""
                                         )
 
                                     },
@@ -430,8 +424,8 @@ fun ProductDetailScreen(
                                         viewModel.onItemAddReviewsSelected(
                                             id,
                                             idUnit,
-                                            "$domain${productInfo?.filetxt ?: ""}",
-                                            productInfo?.ten ?: ""
+                                            "${uiState.domain?:""}${uiState.productInfo?.filetxt ?: ""}",
+                                            uiState.productInfo?.ten ?: ""
                                         )
                                     })
 
@@ -439,8 +433,8 @@ fun ProductDetailScreen(
                             }
                         }
                         item {
-                            if (productInfo != null) {
-                                WebViewProduct(htmlContent = productInfo?.noidung ?: "")
+                            if (uiState.productInfo != null) {
+                                WebViewProduct(htmlContent = uiState.productInfo?.noidung ?: "")
                             }
                         }
 
@@ -460,11 +454,11 @@ fun ProductDetailScreen(
 
 
                         }
-                        val rows = productsCategory.chunked(2)
+                        val rows = uiState.productsCategory.chunked(2)
                         items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                            ProductRow(domain = domain,
-                                token = token,
-                                pointAffiliate = pointAffiliate,
+                            ProductRow(domain = uiState.domain?:"",
+                                token = uiState.token,
+                                pointAffiliate = uiState.pointAffiliate?:"",
 
                                 rowProducts = row,
                                 promoUiDataMap = promoUiDataMap,
@@ -497,9 +491,9 @@ fun ProductDetailScreen(
                         }
                         val rowsOther = pagedProducts.chunked(2)
                         items(rowsOther, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                            ProductRow(domain = domain,
-                                token = token,
-                                pointAffiliate = pointAffiliate,
+                            ProductRow(domain = uiState.domain?:"",
+                                token = uiState.token?:"",
+                                pointAffiliate =  uiState.pointAffiliate?:"",
                                 rowProducts = row,
                                 promoUiDataMap = promoUiDataMap,
                                 onItemClick = { viewModel.onItemProductSelected(it) },
@@ -515,13 +509,13 @@ fun ProductDetailScreen(
 
 
                     }
-                    if(token.isNotEmpty()) {
+                    if(uiState.token.isNotEmpty()) {
                         if (commissionMoney >= 0) {
                             EarnTextRow(
                                 commissionMoney = commissionMoney,
                                 commissionRate = commissionRate,
                                 coin = coin,
-                                pointAffiliate = pointAffiliate
+                                pointAffiliate =  uiState.pointAffiliate?:""
                             )
 
 
@@ -543,7 +537,7 @@ fun ProductDetailScreen(
                             fontSize = 12.sp,
                             onClick = {
                                 cartViewModel.onItemAddCartToProductDetail(
-                                    productInfo!!, introducerId
+                                    uiState. productInfo!!, introducerId
                                 )
                             })
                         if (bookService) {

@@ -3,7 +3,7 @@ package com.itechpro.data.repository
 
 
 import com.itechpro.data.api.LoginAPI
-import com.itechpro.domain.model.Login
+import com.itechpro.domain.model.login.Login
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.repository.LoginRepository
 import javax.inject.Inject

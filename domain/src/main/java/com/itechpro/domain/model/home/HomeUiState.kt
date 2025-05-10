@@ -3,7 +3,6 @@ package com.itechpro.domain.model.home
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class HomeUiState(

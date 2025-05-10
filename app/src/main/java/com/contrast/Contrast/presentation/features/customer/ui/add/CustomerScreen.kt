@@ -1,6 +1,5 @@
 package com.contrast.Contrast.presentation.features.customer.ui.add
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +19,6 @@ import androidx.navigation.NavController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.button.CustomButton
-import com.contrast.Contrast.presentation.components.dateTimePicker.CustomDateTimePickerDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialogMultiSelect
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
@@ -31,11 +29,9 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
 import com.contrast.Contrast.presentation.features.customer.CustomerFieldType
 import com.contrast.Contrast.presentation.features.customer.viewmodel.CustomerViewModel
-import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAccountViewModel
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
-import com.contrast.Contrast.presentation.theme.FFAFAFAF
 import com.contrast.Contrast.presentation.theme.TealGreen
-import com.itechpro.domain.model.Customer
+import com.itechpro.domain.model.customer.Customer
 import com.itechpro.domain.model.NetworkResponse
 import kotlinx.coroutines.launch
 

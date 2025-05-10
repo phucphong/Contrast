@@ -7,13 +7,12 @@ import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.extensions.convertDateToYYYYMMDD
 import com.contrast.Contrast.presentation.mapper.ValidationErrorMapper
 import com.contrast.Contrast.utils.StringProvider
-import com.itechpro.domain.enumApp.CategoryType
 import com.itechpro.domain.enumApp.ValidationErrorType
 import com.itechpro.domain.model.BottomActionItem
 import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.Customer
-import com.itechpro.domain.model.InfoDetail
+import com.itechpro.domain.model.customer.Customer
+import com.itechpro.domain.model.product.InfoDetail
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.UserModel
 import com.itechpro.domain.model.navigationEvent.CustomerNavigationEvent

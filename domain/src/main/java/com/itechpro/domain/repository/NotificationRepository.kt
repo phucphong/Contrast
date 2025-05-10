@@ -2,9 +2,8 @@ package com.itechpro.domain.repository
 
 
 
-import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Notification
+import com.itechpro.domain.model.notifications.Notification
 
 interface NotificationRepository {
 

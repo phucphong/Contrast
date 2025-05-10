@@ -4,7 +4,6 @@ package com.itechpro.data.repository
 
 
 import com.itechpro.data.api.CartAPI
-import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
 

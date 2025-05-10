@@ -135,6 +135,8 @@ dependencies {
     implementation(libs.ffmpeg)
     implementation(libs.androidx.foundation.layout)
     implementation(libs.androidx.ui.viewbinding)
+    implementation(libs.biometric)
+
 
     annotationProcessor(libs.glideCompiler)
     implementation(libs.circleimageview)

@@ -1,4 +1,4 @@
-package com.itechpro.domain.model
+package com.itechpro.domain.model.home
 
 
 import com.squareup.moshi.JsonClass

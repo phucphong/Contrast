@@ -2,7 +2,7 @@ package com.itechpro.domain.model.product
 
 import com.itechpro.domain.enumApp.ProductSectionType
 import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.home.SliderHome
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ProductSection(

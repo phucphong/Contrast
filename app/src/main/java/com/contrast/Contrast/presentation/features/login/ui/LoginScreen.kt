@@ -1,6 +1,6 @@
 package com.contrast.Contrast.presentation.features.login.ui
 
-
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,22 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
+
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
+import com.contrast.Contrast.extensions.findActivity
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
@@ -39,36 +39,43 @@ import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDi
 import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckBox
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
-import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliateModel
-import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.features.login.BiometricAuthenticator
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.FF000000
+import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
-
-@Preview(showBackground = true)
 
 @Composable
 fun LoginScreen(navHostController: NavHostController,
                 viewModel: LoginViewModel = hiltViewModel(), ) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(false) }
-    var isRegisterButton by remember { mutableStateOf(false) }
-    val navEvent by viewModel.navigationEvent.collectAsState()
-    val validationError by viewModel.validationError.collectAsState()
 
-    if (validationError != null) {
-        CustomOkAlertDialog(message = validationError!!, onDismiss = {
+    val uiState by viewModel.uiState.collectAsState()
+    var account by remember { mutableStateOf(uiState.account) }
+    var passwordBiometricAuthen by remember { mutableStateOf(uiState.passwordBiometricAuthen) }
+    var password by remember { mutableStateOf(uiState.password) }
+    var rememberMe by remember { mutableStateOf(uiState.rememberPassword) }
+    var isRegisterButton by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    Log.d("CheckContext", "context = $context")
+    val activity = context as? FragmentActivity
+    // Khởi tạo biometricAuthenticator nếu activity không null
+    val biometricAuthenticator = remember(activity) {
+        activity?.let { BiometricAuthenticator(it) }
+    }
+    Log.d("BiometricTest", "activity = $activity")
+    Log.d("BiometricTest", "canAuthenticate = ${biometricAuthenticator?.canAuthenticate()}")
+    if (uiState.validationError != null) {
+        CustomOkAlertDialog(message = uiState.validationError!!, onDismiss = {
             viewModel.clearValidationError()
             isRegisterButton = false
         })
     }
 
     // Xử lý navigation event
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    LaunchedEffect(uiState.navigationEvent) {
+        when (val event = uiState.navigationEvent) {
 
 
             is SplashNaEvent.GoToMain -> {
@@ -79,6 +86,19 @@ fun LoginScreen(navHostController: NavHostController,
                         introducerId = "0"
                     )
                 )
+            }
+
+            is SplashNaEvent.GoToRegister -> {
+                navHostController.navigate(NavRoutes.Register.route)
+
+            }
+            is SplashNaEvent.GoToDomain -> {
+                navHostController.navigate(NavRoutes.Domain.route)
+
+            }
+            is SplashNaEvent.GoToForgotPassword -> {
+                navHostController.navigate(NavRoutes.ForgotPassword.route)
+
             }
 
             else -> Unit
@@ -134,8 +154,8 @@ fun LoginScreen(navHostController: NavHostController,
 
             CustomText(text = stringResource(R.string.username_label))
             CustomTextField(
-                value = username,
-                onValueChange = { username = it },
+                value = account,
+                onValueChange = { account = it },
                 placeholder = stringResource(R.string.username_placeholder),
                 keyboardType = KeyboardType.Email
             )
@@ -159,7 +179,7 @@ Row (verticalAlignment = Alignment.CenterVertically){
     Button(
         onClick = {
             isRegisterButton = true
-            viewModel.validateAndLogin(username, password)
+            viewModel.validateAndLogin(account, password)
         },
         modifier = Modifier
             .fillMaxWidth().weight(1f)
@@ -170,15 +190,31 @@ Row (verticalAlignment = Alignment.CenterVertically){
         Text(text = stringResource(R.string.login), fontSize = 16.sp, color = Color.White)
     }
 
-    Image(
-        painter = painterResource(id = R.drawable.fingerprintscan),
-        contentDescription = "EZMAX Logo",
-        modifier = Modifier
-            .height(35.dp).padding(start = 15.dp)
-            .noRippleClickableComposable {  }
+  Box( modifier = Modifier.wrapContentSize().padding(start = 15.dp).background(FFD9D9D9).clip(
+      RoundedCornerShape(8.dp)
+  )){
+      Image(
+          painter = painterResource(id = R.drawable.fingerprintscan),
+          contentDescription = "EZMAX Logo",
+          modifier = Modifier
+              .height(40.dp).padding(8.dp)
+              .noRippleClickableComposable {
+
+                  biometricAuthenticator?.authenticate(
 
 
-    ) }
+                      onSuccess = {
+
+                          viewModel.loginBiometricAuthenticator(account, password)},
+                      onError = { error ->Log.e("BiometricTest",error) }
+                  )
+              }
+
+
+      )
+  }
+
+}
 
             Spacer(modifier = Modifier.size(20.dp))
             Row(
@@ -188,7 +224,10 @@ Row (verticalAlignment = Alignment.CenterVertically){
                 BorderedCheckBox(
                     size=20.dp,
                     checked = rememberMe,
-                    onCheckedChange = { rememberMe = it }
+                    onCheckedChange = { rememberMe = it
+                        viewModel.rememberPassword(it)
+
+                    }
                 )
                 Text(text = stringResource(R.string.remember_me),
                         color = FF000000,
@@ -199,7 +238,8 @@ Row (verticalAlignment = Alignment.CenterVertically){
                 Text(
                     text = stringResource(R.string.forgot_password),
                     color = FF000000,
-                    modifier = Modifier.padding(5.dp,2.dp,2.dp,2.dp).clickable {
+                    modifier = Modifier.padding(5.dp,2.dp,2.dp,2.dp).noRippleClickableComposable {
+                        viewModel.forgotPassword()
 
                     }
                 )
@@ -212,17 +252,20 @@ Row (verticalAlignment = Alignment.CenterVertically){
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(R.string.register),
+                    text = stringResource(R.string.registerAccount),
                     color = Color(0xFF00AA88),
                     modifier = Modifier.clickable {
-//                        navController.navigate("register")
+
+                        viewModel.registerAccount()
+
                     }
                 )
                 Text(
                     text = stringResource(R.string.connect_code),
                     color = Color(0xFF00AA88),
                     modifier = Modifier.clickable {
-//                        navController.navigate("connectCode")
+                        viewModel.domain()
+
                     }
                 )
             }

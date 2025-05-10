@@ -26,7 +26,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 
-import com.itechpro.domain.model.NewsDetail
+import com.itechpro.domain.model.news.NewsDetail
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun NewsDetailScreen(newsDetail: NewsDetail, onBackPress: () -> Unit) {

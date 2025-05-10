@@ -21,6 +21,7 @@ import com.contrast.Contrast.presentation.features.news.list.NewsScreen
 
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
+import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
 
 
 import com.contrast.Contrast.presentation.features.video.VideoScreen
@@ -55,6 +56,8 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController,
         composable(NavRoutes.News.route) {
             NewsScreen(navController)
         }
+
+
 
         composable(
             route = NavRoutes.Notifications.route,

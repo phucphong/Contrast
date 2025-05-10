@@ -7,7 +7,7 @@ import com.itechpro.domain.model.NetworkResponse
 
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.home.SliderHome
 import com.itechpro.domain.repository.HomeAffiliateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

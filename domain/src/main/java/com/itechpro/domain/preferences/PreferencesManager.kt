@@ -9,6 +9,8 @@ interface PreferencesManager {
     fun getFullName(): String
     fun getEmail(): String
     fun getPhone(): String
+    fun getAccount(): String
+    fun getPassword(): String
 
     // 🏢 Company Info
     fun getIdCompany(): String
@@ -27,6 +29,7 @@ interface PreferencesManager {
     fun getDomainCustomer(): String
     fun getDevice(): String
     fun isOfflineMode(): Boolean
+    fun getRememberPassword(): Boolean
 
     // ⚙️ UI Display Config
     fun getDisplayService(): String

@@ -2,20 +2,12 @@ package com.itechpro.data.api
 
 
 
-import com.itechpro.domain.model.Customer
-import com.itechpro.domain.model.cart.CartItem
-import com.itechpro.domain.model.cart.Cart
-import com.itechpro.domain.model.cart.CheckProductActive
 import com.itechpro.domain.model.payment.InfoPayment
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 interface PaymentAPI {
 

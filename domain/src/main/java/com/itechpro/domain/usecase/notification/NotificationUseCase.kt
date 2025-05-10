@@ -1,7 +1,7 @@
 package com.itechpro.domain.usecase.notification
 
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.Notification
+import com.itechpro.domain.model.notifications.Notification
 import com.itechpro.domain.model.notification.NotificationResult
 import com.itechpro.domain.repository.NotificationRepository
 import kotlinx.coroutines.Dispatchers

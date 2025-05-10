@@ -24,7 +24,7 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
 import com.contrast.Contrast.presentation.theme.TealGreen
 
-import com.itechpro.domain.model.News
+import com.itechpro.domain.model.news.News
 
 @Preview(showBackground = true)
 @Composable

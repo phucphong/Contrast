@@ -1,9 +1,8 @@
 package com.itechpro.domain.usecase.news
 
 import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.News
+import com.itechpro.domain.model.news.News
 import com.itechpro.domain.repository.NewsRepository
 import com.itechpro.domain.safeFlowCall
 import kotlinx.coroutines.Dispatchers

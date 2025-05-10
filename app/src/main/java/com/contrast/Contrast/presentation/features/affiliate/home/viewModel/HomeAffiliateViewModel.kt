@@ -19,7 +19,7 @@ import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.home.SliderHome
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent

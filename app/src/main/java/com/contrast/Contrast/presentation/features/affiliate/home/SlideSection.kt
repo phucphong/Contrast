@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.home.SliderHome
 
 @Composable
 fun SlideSection(slides: List<SliderHome>, domain: String) {

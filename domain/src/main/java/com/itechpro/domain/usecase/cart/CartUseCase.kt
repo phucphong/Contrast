@@ -5,10 +5,7 @@ package com.itechpro.domain.usecase.cart
 
 
 
-import android.util.Log
-import com.itechpro.domain.model.Customer
 import com.itechpro.domain.model.cart.CartItem
-import com.itechpro.domain.model.cart.Cart
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.cart.CartResult
 import com.itechpro.domain.model.payment.InfoPayment

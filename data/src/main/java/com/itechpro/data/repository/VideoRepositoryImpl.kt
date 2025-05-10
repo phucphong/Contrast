@@ -4,13 +4,10 @@ package com.itechpro.data.repository
 
 
 
-import com.itechpro.data.api.NewsAPI
 import com.itechpro.data.api.VideoAPI
 import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.News
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.Video
-import com.itechpro.domain.repository.NewsRepository
 import com.itechpro.domain.repository.VideoRepository
 import javax.inject.Inject
 

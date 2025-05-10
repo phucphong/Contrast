@@ -1,6 +1,6 @@
 package com.contrast.Contrast.presentation.features.detail
 
-import com.itechpro.domain.model.InfoDetail
+import com.itechpro.domain.model.product.InfoDetail
 import androidx.compose.foundation.layout.*
 
 

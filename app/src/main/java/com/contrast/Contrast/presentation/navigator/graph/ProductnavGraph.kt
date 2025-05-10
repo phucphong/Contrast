@@ -18,6 +18,7 @@ import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.paymentProduct.PaymentScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
+import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
 import com.contrast.Contrast.presentation.features.report.AddReportProductScreen
 import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
 

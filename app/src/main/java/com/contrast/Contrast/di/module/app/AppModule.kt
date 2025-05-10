@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import com.contrast.Contrast.extensions.ColorAdapter
 import com.contrast.Contrast.extensions.LocalDateTimeAdapter
 import com.itechpro.data.config.AppConfig
+import com.itechpro.data.config.SecurePrefsHelper
 import com.itechpro.data.repository.DownloadUseCaseImpl
 import com.itechpro.domain.usecase.dowloadFile.DownloadUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
@@ -96,7 +97,7 @@ object AppModule {
         return MoshiConverterFactory.create(moshi)
     }
     @Volatile
-    private var currentBaseUrl: String = "http://192.168.1.119:910"
+    private var currentBaseUrl: String = "https://spa.ezmax.vn"
     @Provides
     @Singleton
     fun provideRetrofitCustomDomain(
@@ -119,8 +120,8 @@ object AppModule {
     }
     @Provides
     @Singleton
-    fun provideAppConfig(@ApplicationContext context: Context): AppConfig {
-        return AppConfig(context)
+    fun provideAppConfig(securePrefsHelper: SecurePrefsHelper): AppConfig {
+        return AppConfig(securePrefsHelper)
     }
 
     @Provides

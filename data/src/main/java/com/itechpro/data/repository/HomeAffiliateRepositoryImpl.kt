@@ -8,7 +8,7 @@ import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.NetworkResponse
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
-import com.itechpro.domain.model.SliderHome
+import com.itechpro.domain.model.home.SliderHome
 
 import com.itechpro.domain.repository.HomeAffiliateRepository
 

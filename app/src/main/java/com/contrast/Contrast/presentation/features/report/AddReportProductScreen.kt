@@ -66,10 +66,10 @@ fun AddReportProductScreen(
     idUnit: String,
     fileTxt: String,
     name: String,
-    viewModel: ProductViewModel = hiltViewModel()
+    viewModel: ReportProductViewModel = hiltViewModel()
 
 ) {
-    val typeReports by viewModel.typeReports.collectAsState()
+    val suggestReports by viewModel.suggestReports.collectAsState()
     var selectedReason by remember { mutableStateOf<String?>(null) }
     var toastMessage by remember { mutableStateOf("") }
     var reasonName by remember { mutableStateOf("") }
@@ -113,7 +113,7 @@ fun AddReportProductScreen(
          )
 
          LazyColumn(modifier = Modifier.fillMaxSize()) {
-             items(typeReports) { reason ->
+             items(suggestReports) { reason ->
                  Column ( modifier = Modifier.background(Color.White)){
                      Row(
                          modifier = Modifier

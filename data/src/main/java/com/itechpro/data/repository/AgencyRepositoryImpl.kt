@@ -1,7 +1,7 @@
 package com.itechpro.data.repository
 
 import com.itechpro.data.api.AgencyAPI
-import com.itechpro.domain.model.Agency
+import com.itechpro.domain.model.agency.Agency
 import com.itechpro.domain.repository.AgencyRepository
 import javax.inject.Inject
 

@@ -1,31 +1,27 @@
 package com.contrast.Contrast.presentation.features.login
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
-import com.contrast.Contrast.extensions.convertDateToYYYYMMDD
 import com.contrast.Contrast.presentation.mapper.ValidationErrorMapper
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.data.config.AppConfig
-import com.itechpro.domain.enumApp.CategoryType
 import com.itechpro.domain.enumApp.ValidationErrorType
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.Login
+
 import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.navigationEvent.NavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.login.Login
+import com.itechpro.domain.model.login.LoginUiState
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
-
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
-
 import com.itechpro.domain.usecase.login.LoginInputValidator
 import com.itechpro.domain.usecase.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,57 +32,106 @@ class LoginViewModel @Inject constructor(
     private val appConfig: AppConfig,
     private val validator: LoginInputValidator,
     private val stringProvider: StringProvider,
+
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val _registerState = MutableStateFlow<NetworkResponse<Login>>(NetworkResponse.Loading)
-    val registerState: StateFlow<NetworkResponse<Login>> = _registerState
-
-    private val _validationError = MutableStateFlow<String?>(null)
-    val validationError: StateFlow<String?> = _validationError
-
-    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
-    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
-
-    private val _domainLogin = MutableStateFlow("")
-    val domainLogin: StateFlow<String> = _domainLogin
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState
 
     private lateinit var currentUserInfo: CurrentUserInfo
 
     init {
         viewModelScope.launch {
             currentUserInfo = getCurrentUserUseCase()
+            _uiState.update {
+                it.copy(
+                    domainLogin = currentUserInfo.domainCustomer,
+                    rememberPassword = currentUserInfo.rememberPassword,
+                    account = currentUserInfo.account,
+                    password = currentUserInfo.password,
 
-            _domainLogin.value = currentUserInfo.domainCustomer
+                )
+            }
         }
     }
 
-    fun validateAndLogin(
-        account: String,
-        password: String,
 
-    ) {
-        val validationResult = validator.validateAll(account,password)
+    fun validateAndLogin(account: String, password: String) {
+        val validationResult = validator.validateAll(account, password)
         if (!validationResult.success) {
-            handleValidationError(validationResult.message)
+            val error = ValidationErrorType.fromCode(validationResult.message)
+            _uiState.update {
+                it.copy(errorMessage = stringProvider.getString(ValidationErrorMapper.toMessageResId(error)))
+            }
             return
         }
 
-        val obj = buildLogin(
-            account,
-            password,
+        val loginData = buildLogin(account, password)
+        appConfig.setAccount(account)
+        if (_uiState.value.rememberPassword) {
+            appConfig.setPassword(password)
 
-        )
+        }
 
-       login(obj)
+
+        login(loginData, password)
+    }
+    fun loginBiometricAuthenticator(account: String, password: String) {
+
+
+        val loginData = buildLogin(account, password)
+        appConfig.setAccount(account)
+        if (_uiState.value.rememberPassword) {
+            appConfig.setPassword(password)
+
+        }
+
+
+        login(loginData, password)
     }
 
-    private fun buildLogin(
-        account: String,
-        password: String,
+    fun rememberPassword(checked: Boolean) {
+        appConfig.setRememberPassword(checked)
+        _uiState.update { it.copy(rememberPassword = checked) }
+    }
+    fun autoLoginFromFingerprint(account:String, password:String) {
 
-    ): Login {
 
+        if (account.isNullOrEmpty() || password.isNullOrEmpty()) {
+            _uiState.update {
+                it.copy(errorMessage = "Không tìm thấy tài khoản đã lưu để đăng nhập.")
+            }
+            return
+        }
+
+        val loginData = buildLogin(account, password)
+        login(loginData, password)
+    }
+
+    fun registerAccount() {
+        _uiState.update {
+            it.copy(
+                navigationEvent = SplashNaEvent.GoToRegister
+            )
+        }
+    }
+    fun domain() {
+        _uiState.update {
+            it.copy(
+                navigationEvent = SplashNaEvent.GoToDomain
+            )
+        }
+    }
+   fun forgotPassword() {
+        _uiState.update {
+            it.copy(
+                navigationEvent = SplashNaEvent.GoToDomain
+            )
+        }
+    }
+
+     fun buildLogin(account: String, password: String): Login {
         return Login(
             Username = account,
             Password = password,
@@ -97,59 +142,63 @@ class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun handleValidationError(errorCode: String?) {
-        val error = ValidationErrorType.fromCode(errorCode)
-        _validationError.value = stringProvider.getString(ValidationErrorMapper.toMessageResId(error))
-    }
-
-
-
-    private fun login(login: Login) {
+    private fun login(login: Login, password:String) {
         viewModelScope.launch(dispatcher) {
-            _registerState.value = NetworkResponse.Loading
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             try {
-                when (val result = loginUseCase.invoke(login)) {
+                when (val result = loginUseCase(login)) {
                     is NetworkResponse.Success -> {
-                        val user = result.data
-                        saveLoginOptions(user)
-                        _registerState.value = NetworkResponse.Success(user)
+                        saveLoginOptions(result.data, password)
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                loginResult = result.data,
+                                navigationEvent = SplashNaEvent.GoToMain("0", "0", "0")
+                            )
+                        }
                     }
 
                     is NetworkResponse.Error -> {
-                        _registerState.value = NetworkResponse.Error(result.message)
+                        _uiState.update { it.copy(isLoading = false, errorMessage = result.message) }
                     }
+
                     else -> {
-                        _registerState.value = NetworkResponse.Error(stringProvider.getString(R.string.error_unknown))
+                        _uiState.update {
+                            it.copy(isLoading = false, errorMessage = stringProvider.getString(R.string.error_unknown))
+                        }
                     }
                 }
             } catch (e: Exception) {
-                _registerState.value = NetworkResponse.Error(
-                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-                )
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage}"
+                    )
+                }
             }
         }
     }
 
-    fun saveLoginOptions(result: Login) {
-        appConfig.setToken(result.token?:"")
-        appConfig.setEmployeeId(result.idnhanvien?:"")
-        appConfig.setCustomerId(result.idkh?:"")
-        appConfig.setEmployeeName(result.hoten?:"")
-        appConfig.setTypeAccount(result.loaikh?:"")
-        appConfig.setPermissionMobile(result.permissionmobile?:"")
-        appConfig.  setSalesPointId(result.iddiembanle?:"")
-        appConfig.  setSalesPointName(result.tendiambanle?:"")
-        appConfig. setAdmin((result.isadmincoso?:"False").toBoolean())
-        appConfig.setAdminRoot((result.isadmin?:"False").toBoolean())
-        _navigationEvent.value = SplashNaEvent.GoToMain(
-            id = "0",
-            idUnit = "0",
-            introducerId = "0",
-        )
+    private fun saveLoginOptions(result: Login, password: String) {
+        appConfig.setToken(result.token ?: "")
+        appConfig.setEmployeeId(result.idnhanvien ?: "")
+        appConfig.setCustomerId(result.idkh ?: "")
+        appConfig.setEmployeeName(result.hoten ?: "")
+        appConfig.setTypeAccount(result.loaikh ?: "")
+        appConfig.setPermissionMobile(result.permissionmobile ?: "")
+        appConfig.setSalesPointId(result.iddiembanle ?: "")
+        appConfig.setSalesPointName(result.tendiambanle ?: "")
+        appConfig.setAdmin((result.isadmincoso ?: "False").toBoolean())
+        appConfig.setAdminRoot((result.isadmin ?: "False").toBoolean())
+
 
     }
 
     fun clearValidationError() {
-        _validationError.value = null
+        _uiState.update { it.copy(errorMessage = null) }
+    }
+
+    fun resetNavigation() {
+        _uiState.update { it.copy(navigationEvent = SplashNaEvent.None) }
     }
 }

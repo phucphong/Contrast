@@ -1,7 +1,7 @@
 package com.itechpro.data.repository
 import com.itechpro.data.api.CustomerAPI
 import com.itechpro.domain.model.Column1
-import com.itechpro.domain.model.Customer
+import com.itechpro.domain.model.customer.Customer
 import com.itechpro.domain.model.NetworkResponse
 
 import com.itechpro.domain.repository.CustomerRepository
@@ -15,7 +15,7 @@ class CustomerRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun addEditCustomer(url: String, obj:Customer,authen: String): NetworkResponse<List<Customer>> {
+    override suspend fun addEditCustomer(url: String, obj: Customer, authen: String): NetworkResponse<List<Customer>> {
         return try {
             val response = api.addEditCustomer(url, obj,authen)
             if (response.isSuccessful) {

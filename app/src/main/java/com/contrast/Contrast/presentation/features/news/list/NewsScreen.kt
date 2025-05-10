@@ -81,7 +81,7 @@ fun NewsScreen(navHostController: NavHostController, viewModel: NewsViewModel = 
                 navHostController.navigate(NavRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
-            
+
             else -> Unit
         }
     }

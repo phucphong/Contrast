@@ -1,4 +1,5 @@
 package com.contrast.Contrast.presentation.components.profile
+
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.compose.foundation.Image
@@ -69,6 +70,7 @@ import com.contrast.Contrast.presentation.components.profile.ui.ProfileOptionIte
 import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileViewModel
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
+import com.contrast.Contrast.presentation.features.login.LoginViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
@@ -77,8 +79,9 @@ import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 @Preview(device = Devices.PHONE, showBackground = true)
 @Composable
 fun ProfileScreen(
-                  navHostController: NavHostController,
-                  viewModel: ProfileViewModel = hiltViewModel(),
+    navHostController: NavHostController,
+    viewModel: ProfileViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
 ) {
     val isRefreshing by remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
@@ -92,15 +95,14 @@ fun ProfileScreen(
                 }
                 viewModel.resetNavigation()
             }
-            is SplashNaEvent.GoToLogout -> {
-                navHostController.navigate(NavRoutes.Logout.route) {
-                    popUpTo(NavRoutes.Logout.route) { inclusive = true }
+
+            is SplashNaEvent.GoToRegister -> {
+                navHostController.navigate(NavRoutes.Register.route) {
+                    popUpTo(NavRoutes.Register.route) { inclusive = true }
                     launchSingleTop = true
                 }
                 viewModel.resetNavigation()
             }
-
-
 
             else -> Unit
         }
@@ -112,30 +114,28 @@ fun ProfileScreen(
         viewModel.getInfoAccount(uiState.customerId)
         viewModel.getMenuApp()
     }
-    CustomSwipeRefresh(
-        isRefreshing = isRefreshing,
+    CustomSwipeRefresh(isRefreshing = isRefreshing,
         onRefresh = { //        viewModel.getQrCodeEmployee()
             viewModel.getQrCodeCustomer()
             viewModel.getInfoAccount(uiState.customerId)
-            viewModel.getMenuApp() }
-    ) {
+            viewModel.getMenuApp()
+        }) {
         Column {
 
-            ProfileHeader(
-                uiState.avartar,
+            ProfileHeader(uiState.avartar,
                 uiState.fullName,
                 uiState.qrCode,
                 uiState.agencyName,
                 uiState.discount,
                 uiState.isLogin,
                 onLoginClick = { viewModel.onLoginClick() },
-                onRegisterClick = { viewModel.onRegisterClick()}
-            )
+                onRegisterClick = { viewModel.onRegisterClick() })
 
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.White).weight(1f),
+                    .background(Color.White)
+                    .weight(1f),
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
 
@@ -152,6 +152,7 @@ fun ProfileScreen(
             }
 
             LogoutButton(onClickLogout = {
+                viewModel.onLogoutClick()
 
             })
         }

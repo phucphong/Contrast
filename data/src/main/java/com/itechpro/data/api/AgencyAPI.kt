@@ -1,6 +1,6 @@
 package com.itechpro.data.api
 
-import com.itechpro.domain.model.Agency
+import com.itechpro.domain.model.agency.Agency
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

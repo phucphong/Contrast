@@ -16,6 +16,7 @@ import com.contrast.Contrast.presentation.features.affiliate.AffiliateMainScreen
 import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
 import com.contrast.Contrast.presentation.features.main.ui.MainScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
+import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
 import com.contrast.Contrast.presentation.features.splas.SplashScreen
 import com.contrast.Contrast.presentation.features.splas.SplashViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
@@ -33,6 +34,9 @@ fun AppNavGraph(navController: NavHostController, startIntent: Intent?) {
 
         composable("login") {
             LoginScreen(navController)
+        }
+        composable(NavRoutes.Register.route) {
+            RegisterAccountScreen(navController)
         }
 
         composable(

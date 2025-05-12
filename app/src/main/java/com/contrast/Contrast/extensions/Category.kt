@@ -3,7 +3,7 @@ package com.contrast.Contrast.extensions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.contrast.Contrast.R
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 @Composable
 fun Category.label(): String {

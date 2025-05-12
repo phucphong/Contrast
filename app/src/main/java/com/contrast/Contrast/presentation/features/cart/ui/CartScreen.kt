@@ -91,13 +91,13 @@ fun CartScreen(
     var note by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
 
-    val uiState by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     var toastMessage by remember { mutableStateOf("") }
     var showToast by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
 
-        viewModel.onCheckedChangeAll(uiState.carts, uiState.isAllSelected)
+        viewModel.onCheckedChangeAll(state.carts, state.isAllSelected)
     }
     LaunchedEffect(Unit) {
 
@@ -189,7 +189,7 @@ fun CartScreen(
 
 
        // Danh sách sản phẩm
-       if (uiState.carts.isNotEmpty()) {
+       if (state.carts.isNotEmpty()) {
 
            // Chọn tất cả / Xóa tất cả
            Row(
@@ -201,19 +201,19 @@ fun CartScreen(
                verticalAlignment = Alignment.CenterVertically
            ) {
                Row(verticalAlignment = Alignment.CenterVertically) {
-                   CheckBoxColor(checked = uiState.isAllSelected,
+                   CheckBoxColor(checked = state.isAllSelected,
                        padding = 8.dp,
                        size = 15.dp,
                        backgroundChecked = TealGreen,
                        backgroundUnChecked = TealGreen,
                        onCheckedChange = { isChecked ->
-                           viewModel.isAllSelected(uiState.carts, isChecked)
+                           viewModel.isAllSelected(state.carts, isChecked)
                        })
                    Spacer(modifier = Modifier.width(6.dp))
                    Text(stringResource(R.string.cart_select_all),
                        color = TealGreen,
                        modifier = Modifier.noRippleClickableComposable {
-                           viewModel.isAllSelected(uiState.carts, !uiState.isAllSelected)
+                           viewModel.isAllSelected(state.carts, !state.isAllSelected)
                        }
 
                    )
@@ -230,11 +230,11 @@ fun CartScreen(
                    .background(Color(0xFFFAFAFA))
                    .padding(horizontal = 10.dp),
            ) {
-               items(uiState.carts) { cart ->
+               items(state.carts) { cart ->
 
                    CartItemRow(
                        cart = cart,
-                       domain = uiState.domain,
+                       domain = state.domain,
                        onCheckedChange = {},
                        increaseQuantity = { viewModel.increaseQuantity(cart, "update") },
                        onQuantityChange = { viewModel.onQuantityChange(cart, "update", it) },
@@ -298,16 +298,16 @@ fun CartScreen(
 
        ) {
            RowAmount(
-               stringResource(R.string.cart_total_amount), "", uiState.totalValue.formatDouble(), true
+               stringResource(R.string.cart_total_amount), "", state.totalValue.formatDouble(), true
            )
            RowAmount(
                stringResource(R.string.cart_discount),
                "-",
-               uiState.amountMoneyDiscount.formatDouble(),
+               state.amountMoneyDiscount.formatDouble(),
                textColor = FFFF5722
            )
            RowAmount(
-               stringResource(R.string.cart_final_amount), "",uiState. totalIntoMoney.formatDouble(), true
+               stringResource(R.string.cart_final_amount), "",state. totalIntoMoney.formatDouble(), true
            )
 
 
@@ -335,14 +335,14 @@ fun CartScreen(
                    onClick = {
 
                        var  customerId = ""
-                       if(uiState.typeAccount=="daily"){
-                           customerId =uiState.employeeId
+                       if(state.typeAccount=="daily"){
+                           customerId =state.employeeId
                        }else{
-                           customerId = uiState.customerId
+                           customerId = state.customerId
                        }
 
 
-                       viewModel.payment(uiState.carts,uiState.typeAccount,address,customerId, note,uiState.discount,isOpportitue)
+                       viewModel.payment(state.carts,state.typeAccount,address,customerId, note,state.discount,isOpportitue)
 
                    },
                    modifier = Modifier
@@ -386,7 +386,7 @@ fun CartScreen(
             message = stringResource(R.string.you_want_to_deleta_all_cart),
             onOk = {
                 isDeleteAll = false
-                viewModel.deleteAll(uiState.carts)
+                viewModel.deleteAll(state.carts)
             },
             onDismiss = { isDeleteAll = false },
         )

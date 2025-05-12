@@ -1,7 +1,7 @@
 package com.itechpro.domain.usecase.news
 
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.news.News
 import com.itechpro.domain.repository.NewsRepository
 import com.itechpro.domain.safeFlowCall

@@ -14,7 +14,7 @@ import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.navigationEvent.NavEvent
 
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase

@@ -2,7 +2,7 @@ package com.itechpro.data.repository
 import com.itechpro.data.api.CustomerAPI
 import com.itechpro.domain.model.Column1
 import com.itechpro.domain.model.customer.Customer
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 
 import com.itechpro.domain.repository.CustomerRepository
 

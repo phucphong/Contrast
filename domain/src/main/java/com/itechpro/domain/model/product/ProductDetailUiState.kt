@@ -1,9 +1,7 @@
 package com.itechpro.domain.model.product
 
-
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.cart.CartItem
-
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 
 data class ProductDetailUiState(
@@ -31,5 +29,5 @@ data class ProductDetailUiState(
     val qACoachings: List<Product> = emptyList(),
 
     val oders: List<Product> = emptyList(),
-
+    val navEvent: NavEvent = ProductNavEvent.None,
     )

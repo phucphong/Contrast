@@ -32,7 +32,7 @@ import com.contrast.Contrast.presentation.features.customer.viewmodel.CustomerVi
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.customer.Customer
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

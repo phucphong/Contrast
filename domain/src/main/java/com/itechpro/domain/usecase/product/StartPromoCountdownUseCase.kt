@@ -1,6 +1,7 @@
 package com.itechpro.domain.usecase.product
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.product.Product
@@ -60,6 +61,8 @@ class StartPromoCountdownUseCase @Inject constructor(
                 stateMap[id]?.value = promo
                 delay(1000)
             }
+
+
         }
     }
 }

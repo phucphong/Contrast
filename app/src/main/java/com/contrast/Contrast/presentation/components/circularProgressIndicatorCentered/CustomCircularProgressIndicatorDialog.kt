@@ -2,7 +2,6 @@ package com.contrast.Contrast.presentation.components.circularProgressIndicatorC
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.*
@@ -15,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import kotlinx.coroutines.delay
 @Composable
 fun <T> CustomCircularProgressIndicatorDialog(

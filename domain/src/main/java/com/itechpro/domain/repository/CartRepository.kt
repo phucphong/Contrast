@@ -7,7 +7,7 @@ package com.itechpro.domain.repository
 
 import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.cart.Cart
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.cart.CheckProductActive
 import com.itechpro.domain.model.payment.InfoPayment
 import com.itechpro.domain.model.payment.OrderPayment

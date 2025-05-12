@@ -7,7 +7,7 @@ package com.itechpro.domain.usecase.review
 import android.util.Log
 import com.itechpro.domain.enumApp.ReviewFilterType
 import com.itechpro.domain.enumApp.ReviewSelectedFilter
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.review.ReviewAttach
 import com.itechpro.domain.model.review.ReviewDetail
 import com.itechpro.domain.model.review.ReviewResult

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.extensions.splitTextToTwoLines
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 @Composable
 fun TabBarGridStyle(

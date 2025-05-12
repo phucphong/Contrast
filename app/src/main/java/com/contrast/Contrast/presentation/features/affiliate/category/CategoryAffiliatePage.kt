@@ -1,35 +1,18 @@
 package com.contrast.Contrast.presentation.features.affiliate.category
 
-
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-
-
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
@@ -39,13 +22,11 @@ import com.contrast.Contrast.presentation.components.tab.TabBarRow
 import com.contrast.Contrast.presentation.components.tab.TabBarRowCircle
 import com.contrast.Contrast.presentation.components.tab.TabBarRowPillStyle
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
-
+import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
-import com.itechpro.domain.model.navigationEvent.CartNavEvent
-import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.navigationEvent.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -54,63 +35,44 @@ fun CategoryAffiliatePage(
     categoryId: String,
     viewModel: CategoryAffiliateModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
+    notificationViewModel: NotificationViewModel = hiltViewModel(),
 ) {
-    val products by viewModel.products.collectAsState()
+    val state by viewModel.state.collectAsState()
 
-    val category1 by viewModel.category1.collectAsState()
-    val category2 by viewModel.category2.collectAsState()
-    val category3 by viewModel.category3.collectAsState()
-    val domain by viewModel.domain.collectAsState()
-    val token by viewModel.token.collectAsState()
-    val pointAffiliate by viewModel.pointAffiliate.collectAsState()
-    val displayProduct by viewModel.displayProduct.collectAsState()
-    val displayService by viewModel.displayService.collectAsState()
-    val displayPriority by viewModel.displayPriority.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
-    val type by viewModel.type.collectAsState()
+
+    val cartState by cartViewModel.state.collectAsState()
+    val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
 
     var selectedTabIndex by remember { mutableStateOf(0) }
-
-    val selectedTab1 by viewModel.selectedTab1.collectAsState()
-    val selectedTab2 by viewModel.selectedTab2.collectAsState()
-    val selectedTab3 by viewModel.selectedTab3.collectAsState()
-    val isRefreshing by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
+    val isInit = remember { mutableStateOf(false) }
     var isBackStack by remember { mutableStateOf(false) }
 
 
-    val isLoading by viewModel.isLoading.collectAsState()
-    var searchText by remember { mutableStateOf("") }
-    val tabs by viewModel.tabs.collectAsState()
-    val isInit = remember { mutableStateOf(false) }
 
-    val navEvent by viewModel.navigationEvent.collectAsState()
-    LaunchedEffect(products) { viewModel.setInitialProducts(products) }
+    LaunchedEffect(state.products) {
+        viewModel.setInitialProducts(state.products)
+    }
+
     LaunchedEffect(Unit) {
-
-
         if (!isInit.value) {
-            viewModel.initCategory(displayProduct, displayService, displayPriority,categoryId)
+            viewModel.initCategory(state.displayProduct, state.displayService, state.displayPriority, categoryId)
             isInit.value = true
         }
     }
 
     LaunchedEffect(categoryId) {
-
-
-        if(categoryId!="0"){
+        if (categoryId != "0") {
             isBackStack = true
         }
-
     }
 
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    LaunchedEffect(state.navEvent) {
+        when (val event = state.navEvent) {
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
-                    NavRoutes.Notifications.withArgs(
-                        startDate = event.startDate,
-                        endDate = event.endDate
-                    )
+                    NavRoutes.Notifications.withArgs(event.startDate, event.endDate)
                 )
                 viewModel.resetNavigation()
             }
@@ -119,26 +81,19 @@ fun CategoryAffiliatePage(
                 viewModel.resetNavigation()
             }
             is ProductNavEvent.GoToProductsCategory -> {
-                navHostController.navigate(
-                    NavRoutes.ProductByCategory.withArgs(
-                        categoryId = event.categoryId,
-                    )
-                )
+                navHostController.navigate(NavRoutes.ProductByCategory.withArgs(event.categoryId))
                 viewModel.resetNavigation()
             }
-
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
                     NavRoutes.ProductDetail.withArgs(
                         id = event.id,
                         idUnit = event.idUnit,
                         introducerId = event.introducerId,
-
-                        )
+                    )
                 )
                 viewModel.resetNavigation()
             }
-
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.navigate(
                     NavRoutes.AddServiceRequest.withArgs(
@@ -150,7 +105,6 @@ fun CategoryAffiliatePage(
                 )
                 viewModel.resetNavigation()
             }
-
             else -> Unit
         }
     }
@@ -160,15 +114,18 @@ fun CategoryAffiliatePage(
             isTexField = true,
             isBackStack = isBackStack,
             text = searchText,
-            onTextChanged = { searchText = it },
-            onSearchClick = { /* mở trang tìm kiếm */ },
+            onTextChanged = { searchText = it
+
+                viewModel.searchLocal (searchText, state.products)
+                            },
+            totalNotificationItems = totalNotificationItems,
+            totalCartItems = cartState.totalCartItems,
             onNotificationClick = { viewModel.onItemNotificationSelected() },
             onCartClick = { viewModel.onItemCarts() },
-            onBackStack = {   navHostController.popBackStack() }
+            onBackStack = { navHostController.popBackStack() }
         )
 
-        if (isLoading) {
-            // Hiển thị loading, ví dụ:
+        if (state.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize().padding(top = 20.dp),
                 contentAlignment = Alignment.TopCenter
@@ -177,92 +134,66 @@ fun CategoryAffiliatePage(
             }
         }
 
-        if (tabs.size > 1) {
+        if (state.tabs.size > 1) {
             SegmentTabLocal(
-                tabs = tabs,
+                tabs = state.tabs,
                 selectedTab = selectedTabIndex,
-
                 onTabSelected = {
+                    searchText = ""
                     selectedTabIndex = it
-//                    viewModel.getCategory1("tatcanhomsp", "tatcanhomsp", type, "0", 1)
-
-                    viewModel.onCategorySelected(it, category1, categoryId)
+                    viewModel.onCategorySelected(it, state.tabs, categoryId)
                 }
             )
         }
+
         TabBarRow(
-            tabs = category1,
+            tabs = state.category1,
             color = TealGreen,
             textCorSelect = TealGreen,
-            selectedTab = selectedTab1,
-            onTabSelected = {
-                viewModel.onCategory1Selected(it, category1, type)
-            },
+            selectedTab = state.selectedTab1,
+            onTabSelected = { viewModel.onCategory1Selected(it, state.category1, state.type) },
             type = "name"
         )
 
-        // ✅ Scroll tất cả nội dung chung trong LazyColumn
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White),
+            modifier = Modifier.fillMaxSize().background(Color.White),
             contentPadding = PaddingValues(bottom = 80.dp)
         ) {
             item {
-
-
                 TabBarRowCircle(
-                    tabs = category2,
+                    tabs = state.category2,
                     color = TealGreen,
                     textCorSelect = TealGreen,
-                    selectedTab = selectedTab2,
+                    selectedTab = state.selectedTab2,
                     type = "name",
-                    domain = domain,
-                    onTabSelected = {
-                        viewModel.onCategory2Selected(it, category2, type)
-                    }
+                    domain = state.domain,
+                    onTabSelected = { viewModel.onCategory2Selected(it, state.category2, state.type) }
                 )
             }
             item {
-                    TabBarRowPillStyle(
-                        tabs = category3,
-                        selectedTab = selectedTab3,
-                        type = "name",
-                        onTabSelected = {
-                            viewModel.onCategory3Selected(it, category3, type)
-                        }
-                    )
+                TabBarRowPillStyle(
+                    tabs = state.category3,
+                    selectedTab = state.selectedTab3,
+                    type = "name",
+                    onTabSelected = { viewModel.onCategory3Selected(it, state.category3, state.type) }
+                )
                 CustomDividerColor()
-
             }
 
-                        val rows = products.chunked(2)
-                      items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                            ProductRow(
-                                domain = domain,
-                                token = token,
-                                pointAffiliate = pointAffiliate,
-                                rowProducts = row,
-                                promoUiDataMap = promoUiDataMap,
-                                onItemClick = { viewModel.onItemProductSelected(it) },
-                                onClickCart = { cartViewModel.onItemAddCart(it) },
-                                onClickAddServiceRequest = {
-                                    viewModel.onAddServiceRequestSelected(
-                                        it
-                                    )
-                                }, onClickShare = {
-
-                                }
-                            )
-                        }
-
-
-
+            val rows = state.pagedProducts.chunked(2)
+            items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                ProductRow(
+                    domain = state.domain,
+                    token = state.token,
+                    pointAffiliate = state.pointAffiliate,
+                    rowProducts = row,
+                    promoUiDataMap = promoUiDataMap,
+                    onItemClick = { viewModel.onItemProductSelected(it) },
+                    onClickCart = { cartViewModel.onItemAddCart(it) },
+                    onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) },
+                    onClickShare = { }
+                )
+            }
         }
-
     }
 }
-
-
-
-

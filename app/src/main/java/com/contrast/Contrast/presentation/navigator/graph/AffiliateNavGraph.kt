@@ -8,24 +8,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.contrast.Contrast.presentation.components.media.MediaPickerScreenNew
-import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
+
 import com.contrast.Contrast.presentation.components.profile.ProfileScreen
-import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
 import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
 import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
-import com.contrast.Contrast.presentation.features.main.home.viewmodel.HomeViewModel
 import com.contrast.Contrast.presentation.features.news.list.NewsScreen
 
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
-import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
-import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
-
-
 import com.contrast.Contrast.presentation.features.video.VideoScreen
-import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -38,7 +30,7 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController,
         startDestination = NavRoutes.AffiliateHome.route, route = NavRoutes.AffiliateRoot.route
     ) {
         composable(NavRoutes.AffiliateHome.route) {
-            HomePage(idProductFromShare, idUnitFromShare,introducerId,navController)
+            HomePage(navController)
         }
         composable(NavRoutes.Login.route) {
             LoginScreen(navController)

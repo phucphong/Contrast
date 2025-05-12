@@ -6,7 +6,7 @@ package com.itechpro.domain.usecase.cart
 
 
 import com.itechpro.domain.model.cart.CartItem
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.cart.CartResult
 import com.itechpro.domain.model.payment.InfoPayment
 import com.itechpro.domain.model.payment.OrderPayment
@@ -35,7 +35,8 @@ class CartUseCase @Inject constructor(
                     if(isTotalOder){
                         emit(NetworkResponse.Success( calculateCartTotal(items,true)))
                     }else{
-                        emit(NetworkResponse.Success(CartResult(items, items.size,   totalValue = 0.0,
+                        emit(
+                            NetworkResponse.Success(CartResult(items, items.size,   totalValue = 0.0,
                             totalIntoMoney = 0.0,
                             amountMoneyDiscount = 0.0)))
                     }

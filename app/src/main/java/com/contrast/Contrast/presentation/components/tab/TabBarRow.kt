@@ -22,13 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 
 @Composable
 fun TabBarRow(tabs: List<Category>,
 
-              color: Color=Color.Red,textCorSelect: Color=Color.Black,
+              color: Color=Color.Red, textCorSelect: Color=Color.Black,
               selectedTab: Int,
 
               type :String?

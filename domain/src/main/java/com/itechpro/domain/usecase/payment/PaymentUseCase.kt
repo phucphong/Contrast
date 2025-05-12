@@ -1,8 +1,7 @@
 package com.itechpro.domain.usecase.payment
 
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.cart.CartItem
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.payment.InfoPayment
 import com.itechpro.domain.repository.PaymentRepository
 

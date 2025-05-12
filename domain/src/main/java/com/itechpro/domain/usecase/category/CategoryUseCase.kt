@@ -2,13 +2,9 @@ package com.itechpro.domain.usecase.category
 
 
 import com.itechpro.domain.enumApp.CategoryType
-import com.itechpro.domain.model.Account
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.Column1
-import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.repository.AccountRepository
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.repository.CategoryRepository
-import com.itechpro.domain.repository.RegisterAccountRepository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

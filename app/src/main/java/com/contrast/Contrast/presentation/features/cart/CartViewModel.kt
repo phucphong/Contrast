@@ -11,11 +11,10 @@ import com.contrast.Contrast.extensions.toJson
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
 import com.itechpro.domain.model.cart.CartItem
-import com.itechpro.domain.model.cart.Cart
 import com.itechpro.domain.model.cart.CartUiState
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.payment.OrderPayment
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
@@ -35,8 +34,8 @@ class CartViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(CartUiState())
-    val uiState: StateFlow<CartUiState> = _uiState
+    private val _state = MutableStateFlow(CartUiState())
+    val state: StateFlow<CartUiState> = _state
     private val _navigationEvent = MutableStateFlow<NavEvent>(CartNavEvent.None)
     val navigationEvent: StateFlow<NavEvent> = _navigationEvent
     private val _notificationToast = MutableSharedFlow<String>()
@@ -49,7 +48,7 @@ class CartViewModel @Inject constructor(
             runCatching { getCurrentUserUseCase() }
                 .onSuccess { user ->
                     currentUserInfo = user
-                    _uiState.update { it.copy(domain = user.domain.orEmpty(), device = user.device.orEmpty(),
+                    _state.update { it.copy(domain = user.domain.orEmpty(), device = user.device.orEmpty(),
                         typeAccount = user.typeAccount.orEmpty(),
                         customerId = user.customerId.orEmpty(),
                         employeeId = user.employeeId.orEmpty())
@@ -57,7 +56,7 @@ class CartViewModel @Inject constructor(
 
                 }
                 .onFailure {
-                    _uiState.update {
+                    _state.update {
                         it.copy(validationError = stringProvider.getString(R.string.error_connection))
                     }
                 }
@@ -69,9 +68,9 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             cartUseCase.getCarts(isTotalOrder, user.typeAccount, user.token).collect { result ->
                 when (result) {
-                    is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
+                    is NetworkResponse.Loading -> _state.update { it.copy(isLoading = true) }
                     is NetworkResponse.Success -> {
-                        _uiState.update {
+                        _state.update {
                             it.copy(
                                 isLoading = false,
                                 carts = result.data.items,
@@ -81,13 +80,13 @@ class CartViewModel @Inject constructor(
                                 amountMoneyDiscount = result.data.amountMoneyDiscount ?: 0.0
                             )
                         }
-                        if(_uiState.value.typeAccount=="daily"){
+                        if(_state.value.typeAccount=="daily"){
 
                             getDisCountAgency()
                         }
 
                     }
-                    is NetworkResponse.Error -> _uiState.update {
+                    is NetworkResponse.Error -> _state.update {
                         it.copy(isLoading = false, validationError = result.message)
                     }
                 }
@@ -103,14 +102,14 @@ class CartViewModel @Inject constructor(
             loaicapnhat = type
             mamenu = "giohang"
             hanhdong = if (type == "add") "add" else "edit"
-            device = _uiState.value.device
+            device = _state.value.device
         }
 
         viewModelScope.launch(dispatcher) {
             cartUseCase.addEditCart(url, cartItem, user.token).collect { result ->
                 when (result) {
-                    is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
-                    is NetworkResponse.Error -> _uiState.update { it.copy(validationError = result.message) }
+                    is NetworkResponse.Loading -> _state.update { it.copy(isLoading = true) }
+                    is NetworkResponse.Error -> _state.update { it.copy(validationError = result.message) }
                     is NetworkResponse.Success -> {
                         getCarts(isTotalOrder)
                         if(isToast){
@@ -142,8 +141,8 @@ class CartViewModel @Inject constructor(
             Log.d("addOrder", "Order JSON = ${orderPayment.toJson()}")
             cartUseCase.addOrder(isOpportunity, orderPayment, user.token).collect { result ->
                 when (result) {
-                    is NetworkResponse.Loading -> _uiState.update { it.copy(isLoading = true) }
-                    is NetworkResponse.Error -> _uiState.update { it.copy(validationError = result.message) }
+                    is NetworkResponse.Loading -> _state.update { it.copy(isLoading = true) }
+                    is NetworkResponse.Error -> _state.update { it.copy(validationError = result.message) }
                     is NetworkResponse.Success -> {
                         deleteAll(carts)
                         if(isToast){
@@ -152,7 +151,7 @@ class CartViewModel @Inject constructor(
                                 totalIntoMoney = result.data.tongtien,
                                 oderKey = result.data.madonhang,
                                 idOder = result.data.iddonhang,
-                                discount = _uiState.value.discount.toString(),
+                                discount = _state.value.discount.toString(),
                                 address = address,
                                 isOpportunity = isOpportunity.toString()
                             )
@@ -177,7 +176,7 @@ class CartViewModel @Inject constructor(
             loaicapnhat = "add",
             mamenu = "giohang",
             hanhdong = "add",
-            device = _uiState.value.device
+            device = _state.value.device
         )
         addEditCart("/ex/apiaffiliate/addgiohang", cartItem, "add", product.soluong ?: 1.0, false, true)
     }
@@ -190,7 +189,7 @@ class CartViewModel @Inject constructor(
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             cartUseCase.getDeleteCart(ids, user.device, content, user.token).collect { result ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         isLoading = result is NetworkResponse.Loading,
                         validationError = if (result is NetworkResponse.Error) result.message else it.validationError,
@@ -206,7 +205,7 @@ class CartViewModel @Inject constructor(
             cartUseCase.getDisCountAgency(user.token).collect { result ->
                 when (result) {
                     is NetworkResponse.Success -> {
-                        _uiState.update {
+                        _state.update {
                             it.copy(
                                 discount = result.data,
                                 isLoading = false
@@ -215,7 +214,7 @@ class CartViewModel @Inject constructor(
                     }
 
                     is NetworkResponse.Loading -> {
-                        _uiState.update {
+                        _state.update {
                             it.copy(
                                 isLoading = true
                             )
@@ -223,7 +222,7 @@ class CartViewModel @Inject constructor(
                     }
 
                     is NetworkResponse.Error -> {
-                        _uiState.update {
+                        _state.update {
                             it.copy(
                                 isLoading = false,
                                 statusMessage = result.message
@@ -240,7 +239,7 @@ class CartViewModel @Inject constructor(
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             cartUseCase.checkProductBeforePayment(ids, user.token).collect { result ->
-                _uiState.update { it.copy(isLoading = result is NetworkResponse.Loading) }
+                _state.update { it.copy(isLoading = result is NetworkResponse.Loading) }
                 when (result) {
                     is NetworkResponse.Success -> {
                         if (result.data.isEmpty() ) {
@@ -248,7 +247,7 @@ class CartViewModel @Inject constructor(
 
                         }
                     }
-                    is NetworkResponse.Error -> _uiState.update { it.copy(validationError = result.message) }
+                    is NetworkResponse.Error -> _state.update { it.copy(validationError = result.message) }
                     NetworkResponse.Loading -> {
 
                     }
@@ -280,13 +279,13 @@ class CartViewModel @Inject constructor(
             loaicapnhat = "add",
             mamenu = "giohang",
             hanhdong = "add",
-            device = _uiState.value.device
+            device = _state.value.device
         )
         addEditCart("/ex/apiaffiliate/addgiohang", cartItem, "add", 1.0, false, true)
     }
 
     fun updateCartQuantity(cartItem: CartItem, type: String, newQuantity: Double, ) {
-        _uiState.update { state ->
+        _state.update { state ->
             state.copy(carts = state.carts.map {
                 if (it.idsp == cartItem.idsp) it.copy(soluong = newQuantity) else it
             })
@@ -295,7 +294,7 @@ class CartViewModel @Inject constructor(
     }
     fun isAllSelected(carts: List<CartItem>, isChecked: Boolean) {
         val updatedCarts = cartUseCase.onCheckedChangeAll(carts, isChecked)
-        _uiState.update {
+        _state.update {
             it.copy(
                 carts = updatedCarts,
                 isAllSelected = isChecked
@@ -319,13 +318,13 @@ class CartViewModel @Inject constructor(
 
     fun onCheckedChangeAll(carts: List<CartItem>, isChecked: Boolean) {
         val updatedCarts = cartUseCase.onCheckedChangeAll(carts, isChecked)
-        _uiState.update { it.copy(carts = updatedCarts, isAllSelected = isChecked) }
+        _state.update { it.copy(carts = updatedCarts, isAllSelected = isChecked) }
         updateCartTotal(updatedCarts)
     }
 
     fun updateCartTotal(carts: List<CartItem>) {
         val result = cartUseCase.calculateCartTotal(carts, false)
-        _uiState.update {
+        _state.update {
             it.copy(
                 totalValue = result.totalValue,
                 totalIntoMoney = result.totalIntoMoney,

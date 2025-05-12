@@ -1,5 +1,8 @@
 package com.contrast.Contrast.presentation.features.product.ui
 
+
+
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,17 +24,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.theme.TealGreen
 
 @Composable
 fun PromoPriceBar(
     price: String,
-    modifier: Modifier = Modifier
+    isFlashSale: Boolean,
+    isShare: Boolean = false,
+    bookService: Boolean = false,
+    modifier: Modifier = Modifier,
+
+    onClickCart: () -> Unit,
+    onClickAddServiceRequest: () -> Unit,
+    onClickShare: () -> Unit,
 ) {
     Row(
         modifier = modifier
             .height(40.dp).padding(5.dp)
             .clip(RoundedCornerShape(50)) // full bo tròn
-            .background(Color(0xFFFFF3E0)) // nền cam nhạt
+            .background(if(isFlashSale)Color(0xFFFFF3E0) else Color.White) // nền cam nhạt
     ) {
         // Giá (bên trái)
         Box(
@@ -45,14 +57,14 @@ fun PromoPriceBar(
                 text = price,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFFFF9800)
+                color =if(isFlashSale) Color(0xFFFF9800) else Color.Black
             )
         }
 
         // Cột icon bên phải (nền cam đậm)
         Row(
             modifier = Modifier
-                .background(Color(0xFFFF9800))
+                .background(if(isFlashSale)Color(0xFFFF9800) else Color.White)
                 .fillMaxHeight()
                 .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -61,15 +73,26 @@ fun PromoPriceBar(
             Icon(
                 painter = painterResource(id = R.drawable.cart),
                 contentDescription = "Cart",
-                tint = Color.White,
-                modifier = Modifier.size(16.dp)
+                tint = if(isFlashSale) Color.White else TealGreen,
+                modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickCart() }
             )
-            Icon(
-                painter = painterResource(id = R.drawable.calendar_service),
-                contentDescription = "Buy Package",
-                tint = Color.White,
-                modifier = Modifier.size(16.dp)
-            )
+            if(bookService){
+                Icon(
+                    painter = painterResource(id = R.drawable.calendar_service),
+                    contentDescription = "Buy Package",
+                    tint = if(isFlashSale) Color.White else TealGreen,
+                    modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickAddServiceRequest() }
+                )
+            }
+            if(isShare){
+                Icon(
+                    painter = painterResource(id = R.drawable.share),
+                    contentDescription = "Buy Package",
+                    tint = if(isFlashSale) Color.White else TealGreen,
+                    modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickShare() }
+                )
+            }
+
         }
     }
 }

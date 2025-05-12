@@ -4,7 +4,7 @@ package com.itechpro.domain.usecase.product
 
 
 import com.itechpro.domain.model.LikeProductService
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail

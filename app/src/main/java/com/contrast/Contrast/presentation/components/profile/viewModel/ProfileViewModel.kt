@@ -9,11 +9,8 @@ import com.contrast.Contrast.extensions.collectResponse
 import com.contrast.Contrast.presentation.mapper.withUiIcon
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.data.config.AppConfig
-import com.itechpro.domain.model.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.NetworkResponse
 
-import com.itechpro.domain.model.Video
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent

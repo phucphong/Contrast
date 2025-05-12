@@ -1,5 +1,7 @@
 package com.contrast.Contrast.presentation.features.video
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +28,9 @@ import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotifica
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
+import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.main.home.viewmodel.HomeViewModel
+import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.video.ui.VideoItem
 import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
 import com.contrast.Contrast.presentation.navigator.NavRoutes
@@ -36,31 +40,34 @@ import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun VideoScreen(navHostController: NavHostController,
-                viewModel: VideoViewModel = hiltViewModel()
+                viewModel: VideoViewModel = hiltViewModel(),
+                cartViewModel: CartViewModel = hiltViewModel(),
+                notificationViewModel: NotificationViewModel = hiltViewModel(),
 ) {
-    val videos by viewModel.videos.collectAsState()
-    val categoryNews by viewModel.categoryNews.collectAsState()
 
-    val domain by viewModel.domain.collectAsState()
-
-    val selectedTab by viewModel.selectedTab.collectAsState()
+    val state by viewModel.state.collectAsState()
+    val cartState by cartViewModel.state.collectAsState()
+    val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
-
-    val isLoading by viewModel.isLoading.collectAsState()
-
-    val navEvent by viewModel.navigationEvent.collectAsState()
     var searchText by remember { mutableStateOf("") }
-    LaunchedEffect(selectedTab, categoryNews) {
-        if (categoryNews.isNotEmpty() && selectedTab in categoryNews.indices) {
-            idCategory =categoryNews[selectedTab].id ?: "0"
+
+
+    LaunchedEffect(state.videos) {
+        viewModel.setInitialVideo(state.videos)
+    }
+
+    LaunchedEffect(state.selectedTab,state. categoryNews) {
+        if (state.categoryNews.isNotEmpty() &&state. selectedTab in state.categoryNews.indices) {
+            idCategory =state.categoryNews[state.selectedTab].id ?: "0"
             viewModel.getVideos(idCategory)
         }
     }
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    LaunchedEffect(state.navEvent) {
+        when (val event = state.navEvent) {
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
                     NavRoutes.Notifications.withArgs(
@@ -87,38 +94,48 @@ fun VideoScreen(navHostController: NavHostController,
         TopSearchNotificationCart(
             isTexField = true,
             text = searchText,
-            onTextChanged = { searchText = it },
+
+            totalNotificationItems = totalNotificationItems,
+            totalCartItems = cartState.totalCartItems,
+            onTextChanged = { searchText = it
+                viewModel.searchLocal (searchText,state.videos)
+
+                            },
             onNotificationClick = { viewModel.onItemNotificationSelected() },
             onCartClick = { viewModel.onItemCarts() },
 
         )
 
-        if (isLoading) {
+        if (state.isLoading) {
             // Hiển thị loading, ví dụ:
             CustomCircularProgressIndicator()
         }
 
         TabBarRow(
-            tabs = categoryNews,
+            tabs = state.categoryNews,
             color = TealGreen,
             textCorSelect = TealGreen,
-            selectedTab = selectedTab,
+            selectedTab = state.selectedTab,
             type = "",
-            onTabSelected = viewModel::onTabSelected
+            onTabSelected = {
+                searchText = ""
+                viewModel.onTabSelected(it)
+
+            }
         )
 
         CustomSwipeRefresh(
             isRefreshing = isRefreshing,
             onRefresh = { viewModel.getVideos(idCategory) }
         ) {
-        if (videos.isEmpty()) {
+        if (state.pagedVideos.isEmpty()) {
             EmptyStateScreen(
                 imageRes = R.drawable.nodata,
                 size = 60.dp,
                 title = stringResource(R.string.no_data)
             )
         } else {
-            VideoList(videos)
+            VideoList(state.pagedVideos)
         }
     }}
 }

@@ -19,9 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 @Composable
 fun ProfileOptionItem(category: Category) {

@@ -17,6 +17,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,23 +43,43 @@ import com.contrast.Contrast.extensions.formatDouble
 import com.contrast.Contrast.presentation.components.progressBar.PromoProgressBar
 import com.contrast.Contrast.presentation.theme.FFFF9800
 import com.contrast.Contrast.presentation.theme.FFFF9800
+import com.itechpro.domain.model.PromoUiData
+import kotlinx.coroutines.flow.StateFlow
 
 @Preview(showBackground = true)
 @Composable
 fun ProductPriceDetailSection(
+    promoUiDataMap: Map<String, StateFlow<PromoUiData>>,
+    productId: String,
     productName: String,
     priceDisCount: Double = 0.0,
     price: Double = 0.0,
     discountPercent: Double = 0.0,
-    isFlashSale: Boolean = false,
-    remainingTime: String = "",
     quantity: Double,
+
     increaseQuantity: () -> Unit,
     showQuantity: () -> Unit,
     decreaseQuantity: () -> Unit,
+
 ) {
 
-    Log.e("quantity",quantity.toString())
+
+    val promoUiDataFlow = promoUiDataMap[productId]
+
+    val promoUiData by promoUiDataFlow?.collectAsState() ?: remember { mutableStateOf(PromoUiData()) }
+
+    val countdownText by rememberUpdatedState(promoUiData.remainingTime)
+    var isFlashSale by remember { mutableStateOf(false) }
+
+    LaunchedEffect(countdownText) {
+        if (countdownText == "00:00:00:00") {
+
+            isFlashSale = false
+        }else{
+            isFlashSale = true
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,7 +98,7 @@ fun ProductPriceDetailSection(
         // Giá và giảm giá
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 8.dp)) {
 
-            if (priceDisCount!=0.0 && discountPercent!=0.0){
+            if (isFlashSale){
                 Image(painter = painterResource(R.drawable.flash_sale),
                     contentDescription = "",
                     colorFilter = ColorFilter.tint(FFFF9800),
@@ -91,7 +118,7 @@ fun ProductPriceDetailSection(
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
-            if (priceDisCount!=0.0 && discountPercent!=0.0) {
+            if (isFlashSale) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "đ",
@@ -140,11 +167,14 @@ fun ProductPriceDetailSection(
                         Box (modifier = Modifier.width(8.dp).height(12.dp).padding(horizontal = 4.dp).background(Color.White))
                         PromoProgressBar()
                         Spacer(modifier = Modifier.width(6.dp))
+
+
                         Text(
-                            text = "Kết thúc sau $remainingTime",
+                            text = "Kết thúc sau $countdownText",
                             color = Color.White,
                             fontSize = 11.sp
                         )
+
                     }
                 }
 

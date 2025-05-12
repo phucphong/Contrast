@@ -1,9 +1,9 @@
 package com.itechpro.data.repository
 
 import com.itechpro.data.api.CategoryAffiliateAPI
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.product.Product
 
 import com.itechpro.domain.repository.CategoryAffiliateRepository

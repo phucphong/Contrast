@@ -1,8 +1,6 @@
 package com.itechpro.domain.model.profile
 
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.cart.CartItem
-
+import com.itechpro.domain.model.category.Category
 
 
 data class ProfileUiState(

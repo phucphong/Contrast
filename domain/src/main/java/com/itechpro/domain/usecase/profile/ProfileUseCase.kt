@@ -2,9 +2,8 @@ package com.itechpro.domain.usecase.profile
 
 
 import com.itechpro.domain.model.Account
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.model.cart.CartResult
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.profile.ProfileResult
 
 import com.itechpro.domain.repository.ProfileRepository

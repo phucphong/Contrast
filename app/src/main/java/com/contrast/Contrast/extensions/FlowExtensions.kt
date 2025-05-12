@@ -1,10 +1,9 @@
 package com.contrast.Contrast.extensions
 
 
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 
 suspend inline fun <T> Flow<NetworkResponse<T>>.collectResponse(

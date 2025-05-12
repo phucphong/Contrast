@@ -2,7 +2,7 @@ package com.itechpro.domain.repository
 
 import com.itechpro.domain.model.Account
 import com.itechpro.domain.model.Column1
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 
 
 interface RegisterAccountRepository {

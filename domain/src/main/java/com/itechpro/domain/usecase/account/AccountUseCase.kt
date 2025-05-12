@@ -3,7 +3,7 @@ package com.itechpro.domain.usecase.account
 
 
 import com.itechpro.domain.model.Account
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.repository.AccountRepository
 import javax.inject.Inject
 

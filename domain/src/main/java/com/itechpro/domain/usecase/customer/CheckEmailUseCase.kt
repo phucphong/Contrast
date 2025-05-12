@@ -1,8 +1,6 @@
 package com.itechpro.domain.usecase.customer
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.repository.CustomerRepository
-import com.itechpro.domain.repository.RegisterAccountRepository
-
 
 
 import kotlinx.coroutines.flow.Flow

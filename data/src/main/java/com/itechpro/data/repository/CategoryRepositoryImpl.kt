@@ -5,11 +5,9 @@ package com.itechpro.data.repository
 
 
 import com.itechpro.data.api.CategoryAPI
-import com.itechpro.data.api.RegisterAccountAPI
-import com.itechpro.domain.model.Account
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.repository.CategoryRepository
 
 import javax.inject.Inject

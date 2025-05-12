@@ -1,6 +1,6 @@
 package com.contrast.Contrast.presentation.components.tab
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -12,9 +12,9 @@ import com.contrast.Contrast.extensions.DateUtils
 import com.contrast.Contrast.extensions.formatToYYYYMMDD
 import com.contrast.Contrast.presentation.navigator.NotificationEventMapper
 import com.contrast.Contrast.utils.StringProvider
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.notifications.Notification
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent

@@ -1,6 +1,6 @@
 package com.itechpro.data.api
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

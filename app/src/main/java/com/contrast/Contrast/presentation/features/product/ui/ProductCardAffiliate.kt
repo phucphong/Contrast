@@ -72,7 +72,7 @@ fun ProductCardAffiliate(
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
             modifier = Modifier
-                .padding(horizontal = 4.dp)
+                .padding(horizontal = 10.dp)
                 .padding(top = 6.dp),
             maxLines = 2
         )
@@ -98,12 +98,12 @@ fun ProductCardAffiliate(
                     pointAffiliate = pointAffiliate
                 )
             }else{
-                Box(Modifier.size(30.dp))
+                Box(Modifier.size(20.dp))
             }
         }
 
 
 
-        Spacer(Modifier.height(5.dp))
+
     }
 }

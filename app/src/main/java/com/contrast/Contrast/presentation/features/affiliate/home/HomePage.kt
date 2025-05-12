@@ -40,52 +40,33 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomePage(
-    idProductFromShare: String = "0",
-    idUnitFromShare: String= "0",
-    introducerId: String= "0",
     navHostController: NavHostController,
     viewModel: HomeAffiliateViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
-    val slides by viewModel.slides.collectAsState()
-    val categorys by viewModel.categorys.collectAsState()
-    val flashSales by viewModel.flashSales.collectAsState()
-    val tabs by viewModel.tabs.collectAsState()
-    val products by viewModel.products.collectAsState()
-    val pagedProducts by viewModel.pagedProducts.collectAsState()
-
-    val domain by viewModel.domain.collectAsState()
-    val token by viewModel.token.collectAsState()
-    val pointAffiliate by viewModel.pointAffiliate.collectAsState()
+    val state by viewModel.state.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
-    val uiState by cartViewModel.uiState.collectAsState()
+    val cartState by cartViewModel.state.collectAsState()
     val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
-    val selectedTab by viewModel.selectedTab.collectAsState()
 
     val isRefreshing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(0) }
 
-    val navEvent by viewModel.navigationEvent.collectAsState()
-
     val listState = rememberLazyListState()
 
-    LaunchedEffect(products) { viewModel.setInitialProducts(products) }
-
-    LaunchedEffect(Unit) {
-        delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
-        viewModel.loadHomeData()
+    LaunchedEffect(state.products) {
+        viewModel.setInitialProducts(state.products)
     }
 
-
     LaunchedEffect(Unit) {
-
+        delay(100)
+        viewModel.loadHomeData()
         cartViewModel.getCarts(false)
     }
 
@@ -96,7 +77,7 @@ fun HomePage(
             lastVisibleItem?.index to totalItems
         }
             .distinctUntilChanged()
-            .debounce(300) // ✅ ngăn spam trigger khi scroll nhanh
+            .debounce(300)
             .collect { (lastIndex, total) ->
                 if (lastIndex != null && total > 0 && lastIndex >= total - 2) {
                     Log.d("Paging", "📦 Trigger loadNextPage at index=$lastIndex / total=$total")
@@ -105,9 +86,8 @@ fun HomePage(
             }
     }
 
-
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    LaunchedEffect(state.navEvent) {
+        when (val event = state.navEvent) {
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
                     NavRoutes.Notifications.withArgs(
@@ -125,23 +105,20 @@ fun HomePage(
                 navHostController.navigate(
                     NavRoutes.ProductByCategory.withArgs(
                         categoryId = event.categoryId,
-                        )
+                    )
                 )
                 viewModel.resetNavigation()
             }
-
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
                     NavRoutes.ProductDetail.withArgs(
                         id = event.id,
                         idUnit = event.idUnit,
                         introducerId = event.introducerId,
-
                     )
                 )
                 viewModel.resetNavigation()
             }
-
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.navigate(
                     NavRoutes.AddServiceRequest.withArgs(
@@ -153,19 +130,16 @@ fun HomePage(
                 )
                 viewModel.resetNavigation()
             }
-
             else -> Unit
         }
     }
-
-
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopSearchNotificationCart(
             isTexField = true,
             text = searchText,
             totalNotificationItems = totalNotificationItems,
-            totalCartItems = uiState.totalCartItems,
+            totalCartItems = cartState.totalCartItems,
             onTextChanged = { searchText = it },
             onSearchClick = { },
             onNotificationClick = { viewModel.onItemNotificationSelected() },
@@ -173,7 +147,7 @@ fun HomePage(
         )
 
         CustomSwipeRefresh(isRefreshing = isRefreshing,
-            onRefresh = { viewModel.loadHomeData(forceRefresh = true) } ) {
+            onRefresh = { viewModel.loadHomeData(forceRefresh = true) }) {
 
             LazyColumn(
                 state = listState,
@@ -183,47 +157,47 @@ fun HomePage(
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
                 item {
-                    if (slides.isNotEmpty()) {
+                    if (state.slides.isNotEmpty()) {
                         ImageSliderFromUrl(
-                            domain = domain,
+                            domain = state.domain,
                             autoScroll = true,
-                            slides = slides,
+                            slides = state.slides,
                             modifier = Modifier.height(220.dp)
                         )
                     }
                 }
 
                 item {
-                    if (categorys.isNotEmpty()) {
+                    if (state.categorys.isNotEmpty()) {
                         TabBarPagedGridScrollable(
-                            tabs = categorys,
+                            tabs = state.categorys,
                             selectedTab = selectedCategory,
-                            domain = domain,
+                            domain = state.domain,
                             type = "name",
                             onTabSelected = { index ->
                                 selectedCategory = index
-                                viewModel.onTabSelected(index, categorys[index])
+                                viewModel.onTabSelected(index, state.categorys[index])
                             }
                         )
                     }
                 }
-                if (flashSales.size > 1) {
+
+                if (state.flashSales.size > 1) {
                     stickyHeader {
                         FlashSaleHeader()
                     }
                 }
+
                 item {
-                    if (flashSales.isNotEmpty()) {
+                    if (state.flashSales.isNotEmpty()) {
                         FlashSaleHome(
-                            flashSales = flashSales,
+                            flashSales = state.flashSales,
                             promoUiDataMap = promoUiDataMap,
-                            domain = domain,
+                            domain = state.domain,
                             onItemProductSelected = { index ->
                                 viewModel.onItemProductSelected(index)
                             },
-                            onSeeAllClicked = {
-
-                            }
+                            onSeeAllClicked = {}
                         )
                     }
                 }
@@ -232,37 +206,36 @@ fun HomePage(
                     CustomDividerColor(color = FFD9D9D9, padding = 5.dp)
                 }
 
-
-                if (tabs.size > 1) {
+                if (state.tabs.size > 1) {
                     stickyHeader {
                         TabBarRowLocal(
-                            tabs = tabs,
-                            selectedTab = selectedTab,
+                            tabs = state.tabs,
+                            selectedTab = state.selectedTab,
                             onTabSelected = {
-                                viewModel.onCategorySelected(it, tabs)
+                                viewModel.onCategorySelected(it, state.tabs)
                             }
                         )
                     }
                 }
 
-                val rows = pagedProducts.chunked(2)
-                Log.e("pagedProducts",pagedProducts.size.toString())
+                val rows = state.pagedProducts.chunked(2)
+                Log.e("pagedProducts", state.pagedProducts.size.toString())
+
                 items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
                     ProductRow(
-                        domain = domain,
-                        token = token,
-                        pointAffiliate = pointAffiliate,
+                        domain = state.domain,
+                        token = state.token,
+                        pointAffiliate = state.pointAffiliate,
                         rowProducts = row,
                         promoUiDataMap = promoUiDataMap,
                         onItemClick = { viewModel.onItemProductSelected(it) },
                         onClickCart = { cartViewModel.onItemAddCart(it) },
-                        onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) }, onClickShare = {
-
-                        }
+                        onClickAddServiceRequest = {
+                            viewModel.onAddServiceRequestSelected(it)
+                        },
+                        onClickShare = {}
                     )
                 }
-
-
             }
         }
     }

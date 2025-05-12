@@ -42,14 +42,14 @@ fun EarnProduct(
         commission = "${commissionRate.formatDouble()}% ~ ${commissionMoney.formatCurrency()}"
     }
 
-    Row(modifier = modifier.padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = modifier.padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
         CustomText(
             text = "${stringResource(R.string.commission)}:",
             color = PlaceholderGray,
             fontSize = 10.sp,
             modifier = Modifier
                 .wrapContentWidth()
-                .padding(start = 5.dp)
+                .padding(start = 10.dp)
         )
         CustomText(
             text = if (pointAffiliate == "0") commission else coin.formatDouble(),

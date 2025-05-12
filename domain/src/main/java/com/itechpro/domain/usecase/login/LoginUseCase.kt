@@ -1,7 +1,7 @@
 package com.itechpro.domain.usecase.login
 
 import com.itechpro.domain.model.login.Login
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.repository.LoginRepository
 import javax.inject.Inject
 

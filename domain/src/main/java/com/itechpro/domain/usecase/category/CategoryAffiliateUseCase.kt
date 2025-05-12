@@ -1,7 +1,7 @@
 package com.itechpro.domain.usecase.category
 
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.repository.CategoryAffiliateRepository
 import kotlinx.coroutines.Dispatchers
@@ -43,19 +43,26 @@ class CategoryAffiliateUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    data class CategoryAffiliateConfig(
-        val objApi: String,
-        val modeApi: String,
-        val type: String,
-        val tabs: List<Category>
-    )
+    fun searchLocal(textSearch: String, list: List<Product>): Flow<NetworkResponse<List<Product>>> {
+        return flow {
+            emit(NetworkResponse.Loading)
 
-    private data class ConfigData(
-        val objApi: String,
-        val modeApi: String,
-        val type: String,
-        val tabs: List<Category>
-    )
+            val filteredList = if (textSearch.isEmpty()) {
+                list
+            } else {
+                list.filter { product ->
+                    val name = product.ten ?: ""
+                    val code = product.ma ?: ""
+                    name.contains(textSearch, ignoreCase = true) || code.contains(textSearch, ignoreCase = true)
+                }
+            }
+
+            emit(NetworkResponse.Success(filteredList))
+        }.flowOn(Dispatchers.Default)
+    }
+
+
+
 
 
 

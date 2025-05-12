@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.features.product.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -29,7 +30,7 @@ fun PriceBar(
     onClickShare: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(Modifier.padding(5.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(Modifier.padding(horizontal = 5.dp).height(52.dp), verticalAlignment = Alignment.CenterVertically) {
 
 
 

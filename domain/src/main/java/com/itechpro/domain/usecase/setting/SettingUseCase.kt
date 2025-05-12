@@ -4,7 +4,7 @@ package com.itechpro.domain.usecase.setting
 
 
 import android.util.Log
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 
 import com.itechpro.domain.model.Setting
 import com.itechpro.domain.repository.SettingRepository

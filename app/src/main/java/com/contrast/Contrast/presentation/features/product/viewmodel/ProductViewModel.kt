@@ -13,9 +13,9 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.contrast.Contrast.utils.StringProvider
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.product.ShareOption
@@ -35,7 +35,6 @@ import android.content.Intent
 import android.widget.Toast
 import com.contrast.Contrast.extensions.collectResponse
 import com.itechpro.domain.model.LikeProductService
-import com.itechpro.domain.model.UiEvent
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import com.itechpro.domain.model.product.ProductDetailUiState
@@ -71,7 +70,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
 
 
-    private var isLoaded = false
+
     private val _type = MutableStateFlow<String>("")
     val type: StateFlow<String> = _type
 
@@ -83,12 +82,8 @@ class ProductViewModel @Inject constructor(private val context: Context,
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
     private var currentUserInfo: CurrentUserInfo? = null
-    var user: CurrentUserInfo? = null
 
-    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
-    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
 
-    val _eventFlow = MutableSharedFlow<UiEvent>()
 
     private val _promoUiDataMap = mutableMapOf<String, MutableStateFlow<PromoUiData>>()
     val promoUiDataMap: Map<String, StateFlow<PromoUiData>>
@@ -102,6 +97,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
     val shareIntentFlow: SharedFlow<Intent> = _shareIntentFlow
 
 
+    private var countdownJobDetail: Job? = null
     private var countdownJob: Job? = null
     private val _pagedProducts = MutableStateFlow<List<Product>>(emptyList())
     val pagedProducts: StateFlow<List<Product>> = _pagedProducts
@@ -112,8 +108,8 @@ class ProductViewModel @Inject constructor(private val context: Context,
     private val _notificationToast = MutableSharedFlow<String>()
     val notificationToast = _notificationToast.asSharedFlow()
 
-    private val _uiState = MutableStateFlow(ProductDetailUiState())
-    val uiState: StateFlow<ProductDetailUiState> = _uiState
+    private val _state = MutableStateFlow(ProductDetailUiState())
+    val state: StateFlow<ProductDetailUiState> = _state
     suspend fun showNotificationToast(message: String) {
         _notificationToast.emit(message)
     }
@@ -214,70 +210,103 @@ class ProductViewModel @Inject constructor(private val context: Context,
     }
 
     fun startPromoCountdownProductDetail(product: ProductDetail) {
-        countdownJob?.cancel()
-        countdownJob = startPromoCountdownUseCase.startForProductDetail(
+        countdownJobDetail?.cancel()
+        countdownJobDetail = startPromoCountdownUseCase.startForProductDetail(
             product = product,
-            stateMap = _promoUiDataMap,
+            stateMap = _promoUiDataMapInfo,
             coroutineScope = viewModelScope,
             dispatcher = dispatcher
         )
     }
 
-
-
     override fun onCleared() {
         countdownJob?.cancel()
+        countdownJobDetail?.cancel()
         super.onCleared()
     }
 
 
     fun onTabSelected(index: Int, category: Category) {
         _selectedTab.value =index
-        _navigationEvent.value = ProductNavEvent.GoToProductsCategory(category.id?:"")
+        _state.update {
+            it.copy(
+                navEvent =ProductNavEvent.GoToProductsCategory(category.id?:"")
+            )
+        }
 
     }
 
     fun onItemProductSelected( obj: Product) {
-        _navigationEvent.value = ProductNavEvent.GoToProductDetail(
-            id = obj.id ?: "",
-            idUnit = obj.iddonvichuan ?: "",
-            introducerId = "0",
+        _state.update {
+            it.copy(
+                navEvent =ProductNavEvent.GoToProductDetail(
+                    id = obj.id ?: "",
+                    idUnit = obj.iddonvichuan ?: "",
+                    introducerId = "0",
+                )
             )
+        }
     }
 
     fun onItemReviewsSelected( id: String) {
-        _navigationEvent.value = ProductNavEvent.GoToProductReviews(
-            id = id)
+        _state.update {
+            it.copy(
+                navEvent =ProductNavEvent.GoToProductReviews(
+                    id = id)
+            )
+        }
     }
 
 
     fun onItemAddReviewsSelected( id: String,idUnit: String, fileTxt:String, name:String) {
-        _navigationEvent.value = ProductNavEvent.GoToAddReviews(
-            id = id,
-            idUnit = idUnit,
-            fileTxt = fileTxt,
-            name = name,
-            )
-    }
-    fun onItemReportSelected( id: String,idUnit: String, fileTxt:String, name:String) {
-        if (user?.isOfflineMode?:false) {
-            viewModelScope.launch {
-                _navigationEvent.value = SplashNaEvent.GoToLogIn
-            }
-        } else {
-            _navigationEvent.value = ProductNavEvent.GoToReportProduct(
-                id = id,
-                idUnit = idUnit,
-                fileTxt = fileTxt,
-                name = name,
+
+
+        _state.update {
+            it.copy(
+                navEvent =ProductNavEvent.GoToAddReviews(
+                    id = id,
+                    idUnit = idUnit,
+                    fileTxt = fileTxt,
+                    name = name,
+                )
             )
         }
     }
+    fun onItemReportSelected( id: String,idUnit: String, fileTxt:String, name:String) {
+        if (currentUserInfo?.isOfflineMode?:false) {
+            viewModelScope.launch {
+
+
+                _state.update {
+                    it.copy(
+                        navEvent = SplashNaEvent.GoToLogIn
+                    )
+                }
+            }
+        } else {
+
+
+            _state.update {
+                it.copy(
+                    navEvent =ProductNavEvent.GoToReportProduct(
+                        id = id,
+                        idUnit = idUnit,
+                        fileTxt = fileTxt,
+                        name = name,
+                    )
+                )
+            }
+        }
+    }
     fun onFavorite(isLike: Boolean,idProduct: String, idUnit: String) {
-        if (user?.isOfflineMode?:false) {
+        if (currentUserInfo?.isOfflineMode?:false) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
-                _navigationEvent.value = SplashNaEvent.GoToLogIn
+                _state.update {
+                    it.copy(
+                        navEvent =SplashNaEvent.GoToLogIn
+                    )
+                }
             }
         } else {
             if (isLike) {
@@ -291,7 +320,13 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
     fun onItemCarts( ) {
 
-        _navigationEvent.value = CartNavEvent.GoToCats
+
+
+        _state.update {
+            it.copy(
+                navEvent =CartNavEvent.GoToCats
+            )
+        }
 
     }
 
@@ -309,16 +344,22 @@ class ProductViewModel @Inject constructor(private val context: Context,
     }
 
     fun updateQuantityProductDetailById(product: ProductDetail, newQuantity: Double) {
-        _uiState.update { it.copy(productInfo = product.copy(soluong = newQuantity)!!) }
+        _state.update { it.copy(productInfo = product.copy(soluong = newQuantity)!!) }
     }
 
     fun onAddServiceRequestSelected( category: Product) {
-        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
-            id = category.id ?: "",
-            serviceName = category.ten ?: "",
-            idUnit = category.iddonvichuan ?: "",
-            discount = category.iddonvichuan ?: ""
-        )
+
+
+        _state.update {
+            it.copy(
+                navEvent = ProductNavEvent.GoToAddServiceRequest(
+                    id = category.id ?: "",
+                    serviceName = category.ten ?: "",
+                    idUnit = category.iddonvichuan ?: "",
+                    discount = category.iddonvichuan ?: ""
+                )
+            )
+        }
 
 
     }
@@ -326,7 +367,13 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
     // Sau khi navigate xong, reset lại state
     fun resetNavigation() {
-        _navigationEvent.value = ProductNavEvent.None
+
+
+        _state.update {
+            it.copy(
+                navEvent = ProductNavEvent.None
+            )
+        }
     }
 
 
@@ -338,7 +385,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
         runCatching { getCurrentUserUseCase() }
             .onSuccess { user ->
                 currentUserInfo = user
-                _uiState.update {
+                _state.update {
                     it.copy(
                         domain = user.domain,
                         token = user.token,
@@ -355,29 +402,25 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 }
             }
             .onFailure {
-                _uiState.update {
+                _state.update {
                     it.copy(validationError = stringProvider.getString(R.string.error_connection))
                 }
             }
     }
     fun loadData(idParent: String,idUnit: String) {
-        if (isLoaded) return
-        isLoaded = true
+
 
         viewModelScope.launch(dispatcher) {
             try {
-
-
                 val result = sellConfigUseCase.generateConfig(
-                    user?.displayProduct.orEmpty(),
-                    user?.displayService.orEmpty(),
-                    user?.displayPriority.orEmpty()
+                    currentUserInfo?.displayProduct.orEmpty(),
+                    currentUserInfo?.displayService.orEmpty(),
+                    currentUserInfo?.displayPriority.orEmpty()
                 )
-
                 val totalDuration = measureTimeMillis {
                     val InfoProductJob = async {
                         measureAndRetry("getInfoProduct") {
-                            getInfoProduct(idParent, idUnit)
+                            getInfoProduct(idParent, idUnit, false)
                         }
                     }
                     val productJob = async {
@@ -389,11 +432,11 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
                     awaitAll(InfoProductJob, productJob)
                 }
-                isLoaded = false
+
 
 
             } catch (e: Exception) {
-                _uiState.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
+                _state.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
             }
         }
     }
@@ -421,17 +464,23 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
 
     // lấy danh mực 3 cấp
-    fun getInfoProduct(idParent: String,idUnit: String,) {
-        val user = currentUserInfo ?: return
+    fun getInfoProduct(idParent: String,idUnit: String,isCallApi: Boolean) {
+
         viewModelScope.launch(dispatcher) {
+            if(isCallApi){
+                delay(1000)
+            }
+
+
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
-                useCase.getInfoProduct(user.isOfflineMode,idParent ,idUnit,user.token)
+                useCase.getInfoProduct(currentUserInfo?.isOfflineMode?:false,idParent ,idUnit,currentUserInfo?.token?:"")
 
                     .collectResponse(
                         dispatcher = dispatcher,
                         onSuccess = {
-                                data -> _uiState.update { it.copy(productInfo = data!!) }
+                                data -> _state.update { it.copy(productInfo = data!!) }
+                            Log.e("getInfoProduct","getInfoProduct ${data.denngay}")
                             startPromoCountdownProductDetail(data)
 
                         },
@@ -439,7 +488,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
                     )
 
             } catch (e: Exception) {
-                _uiState.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
+                _state.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
                
             }
         }
@@ -447,12 +496,12 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
     // lấy danh mực 3 cấp
     fun getUnLike(idProduct: String,idUnit: String) {
-        val user = currentUserInfo ?: return
+
 
         viewModelScope.launch(dispatcher) {
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
-                useCase.getUnLike(user.typeAccount ,idProduct,idUnit,user.token).collect { result ->
+                useCase.getUnLike(currentUserInfo?.typeAccount ?:"",idProduct,idUnit,currentUserInfo?.token?:"").collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {
                         }
@@ -461,12 +510,12 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
                         }
                         is NetworkResponse.Error -> {
-                            _uiState.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) ) }
+                            _state.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) ) }
                         }
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
+                _state.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
                
             }
         }
@@ -475,7 +524,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
    
 
     fun addEditFavorite( url:String,idProduct: String, idUnit: String, type: String, idReson:String, content:String) {
-        val user = currentUserInfo ?: return
+
         val obj = LikeProductService()
         obj.idsanpham =idProduct
         obj.iddonvi=idUnit
@@ -484,13 +533,13 @@ class ProductViewModel @Inject constructor(private val context: Context,
             obj.noidung=content
         }
 
-        obj.loaitk=user.typeAccount
+        obj.loaitk=currentUserInfo?.typeAccount?:""
         obj.mamenu="yeuthich"
         obj.os="android"
-        obj.device=user.device
+        obj.device=currentUserInfo?.device?:""
         obj.hanhdong = "add"
         viewModelScope.launch(dispatcher) {
-            useCase.addEditLikeReport(url, obj, user.token).collect { result ->
+            useCase.addEditLikeReport(url, obj, currentUserInfo?.token?:"").collect { result ->
                 _isLoading.value = result is NetworkResponse.Loading
                 if (result is NetworkResponse.Success) {
                     if(type=="report"){
@@ -510,7 +559,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
         }
     }
     fun getProductsByIdParent(type: String,idParent: String) {
-        val user = currentUserInfo ?: return
+
         viewModelScope.launch(dispatcher) {
             try {
 
@@ -518,11 +567,11 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 _pagedProducts.value = emptyList()
                 currentPage = 0
                 allProducts = emptyList()
-                useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token)
+                useCase.getProductsByIdParent(currentUserInfo?.isOfflineMode?:false,type, idParent,  currentUserInfo?.token?:"")
                     .collectResponse(
                         dispatcher = dispatcher,
                         onSuccess = {
-                                data -> _uiState.update { it.copy(products = data) }
+                                data -> _state.update { it.copy(products = data) }
                             startPromoCountdownProducts(data)
                         },
                         onError = {  it }
@@ -537,7 +586,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
     }
 
     fun getProductsCategory(idParent: String,idProduct: String) {
-        val user = currentUserInfo ?: return
+
         viewModelScope.launch(dispatcher) {
             try {
 
@@ -545,24 +594,24 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 _pagedProducts.value = emptyList()
                 currentPage = 0
                 allProducts = emptyList()
-                useCase.getProductsCategory(user.isOfflineMode,_type.value, idParent,idProduct,  user.token)
+                useCase.getProductsCategory(currentUserInfo?.isOfflineMode?:false,_type.value, idParent,idProduct,  currentUserInfo?.token?:"")
                     .collectResponse(
                         dispatcher = dispatcher,
                         onSuccess = {
-                                data -> _uiState.update { it.copy(productsCategory = data) }
+                                data -> _state.update { it.copy(productsCategory = data) }
                             startPromoCountdownProducts(data)
                         },
                         onError = {  it }
                     )
             } catch (e: Exception) {
 
-                _uiState.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
+                _state.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
                
             }
         }
     }
  fun getProductsOther(idProduct: String) {
-        val user = currentUserInfo ?: return
+
         viewModelScope.launch(dispatcher) {
             try {
 
@@ -570,19 +619,19 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 _pagedProducts.value = emptyList()
                 currentPage = 0
                 allProducts = emptyList()
-                useCase.getProductsOther(user.isOfflineMode,_type.value, "0",idProduct,  user.token)
+                useCase.getProductsOther(currentUserInfo?.isOfflineMode?:false,_type.value, "0",idProduct,  currentUserInfo?.token?:"")
 
                     .collectResponse(
                         dispatcher = dispatcher,
                         onSuccess = {
-                            data -> _uiState.update { it.copy(products = data) }
+                            data -> _state.update { it.copy(products = data) }
                             startPromoCountdownProducts(data)
                                     },
                         onError = {  it }
                     )
 
             } catch (e: Exception) {
-                _uiState.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
+                _state.update { it.copy(validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}") }
                
             }
         }

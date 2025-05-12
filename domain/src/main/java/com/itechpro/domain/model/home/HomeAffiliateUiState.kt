@@ -1,6 +1,6 @@
 package com.itechpro.domain.model.home
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.PromoUiData
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductSection

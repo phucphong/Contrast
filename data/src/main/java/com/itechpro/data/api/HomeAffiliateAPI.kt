@@ -1,5 +1,5 @@
 package com.itechpro.data.api
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
 import com.itechpro.domain.model.home.SliderHome

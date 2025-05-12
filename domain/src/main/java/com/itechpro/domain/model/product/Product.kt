@@ -10,6 +10,7 @@ data class Product(
     var idsanpham: String? = "",
     val iddonvichuan: String? = "",
     val ten: String? = "",
+    val ma: String? = "",
     val filetxt: String? = "",
     val tungay: String? = "",
     val denngay: String? = "",

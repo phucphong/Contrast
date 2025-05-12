@@ -1,6 +1,6 @@
 package com.itechpro.domain.usecase.category
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted

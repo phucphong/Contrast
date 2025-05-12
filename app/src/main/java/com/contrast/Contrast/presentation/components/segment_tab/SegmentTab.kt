@@ -30,7 +30,7 @@ import com.contrast.Contrast.presentation.theme.EEEEEF
 import com.contrast.Contrast.presentation.theme.FFAFAFAF
 
 import com.contrast.Contrast.presentation.theme.FFE0E0E0
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 @Composable
 fun SegmentTab(

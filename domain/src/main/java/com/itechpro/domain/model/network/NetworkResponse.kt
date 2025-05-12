@@ -1,4 +1,4 @@
-package com.itechpro.domain.model
+package com.itechpro.domain.model.network
 
 sealed class NetworkResponse<out T> {
     data class Success<out T>(val data : T) : NetworkResponse<T>()

@@ -10,7 +10,7 @@ import com.itechpro.data.config.AppConfig
 import com.itechpro.domain.enumApp.ValidationErrorType
 import com.itechpro.domain.model.CurrentUserInfo
 
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.login.Login
 import com.itechpro.domain.model.login.LoginUiState
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent

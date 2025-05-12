@@ -37,6 +37,7 @@ import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassw
 import com.contrast.Contrast.presentation.components.PasswordRequirements
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckBox
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.features.login.BiometricAuthenticator
@@ -53,7 +54,7 @@ fun LoginScreen(navHostController: NavHostController,
 
     val uiState by viewModel.uiState.collectAsState()
     var account by remember { mutableStateOf(uiState.account) }
-    var passwordBiometricAuthen by remember { mutableStateOf(uiState.passwordBiometricAuthen) }
+ 
     var password by remember { mutableStateOf(uiState.password) }
     var rememberMe by remember { mutableStateOf(uiState.rememberPassword) }
     var isRegisterButton by remember { mutableStateOf(false) }
@@ -105,8 +106,7 @@ fun LoginScreen(navHostController: NavHostController,
 
         }
     }
-
-    Column(
+  Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
@@ -122,22 +122,22 @@ fun LoginScreen(navHostController: NavHostController,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(48.dp))
-          Row {
+            Row {
 
-              Box(Modifier.weight(1f))
-              Image(
-                  painter = painterResource(id = R.drawable.close),
-                  contentDescription = "close",
-                  modifier = Modifier
-                      .size(30.dp).noRippleClickableComposable {
-                          navHostController.popBackStack()
+                Box(Modifier.weight(1f))
+                Image(
+                    painter = painterResource(id = R.drawable.close),
+                    contentDescription = "close",
+                    modifier = Modifier
+                        .size(30.dp).noRippleClickableComposable {
+                            navHostController.popBackStack()
 
-                      }
+                        }
 
 
-              )
+                )
 
-          }
+            }
 
 
             Image(
@@ -175,46 +175,46 @@ fun LoginScreen(navHostController: NavHostController,
 
 
             Spacer(modifier = Modifier.height(24.dp))
-Row (verticalAlignment = Alignment.CenterVertically){
-    Button(
-        onClick = {
-            isRegisterButton = true
-            viewModel.validateAndLogin(account, password)
-        },
-        modifier = Modifier
-            .fillMaxWidth().weight(1f)
-            .height(50.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00AA88))
-    ) {
-        Text(text = stringResource(R.string.login), fontSize = 16.sp, color = Color.White)
-    }
+            Row (verticalAlignment = Alignment.CenterVertically){
+                Button(
+                    onClick = {
+                        isRegisterButton = true
+                        viewModel.validateAndLogin(account, password)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth().weight(1f)
+                        .height(50.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00AA88))
+                ) {
+                    Text(text = stringResource(R.string.login), fontSize = 16.sp, color = Color.White)
+                }
 
-  Box( modifier = Modifier.wrapContentSize().padding(start = 15.dp).background(FFD9D9D9).clip(
-      RoundedCornerShape(8.dp)
-  )){
-      Image(
-          painter = painterResource(id = R.drawable.fingerprintscan),
-          contentDescription = "EZMAX Logo",
-          modifier = Modifier
-              .height(40.dp).padding(8.dp)
-              .noRippleClickableComposable {
+                Box( modifier = Modifier.wrapContentSize().padding(start = 15.dp).background(FFD9D9D9).clip(
+                    RoundedCornerShape(8.dp)
+                )){
+                    Image(
+                        painter = painterResource(id = R.drawable.fingerprintscan),
+                        contentDescription = "EZMAX Logo",
+                        modifier = Modifier
+                            .height(40.dp).padding(8.dp)
+                            .noRippleClickableComposable {
 
-                  biometricAuthenticator?.authenticate(
-
-
-                      onSuccess = {
-
-                          viewModel.loginBiometricAuthenticator(account, password)},
-                      onError = { error ->Log.e("BiometricTest",error) }
-                  )
-              }
+                                biometricAuthenticator?.authenticate(
 
 
-      )
-  }
+                                    onSuccess = {
 
-}
+                                        viewModel.loginBiometricAuthenticator(account, password)},
+                                    onError = { error ->Log.e("BiometricTest",error) }
+                                )
+                            }
+
+
+                    )
+                }
+
+            }
 
             Spacer(modifier = Modifier.size(20.dp))
             Row(
@@ -230,8 +230,8 @@ Row (verticalAlignment = Alignment.CenterVertically){
                     }
                 )
                 Text(text = stringResource(R.string.remember_me),
-                        color = FF000000,
-                     modifier = Modifier.padding(10.dp,2.dp,2.dp,2.dp))
+                    color = FF000000,
+                    modifier = Modifier.padding(10.dp,2.dp,2.dp,2.dp))
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -286,4 +286,9 @@ Row (verticalAlignment = Alignment.CenterVertically){
         )
         Spacer(modifier = Modifier.size(10.dp))
     }
+        if(uiState.isLoading){
+            CustomCircularProgressIndicator(contentAlignment = Alignment.Center)
+        }
+
+
 }

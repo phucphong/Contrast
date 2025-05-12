@@ -5,7 +5,7 @@ package com.itechpro.data.repository
 
 
 import com.itechpro.data.api.NotificationAPI
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.notifications.Notification
 import com.itechpro.domain.repository.NotificationRepository
 import javax.inject.Inject

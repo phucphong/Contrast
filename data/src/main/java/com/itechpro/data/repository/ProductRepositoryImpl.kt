@@ -6,7 +6,7 @@ package com.itechpro.data.repository
 import com.itechpro.data.api.ProductAPI
 import com.itechpro.domain.model.LikeProductService
 
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductDetail
 import com.itechpro.domain.model.report.ReportProduct

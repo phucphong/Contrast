@@ -1,6 +1,6 @@
 package com.itechpro.domain.enumApp
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 
 enum class CategoryType(

@@ -9,8 +9,8 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.enumApp.CategoryType
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.preferences.PreferencesManager
 import com.itechpro.domain.usecase.category.CategoryUseCase
 import com.itechpro.domain.usecase.category.FilterCategoryUseCase

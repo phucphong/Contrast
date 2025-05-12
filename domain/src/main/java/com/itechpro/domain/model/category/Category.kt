@@ -1,10 +1,10 @@
-package com.itechpro.domain.model
-import android.graphics.drawable.Drawable
+package com.itechpro.domain.model.category
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Category(
     var id: String? =   "",
     var ma: String? =   "",
+    var type: String? =   "",
     var idnhanvien: String? =  "",
     var name: String? =   "",
     val code: String? =   "",

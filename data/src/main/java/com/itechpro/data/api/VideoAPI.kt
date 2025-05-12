@@ -4,7 +4,7 @@ package com.itechpro.data.api
 
 
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.Video
 import retrofit2.Response
 import retrofit2.http.Body

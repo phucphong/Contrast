@@ -1,8 +1,8 @@
 package com.itechpro.domain.usecase.customer
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.customer.Customer
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.repository.CustomerRepository
 import com.itechpro.domain.safeFlowCall
 

@@ -7,7 +7,7 @@ import com.contrast.Contrast.presentation.mapper.ValidationErrorMapper
 import com.contrast.Contrast.utils.Common
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.Account
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 
 import com.itechpro.domain.usecase.checkphoneEmail.CheckEmailUseCase
 import com.itechpro.domain.usecase.checkphoneEmail.CheckPhoneUseCase
@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 import com.contrast.Contrast.R
 import com.itechpro.domain.usecase.register.UserInputValidator
 import com.itechpro.domain.enumApp.ValidationErrorType

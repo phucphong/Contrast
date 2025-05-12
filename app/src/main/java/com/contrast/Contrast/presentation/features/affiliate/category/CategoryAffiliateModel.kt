@@ -7,459 +7,279 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
+import com.contrast.Contrast.extensions.collectResponse
 import com.contrast.Contrast.utils.StringProvider
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.NetworkResponse
-
+import com.itechpro.domain.model.*
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.category.CategoryUiState
+import com.itechpro.domain.model.navigationEvent.*
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.product.Product
-import com.itechpro.domain.model.PromoUiData
-import com.itechpro.domain.model.navigationEvent.CartNavEvent
-import com.itechpro.domain.model.navigationEvent.NavEvent
-import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.category.CategoryAffiliateUseCase
 import com.itechpro.domain.usecase.product.PromoCountdownUseCase
+import com.itechpro.domain.usecase.product.StartPromoCountdownUseCase
 import com.itechpro.domain.usecase.sell.SellConfigUseCase
-
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
+
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class CategoryAffiliateModel @Inject constructor(private val getCurrentUserUseCase: GetCurrentUserUseCase,
-                                                 private val useCase: CategoryAffiliateUseCase,
-                                                 private val sellConfigUseCase: SellConfigUseCase,
-                                                 private val promoCountdownUseCase: PromoCountdownUseCase,
-                                                 private val stringProvider: StringProvider,
-                                                 @IoDispatcher private val dispatcher: CoroutineDispatcher,) : ViewModel() {
+class CategoryAffiliateModel @Inject constructor(
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val useCase: CategoryAffiliateUseCase,
+    private val sellConfigUseCase: SellConfigUseCase,
+    private var startPromoCountdownUseCase: StartPromoCountdownUseCase,
+    private val stringProvider: StringProvider,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
+) : ViewModel() {
 
-
-
-    private val _products = MutableStateFlow<List<Product>>(emptyList())
-    val products: StateFlow<List<Product>> = _products
-
-
-    private val _obj = MutableStateFlow<Product?>(null)
-    val obj: StateFlow<Product?> = _obj
-
-    private val _tabs = MutableStateFlow<List<Category>>(emptyList())
-    val tabs: StateFlow<List<Category>> = _tabs
-
-    private val _category1 = MutableStateFlow<List<Category>>(emptyList())
-    val category1: StateFlow<List<Category>> = _category1
-
-    private val _category2 = MutableStateFlow<List<Category>>(emptyList())
-    val category2: StateFlow<List<Category>> = _category2
-
-    private val _category3 = MutableStateFlow<List<Category>>(emptyList())
-    val category3: StateFlow<List<Category>> = _category3
-
-    private val _category1Heart = MutableStateFlow<List<Category>>(emptyList())
-    val category1Heart: StateFlow<List<Category>> = _category1Heart
-
-    private val _validationError = MutableStateFlow<String>("")
-    val validationError: StateFlow<String> = _validationError
-    private val _domain = MutableStateFlow<String>("")
-    val domain: StateFlow<String> = _domain
-    private val _token = MutableStateFlow<String>("")
-    val token: StateFlow<String> = _token
-
-        private val _pointAffiliate = MutableStateFlow<String>("")
-    val pointAffiliate: StateFlow<String> = _pointAffiliate
-
-
-    private val _displayProduct = MutableStateFlow<String>("")
-    val displayProduct: StateFlow<String> = _displayProduct
-    private val _displayService = MutableStateFlow<String>("")
-    val displayService: StateFlow<String> = _displayService
-    private val _displayPriority = MutableStateFlow<String>("")
-    val displayPriority: StateFlow<String> = _displayPriority
-
-    private val _idParent1 = MutableStateFlow<String>("")
-
-    private val _idParent = MutableStateFlow<String>("")
-    private val _idParent2 = MutableStateFlow<String>("")
-    private val _idParent3= MutableStateFlow<String>("")
-    private val _type = MutableStateFlow<String>("")
-    val type: StateFlow<String> = _type
-    private val _objApi = MutableStateFlow<String>("")
-    private val _modeApi = MutableStateFlow<String>("")
-
-    private var countdownJob: Job? = null
+    private val _state = MutableStateFlow(CategoryUiState())
+    val state: StateFlow<CategoryUiState> = _state
 
     private val _promoUiDataMap = mutableMapOf<String, MutableStateFlow<PromoUiData>>()
-    val promoUiDataMap: Map<String, StateFlow<PromoUiData>>
-        get() = _promoUiDataMap
+    val promoUiDataMap: Map<String, StateFlow<PromoUiData>> get() = _promoUiDataMap
 
-    private val _selectedTab = MutableStateFlow(0)
-    val selectedTab: StateFlow<Int> = _selectedTab
-    private val _selectedTab1 = MutableStateFlow(0)
-    val selectedTab1: StateFlow<Int> = _selectedTab1
-    private val _selectedTab2 = MutableStateFlow(0)
-    val selectedTab2: StateFlow<Int> = _selectedTab2
-
-    private val _selectedTab3 = MutableStateFlow(0)
-    val selectedTab3: StateFlow<Int> = _selectedTab3
+    private var countdownJob: Job? = null
+    private var currentUser: CurrentUserInfo? = null
 
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-    private var currentUserInfo: CurrentUserInfo? = null
-    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
-    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
-
-    private val _pagedProducts = MutableStateFlow<List<Product>>(emptyList())
-    val pagedProducts: StateFlow<List<Product>> = _pagedProducts
-    private var allProducts: List<Product> = emptyList()
-    private var currentPage = 0
-    private val pageSize = 10
     init {
         viewModelScope.launch(dispatcher) {
-            try {
-                currentUserInfo = getCurrentUserUseCase()
-                _domain.value = currentUserInfo!!.domain?:""
-                _token.value = currentUserInfo!!.token?:""
-                _pointAffiliate.value = currentUserInfo!!.pointAffiliate?:""
-                _displayProduct.value = currentUserInfo!!.displayProduct?:""
-                _displayService.value = currentUserInfo!!.displayService?:""
-                _displayPriority.value = currentUserInfo!!.displayPriority?:""
-
-
-            } catch (e: Exception) {
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-            }
-        }
-    }
-    fun setInitialProducts(products: List<Product>) {
-        allProducts = products
-        currentPage = 1
-        _pagedProducts.value = products.take(pageSize)
-    }
-
-    // Sau khi navigate xong, reset lại state
-    fun resetNavigation() {
-        _navigationEvent.value = ProductNavEvent.None
-    }
-    fun onItemNotificationSelected( ) {
-        _navigationEvent.value = NotificationNavEvent.GoToNotifications(
-            startDate = "",
-            endDate = "",
-
-            )
-    }
-    fun onItemCarts( ) {
-        _navigationEvent.value = CartNavEvent.GoToCats
-    }
-    fun handleIdParentResult(idParent1: String, idParent2: String, idParent3: String, type: String) {
-        _idParent.value = when {
-            idParent3.isNotEmpty() -> idParent3
-            idParent2.isNotEmpty() -> idParent2
-            else -> idParent1
-        }
-
-        getProductsByIdParent(type, _idParent.value)
-    }
-
-    fun initCategory(displayProduct: String, displayService: String, displayPriority: String, categoryId: String) {
-
-        val result = sellConfigUseCase.generateConfig(displayProduct, displayService, displayPriority)
-        _tabs.value = result.tabs
-        _objApi.value = result.objApi
-        _modeApi.value = result.modeApi
-        _type.value = result.type
-
-        handleIdParentResult(
-            idParent1 = _idParent1.value,
-            idParent2 = _idParent2.value,
-            idParent3 = _idParent3.value,
-            result.type
-        )
-        // Gọi API lấy cấp đầu tiên
-        getCategory1("tatcanhomsp", "tatcanhomsp", result.type, categoryId, 1)
-    }
-
-    fun onTabSelected(index: Int) {
-        _selectedTab.value = index
-    }
-
-    fun onTabSelected1(index: Int) {
-        _selectedTab1.value = index
-    }
-
-    fun onTabSelected2(index: Int) {
-        _selectedTab2.value = index
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun startPromoCountdown(products: List<Product>) {
-        countdownJob?.cancel()
-        countdownJob = viewModelScope.launch(dispatcher) {
-            // Khởi tạo state cho từng item nếu chưa có
-            products.forEach { product ->
-                val id = product.id ?: return@forEach
-                _promoUiDataMap.getOrPut(id) { MutableStateFlow(PromoUiData()) }
-            }
-            while (isActive) {
-                val now = LocalDateTime.now()
-                products.forEach { product ->
-                    val id = product.id ?: return@forEach
-                    val promo = promoCountdownUseCase.calculate(product, now)
-                    _promoUiDataMap[id]?.value = promo
+            runCatching { getCurrentUserUseCase() }
+                .onSuccess {
+                    currentUser = it
+                    _state.update { state ->
+                        state.copy(
+                            domain = it.domain.orEmpty(),
+                            token = it.token.orEmpty(),
+                            pointAffiliate = it.pointAffiliate.orEmpty(),
+                            displayProduct = it.displayProduct.orEmpty(),
+                            displayService = it.displayService.orEmpty(),
+                            displayPriority = it.displayPriority.orEmpty()
+                        )
+                    }
                 }
-                delay(1000)
+                .onFailure {
+                    _state.update {
+                        it.copy(validationError = stringProvider.getString(R.string.error_connection) )
+                    }
+                }
+        }
+    }
+
+    fun initCategory(
+        displayProduct: String,
+        displayService: String,
+        displayPriority: String,
+        categoryId: String
+    ) {
+        val config = sellConfigUseCase.generateConfig(displayProduct, displayService, displayPriority)
+
+        _state.update {
+            it.copy(
+                tabs = config.tabs,
+                type = config.type,
+                objApi = config.objApi,
+                modeApi = config.modeApi
+            )
+        }
+
+        // Tiếp tục gọi cấp danh mục đầu tiên
+        getCategory1( config.type, categoryId)
+    }
+
+
+    fun onItemNotificationSelected() {
+        _state.update { it.copy(navEvent = NotificationNavEvent.GoToNotifications("", "")) }
+    }
+    fun searchLocal(textSearch: String, list: List<Product>) {
+        viewModelScope.launch {
+            useCase.searchLocal(textSearch, list).collect { response ->
+                when (response) {
+                    is NetworkResponse.Loading -> {
+                        _state.update { it.copy(isLoading = true) }
+                    }
+                    is NetworkResponse.Success -> {
+                        _state.update { it.copy(pagedProducts = response.data, isLoading = false) }
+                    }
+                    is NetworkResponse.Error -> {
+                        _state.update { it.copy(isLoading = false, validationError = response.message ?: "Lỗi không xác định") }
+                    }
+                }
             }
         }
     }
-    fun onCategorySelected(index: Int, categoryList: List<Category>, categoryId: String) {
 
-        if (_selectedTab.value != index) {
-            _selectedTab.value = index
-            onTabSelected1(0)
-            onTabSelected2(0)
-            onTabSelected3(0)
-            val code = categoryList.getOrNull(index)?.code.orEmpty()
-            _type.value = code
-            getCategory1("tatcanhomsp", "tatcanhomsp", code, categoryId, 1)
-        } else {
 
-        }
+    fun onItemCarts() {
+        _state.update { it.copy(navEvent = CartNavEvent.GoToCats) }
     }
 
+    fun onCategorySelected(index: Int, categoryList: List<Category>, categoryId: String) {
+        if (state.value.selectedTab != index) {
+            _state.update { it.copy(selectedTab = index, selectedTab1 = 0, selectedTab2 = 0, selectedTab3 = 0) }
+            val type = categoryList.getOrNull(index)?.code.orEmpty()
+            _state.update { it.copy(type = type) }
+            getCategory1(type, categoryId)
+        }
+    }
 
     fun onCategory1Selected(index: Int, categoryList: List<Category>, type: String) {
-        onTabSelected1(index)
-        onTabSelected2(0)
-        onTabSelected3(0)
+        _state.update { it.copy(selectedTab1 = index, selectedTab2 = 0, selectedTab3 = 0) }
         val id = categoryList.getOrNull(index)?.id.orEmpty()
-        _idParent1.value = id
-
-        getCategory2("tatcanhomsp", "tatcanhomsp", type, id, 2)
+        getCategory2(type, id)
     }
-
 
     fun onCategory2Selected(index: Int, categoryList: List<Category>, type: String) {
-        onTabSelected2(index)
-        onTabSelected3(0)
+        _state.update { it.copy(selectedTab2 = index, selectedTab3 = 0) }
         val id = categoryList.getOrNull(index)?.id.orEmpty()
-        _idParent2.value = id
-
-        getCategory3("tatcanhomsp", "tatcanhomsp", type, id, 3)
-
-
-    }
-    fun onItemProductSelected( category: Product) {
-        _navigationEvent.value = ProductNavEvent.GoToProductDetail(
-            id = category.id ?: "",
-            idUnit = category.iddonvichuan ?: "",
-            introducerId = "0",
-
-            )
-
-
-    }
-
-
-    fun onAddServiceRequestSelected( category: Product) {
-        _navigationEvent.value = ProductNavEvent.GoToAddServiceRequest(
-            id = category.id ?: "",
-            serviceName = category.ten ?: "",
-            idUnit = category.iddonvichuan ?: "",
-            discount = category.iddonvichuan ?: ""
-        )
-
-
-    }
-
-    fun onTabSelected3(index: Int) {
-        _selectedTab3.value = index
+        getCategory3(type, id)
     }
 
     fun onCategory3Selected(index: Int, categoryList: List<Category>, type: String) {
-        onTabSelected3(index)
+        _state.update { it.copy(selectedTab3 = index) }
         val id = categoryList.getOrNull(index)?.id.orEmpty()
-        _idParent3.value = id
-//        getCategory3("tatcanhomsp", "tatcanhomsp", type, id, 3)
+        getProductsByIdParent(type, id)
+    }
 
-        handleIdParentResult(
-            idParent1 = _idParent1.value,
-            idParent2 = _idParent2.value,
-            idParent3 = _idParent3.value,
-            type
+    fun onItemProductSelected(product: Product) {
+        _state.update {
+            it.copy(navEvent = ProductNavEvent.GoToProductDetail(
+                id = product.id ?: "",
+                idUnit = product.iddonvichuan ?: "",
+                introducerId = "0"
+            ))
+        }
+    }
+
+    fun onAddServiceRequestSelected(product: Product) {
+        _state.update {
+            it.copy(navEvent = ProductNavEvent.GoToAddServiceRequest(
+                id = product.id ?: "",
+                serviceName = product.ten ?: "",
+                idUnit = product.iddonvichuan ?: "",
+                discount = product.iddonvichuan ?: ""
+            ))
+        }
+    }
+
+    private fun getCategory1(type: String, categoryId: String) {
+        val user = currentUser ?: return
+        viewModelScope.launch(dispatcher) {
+            useCase.getCategory(user.isOfflineMode, "tatcanhomsp", "tatcanhomsp", type, categoryId, user.token)
+                .collectResponse(
+                    dispatcher = dispatcher,
+                    onSuccess = { category1 ->
+                        _state.update { it.copy(category1 = category1) }
+                        val id1 = category1.firstOrNull()?.id.orEmpty()
+
+                        if (category1.isNullOrEmpty()) {
+                            getProductsByIdParent(type, categoryId) // không có cấp 1 thì lấy luôn
+                        } else {
+                            getCategory2(type, id1) // gọi tiếp cấp 2
+                        }
+
+                    },
+                    onError = { message ->
+                        _state.update { it.copy(validationError = message) }
+                    }
+                )
+        }
+    }
+
+    private fun getCategory2(type: String, categoryId: String) {
+        val user = currentUser ?: return
+        viewModelScope.launch(dispatcher) {
+            useCase.getCategory(user.isOfflineMode, "tatcanhomsp", "tatcanhomsp", type, categoryId, user.token)
+                .collectResponse(
+                    dispatcher = dispatcher,
+                    onSuccess = { category2 ->
+                        _state.update { it.copy(category2 = category2) }
+                        val id2 = category2.firstOrNull()?.id.orEmpty()
+
+
+                        if (category2.isNullOrEmpty()) {
+                            getProductsByIdParent(type, categoryId) // không có cấp 1 thì lấy luôn
+                        } else {
+                            getCategory3(type, id2) // gọi tiếp cấp 2
+                        }
+
+                    },
+                    onError = { message ->
+                        _state.update { it.copy(validationError = message) }
+                    }
+                )
+        }
+    }
+
+    private fun getCategory3(type: String, id: String) {
+        val user = currentUser ?: return
+        viewModelScope.launch(dispatcher) {
+            useCase.getCategory(user.isOfflineMode, "tatcanhomsp", "tatcanhomsp", type, id, user.token)
+
+                .collectResponse(
+                    dispatcher = dispatcher,
+                    onSuccess = { category3 ->
+                        _state.update { it.copy(category3 = category3) }
+
+                        val id3 = category3.firstOrNull()?.id.orEmpty()
+                        getProductsByIdParent(type, id3) // <-- lấy luôn sản phẩm
+                    },
+                    onError = { message ->
+                        _state.update { it.copy(validationError = message) }
+                    }
+                )
+        }
+    }
+
+    private fun getProductsByIdParent(type: String, idParent: String) {
+        val user = currentUser ?: return
+        viewModelScope.launch(dispatcher) {
+            _state.update { it.copy(isLoading = true, products = emptyList(), pagedProducts = emptyList()) }
+            useCase.getProductsByIdParent(user.isOfflineMode, type, idParent, user.token)
+                .collectResponse(
+                    dispatcher = dispatcher,
+                    onSuccess = { products ->
+                        _state.update { it.copy(products = products, isLoading = false) }
+                        startPromoCountdownProducts(products)
+                    },
+                    onError = { message ->
+                        _state.update { it.copy(validationError = message) }
+                    }
+                )
+        }
+    }
+
+
+    fun startPromoCountdownProducts(products: List<Product>) {
+        countdownJob?.cancel()
+        countdownJob = startPromoCountdownUseCase.startForProductList(
+            products = products,
+            stateMap = _promoUiDataMap,
+            coroutineScope = viewModelScope,
+            dispatcher = dispatcher
         )
     }
 
-    // lấy danh mực 3 cấp
-  private  fun getCategory1(obj: String,mode: String,type: String,idParent: String, level:Int) {
-        val user = currentUserInfo ?: return
 
-        viewModelScope.launch(dispatcher) {
-            try {
-                //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
-                useCase.getCategory(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
-                    when (result) {
-                        is NetworkResponse.Loading -> {
-                            _isLoading.value = true
-                        }
-                        is NetworkResponse.Success -> {
-                            _isLoading.value = false
-                            _category1.value = result.data
-                            if(result.data.isNotEmpty()){
-                                _idParent1.value = result.data[0].id.toString()
-                            }else{
-                                _idParent1.value = ""
-                            }
-                            handleIdParentResult(
-                                idParent1 = _idParent1.value,
-                                idParent2 = _idParent2.value,
-                                idParent3 = _idParent3.value,
-                               type
-                            )
-                            getCategory2("tatcanhomsp", "tatcanhomsp", type, result.data[0].id.toString(), 2)
-
-                        }
-                        is NetworkResponse.Error -> {
-                            _isLoading.value = false
-                            _validationError.value = result.message
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                _isLoading.value = false
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-            }
-        }
+    fun setInitialProducts(products: List<Product>) {
+        _state.update { it.copy(pagedProducts = products.take(10)) }
     }
 
-    // lấy danh mực 3 cấp
-    private  fun getCategory2(obj: String,mode: String,type: String,idParent: String, level:Int) {
-        val user = currentUserInfo ?: return
-
-        viewModelScope.launch(dispatcher) {
-            try {
-                //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
-                useCase.getCategory(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
-                    when (result) {
-                        is NetworkResponse.Loading -> {
-
-                        }
-                        is NetworkResponse.Success -> {
-
-                            _category2.value = result.data
-                            if(result.data.isNotEmpty()){
-                                _idParent2.value = result.data[0].id.toString()
-                            }else{
-                                _idParent2.value = ""
-                            }
-                            handleIdParentResult(
-                                idParent1 = _idParent1.value,
-                                idParent2 = _idParent2.value,
-                                idParent3 = _idParent3.value,
-                                type
-                            )
-                            getCategory3("tatcanhomsp", "tatcanhomsp", type, result.data[0].id.toString(), 3)
-                        }
-                        is NetworkResponse.Error -> {
-
-                            _validationError.value = result.message
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                _isLoading.value = false
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-            }
-        }
+    fun resetNavigation() {
+        _state.update { it.copy(navEvent = ProductNavEvent.None) }
     }
-    private  fun getCategory3(obj: String,mode: String,type: String,idParent: String, level:Int) {
-        val user = currentUserInfo ?: return
-
-        viewModelScope.launch(dispatcher) {
-            try {
-                //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
-                useCase.getCategory(user.isOfflineMode, obj,mode,type,idParent ,user.token).collect { result ->
-                    when (result) {
-                        is NetworkResponse.Loading -> {
-
-                        }
-                        is NetworkResponse.Success -> {
-
-                            _category3.value = result.data
-                            if(result.data.isNotEmpty()){
-                                _idParent3.value = result.data[0].id.toString()
-                            }else{
-                                _idParent3.value = ""
-                            }
-
-
-                            handleIdParentResult(
-                                idParent1 = _idParent1.value,
-                                idParent2 = _idParent2.value,
-                                idParent3 = _idParent3.value,
-                                type
-                            )
-
-                        }
-                        is NetworkResponse.Error -> {
-
-                            _validationError.value = result.message
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                _isLoading.value = false
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-            }
-        }
-    }
-
-
-
-
-   private fun getProductsByIdParent(type: String, idParent: String) {
-        val user = currentUserInfo ?: return
-
-        viewModelScope.launch(dispatcher) {
-            try {
-
-                // ✅ RESET phân trang mỗi lần gọi mới
-                _pagedProducts.value = emptyList()
-                currentPage = 0
-                allProducts = emptyList()
-                useCase.getProductsByIdParent(user.isOfflineMode,type, idParent,  user.token).collect { result ->
-                    when (result) {
-                        is NetworkResponse.Loading -> {
-                            _isLoading.value = true
-                        }
-                        is NetworkResponse.Success -> {
-                            _isLoading.value = false
-                            _products.value = result.data
-
-                            startPromoCountdown(result.data)
-                        }
-                        is NetworkResponse.Error -> {
-                            _isLoading.value = false
-                            _validationError.value = result.message
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                _isLoading.value = false
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-            }
-        }
-    }
-
-
-
-
-
 }

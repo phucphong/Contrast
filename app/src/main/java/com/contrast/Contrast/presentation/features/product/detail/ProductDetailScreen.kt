@@ -101,12 +101,9 @@ fun ProductDetailScreen(
     val promoUiDataMap = viewModel.promoUiDataMap
     val promoUiDataMapInfo = viewModel.promoUiDataMapInfo
 
-    val uiState by viewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsState()
 
-
-    val navEvent by viewModel.navigationEvent.collectAsState()
-
-    val uiStateCart by cartViewModel.uiState.collectAsState()
+    val cartState by cartViewModel.state.collectAsState()
 
     val totalReview by reviewViewModel.totalReview.collectAsState()
     val ratingScore by reviewViewModel.ratingScore.collectAsState()
@@ -123,7 +120,7 @@ fun ProductDetailScreen(
     val isRefreshing by remember { mutableStateOf(false) }
 
 
-    LaunchedEffect(uiState.products) { viewModel.setInitialProducts(uiState.products) }
+    LaunchedEffect(state.products) { viewModel.setInitialProducts(state.products) }
 
 
 
@@ -131,9 +128,8 @@ fun ProductDetailScreen(
         delay(100) // cho hệ thống khởi động mạng nếu vừa chuyển 4G
         callApi(viewModel, reviewViewModel, cartViewModel, id, idUnit)
     }
-    LaunchedEffect(uiState.productInfo) {
-
-        viewModel.getProductsCategory(uiState.productInfo?.idnhom ?: "", id)
+    LaunchedEffect(state.productInfo) {
+        viewModel.getProductsCategory(state.productInfo?.idnhom ?: "", id)
 
     }
     var toastMessage by remember { mutableStateOf("") }
@@ -158,9 +154,9 @@ fun ProductDetailScreen(
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            Log.d("LifecycleObserver", "Event = $event") // ✅ Log ra xem
+
             if (event == Lifecycle.Event.ON_RESUME) {
-                Log.d("LifecycleObserver", "Calling API")
+
                 callApi(viewModel, reviewViewModel, cartViewModel, id, idUnit)
             }
         }
@@ -186,8 +182,8 @@ fun ProductDetailScreen(
             context.startActivity(intent)
         }
     }
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    LaunchedEffect(state.navEvent) {
+        when (val event = state.navEvent) {
 
 
             is SplashNaEvent.GoToLogIn -> {
@@ -272,7 +268,7 @@ fun ProductDetailScreen(
             onShareClick = { option ->
                 showShareDialog = false
                 val shareLink =
-                    "${uiState.domain}/sharelink.html?id=$id&iddonvi=$idUnit&idngt=${uiState.employeeId}&domain=${uiState.domain}"
+                    "${state.domain}/sharelink.html?id=$id&iddonvi=$idUnit&idngt=${state.employeeId}&domain=${state.domain}"
                 viewModel.share(option, shareLink)
 
             })
@@ -282,9 +278,9 @@ fun ProductDetailScreen(
     if (isShowQuantity) {
 
         QuantityAlertDialog(title = stringResource(R.string.quantity),
-            quantity = uiState.productInfo?.soluong ?: 0.0,
+            quantity = state.productInfo?.soluong ?: 0.0,
             onQuantityChange = {
-                viewModel.updateQuantityProductDetailById(uiState.productInfo!!, it)
+                viewModel.updateQuantityProductDetailById(state.productInfo!!, it)
             },
             onConfirm = {
                 isShowQuantity = false
@@ -298,16 +294,16 @@ fun ProductDetailScreen(
     Box {
 
         Column(modifier = Modifier.fillMaxSize()) {
-            type = uiState.productInfo?.loaichitiet ?: ""
-            bookService = uiState.productInfo?.cothedatlich ?: false
+            type = state.productInfo?.loaichitiet ?: ""
+            bookService = state.productInfo?.cothedatlich ?: false
 
-            val coin =uiState. productInfo?.diem ?: 0.0
-            val commissionRate = uiState.productInfo?.tylehoahong ?: 0.0
-            val commissionMoney = uiState.productInfo?.sotienhoahong ?: 0.0
+            val coin =state. productInfo?.diem ?: 0.0
+            val commissionRate = state.productInfo?.tylehoahong ?: 0.0
+            val commissionMoney = state.productInfo?.sotienhoahong ?: 0.0
 
             var isFavoriteInit: Boolean = false
 
-            val favorite =uiState. productInfo?.yeuthich ?: 0
+            val favorite =state. productInfo?.yeuthich ?: 0
             if (favorite == 0) {
                 isFavoriteInit = false
             } else {
@@ -319,10 +315,10 @@ fun ProductDetailScreen(
                     R.string.service_detail
                 ),
 
-                totalCartItems = uiStateCart.totalCartItems,
+                totalCartItems = cartState.totalCartItems,
                 onShareClick = {
                     val shareLink =
-                        "${{ uiState.domain }}/sharelink.html?id=$id&iddonvi=$idUnit&idngt=${uiState.employeeId}&domain=${uiState.domain}"
+                        "${{ state.domain }}/sharelink.html?id=$id&iddonvi=$idUnit&idngt=${state.employeeId}&domain=${state.domain}"
                     viewModel.shareProduct(shareLink)
                 },
                 onCartClick = { viewModel.onItemCarts() },
@@ -338,9 +334,9 @@ fun ProductDetailScreen(
                             .background(FAFAFA)
                     ) {
                         item {
-                            if (uiState.productInfo != null) {
+                            if (state.productInfo != null) {
 
-                                val fullUrl = (uiState.domain).trimEnd('/') + (uiState.productInfo?.filetxt ?: "")
+                                val fullUrl = (state.domain).trimEnd('/') + (state.productInfo?.filetxt ?: "")
                                 NetworkImage(
                                     model = fullUrl,
                                     modifier = Modifier
@@ -350,32 +346,37 @@ fun ProductDetailScreen(
                             }
                         }
                         item {
-                            if (uiState.productInfo != null) {
+                            if (state.productInfo != null) {
 
-                                var isFlashSale: Boolean = false
-                                val discountPercent: Double = uiState.productInfo?.khuyenmai ?: 0.0
-                                if (discountPercent != 0.0) {
-                                    isFlashSale = true
-                                }
+
+
+
                                 ProductPriceDetailSection(
-                                    productName = uiState.productInfo?.ten ?: "",
-                                    priceDisCount = uiState.productInfo?.sotiensaukm ?: 0.0,
-                                    price = uiState.productInfo?.sotien ?: 0.0,
-                                    discountPercent = uiState.productInfo?.khuyenmai ?: 0.0,
-                                    isFlashSale = isFlashSale,
-                                    remainingTime = "40:00:40:18",
-                                    quantity = uiState.productInfo?.soluong ?: 1.0,
+
+                                    promoUiDataMap = promoUiDataMapInfo,
+                                    productId = id,
+                                    productName = state.productInfo?.ten ?: "",
+                                    priceDisCount = state.productInfo?.sotiensaukm ?: 0.0,
+                                    price = state.productInfo?.sotien ?: 0.0,
+                                    discountPercent = state.productInfo?.khuyenmai ?: 0.0,
+
+
+                                    quantity = state.productInfo?.soluong ?: 1.0,
                                     increaseQuantity = {
                                         viewModel.increaseProductDetailQuantity(
-                                            uiState.productInfo!!
+                                            state.productInfo!!
                                         )
                                     },
                                     showQuantity = { isShowQuantity = true },
+
                                     decreaseQuantity = {
                                         viewModel.decreaseProductDetailQuantity(
-                                            uiState.productInfo!!
+                                            state.productInfo!!
                                         )
                                     },
+
+
+
                                 )
 
                             }
@@ -391,7 +392,7 @@ fun ProductDetailScreen(
                         item {
                             if (reviews.isNotEmpty()) {
                                 ReviewScreen(reviews = reviews,
-                                    domain = uiState.domain?:"",
+                                    domain = state.domain?:"",
                                     onDownloadClick = { fileUrl ->
                                         viewModel.downloadImage(fileUrl)
                                     }
@@ -400,11 +401,11 @@ fun ProductDetailScreen(
                             }
                         }
 
-                        if (uiState.productInfo != null) {
+                        if (state.productInfo != null) {
                             stickyHeader {
-                                ProductDetailHeader(type = uiState.productInfo?.loaichitiet ?: "",
+                                ProductDetailHeader(type = state.productInfo?.loaichitiet ?: "",
                                     isFavoriteInit = isFavoriteInit,
-                                    isOfflineMode = uiState.isOfflineMode,
+                                    isOfflineMode = state.isOfflineMode,
                                     onFavorite = {
 
                                         viewModel.onFavorite(it, id, idUnit)
@@ -414,8 +415,8 @@ fun ProductDetailScreen(
                                         viewModel.onItemReportSelected(
                                             id,
                                             idUnit,
-                                            "${uiState.domain?:""}${uiState.productInfo?.filetxt ?: ""}",
-                                            uiState.productInfo?.ten ?: ""
+                                            "${state.domain?:""}${state.productInfo?.filetxt ?: ""}",
+                                            state.productInfo?.ten ?: ""
                                         )
 
                                     },
@@ -424,8 +425,8 @@ fun ProductDetailScreen(
                                         viewModel.onItemAddReviewsSelected(
                                             id,
                                             idUnit,
-                                            "${uiState.domain?:""}${uiState.productInfo?.filetxt ?: ""}",
-                                            uiState.productInfo?.ten ?: ""
+                                            "${state.domain?:""}${state.productInfo?.filetxt ?: ""}",
+                                            state.productInfo?.ten ?: ""
                                         )
                                     })
 
@@ -433,8 +434,8 @@ fun ProductDetailScreen(
                             }
                         }
                         item {
-                            if (uiState.productInfo != null) {
-                                WebViewProduct(htmlContent = uiState.productInfo?.noidung ?: "")
+                            if (state.productInfo != null) {
+                                WebViewProduct(htmlContent = state.productInfo?.noidung ?: "")
                             }
                         }
 
@@ -454,11 +455,11 @@ fun ProductDetailScreen(
 
 
                         }
-                        val rows = uiState.productsCategory.chunked(2)
+                        val rows = state.productsCategory.chunked(2)
                         items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                            ProductRow(domain = uiState.domain?:"",
-                                token = uiState.token,
-                                pointAffiliate = uiState.pointAffiliate?:"",
+                            ProductRow(domain = state.domain?:"",
+                                token = state.token,
+                                pointAffiliate = state.pointAffiliate?:"",
 
                                 rowProducts = row,
                                 promoUiDataMap = promoUiDataMap,
@@ -491,9 +492,9 @@ fun ProductDetailScreen(
                         }
                         val rowsOther = pagedProducts.chunked(2)
                         items(rowsOther, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                            ProductRow(domain = uiState.domain?:"",
-                                token = uiState.token?:"",
-                                pointAffiliate =  uiState.pointAffiliate?:"",
+                            ProductRow(domain = state.domain?:"",
+                                token = state.token?:"",
+                                pointAffiliate =  state.pointAffiliate?:"",
                                 rowProducts = row,
                                 promoUiDataMap = promoUiDataMap,
                                 onItemClick = { viewModel.onItemProductSelected(it) },
@@ -509,13 +510,13 @@ fun ProductDetailScreen(
 
 
                     }
-                    if(uiState.token.isNotEmpty()) {
+                    if(state.token.isNotEmpty()) {
                         if (commissionMoney >= 0) {
                             EarnTextRow(
                                 commissionMoney = commissionMoney,
                                 commissionRate = commissionRate,
                                 coin = coin,
-                                pointAffiliate =  uiState.pointAffiliate?:""
+                                pointAffiliate =  state.pointAffiliate?:""
                             )
 
 
@@ -537,7 +538,7 @@ fun ProductDetailScreen(
                             fontSize = 12.sp,
                             onClick = {
                                 cartViewModel.onItemAddCartToProductDetail(
-                                    uiState. productInfo!!, introducerId
+                                    state. productInfo!!, introducerId
                                 )
                             })
                         if (bookService) {

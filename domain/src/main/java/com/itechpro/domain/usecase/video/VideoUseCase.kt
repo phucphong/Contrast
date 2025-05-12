@@ -1,9 +1,11 @@
 package com.itechpro.domain.usecase.video
 
-import com.itechpro.domain.model.Category
-import com.itechpro.domain.model.NetworkResponse
+import android.util.Log
+import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.network.NetworkResponse
 
 import com.itechpro.domain.model.Video
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.repository.VideoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +17,21 @@ class VideoUseCase @Inject constructor(
     private val repository: VideoRepository,
 
     ) {
+
+    fun searchLocal(textSearch: String, list: List<Video>): Flow<List<Video>> = flow {
+        val keyword = textSearch.trim().lowercase()
+
+        val filtered = if (keyword.isBlank()) {
+            list
+        } else {
+            list.filter {
+                (it.ten ?: "").lowercase().contains(keyword) ||
+                        (it.loai ?: "").lowercase().contains(keyword)
+            }
+        }
+
+        emit(filtered)
+    }.flowOn(Dispatchers.Default)
 
 
     fun getVideos(offline: Boolean, idCategory: String, authen: String): Flow<NetworkResponse<List<Video>>> {

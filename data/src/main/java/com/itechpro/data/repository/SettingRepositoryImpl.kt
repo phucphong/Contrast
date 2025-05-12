@@ -2,7 +2,7 @@ package com.itechpro.data.repository
 
 import com.itechpro.data.api.SettingAPi
 
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.Setting
 import com.itechpro.domain.repository.SettingRepository
 

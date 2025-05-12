@@ -1,6 +1,6 @@
 package com.itechpro.domain.usecase.sell
 
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 import javax.inject.Inject
 

@@ -1,10 +1,7 @@
 package com.itechpro.domain.usecase.checkphoneEmail
 
 
-import com.itechpro.domain.model.Account
-import com.itechpro.domain.model.Column1
-import com.itechpro.domain.model.NetworkResponse
-import com.itechpro.domain.repository.AccountRepository
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.repository.RegisterAccountRepository
 
 

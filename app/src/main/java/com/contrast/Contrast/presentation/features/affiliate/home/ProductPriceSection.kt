@@ -4,13 +4,18 @@ import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.extensions.formatCurrency
+import com.contrast.Contrast.presentation.components.progressBar.FlashSaleProductSeekBar
 import com.contrast.Contrast.presentation.components.progressBar.FlashSaleSeekBar
-import com.contrast.Contrast.presentation.features.product.ui.PriceBar
+
 import com.contrast.Contrast.presentation.features.product.ui.PromoPriceBar
 import com.itechpro.domain.model.PromoUiData
 
@@ -25,40 +30,33 @@ fun ProductPriceSection(
     onClickAddServiceRequest: () -> Unit,
     onClickShare: () -> Unit
 ) {
-    if (promoUiData != null) {
-        val countdownText by rememberUpdatedState(promoUiData.remainingTime)
-        val progress by rememberUpdatedState(promoUiData.progress)
-        Log.e("countdownText",countdownText)
-        if(countdownText!="00:00:00"){
-            FlashSaleSeekBar(
-                progress = progress,
-                remainingTime = countdownText,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-            )
-            PromoPriceBar(price = promoPrice.formatCurrency())
+
+    val countdownText by rememberUpdatedState(promoUiData?.remainingTime)
+    val progress by rememberUpdatedState(promoUiData?.progress)
+
+    var isFlashSale by remember { mutableStateOf(false) }
+
+
+    LaunchedEffect(countdownText) {
+        if (countdownText == "00:00:00:00") {
+            isFlashSale = false
         }else{
-            PriceBar(
-                price = price.formatCurrency(),
-                isShare = isShare,
-                onClickCart = onClickCart,
-                bookService = bookService,
-                onClickAddServiceRequest = onClickAddServiceRequest,
-                onClickShare = onClickShare,
-            )
-
+            isFlashSale = true
         }
-
-
-
-    } else {
-        PriceBar(
-            price = price.formatCurrency(),
-            isShare = isShare,
-            onClickCart = onClickCart,
-            onClickAddServiceRequest = onClickAddServiceRequest,
-            onClickShare = onClickShare,
-        )
     }
+    FlashSaleProductSeekBar(
+        progress = progress?:0f,
+        remainingTime = countdownText?:"",
+        isFlashSale = isFlashSale,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+    )
+    PromoPriceBar(price = if(isFlashSale)promoPrice.formatCurrency() else price.formatCurrency(), isShare = isShare,
+        isFlashSale = isFlashSale,
+        onClickCart = onClickCart,
+        bookService = bookService,
+        onClickAddServiceRequest = onClickAddServiceRequest,
+        onClickShare = onClickShare)
+
 }

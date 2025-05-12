@@ -6,7 +6,7 @@ package com.itechpro.data.repository
 import com.itechpro.data.api.PaymentAPI
 
 
-import com.itechpro.domain.model.NetworkResponse
+import com.itechpro.domain.model.network.NetworkResponse
 
 import com.itechpro.domain.model.payment.InfoPayment
 

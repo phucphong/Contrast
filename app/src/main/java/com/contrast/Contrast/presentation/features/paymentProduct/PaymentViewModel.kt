@@ -11,16 +11,10 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
-import com.itechpro.domain.model.cart.CartItem
-import com.itechpro.domain.model.cart.Cart
-import com.itechpro.domain.model.cart.CartUiState
-import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.payment.PaymentUiState
-import com.itechpro.domain.model.product.Product
-import com.itechpro.domain.model.product.ProductDetail
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 
 import com.itechpro.domain.usecase.dowloadFile.DownloadUseCase
@@ -29,7 +23,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.Base64
 import javax.inject.Inject
 
 @HiltViewModel

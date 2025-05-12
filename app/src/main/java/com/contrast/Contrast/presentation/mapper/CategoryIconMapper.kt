@@ -3,7 +3,7 @@ package com.contrast.Contrast.presentation.mapper
 
 
 import com.contrast.Contrast.R
-import com.itechpro.domain.model.Category
+import com.itechpro.domain.model.category.Category
 
 /**
  * Map mã category sang resource icon tương ứng.

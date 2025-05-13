@@ -34,6 +34,10 @@ fun WebView(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
+//               settings.javaScriptEnabled = true
+//               settings.loadWithOverviewMode = true
+//               settings.useWideViewPort = true
+
                 settings.javaScriptEnabled = true
                 webViewClient = WebViewClient()
                 webChromeClient = WebChromeClient()

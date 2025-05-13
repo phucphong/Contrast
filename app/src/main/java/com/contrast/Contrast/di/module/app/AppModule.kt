@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.contrast.Contrast.di.module.FlexibleBooleanAdapter
 import com.contrast.Contrast.extensions.ColorAdapter
 import com.contrast.Contrast.extensions.LocalDateTimeAdapter
 import com.itechpro.data.config.AppConfig
@@ -86,6 +87,7 @@ object AppModule {
         return Moshi.Builder()
             .add(LocalDateTimeAdapter())
             .add(ColorAdapter())
+            .add(FlexibleBooleanAdapter())
 
             .addLast(KotlinJsonAdapterFactory())
             .build()

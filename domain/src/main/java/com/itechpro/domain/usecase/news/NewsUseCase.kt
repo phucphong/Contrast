@@ -1,5 +1,6 @@
 package com.itechpro.domain.usecase.news
 
+import com.itechpro.domain.model.Video
 import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.news.News
@@ -31,6 +32,21 @@ class NewsUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
+    fun searchLocal(textSearch: String, list: List<News>): Flow<List<News>> = flow {
+        val keyword = textSearch.trim().lowercase()
+
+        val filtered = if (keyword.isBlank()) {
+            list
+        } else {
+            list.filter {
+                (it.ten ?: "").lowercase().contains(keyword) ||
+                        (it.loai ?: "").lowercase().contains(keyword)
+            }
+        }
+
+        emit(filtered)
+    }.flowOn(Dispatchers.Default)
+
     fun getCategory(offline: Boolean,  authen: String): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
@@ -47,15 +63,22 @@ class NewsUseCase @Inject constructor(
 
 
     fun getNewDetail(
+        offline: Boolean,
         ido: String,
         authen: String
     ): Flow<NetworkResponse<News>> = safeFlowCall {
-        val response = repository.getNewDetail("khachhang", "getbyid", ido, authen)
+
+        val response = if (offline) {
+            repository.getNewDetailOff( ido)
+        } else {
+            repository.getNewDetail( ido, authen)
+        }
+
         when (response) {
             is NetworkResponse.Success -> {
                 val customer = response.data.firstOrNull()
                 customer?.let { NetworkResponse.Success(it) }
-                    ?: NetworkResponse.Error("Không tìm thấy dữ liệu khách hàng")
+                    ?: NetworkResponse.Error("Không tìm thấy dữ liệu")
             }
 
             is NetworkResponse.Error -> NetworkResponse.Error(response.message)

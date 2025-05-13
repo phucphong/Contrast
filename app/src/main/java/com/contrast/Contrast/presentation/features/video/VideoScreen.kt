@@ -2,10 +2,8 @@ package com.contrast.Contrast.presentation.features.video
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -15,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -29,16 +26,14 @@ import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomS
 
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
-import com.contrast.Contrast.presentation.features.main.home.viewmodel.HomeViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.video.ui.VideoItem
 import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.Video
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

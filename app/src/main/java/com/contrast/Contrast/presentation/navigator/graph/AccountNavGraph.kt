@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.contrast.Contrast.presentation.features.account.personalInfo.PersonalInfoScreen
 import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {

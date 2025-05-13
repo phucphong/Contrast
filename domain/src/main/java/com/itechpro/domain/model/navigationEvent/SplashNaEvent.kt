@@ -18,7 +18,7 @@ sealed class SplashNaEvent : NavEvent {
         val id: String,
         val idUnit: String,
         val introducerId: String,
-    ) : ProductNavEvent()
+    ) : SplashNaEvent()
     data class ShowAffiliateInfo(val id: String, val idUnit: String,val introducerId: String, val domain: String) : SplashNaEvent()
     object None : SplashNaEvent() // trạng thái mặc định
 }

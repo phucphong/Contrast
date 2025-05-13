@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.regex.Pattern
 
 
 object Util {
@@ -39,6 +40,23 @@ object Util {
                 Log.e("Account_JSON", "Serialization error: ${e.message}")
             }
         }
+    }
+
+
+    fun updateImageSrc(content: String, domain: String): String {
+        // Biểu thức chính quy tìm các thẻ <img> với src không chứa 'http'
+        val regex = "<img [^>]*src=['\"](?!http)([^'\"]+)"
+        val pattern = Pattern.compile(regex)
+        val matcher = pattern.matcher(content)
+
+        // Sử dụng StringBuffer để lưu trữ kết quả thay thế
+        val updatedContent = StringBuffer()
+        while (matcher.find()) {
+            // Thay thế giá trị src bằng cách thêm baseURL vào đầu
+            matcher.appendReplacement(updatedContent, "<img src='$domain${matcher.group(1)}'")
+        }
+        matcher.appendTail(updatedContent)
+        return updatedContent.toString()
     }
 
     fun showDialog(infomation: String?, context: Context) {

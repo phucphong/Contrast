@@ -1,7 +1,6 @@
 package com.contrast.Contrast.presentation.features.affiliate.category
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,7 +23,7 @@ import com.contrast.Contrast.presentation.components.tab.TabBarRowPillStyle
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.navigationEvent.*
 

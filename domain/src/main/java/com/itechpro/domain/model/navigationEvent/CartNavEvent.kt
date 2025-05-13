@@ -12,5 +12,5 @@ sealed class CartNavEvent : NavEvent {
 
 
 
-    object None : ProductNavEvent() // trạng thái mặc định
+    object None : CartNavEvent() // trạng thái mặc định
 }

@@ -1,10 +1,7 @@
 package com.contrast.Contrast.presentation.features.product.detail
 
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -61,7 +58,7 @@ import com.contrast.Contrast.presentation.features.product.viewmodel.ProductView
 import com.contrast.Contrast.presentation.features.review.ReviewScreen
 import com.contrast.Contrast.presentation.features.review.ui.ReviewHeader
 import com.contrast.Contrast.presentation.features.share.ShareDialog
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 
 
@@ -163,6 +160,8 @@ fun ProductDetailScreen(
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
+
+
 
     LaunchedEffect(listState) {
         snapshotFlow {
@@ -291,9 +290,9 @@ fun ProductDetailScreen(
         )
 
     }
-    Box {
+    Box( ) {
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().navigationBarsPadding()) {
             type = state.productInfo?.loaichitiet ?: ""
             bookService = state.productInfo?.cothedatlich ?: false
 

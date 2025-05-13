@@ -1,9 +1,6 @@
-package com.contrast.Contrast.presentation.features.main.ui
+package com.contrast.Contrast.presentation.navigator
 
 
-
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,48 +15,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.navigator.AppNavHost
+import com.itechpro.domain.model.agency.BottomNavItem
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    var selectedIndex by remember { mutableIntStateOf(0) }
-
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-        containerColor = Color.White,
-        bottomBar = {
-            BottomNavigationBar(selectedIndex) { index ->
-                selectedIndex = index
-                when (index) {
-                    0 -> navController.navigate("home")
-                    1 -> navController.navigate("location")
-                    2 -> navController.navigate("storeList")
-                    3 -> navController.navigate("membership")
-                    4 -> navController.navigate("account")
-                }
-            }
-        }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            AppNavHost(navController = navController)
-        }
-    }
-}
 
 @Composable
 fun BottomNavigationBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
     val items = listOf(
         BottomNavItem("Trang chủ", R.drawable.ic_home, true),
-        BottomNavItem("Địa điểm", R.drawable.ic_location, true),
-        BottomNavItem("Cửa hàng", R.drawable.ic_store, true),
-        BottomNavItem("Membership", R.drawable.ic_membership, true),
-        BottomNavItem("Contrast Box", R.drawable.contrast_box, true),
+        BottomNavItem("Danh mục", R.drawable.ic_location, true),
+        BottomNavItem("Video", R.drawable.ic_store, true),
+        BottomNavItem("Tin tức", R.drawable.ic_membership, true),
+        BottomNavItem("Tôi", R.drawable.contrast_box, true),
     )
 
     NavigationBar(
@@ -78,12 +46,11 @@ fun BottomNavigationBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
                         modifier = Modifier
                             .fillMaxSize()
                             .background(
-                                brush = if (selectedIndex == index) Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0xFFFFD6D6),
-                                        Color.White
+                                brush = if (selectedIndex == index)
+                                    Brush.verticalGradient(
+                                        colors = listOf(Color(0xFFFFD6D6), Color.White)
                                     )
-                                ) else Brush.verticalGradient(
+                                else Brush.verticalGradient(
                                     colors = listOf(Color.Transparent, Color.Transparent)
                                 ),
                                 shape = RoundedCornerShape(0.dp)
@@ -97,7 +64,7 @@ fun BottomNavigationBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
                             if (selectedIndex == index) {
                                 Box(
                                     modifier = Modifier
-                                        .fillMaxWidth(1f)
+                                        .fillMaxWidth()
                                         .height(3.dp)
                                         .background(Color.Red)
                                 )
@@ -126,18 +93,9 @@ fun BottomNavigationBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
                         }
                     }
                 },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent
-                ),
+                colors = NavigationBarItemDefaults.colors(indicatorColor = Color.Transparent),
                 alwaysShowLabel = true
             )
         }
     }
 }
-
-data class BottomNavItem(
-    val label: String,
-    val icon: Int,
-    val hasLabel: Boolean,
-    val isCenter: Boolean = false
-)

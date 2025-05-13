@@ -3,23 +3,19 @@ package com.contrast.Contrast.presentation.navigator.graph
 
 import android.content.Intent
 import android.os.Build
-import android.window.SplashScreen
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.contrast.Contrast.presentation.features.affiliate.AffiliateMainScreen
 
 import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
-import com.contrast.Contrast.presentation.features.main.ui.MainScreen
-import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
 import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
 import com.contrast.Contrast.presentation.features.splas.SplashScreen
 import com.contrast.Contrast.presentation.features.splas.SplashViewModel
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

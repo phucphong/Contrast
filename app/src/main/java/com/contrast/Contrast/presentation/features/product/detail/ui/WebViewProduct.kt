@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.product.detail.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +21,7 @@ fun WebViewProduct(htmlContent:String) {
 
     var isExpanded by remember { mutableStateOf(false) }
     Column {
-
+        Log.e("myHtmlString",htmlContent)
 
 
         WebView(

@@ -1,14 +1,12 @@
 package com.contrast.Contrast.presentation.features.paymentProduct
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,10 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
@@ -29,29 +25,20 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 
 
-import com.contrast.Contrast.presentation.components.searchBar.TopTextNotificationShare
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
 import com.contrast.Contrast.presentation.components.slider.ImageSliderPaymentFromUrl
 import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 import com.contrast.Contrast.presentation.components.topAppBar.TopBackTittleHome
 
-import com.contrast.Contrast.presentation.features.cart.CartViewModel
 
-
-import com.contrast.Contrast.presentation.features.review.ReviewViewModel
-
-import com.contrast.Contrast.presentation.features.product.viewmodel.ProductViewModel
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 
 
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
-import com.contrast.Contrast.presentation.theme.TealGreen
 
 import com.itechpro.domain.model.ToastPosition
-import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -95,8 +82,8 @@ fun PaymentScreen(
 
 
             is HomeNavEvent.GoToHome -> {
-                navHostController.navigate(NavRoutes.AffiliateHome.route) {
-                    popUpTo(NavRoutes.AffiliateHome.route) { inclusive = true }
+                navHostController.navigate(NavRoutes.Main.route) {
+                    popUpTo(NavRoutes.Main.route) { inclusive = true }
                     launchSingleTop = true
                 }
                 viewModel.resetNavigation()

@@ -21,10 +21,12 @@ interface NewsRepository {
     ): NetworkResponse<List<Category>>
 
     suspend fun getNewDetail(
-        obj: String,
-        mode: String,
         ido: String,
         authen: String
+    ): NetworkResponse<List<News>>
+    suspend fun getNewDetailOff(
+        ido: String,
+
     ): NetworkResponse<List<News>>
 
     suspend fun getCategoryOff(

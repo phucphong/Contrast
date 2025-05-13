@@ -54,8 +54,16 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getNewDetail( obj: String, mode: String,ido: String,authen: String): NetworkResponse<List<News>> {
-        val response = api.getNewDetail("tintuc","modedstintuc",ido, authen)
+    override suspend fun getNewDetail( ido: String,authen: String): NetworkResponse<List<News>> {
+        val response = api.getNewDetail("tintuc","modechitiettintuc",ido, authen)
+        return if (response.isSuccessful) {
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
+    }
+  override suspend fun getNewDetailOff( ido: String): NetworkResponse<List<News>> {
+        val response = api.getNewDetailOff("tintuc","modechitiettintuc",ido)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {

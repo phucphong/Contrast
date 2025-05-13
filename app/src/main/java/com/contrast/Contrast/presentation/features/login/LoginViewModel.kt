@@ -48,8 +48,9 @@ class LoginViewModel @Inject constructor(
                 it.copy(
                     domainLogin = currentUserInfo.domainCustomer,
                     rememberPassword = currentUserInfo.rememberPassword,
-                    account = currentUserInfo.account,
-                    password = currentUserInfo.password,
+                    account =currentUserInfo.account ,
+                    password = if( currentUserInfo.rememberPassword)  currentUserInfo.password else "",
+                    passwordBiometricAuthen = currentUserInfo.password,
 
                 )
             }
@@ -69,6 +70,7 @@ class LoginViewModel @Inject constructor(
 
         val loginData = buildLogin(account, password)
         appConfig.setAccount(account)
+        appConfig.setPassword(password)
         if (_uiState.value.rememberPassword) {
             appConfig.setPassword(password)
 
@@ -105,8 +107,7 @@ class LoginViewModel @Inject constructor(
             return
         }
 
-        val loginData = buildLogin(account, password)
-        login(loginData, password)
+        loginBiometricAuthenticator(account, password)
     }
 
     fun registerAccount() {
@@ -156,6 +157,8 @@ class LoginViewModel @Inject constructor(
                                 navigationEvent = SplashNaEvent.GoToMain("0", "0", "0")
                             )
                         }
+
+
                     }
 
                     is NetworkResponse.Error -> {

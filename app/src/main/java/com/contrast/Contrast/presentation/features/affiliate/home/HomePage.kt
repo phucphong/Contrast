@@ -27,12 +27,10 @@ import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
 import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.features.product.detail.callApi
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
-import com.contrast.Contrast.utils.NetworkMonitor
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent

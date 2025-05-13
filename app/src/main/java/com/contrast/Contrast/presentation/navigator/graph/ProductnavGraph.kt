@@ -12,21 +12,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
-import com.contrast.Contrast.presentation.features.account.ui.AccountScreen
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
-import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
-import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.paymentProduct.PaymentScreen
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
-import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
 import com.contrast.Contrast.presentation.features.report.AddReportProductScreen
-import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
 
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.productnavGraph(navController: NavHostController) {
     navigation(
-        startDestination = NavRoutes.AffiliateHome.route,
+        startDestination = NavRoutes.Main.route,
         route = NavRoutes.HomeRoot.route // ✅ route = review_root
     ) {
 

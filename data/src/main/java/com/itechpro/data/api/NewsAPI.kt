@@ -47,6 +47,14 @@ interface NewsAPI {
         @Query("ido") ido: String?,
         @Header("Authorization") authen: String?
     ): Response<List<News>>
+    @Headers("Content-Type: application/json")
+    @GET("/ex/apiaffiliate/getobj")
+    suspend  fun getNewDetailOff(
+        @Query("obj") obj: String?,
+        @Query("mode") mode: String?,
+        @Query("ido") ido: String?,
+
+    ): Response<List<News>>
 
     @Headers("Content-Type: application/json")
     @GET("/ex/apiaffiliate/getobjpublic")

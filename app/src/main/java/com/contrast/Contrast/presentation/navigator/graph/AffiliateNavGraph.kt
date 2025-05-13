@@ -1,6 +1,9 @@
 package com.contrast.Contrast.presentation.navigator.graph
 
 
+
+
+
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,18 +17,20 @@ import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAf
 import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
 import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
 import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
+import com.contrast.Contrast.presentation.features.news.detail.NewDetailScreen
 import com.contrast.Contrast.presentation.features.news.list.NewsScreen
 
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
 import com.contrast.Contrast.presentation.features.video.VideoScreen
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController,
                                       idProductFromShare: String= "0",
                                       idUnitFromShare: String= "0",
                                       introducerId: String= "0"
-                                      ) {
+) {
     navigation(
         startDestination = NavRoutes.AffiliateHome.route, route = NavRoutes.AffiliateRoot.route
     ) {
@@ -60,6 +65,15 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController,
             NotificationScreen(navController, startDate,endDate)
         }
 
+        composable(
+            route = NavRoutes.NewDetail.route,
+            arguments = NavRoutes.NewDetail.arguments
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+
+            NewDetailScreen(navController, id)
+        }
+
 
         composable(NavRoutes.Account.route) {
             ProfileScreen(navController)
@@ -76,4 +90,3 @@ fun NavGraphBuilder.affiliateNavGraph(navController: NavHostController,
 
     }
 }
-

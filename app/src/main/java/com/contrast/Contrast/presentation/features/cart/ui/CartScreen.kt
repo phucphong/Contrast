@@ -1,6 +1,5 @@
 package com.contrast.Contrast.presentation.features.cart.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -51,30 +49,25 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.extensions.formatDouble
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 
 import com.contrast.Contrast.presentation.components.alertDialog.CustomAlertOkCancelDialog
 import com.contrast.Contrast.presentation.components.checkbox.CheckBoxColor
-import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileViewModel
 import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
-import com.contrast.Contrast.presentation.features.product.detail.callApi
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF5722
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
 import com.contrast.Contrast.presentation.theme.TealGreen
 
-import com.contrast.Contrast.presentation.theme.UltraLightGray
 import com.itechpro.domain.model.ToastPosition
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 @Composable
 fun CartScreen(

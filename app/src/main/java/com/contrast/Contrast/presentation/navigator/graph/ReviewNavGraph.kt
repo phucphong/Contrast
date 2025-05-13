@@ -16,7 +16,7 @@ import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
 import com.contrast.Contrast.presentation.features.review.ui.ReviewsFilterScreen
 
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.reviewNavGraph(navController: NavHostController) {
     navigation(

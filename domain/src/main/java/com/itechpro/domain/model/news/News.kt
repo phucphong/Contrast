@@ -1,4 +1,5 @@
 package com.itechpro.domain.model.news
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class News(
@@ -11,5 +12,7 @@ data class News(
     val cd: String,
     val tungay: String,
     val denngay: String,
-    val nguoidang: String
+    val nguoidang: String,
+    @Json(name = "duyet") val duyet: Boolean = false
+
 )

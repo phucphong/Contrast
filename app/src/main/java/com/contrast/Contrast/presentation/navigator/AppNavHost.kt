@@ -5,26 +5,18 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.contrast.Contrast.presentation.navigator.graph.accountNavGraph
 import com.contrast.Contrast.presentation.navigator.graph.affiliateNavGraph
-import com.contrast.Contrast.presentation.navigator.graph.contrastNavGraph
+
 import com.contrast.Contrast.presentation.navigator.graph.reviewNavGraph
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavHost(navController: NavHostController,
-               idProductFromShare: String= "0",
-               idUnitFromShare: String= "0",
-               introducerId: String= "0",
                ) {
-
     NavHost(navController, startDestination = NavRoutes.AffiliateRoot.route) {
-        affiliateNavGraph(navController,
-            idProductFromShare = idProductFromShare,
-            idUnitFromShare = idUnitFromShare,
-        introducerId = introducerId)
-        contrastNavGraph(navController)
+        affiliateNavGraph(navController)
         reviewNavGraph(navController)// dùng chung viewModel để lấy dữ liệu ảnh
 
     }

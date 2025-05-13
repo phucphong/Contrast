@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.theme.FCFCFC
 
-@Preview(showBackground = true)
-@Preview(name = "Light Mode", showBackground = true)
+
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun WelcomeScreen(

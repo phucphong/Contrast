@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.navigator
+package com.contrast.Contrast.presentation.navigator.router
 
 import android.net.Uri
 import androidx.navigation.NavType
@@ -9,7 +9,9 @@ sealed class NavRoutes(val route: String) {
     // Root Graph
 
     object AccountRoot : NavRoutes("accountRoot")
+    object AffiliateHome : NavRoutes("affiliateHome")
     object AffiliateRoot : NavRoutes("affiliateRoot")
+
     object Home : NavRoutes("home")
     object Category : NavRoutes("category")
     object News : NavRoutes("news")
@@ -31,8 +33,7 @@ sealed class NavRoutes(val route: String) {
     object HomeRoot : NavRoutes("review_root")
 
 
-    // Affiliate + Product
-    object AffiliateHome : NavRoutes("affiliateHome")
+
     object Logout : NavRoutes("logout")
     object Register : NavRoutes("register")
     object Domain : NavRoutes("domain")
@@ -165,6 +166,16 @@ sealed class NavRoutes(val route: String) {
             navArgument("startDate") { type = NavType.StringType },
             navArgument("endDate") { type = NavType.StringType },
 
+        )
+    }
+
+   object NewDetail {
+        const val route = "newDetail/{id}"
+        fun withArgs(id: String): String {
+            return "newDetail/${Uri.encode(id)}"
+        }
+        val arguments = listOf(
+            navArgument("id") { type = NavType.StringType },
         )
     }
 

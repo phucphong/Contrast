@@ -19,11 +19,6 @@ class ContrastActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         val startIntent = intent // 👈 intent chứa ACTION_VIEW hoặc data
 
-//        setContent {
-//
-//            AffiliateMainScreen()
-//
-//        }
 
 
         setContent {

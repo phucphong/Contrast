@@ -1,16 +1,12 @@
 package com.contrast.Contrast.presentation.features.review.ui
 
 import android.os.Build
-import android.util.Log
 
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
@@ -21,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Videocam
@@ -35,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -44,9 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.formatDuration
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
@@ -63,13 +55,10 @@ import com.contrast.Contrast.presentation.components.toast.toastCollect
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
 
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
-import com.contrast.Contrast.presentation.navigator.NavRoutes
-import com.contrast.Contrast.presentation.theme.FF28A745
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
-import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
 import com.itechpro.domain.model.ToastPosition
-import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

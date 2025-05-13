@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.R
@@ -26,28 +24,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.extensions.DateUtils
 
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
-import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.navigator.NavRoutes
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(device = Devices.PHONE, showBackground = true)

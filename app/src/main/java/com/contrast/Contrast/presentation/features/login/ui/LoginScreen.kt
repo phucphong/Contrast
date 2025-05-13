@@ -23,18 +23,13 @@ import androidx.compose.ui.text.input.KeyboardType
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ComponentActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.findActivity
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
-import com.contrast.Contrast.presentation.components.PasswordRequirements
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckBox
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
@@ -42,10 +37,9 @@ import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.features.login.BiometricAuthenticator
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
-import com.contrast.Contrast.presentation.theme.PlaceholderGray
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 
 @Composable
@@ -54,19 +48,17 @@ fun LoginScreen(navHostController: NavHostController,
 
     val uiState by viewModel.uiState.collectAsState()
     var account by remember { mutableStateOf(uiState.account) }
- 
+
     var password by remember { mutableStateOf(uiState.password) }
     var rememberMe by remember { mutableStateOf(uiState.rememberPassword) }
     var isRegisterButton by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    Log.d("CheckContext", "context = $context")
+
     val activity = context as? FragmentActivity
     // Khởi tạo biometricAuthenticator nếu activity không null
     val biometricAuthenticator = remember(activity) {
         activity?.let { BiometricAuthenticator(it) }
     }
-    Log.d("BiometricTest", "activity = $activity")
-    Log.d("BiometricTest", "canAuthenticate = ${biometricAuthenticator?.canAuthenticate()}")
     if (uiState.validationError != null) {
         CustomOkAlertDialog(message = uiState.validationError!!, onDismiss = {
             viewModel.clearValidationError()
@@ -77,15 +69,9 @@ fun LoginScreen(navHostController: NavHostController,
     // Xử lý navigation event
     LaunchedEffect(uiState.navigationEvent) {
         when (val event = uiState.navigationEvent) {
-
-
             is SplashNaEvent.GoToMain -> {
                 navHostController.navigate(
-                    NavRoutes.Main.withArgs(
-                        id = "0",
-                        idUnit = "0",
-                        introducerId = "0"
-                    )
+                    NavRoutes.AffiliateHome.route
                 )
             }
 
@@ -112,7 +98,9 @@ fun LoginScreen(navHostController: NavHostController,
             .background(Color.White)
             .padding(horizontal = 24.dp)
             .verticalScroll(rememberScrollState()),
+
         horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
 
         Column(
@@ -205,7 +193,7 @@ fun LoginScreen(navHostController: NavHostController,
 
                                     onSuccess = {
 
-                                        viewModel.loginBiometricAuthenticator(account, password)},
+                                        viewModel.autoLoginFromFingerprint(account, password)},
                                     onError = { error ->Log.e("BiometricTest",error) }
                                 )
                             }

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.PlaceholderGray
 import com.contrast.Contrast.presentation.theme.TealGreen
@@ -28,7 +29,7 @@ import com.itechpro.domain.model.news.News
 
 @Preview(showBackground = true)
 @Composable
-fun NewsItem(article: News, domain:String) {
+fun NewsItem(article: News, domain:String,  onClickNew: () -> Unit = {}) {
 
 
   Column {   Row(
@@ -45,7 +46,7 @@ fun NewsItem(article: News, domain:String) {
 
       Spacer(modifier = Modifier.width(12.dp))
 
-      Column(modifier = Modifier.weight(1f)) {
+      Column(modifier = Modifier.weight(1f).noRippleClickableComposable { onClickNew() }) {
           CustomText(article.ten, fontWeight = FontWeight.Bold, fontSize = 14.sp,  color = TealGreen)
           CustomText(article.nguoidang, fontSize = 12.sp, color = Color.Gray)
           Row(
@@ -75,5 +76,5 @@ fun NewsItem(article: News, domain:String) {
       }
   }
 
-      CustomDividerColor(PlaceholderGray) }
+      CustomDividerColor() }
 }

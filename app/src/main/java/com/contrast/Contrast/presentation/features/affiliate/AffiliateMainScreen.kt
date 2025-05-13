@@ -2,26 +2,17 @@ package com.contrast.Contrast.presentation.features.affiliate
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.media3.common.util.Log
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.navigator.AppNavHost
-import com.contrast.Contrast.presentation.navigator.NavRoutes
+import com.contrast.Contrast.presentation.navigator.BottomNavigationBar
+import com.contrast.Contrast.presentation.navigator.router.NavRoutes
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -32,11 +23,27 @@ fun AffiliateMainScreen(
     introducerId: String = "0",
 ) {
     val navController = rememberNavController()
-    var selectedIndex by remember { mutableIntStateOf(0) }
     val hasNavigatedToProduct = remember { mutableStateOf(false) }
 
-    if (idProductFromShare != "0" && !hasNavigatedToProduct.value) {
-        LaunchedEffect(idProductFromShare) {
+    // Theo dõi route hiện tại
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    // Các route hiển thị bottom nav
+    val bottomNavRoutes = listOf(
+        NavRoutes.AffiliateHome.route,
+        NavRoutes.Category.route,
+        NavRoutes.Videos.route,
+        NavRoutes.News.route,
+        NavRoutes.Account.route
+    )
+
+    // Đồng bộ selectedIndex với currentRoute
+    val selectedIndex = bottomNavRoutes.indexOf(currentRoute).coerceAtLeast(0)
+
+    // Điều hướng từ link chia sẻ (chỉ thực hiện 1 lần)
+    LaunchedEffect(Unit) {
+        if (idProductFromShare != "0" && !hasNavigatedToProduct.value) {
             hasNavigatedToProduct.value = true
             navController.navigate(
                 NavRoutes.ProductDetail.withArgs(
@@ -48,122 +55,30 @@ fun AffiliateMainScreen(
         }
     }
 
-
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
+        modifier = Modifier.fillMaxSize(),
         containerColor = Color.White,
         bottomBar = {
-            BottomNavigationBar(selectedIndex) { index ->
-                selectedIndex = index
-                when (index) {
-                    0 -> navController.navigate(NavRoutes.AffiliateHome.route)
-                    1 -> navController.navigate(NavRoutes.Category.route)
-                    2 -> navController.navigate(NavRoutes.Videos.route)
-                    3 -> navController.navigate(NavRoutes.News.route)
-                    4 -> navController.navigate(NavRoutes.Account.route)
+            if (currentRoute in bottomNavRoutes) {
+                BottomNavigationBar(selectedIndex) { index ->
+                    val targetRoute = bottomNavRoutes.getOrNull(index)
+                    if (targetRoute != null && targetRoute != currentRoute) {
+                        navController.navigate(targetRoute) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
                 }
             }
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             AppNavHost(
-                navController = navController,
-                idProductFromShare = idProductFromShare,
-                idUnitFromShare = idUnitFromShare,
-                introducerId = introducerId,
+                navController = navController
             )
         }
     }
 }
-
-@Composable
-fun BottomNavigationBar(selectedIndex: Int, onItemSelected: (Int) -> Unit) {
-    val items = listOf(
-        BottomNavItem("Trang chủ", R.drawable.ic_home, true),
-        BottomNavItem("Danh mục", R.drawable.ic_location, true),
-        BottomNavItem("Video", R.drawable.ic_store, true),
-        BottomNavItem("Tin tức", R.drawable.ic_membership, true),
-        BottomNavItem("Toi", R.drawable.contrast_box, true),
-    )
-
-    NavigationBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(65.dp),
-        containerColor = Color.White,
-        tonalElevation = 0.dp
-    ) {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                selected = selectedIndex == index,
-                onClick = { onItemSelected(index) },
-                icon = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = if (selectedIndex == index) Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color(0xFFFFD6D6),
-                                        Color.White
-                                    )
-                                ) else Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, Color.Transparent)
-                                ),
-                                shape = RoundedCornerShape(0.dp)
-                            ),
-                        contentAlignment = Alignment.TopCenter
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.fillMaxHeight()
-                        ) {
-                            if (selectedIndex == index) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .height(3.dp)
-                                        .background(Color.Red)
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Image(
-                                painter = painterResource(id = item.icon),
-                                contentDescription = item.label,
-                                modifier = Modifier.size(if (item.isCenter) 40.dp else 24.dp),
-                                colorFilter = if (!item.isCenter) androidx.compose.ui.graphics.ColorFilter.tint(
-                                    if (selectedIndex == index) Color.Red else Color.Gray
-                                ) else null
-                            )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            if (item.hasLabel) {
-                                Text(
-                                    text = item.label,
-                                    color = if (selectedIndex == index) Color.Red else Color.Gray,
-                                    style = TextStyle(fontSize = 11.sp)
-                                )
-                            }
-                        }
-                    }
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent
-                ),
-                alwaysShowLabel = true
-            )
-        }
-    }
-}
-
-data class BottomNavItem(
-    val label: String,
-    val icon: Int,
-    val hasLabel: Boolean,
-    val isCenter: Boolean = false
-)

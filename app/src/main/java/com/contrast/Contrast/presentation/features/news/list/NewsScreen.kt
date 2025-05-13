@@ -32,7 +32,9 @@ import com.contrast.Contrast.presentation.features.cart.CartViewModel
 
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.NewsRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NewsNavEvent
@@ -69,7 +71,7 @@ fun NewsScreen(navHostController: NavHostController
         when (val event = state.navEvent) {
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
-                    NavRoutes.Notifications.withArgs(
+                    NotificationRoutes.Notifications.withArgs(
                         startDate = event.startDate,
                         endDate = event.endDate
                     )
@@ -78,12 +80,12 @@ fun NewsScreen(navHostController: NavHostController
             }
 
             is CartNavEvent.GoToCats -> {
-                navHostController.navigate(NavRoutes.Carts.route)
+                navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
             is NewsNavEvent.GoToNewDetail -> {
                 navHostController.navigate(
-                    NavRoutes.NewDetail.withArgs(
+                    NewsRoutes.NewsDetail.withArgs(
                         id = event.id
                     )
                 )

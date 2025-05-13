@@ -33,9 +33,7 @@
         android:theme="@style/Theme.YourApp"
         tools:targetApi="31">
         <uses-library android:name="org.chromium.webview" android:required="false" />
-        <activity
-            android:name=".presentation.features.affiliate.AffiliateActivity"
-            android:exported="true" />
+
         <activity
             android:name=".presentation.components.youtube.FullScreenYoutubeActivity"
             android:exported="false" />
@@ -69,17 +67,13 @@
         <activity
             android:name=".presentation.features.payment.amountInput.ui.AmountInputActivity"
             android:exported="false" />
-        <activity
-            android:name=".presentation.features.changepassword.ChangePasswordActivity"
-            android:exported="false" />
+
 
 
         <activity
             android:name=".presentation.features.membership.policy.MembershipPolicyActivity"
             android:exported="false" />
-        <activity
-            android:name=".presentation.features.login.ui.LoginActivity"
-            android:exported="true" />
+
         <activity
             android:name=".presentation.features.voucher.redeem.VoucherRedeemActivity"
             android:exported="true" />
@@ -89,12 +83,8 @@
         <activity
             android:name=".presentation.features.register.ui.otp.OTPActivity"
             android:exported="true" />
-        <activity
-            android:name=".presentation.features.forgotPassword.ForgotPasswordActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.features.register.ui.info.RegisterAccountActivity"
-            android:exported="true" />
+
+
         <activity
             android:name=".presentation.features.main.ContrastActivity"
             android:exported="true" >

@@ -10,9 +10,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.contrast.Contrast.presentation.navigator.AppNavHost
+
 import com.contrast.Contrast.presentation.navigator.BottomNavigationBar
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.navgraph.RootNavigationGraph
+import com.contrast.Contrast.presentation.navigator.router.routes.AccountRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.CategoryProductRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.NewsRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.VideoRoutes
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -31,11 +38,11 @@ fun AffiliateMainScreen(
 
     // Các route hiển thị bottom nav
     val bottomNavRoutes = listOf(
-        NavRoutes.AffiliateHome.route,
-        NavRoutes.Category.route,
-        NavRoutes.Videos.route,
-        NavRoutes.News.route,
-        NavRoutes.Account.route
+        AffiliateRoutes.AffiliateHome.route,
+        CategoryProductRoutes.CategoryProduct.route,
+        VideoRoutes.Videos.route,
+        NewsRoutes.NewsList.route,
+        AccountRoutes.Account.route
     )
 
     // Đồng bộ selectedIndex với currentRoute
@@ -46,7 +53,7 @@ fun AffiliateMainScreen(
         if (idProductFromShare != "0" && !hasNavigatedToProduct.value) {
             hasNavigatedToProduct.value = true
             navController.navigate(
-                NavRoutes.ProductDetail.withArgs(
+                ProductRoutes.ProductDetail.withArgs(
                     id = idProductFromShare,
                     idUnit = idUnitFromShare,
                     introducerId = introducerId
@@ -76,7 +83,7 @@ fun AffiliateMainScreen(
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            AppNavHost(
+            RootNavigationGraph(
                 navController = navController
             )
         }

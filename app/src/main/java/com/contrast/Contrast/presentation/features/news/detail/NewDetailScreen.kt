@@ -51,14 +51,14 @@ import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProd
 import com.contrast.Contrast.utils.Util
 
 @Composable
-fun NewDetailScreen(navHostController: NavHostController, ido:String, viewModel: NewsViewModel = hiltViewModel()) {
+fun NewDetailScreen(navHostController: NavHostController, id:String, viewModel: NewsViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsState()
 
 
-    LaunchedEffect(ido) {
-        if(ido!="0"){
-            viewModel.getNewDetail(ido)
+    LaunchedEffect(id) {
+        if(id!="0"){
+            viewModel.getNewDetail(id)
         }
 
     }

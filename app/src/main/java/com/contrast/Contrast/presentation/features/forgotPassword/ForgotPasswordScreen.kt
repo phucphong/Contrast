@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
@@ -28,7 +29,7 @@ import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 @Preview(showBackground = true)
 
 @Composable
-fun ForgotPasswordScreen(onBackPress: () -> Unit, onSendCode: (String) -> Unit) {
+fun ForgotPasswordScreen(navController: NavHostController) {
     var phoneNumber by remember { mutableStateOf("") }
 
     Column(
@@ -78,7 +79,7 @@ fun ForgotPasswordScreen(onBackPress: () -> Unit, onSendCode: (String) -> Unit) 
 
         // Nút Gửi mã xác nhận
         Button(
-            onClick = { onSendCode(phoneNumber) },
+            onClick = {},
             enabled = phoneNumber.isNotEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,9 +97,3 @@ fun ForgotPasswordScreen(onBackPress: () -> Unit, onSendCode: (String) -> Unit) 
     }
 }
 
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun PreviewForgotPasswordScreen() {
-    ForgotPasswordScreen(onBackPress = {}, onSendCode = {})
-}

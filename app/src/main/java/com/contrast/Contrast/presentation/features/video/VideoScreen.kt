@@ -29,7 +29,8 @@ import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.video.ui.VideoItem
 import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewModel
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.Video
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
@@ -65,7 +66,7 @@ fun VideoScreen(navHostController: NavHostController,
         when (val event = state.navEvent) {
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
-                    NavRoutes.Notifications.withArgs(
+                    NotificationRoutes.Notifications.withArgs(
                         startDate = event.startDate,
                         endDate = event.endDate
                     )
@@ -73,7 +74,7 @@ fun VideoScreen(navHostController: NavHostController,
                 viewModel.resetNavigation()
             }
             is CartNavEvent.GoToCats -> {
-                navHostController.navigate(NavRoutes.Carts.route)
+                navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
 

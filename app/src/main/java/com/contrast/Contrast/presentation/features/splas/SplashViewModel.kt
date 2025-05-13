@@ -74,7 +74,7 @@ class SplashViewModel @Inject constructor(
 
             } else {
 
-                Log.e("_navigationEvent", "${result.id} ${result.idUnit}")
+
                 _navigationEvent.value = SplashNaEvent.GoToMain(
                     id = result.id,
                     idUnit = result.idUnit,

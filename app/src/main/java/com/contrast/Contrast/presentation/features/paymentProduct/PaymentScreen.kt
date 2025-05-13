@@ -30,9 +30,7 @@ import com.contrast.Contrast.presentation.components.slider.ImageSliderPaymentFr
 import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 import com.contrast.Contrast.presentation.components.topAppBar.TopBackTittleHome
-
-
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
 
 
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
@@ -82,8 +80,8 @@ fun PaymentScreen(
 
 
             is HomeNavEvent.GoToHome -> {
-                navHostController.navigate(NavRoutes.Main.route) {
-                    popUpTo(NavRoutes.Main.route) { inclusive = true }
+                navHostController.navigate(MainRoutes.Main.route) {
+                    popUpTo(MainRoutes.Main.route) { inclusive = true }
                     launchSingleTop = true
                 }
                 viewModel.resetNavigation()

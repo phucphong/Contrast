@@ -23,7 +23,10 @@ import com.contrast.Contrast.presentation.components.tab.TabBarRowPillStyle
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.navigationEvent.*
 
@@ -71,21 +74,21 @@ fun CategoryAffiliatePage(
         when (val event = state.navEvent) {
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
-                    NavRoutes.Notifications.withArgs(event.startDate, event.endDate)
+                    NotificationRoutes.Notifications.withArgs(event.startDate, event.endDate)
                 )
                 viewModel.resetNavigation()
             }
             is CartNavEvent.GoToCats -> {
-                navHostController.navigate(NavRoutes.Carts.route)
+                navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
             is ProductNavEvent.GoToProductsCategory -> {
-                navHostController.navigate(NavRoutes.ProductByCategory.withArgs(event.categoryId))
+                navHostController.navigate(ProductRoutes.ProductByCategory.withArgs(event.categoryId))
                 viewModel.resetNavigation()
             }
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
-                    NavRoutes.ProductDetail.withArgs(
+                    ProductRoutes.ProductDetail.withArgs(
                         id = event.id,
                         idUnit = event.idUnit,
                         introducerId = event.introducerId,
@@ -95,7 +98,7 @@ fun CategoryAffiliatePage(
             }
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.navigate(
-                    NavRoutes.AddServiceRequest.withArgs(
+                    ServiceRequestRoutes.AddServiceRequest.withArgs(
                         id = event.id,
                         serviceName = event.serviceName,
                         idUnit = event.idUnit,

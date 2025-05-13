@@ -58,7 +58,11 @@ import com.contrast.Contrast.presentation.features.product.viewmodel.ProductView
 import com.contrast.Contrast.presentation.features.review.ReviewScreen
 import com.contrast.Contrast.presentation.features.review.ui.ReviewHeader
 import com.contrast.Contrast.presentation.features.share.ShareDialog
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ReviewRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 
 
@@ -186,17 +190,17 @@ fun ProductDetailScreen(
 
 
             is SplashNaEvent.GoToLogIn -> {
-                navHostController.navigate(NavRoutes.Login.route)
+                navHostController.navigate(AuthRoutes.Login.route)
                 viewModel.resetNavigation()
             }
             is CartNavEvent.GoToCats -> {
-                navHostController.navigate(NavRoutes.Carts.route)
+                navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
 
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
-                    NavRoutes.ProductDetail.withArgs(
+                    ProductRoutes.ProductDetail.withArgs(
                         id = event.id,
                         idUnit = event.idUnit,
                         introducerId = event.introducerId,
@@ -208,7 +212,7 @@ fun ProductDetailScreen(
 
             is ProductNavEvent.GoToProductReviews -> {
                 navHostController.navigate(
-                    NavRoutes.Reviews.withArgs(
+                    ReviewRoutes.Reviews.withArgs(
                         id = event.id,
 
                         )
@@ -218,7 +222,7 @@ fun ProductDetailScreen(
 
             is ProductNavEvent.GoToAddReviews -> {
                 navHostController.navigate(
-                    NavRoutes.AddReview.withArgs(
+                    ReviewRoutes.AddReview.withArgs(
 
                         id = event.id,
                         idUnit = event.idUnit,
@@ -232,7 +236,7 @@ fun ProductDetailScreen(
 
             is ProductNavEvent.GoToReportProduct -> {
                 navHostController.navigate(
-                    NavRoutes.AddReportProduct.withArgs(
+                    ProductRoutes.AddReportProduct.withArgs(
 
                         id = event.id,
                         idUnit = event.idUnit,
@@ -246,7 +250,7 @@ fun ProductDetailScreen(
 
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.navigate(
-                    NavRoutes.AddServiceRequest.withArgs(
+                    ServiceRequestRoutes.AddServiceRequest.withArgs(
                         id = event.id,
                         serviceName = event.serviceName,
                         idUnit = event.idUnit,

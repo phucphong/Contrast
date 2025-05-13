@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.review.ui
 
+import android.net.Uri
 import android.os.Build
 
 import androidx.annotation.RequiresApi
@@ -55,7 +56,7 @@ import com.contrast.Contrast.presentation.components.toast.toastCollect
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
 
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ReviewRoutes
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
 import com.itechpro.domain.model.ToastPosition
@@ -129,21 +130,27 @@ fun AddReviewScreen(
 
 
         } else {
+            val parentRouteRaw = "add_review/$id/$idUnit/${Uri.encode(fileTxt)}/${Uri.encode(name)}"
+            val encodedParentRoute = Uri.encode(parentRouteRaw)
+
             when (pendingNavigation) {
                 "image" -> navHostController.navigate(
-                    NavRoutes.MediaPicker.withArgs(
+                    ReviewRoutes.MediaPicker.withArgs(
                         maxCount = imageSelect,
                         allowImage = true,
                         allowVideo = false,
                         compressedFiles = true,
+                        parentRoute = encodedParentRoute
+
                     )
                 )
                 "video" -> navHostController.navigate(
-                    NavRoutes.MediaPicker.withArgs(
+                    ReviewRoutes.MediaPicker.withArgs(
                         maxCount = videoSelect,
                         allowImage = false,
                         allowVideo = true,
                         compressedFiles = true,
+                        parentRoute = encodedParentRoute
                     )
                 )
             }

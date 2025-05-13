@@ -2,14 +2,12 @@ package com.contrast.Contrast.presentation.features.main
 
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
-import com.contrast.Contrast.presentation.navigator.graph.AppNavGraph
+import com.contrast.Contrast.presentation.navigator.navgraph.AppNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -37,7 +37,8 @@ import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.features.login.BiometricAuthenticator
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
 import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
@@ -71,20 +72,20 @@ fun LoginScreen(navHostController: NavHostController,
         when (val event = uiState.navigationEvent) {
             is SplashNaEvent.GoToMain -> {
                 navHostController.navigate(
-                    NavRoutes.AffiliateHome.route
+                    AffiliateRoutes.AffiliateHome.route
                 )
             }
 
             is SplashNaEvent.GoToRegister -> {
-                navHostController.navigate(NavRoutes.Register.route)
+                navHostController.navigate(AuthRoutes.Register.route)
 
             }
             is SplashNaEvent.GoToDomain -> {
-                navHostController.navigate(NavRoutes.Domain.route)
+                navHostController.navigate(AuthRoutes.Domain.route)
 
             }
             is SplashNaEvent.GoToForgotPassword -> {
-                navHostController.navigate(NavRoutes.ForgotPassword.route)
+                navHostController.navigate(AuthRoutes.ForgotPassword.route)
 
             }
 

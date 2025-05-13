@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.navigator.graph
+package com.contrast.Contrast.presentation.navigator.navgraph
 
 
 import android.content.Intent
@@ -11,11 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.contrast.Contrast.presentation.features.affiliate.AffiliateMainScreen
 
-import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
-import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
 import com.contrast.Contrast.presentation.features.splas.SplashScreen
 import com.contrast.Contrast.presentation.features.splas.SplashViewModel
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -28,16 +26,10 @@ fun AppNavGraph(navController: NavHostController, startIntent: Intent?) {
             SplashScreen( navController, viewModel,startIntent)
         }
 
-        composable("login") {
-            LoginScreen(navController)
-        }
-        composable(NavRoutes.Register.route) {
-            RegisterAccountScreen(navController)
-        }
 
         composable(
-            route = NavRoutes.Main.route,
-            arguments = NavRoutes.Main.arguments
+            route = MainRoutes.Main.route,
+            arguments = MainRoutes.Main.arguments
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
             val idUnit = backStackEntry.arguments?.getString("idUnit") ?: ""

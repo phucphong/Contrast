@@ -27,11 +27,10 @@ import com.contrast.Contrast.presentation.components.profile.ui.ProfileOptionIte
 import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileViewModel
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 
 
-@Preview(device = Devices.PHONE, showBackground = true)
 @Composable
 fun ProfileScreen(
     navHostController: NavHostController,
@@ -44,8 +43,8 @@ fun ProfileScreen(
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
             is SplashNaEvent.GoToLogIn -> {
-                navHostController.navigate(NavRoutes.Login.route) {
-                    popUpTo(NavRoutes.Logout.route) { inclusive = true }
+                navHostController.navigate(AuthRoutes.Login.route) {
+                    popUpTo(AuthRoutes.Logout.route) { inclusive = true }
                     launchSingleTop = true
 
                 }
@@ -53,8 +52,8 @@ fun ProfileScreen(
             }
 
             is SplashNaEvent.GoToRegister -> {
-                navHostController.navigate(NavRoutes.Register.route) {
-                    popUpTo(NavRoutes.Register.route) { inclusive = true }
+                navHostController.navigate(AuthRoutes.Register.route) {
+                    popUpTo(AuthRoutes.Register.route) { inclusive = true }
                     launchSingleTop = true
                 }
                 viewModel.resetNavigation()

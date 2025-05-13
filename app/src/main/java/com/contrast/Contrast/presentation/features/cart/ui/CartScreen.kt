@@ -60,7 +60,7 @@ import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF5722
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
@@ -103,7 +103,7 @@ fun CartScreen(
 
             is CartNavEvent.GoToPayment -> {
                 navHostController.navigate(
-                    NavRoutes.Payment.withArgs(
+                    CartRoutes.Payment.withArgs(
                         totalIntoMoney = event.totalIntoMoney,
                         oderKey = event.oderKey,
                         idOder = event.idOder,

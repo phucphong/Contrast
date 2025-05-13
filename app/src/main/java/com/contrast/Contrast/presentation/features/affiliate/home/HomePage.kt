@@ -28,7 +28,10 @@ import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
 import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
@@ -45,7 +48,8 @@ fun HomePage(
     navHostController: NavHostController,
     viewModel: HomeAffiliateViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
-    notificationViewModel: NotificationViewModel = hiltViewModel()
+    notificationViewModel: NotificationViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
@@ -88,7 +92,7 @@ fun HomePage(
         when (val event = state.navEvent) {
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
-                    NavRoutes.Notifications.withArgs(
+                    NotificationRoutes.Notifications.withArgs(
                         startDate = event.startDate,
                         endDate = event.endDate
                     )
@@ -96,12 +100,12 @@ fun HomePage(
                 viewModel.resetNavigation()
             }
             is CartNavEvent.GoToCats -> {
-                navHostController.navigate(NavRoutes.Carts.route)
+                navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
             is ProductNavEvent.GoToProductsCategory -> {
                 navHostController.navigate(
-                    NavRoutes.ProductByCategory.withArgs(
+                    ProductRoutes.ProductByCategory.withArgs(
                         categoryId = event.categoryId,
                     )
                 )
@@ -109,7 +113,7 @@ fun HomePage(
             }
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
-                    NavRoutes.ProductDetail.withArgs(
+                    ProductRoutes.ProductDetail.withArgs(
                         id = event.id,
                         idUnit = event.idUnit,
                         introducerId = event.introducerId,
@@ -119,7 +123,7 @@ fun HomePage(
             }
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.navigate(
-                    NavRoutes.AddServiceRequest.withArgs(
+                    ServiceRequestRoutes.AddServiceRequest.withArgs(
                         id = event.id,
                         serviceName = event.serviceName,
                         idUnit = event.idUnit,
@@ -132,7 +136,7 @@ fun HomePage(
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier) {
         TopSearchNotificationCart(
             isTexField = true,
             text = searchText,

@@ -19,7 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.navigator.router.NavRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
 
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import kotlinx.coroutines.delay
@@ -47,14 +48,14 @@ fun SplashScreen(
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
                 is SplashNaEvent.GoToLogIn -> {
-                    navHostController.navigate(NavRoutes.Login.route)
+                    navHostController.navigate(AuthRoutes.Login.route)
                      {
                         popUpTo("splash") { inclusive = true }
                     }
                 }
                 is SplashNaEvent.GoToMain -> {
                     navHostController.navigate(
-                        NavRoutes.Main.withArgs(
+                        MainRoutes.Main.withArgs(
                             id = event.id,
                             idUnit = event.idUnit,
                             introducerId = event.introducerId

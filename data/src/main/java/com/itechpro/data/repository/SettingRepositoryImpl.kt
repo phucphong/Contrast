@@ -34,6 +34,23 @@ class SettingRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getVerificationCodes(): NetworkResponse<List<Setting>> {
+        val response = api.getVerificationCodes()
+        return if (response.isSuccessful) {
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
+    }
+  override suspend fun getVerificationCodesOnITP(key:String,code:String): NetworkResponse<List<Setting>> {
+        val response = api.getVerificationCodesOnITP(key,code)
+        return if (response.isSuccessful) {
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
+    }
+
 
 
 

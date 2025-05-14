@@ -259,7 +259,16 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
 
     fun onItemAddReviewsSelected( id: String,idUnit: String, fileTxt:String, name:String) {
-
+        if (currentUserInfo?.isOfflineMode?:false) {
+            // Chuyển màn hình login từ Activity
+            viewModelScope.launch {
+                _state.update {
+                    it.copy(
+                        navEvent =SplashNaEvent.GoToLogIn("1")
+                    )
+                }
+            }
+        } else {
 
         _state.update {
             it.copy(
@@ -271,6 +280,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 )
             )
         }
+        }
     }
     fun onItemReportSelected( id: String,idUnit: String, fileTxt:String, name:String) {
         if (currentUserInfo?.isOfflineMode?:false) {
@@ -279,7 +289,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
                 _state.update {
                     it.copy(
-                        navEvent = SplashNaEvent.GoToLogIn
+                        navEvent = SplashNaEvent.GoToLogIn("1")
                     )
                 }
             }
@@ -304,7 +314,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
             viewModelScope.launch {
                 _state.update {
                     it.copy(
-                        navEvent =SplashNaEvent.GoToLogIn
+                        navEvent =SplashNaEvent.GoToLogIn("1")
                     )
                 }
             }
@@ -320,12 +330,22 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
     fun onItemCarts( ) {
 
-
+        if (currentUserInfo?.isOfflineMode?:false) {
+            // Chuyển màn hình login từ Activity
+            viewModelScope.launch {
+                _state.update {
+                    it.copy(
+                        navEvent =SplashNaEvent.GoToLogIn("1")
+                    )
+                }
+            }
+        } else {
 
         _state.update {
             it.copy(
                 navEvent =CartNavEvent.GoToCats
             )
+        }
         }
 
     }
@@ -348,27 +368,34 @@ class ProductViewModel @Inject constructor(private val context: Context,
     }
 
     fun onAddServiceRequestSelected( category: Product) {
+        if (currentUserInfo?.isOfflineMode?:false) {
+            // Chuyển màn hình login từ Activity
+            viewModelScope.launch {
+                _state.update {
+                    it.copy(
+                        navEvent = SplashNaEvent.GoToLogIn("1")
+                    )
+                }
+            }
+        } else {
 
-
-        _state.update {
-            it.copy(
-                navEvent = ProductNavEvent.GoToAddServiceRequest(
-                    id = category.id ?: "",
-                    serviceName = category.ten ?: "",
-                    idUnit = category.iddonvichuan ?: "",
-                    discount = category.iddonvichuan ?: ""
+            _state.update {
+                it.copy(
+                    navEvent = ProductNavEvent.GoToAddServiceRequest(
+                        id = category.id ?: "",
+                        serviceName = category.ten ?: "",
+                        idUnit = category.iddonvichuan ?: "",
+                        discount = category.iddonvichuan ?: ""
+                    )
                 )
-            )
+            }
+
         }
-
-
     }
 
 
     // Sau khi navigate xong, reset lại state
     fun resetNavigation() {
-
-
         _state.update {
             it.copy(
                 navEvent = ProductNavEvent.None

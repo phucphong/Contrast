@@ -56,7 +56,11 @@ fun NewsScreen(navHostController: NavHostController
     var searchText by remember { mutableStateOf("") }
     val state by viewModel.state.collectAsState()
     val cartState by cartViewModel.state.collectAsState()
-    val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
+    val notificationState by notificationViewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        cartViewModel.getCarts(false)
+    }
 
     LaunchedEffect(state.selectedTab, state.categoryNews) {
         if (state.categoryNews.isNotEmpty() && state.selectedTab in state.categoryNews.indices) {
@@ -115,7 +119,7 @@ fun NewsScreen(navHostController: NavHostController
                 isTexField = true,
                 text = searchText,
                 totalCartItems = cartState.totalCartItems,
-                totalNotificationItems = totalNotificationItems,
+                totalNotificationItems = notificationState.totalNotificationItems,
                 onTextChanged = { searchText = it
                     viewModel.searchLocal (searchText,state.news)
                                 },

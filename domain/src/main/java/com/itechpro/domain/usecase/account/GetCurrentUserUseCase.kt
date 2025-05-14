@@ -15,4 +15,8 @@ class GetCurrentUserUseCase @Inject constructor(
         val user = repository.getCurrentUser()
         return user.token.isNotEmpty()
     }
+   suspend fun isDomain(): Boolean {
+        val user = repository.getCurrentUser()
+        return user.domain.isNotEmpty()
+    }
 }

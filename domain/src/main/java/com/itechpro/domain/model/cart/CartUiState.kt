@@ -1,5 +1,9 @@
 package com.itechpro.domain.model.cart
 
+import com.itechpro.domain.model.navigationEvent.CartNavEvent
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+
 data class CartUiState(
     val carts: List<CartItem> = emptyList(),
     val totalCartItems: Int = 0,
@@ -15,5 +19,6 @@ data class CartUiState(
     val typeAccount: String = "",
     val employeeId: String = "",
     val customerId: String = "",
-    val isAllSelected: Boolean = true
+    val isAllSelected: Boolean = true,
+    val navEvent: NavEvent = CartNavEvent.None,
 )

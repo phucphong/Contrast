@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.contrast.Contrast.presentation.components.button.SeeMoreButton
-import com.contrast.Contrast.presentation.components.webview.WebView
+import com.contrast.Contrast.presentation.components.webview.HtmlContentWebView
 
 @Composable
 fun WebViewProduct(htmlContent:String) {
@@ -24,8 +24,9 @@ fun WebViewProduct(htmlContent:String) {
         Log.e("myHtmlString",htmlContent)
 
 
-        WebView(
+        HtmlContentWebView(
             htmlContent = htmlContent,
+            domain = "",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(if (isExpanded) Dp.Unspecified else 200.dp)
@@ -38,5 +39,10 @@ fun WebViewProduct(htmlContent:String) {
         )
     }
 
+
+}
+
+@Composable
+fun HtmlContentWebView(htmlContent: String, domain: String, modifier: Modifier) {
 
 }

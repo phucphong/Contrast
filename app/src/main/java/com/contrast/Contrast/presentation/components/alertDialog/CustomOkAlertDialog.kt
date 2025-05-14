@@ -30,6 +30,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
+import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.AEA1F27
 import com.contrast.Contrast.presentation.theme.FF151515
 import com.contrast.Contrast.presentation.theme.TealGreen
@@ -38,60 +39,49 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 
 @Composable
 fun CustomOkAlertDialog(
-    message: String,
-    onDismiss: () -> Unit
+    message: String, onDismiss: () -> Unit
 ) {
     Dialog(
-        onDismissRequest = { /* Không làm gì khi click ra ngoài */ },
-        properties = DialogProperties(
+        onDismissRequest = { /* Không làm gì khi click ra ngoài */ }, properties = DialogProperties(
             dismissOnClickOutside = false, // ⭐ Không cho click ra ngoài để đóng
             dismissOnBackPress = true       // ⭐ Vẫn cho nhấn nút back để đóng (hoặc chỉnh false nếu cần)
         )
-    )  {
+    ) {
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding( 20.dp).wrapContentHeight().background(Color.White, shape = RoundedCornerShape(16.dp))
+            modifier = Modifier
+                .padding(20.dp)
+                .wrapContentHeight()
+                .background(Color.White, shape = RoundedCornerShape(16.dp))
         ) {
-            Text(
+            CustomText(
                 text = stringResource(id = R.string.alert_title),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.inter)),
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF151515),
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.fillMaxWidth().padding( 20.dp)
-            )
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
 
+                )
 
-
-            Text(
+            CustomText(
                 text = message,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    lineHeight = 15.sp,
-                    fontFamily = FontFamily(Font(R.font.inter)),
-                    fontWeight = FontWeight.Normal,
-                    color = FF151515,
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
             )
 
 
-
-
-
-            Text(
-                text = stringResource(id = R.string.cancel),
+            CustomText(text = stringResource(id = R.string.cancel),
                 fontWeight = FontWeight.Bold,
                 color = TealGreen,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.wrapContentHeight().padding(20.dp).noRippleClickableComposable {   onDismiss()}
-            )
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(20.dp)
+                    .noRippleClickableComposable { onDismiss() })
         }
 
     }

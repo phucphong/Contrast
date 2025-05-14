@@ -6,25 +6,13 @@ import androidx.navigation.navArgument
 
 object MainRoutes {
 
-    object HomeRoot {
-        const val route = "review_root"
-    }
+
 
     object Category {
         const val route = "category"
     }
 
-    object News {
-        const val route = "news"
-    }
 
-    object Videos {
-        const val route = "videos"
-    }
-
-    object Carts {
-        const val route = "carts"
-    }
 
     object Main {
         const val route = "main/{id}/{idUnit}/{introducerId}"

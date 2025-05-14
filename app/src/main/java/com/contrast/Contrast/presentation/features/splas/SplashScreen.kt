@@ -1,7 +1,6 @@
 package com.contrast.Contrast.presentation.features.splas
 
 
-
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,10 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import kotlinx.coroutines.delay
@@ -29,7 +31,7 @@ import kotlinx.coroutines.delay
 fun SplashScreen(
 
     navHostController: NavHostController,
-    viewModel: SplashViewModel, startIntent: Intent?
+    startIntent: Intent?, viewModel: SplashViewModel = hiltViewModel(),
 ) {
 
     val navEvent by viewModel.navigationEvent.collectAsState()
@@ -47,24 +49,36 @@ fun SplashScreen(
     // Xử lý navigation event
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
-                is SplashNaEvent.GoToLogIn -> {
-                    navHostController.navigate(AuthRoutes.Login.route)
-                     {
-                        popUpTo("splash") { inclusive = true }
-                    }
-                }
-                is SplashNaEvent.GoToMain -> {
-                    navHostController.navigate(
-                        MainRoutes.Main.withArgs(
-                            id = event.id,
-                            idUnit = event.idUnit,
-                            introducerId = event.introducerId
-                        )
+
+
+            is SplashNaEvent.GoToLogIn -> {
+                navHostController.navigate(
+                    AuthRoutes.Login.withArgs(
+                        isClose = event.isClose,
                     )
+                )  {
+                    popUpTo(0) { inclusive = true } // reset hoàn toàn
                 }
 
+            }
 
-                else -> Unit
+            is SplashNaEvent.GoToDomain -> {
+                navHostController.navigate(AuthRoutes.Domain.route) {
+                    popUpTo("splash") { inclusive = true }
+                }
+
+            }
+
+            is SplashNaEvent.GoToMain -> {
+                navHostController.navigate(
+                    MainRoutes.Main.withArgs(
+                        id = event.id, idUnit = event.idUnit, introducerId = event.introducerId
+                    )
+                )
+            }
+
+
+            else -> Unit
 
         }
     }
@@ -73,8 +87,13 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
     ) {
-     Image(painter = painterResource(R.drawable.logo), contentDescription = "", modifier = Modifier.padding(20.dp))
+        Image(
+            painter = painterResource(R.drawable.logo),
+            contentDescription = "",
+            modifier = Modifier.padding(20.dp)
+        )
     }
 }

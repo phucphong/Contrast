@@ -42,22 +42,25 @@ import androidx.navigation.NavHostController
 
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.buildHtmlFromBody
+import com.contrast.Contrast.extensions.cleanHtml
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
-import com.contrast.Contrast.presentation.components.webview.WebView
+import com.contrast.Contrast.presentation.components.webview.HtmlContentWebView
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
 import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProduct
 import com.contrast.Contrast.utils.Util
 
 @Composable
-fun NewDetailScreen(navHostController: NavHostController, id:String, viewModel: NewsViewModel = hiltViewModel()) {
+fun NewDetailScreen(
+    navHostController: NavHostController, id: String, viewModel: NewsViewModel = hiltViewModel()
+) {
 
     val state by viewModel.state.collectAsState()
 
 
     LaunchedEffect(id) {
-        if(id!="0"){
+        if (id != "0") {
             viewModel.getNewDetail(id)
         }
 
@@ -66,77 +69,95 @@ fun NewDetailScreen(navHostController: NavHostController, id:String, viewModel: 
 
 
     Column() {
-        CustomTopAppBarBackTitle (
-            title = stringResource(id = R.string.new_detail),
+        CustomTopAppBarBackTitle(title = stringResource(id = R.string.new_detail),
             Color.Red,
-            onBackClick = { navHostController.popBackStack() }
-        )
-        val fullUrl = (state.domain?.trimEnd('/') ?: "") + (state.newDetail?.filetxt ?:"" )
+            onBackClick = { navHostController.popBackStack() })
+        val fullUrl = (state.domain?.trimEnd('/') ?: "") + (state.newDetail?.filetxt ?: "")
 //        val fullUrl = "https://images2.thanhnien.vn/528068263637045248/2023/12/4/mai-han-c-17016869677251382812401.jpg"
 
         Log.d("IMAGE_URL", fullUrl)
 
-     Column ( modifier = Modifier
-         .fillMaxSize()
-         .background(Color.White)
-         .navigationBarsPadding()
-         .verticalScroll(rememberScrollState())){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .verticalScroll(rememberScrollState())
+        ) {
 
-         NetworkImage(
-             model = fullUrl,
-             contentDescription = null,
-             contentScale = ContentScale.FillHeight,
-             modifier = Modifier
-                 .height(250.dp).padding(5.dp).fillMaxWidth()
+            NetworkImage(
+                model = fullUrl,
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight,
+                modifier = Modifier
+                    .height(250.dp)
+                    .padding(5.dp)
+                    .fillMaxWidth()
 
-         )
+            )
 
-         Row(
-             verticalAlignment = Alignment.CenterVertically,
-             horizontalArrangement = Arrangement.SpaceBetween,
-             modifier = Modifier.fillMaxWidth()
-         ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
 
-             val  createDate =state.newDetail?.cd?:""
-
-
-
-             Text(state.newDetail?.nguoidang?:"", fontSize = 12.sp, color = Color.Gray, modifier = Modifier
-
-                 .padding(start = 5.dp)
-                 )
-             Text(
-                 formatToDDMYYYYHHMM(createDate), fontSize = 12.sp, color = Color.Gray
-                 , modifier = Modifier
-                     .fillMaxWidth()
-                     .padding(horizontal = 5.dp)
-                     .weight(1f))
+                val createDate = state.newDetail?.cd ?: ""
 
 
-             Row(verticalAlignment = Alignment.CenterVertically,
-                 modifier = Modifier.padding( 10.dp)) {
-                 Icon(Icons.Default.Visibility, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(14.dp))
-                 Spacer(modifier = Modifier.width(4.dp))
 
-                 val count =state. newDetail?.soluongdoc?:0
-                if(count>0){
-                    Text(count.toString(), fontSize = 12.sp, color = Color.Gray)
+                Text(
+                    state.newDetail?.nguoidang ?: "",
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    modifier = Modifier
+
+                        .padding(start = 5.dp)
+                )
+                Text(
+                    formatToDDMYYYYHHMM(createDate),
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 5.dp)
+                        .weight(1f)
+                )
+
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Visibility,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    val count = state.newDetail?.soluongdoc ?: 0
+                    if (count > 0) {
+                        Text(count.toString(), fontSize = 12.sp, color = Color.Gray)
+                    }
+
                 }
+            }
 
-             }
-         }
+            val context = LocalContext.current
+            val configuration = LocalConfiguration.current
 
-         val context = LocalContext.current
-         val configuration = LocalConfiguration.current
-
-         // Lấy mật độ màn hình và chiều rộng (giống DisplayMetrics)
-         val density = context.resources.displayMetrics.density
-         val screenWidthPx = (configuration.screenWidthDp * density).toInt()
-         val  htmlContent = state.newDetail?.noidung ?:""
+            // Lấy mật độ màn hình và chiều rộng (giống DisplayMetrics)
+            val density = context.resources.displayMetrics.density
+            val screenWidthPx = (configuration.screenWidthDp * density).toInt()
+            val htmlContent = state.newDetail?.noidung ?: ""
 
 
-         WebView(htmlContent = buildHtmlFromBody(htmlContent,screenWidthPx, state.domain ?:""))
-     }
+            HtmlContentWebView(
+                htmlContent = cleanHtml(htmlContent)
+                   ,     domain =state.domain?:"",
+            )
+        }
     }
 
 

@@ -41,26 +41,20 @@ import com.contrast.Contrast.presentation.features.notification.NotificationView
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Preview(device = Devices.PHONE, showBackground = true)
 @Composable
 fun NotificationScreen(navHostController: NavHostController,
                        startDateInit:String,
                        endDatenit:String,
 
                        viewModel: NotificationViewModel = hiltViewModel()) {
-    val notifications by viewModel.notifications.collectAsState()
+    val state by viewModel.state.collectAsState()
 
-    val domain by viewModel.domain.collectAsState()
 
 
     val isRefreshing by remember { mutableStateOf(false) }
-    var idCategory by remember { mutableStateOf("0") }
     var startDate by remember { mutableStateOf(startDateInit) }
     var endDate by remember { mutableStateOf(endDatenit) }
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
-    var isAlertDialogVisible by remember { mutableStateOf(false) }
 
-    val isLoading by viewModel.isLoading.collectAsState()
 
     val navEvent by viewModel.navigationEvent.collectAsState()
 //    LaunchedEffect(navEvent) {
@@ -83,7 +77,7 @@ fun NotificationScreen(navHostController: NavHostController,
         endDate = DateUtils.today()
     }
 
-    LaunchedEffect(notifications) {
+    LaunchedEffect(state.notifications) {
         viewModel.getNotifications(startDate,endDate)
     }
 
@@ -96,7 +90,7 @@ fun NotificationScreen(navHostController: NavHostController,
             title = stringResource(R.string.notification_title),
             onBackPress = { navHostController.popBackStack()}
         )
-        if (isLoading) {
+        if (state.isLoading) {
             // Hiển thị loading, ví dụ:
             Box(
                 modifier = Modifier.fillMaxSize().padding(top = 20.dp),
@@ -110,7 +104,7 @@ fun NotificationScreen(navHostController: NavHostController,
             isRefreshing = isRefreshing,
             onRefresh = {  viewModel.getNotifications(startDate,endDate) }
         ) {
-            if (notifications.isEmpty()) {
+            if (state.notifications.isEmpty()) {
                 EmptyStateScreen(
                     imageRes = R.drawable.nodata,
                     size = 60.dp,
@@ -128,7 +122,7 @@ fun NotificationScreen(navHostController: NavHostController,
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(notifications, key = { it.id?:"0" }) { notification ->
+                    items(state.notifications, key = { it.id?:"0" }) { notification ->
                         NotificationItem(notification)
                     }
                 }

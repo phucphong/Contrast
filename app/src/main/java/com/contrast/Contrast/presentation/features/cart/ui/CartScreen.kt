@@ -77,7 +77,7 @@ fun CartScreen(
 ) {
 
 
-    val navEvent by viewModel.navigationEvent.collectAsState()
+
 
     var isDeleteAll by remember { mutableStateOf(false) }
     var isOpportitue by remember { mutableStateOf(false) }
@@ -98,8 +98,8 @@ fun CartScreen(
     }
 
 
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    LaunchedEffect(state.navEvent) {
+        when (val event =state. navEvent) {
 
             is CartNavEvent.GoToPayment -> {
                 navHostController.navigate(

@@ -9,13 +9,37 @@ import androidx.fragment.app.FragmentActivity
 class BiometricAuthenticator(
     private val activity: FragmentActivity
 ) {
-    fun canAuthenticate(): Boolean {
+
+    fun isBiometricSupported(): Boolean {
         val biometricManager = BiometricManager.from(activity)
-        val result = biometricManager.canAuthenticate(
-            BiometricManager.Authenticators.BIOMETRIC_WEAK  or BiometricManager.Authenticators.DEVICE_CREDENTIAL
-        )
-        Log.d("BiometricTest", "canAuthenticate() result = $result")
-        return result == BiometricManager.BIOMETRIC_SUCCESS
+        return when (biometricManager.canAuthenticate(
+            BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+        )) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                Log.d("BiometricTest", "Biometric authentication is available.")
+                true
+            }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                Log.d("BiometricTest", "No biometric features available on this device.")
+                false
+            }
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                Log.d("BiometricTest", "Biometric features are currently unavailable.")
+                false
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                Log.d("BiometricTest", "The user hasn't associated any biometric credentials.")
+                false
+            }
+            else -> {
+                Log.d("BiometricTest", "Unknown biometric error.")
+                false
+            }
+        }
+    }
+
+    fun canAuthenticate(): Boolean {
+        return isBiometricSupported()
     }
 
     fun authenticate(
@@ -30,7 +54,6 @@ class BiometricAuthenticator(
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 onError(errString.toString())
-
             }
 
             override fun onAuthenticationFailed() {
@@ -42,7 +65,7 @@ class BiometricAuthenticator(
             .setTitle("Đăng nhập bằng sinh trắc học")
             .setSubtitle("Xác thực bằng vân tay hoặc mã PIN")
             .setAllowedAuthenticators(
-                BiometricManager.Authenticators.BIOMETRIC_WEAK  or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+                BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
             )
             .build()
 

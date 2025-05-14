@@ -46,10 +46,14 @@ fun VideoScreen(navHostController: NavHostController,
 
     val state by viewModel.state.collectAsState()
     val cartState by cartViewModel.state.collectAsState()
-    val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
+    val notificationState by notificationViewModel.state.collectAsState()
+
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
     var searchText by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        cartViewModel.getCarts(false)
+    }
 
 
     LaunchedEffect(state.videos) {
@@ -91,7 +95,7 @@ fun VideoScreen(navHostController: NavHostController,
             isTexField = true,
             text = searchText,
 
-            totalNotificationItems = totalNotificationItems,
+            totalNotificationItems =notificationState. totalNotificationItems,
             totalCartItems = cartState.totalCartItems,
             onTextChanged = { searchText = it
                 viewModel.searchLocal (searchText,state.videos)

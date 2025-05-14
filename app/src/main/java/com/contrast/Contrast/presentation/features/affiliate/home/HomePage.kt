@@ -28,6 +28,7 @@ import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
 import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
+import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
@@ -37,6 +38,7 @@ import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -54,7 +56,8 @@ fun HomePage(
     val state by viewModel.state.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap
     val cartState by cartViewModel.state.collectAsState()
-    val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
+    val notificationState by notificationViewModel.state.collectAsState()
+
 
     val isRefreshing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
@@ -88,8 +91,30 @@ fun HomePage(
             }
     }
 
+    LaunchedEffect(cartState.navEvent) {
+        when (val event = cartState.navEvent) {
+            is SplashNaEvent.GoToLogIn -> {
+                navHostController.navigate(
+                    AuthRoutes.Login.withArgs(event.isClose)
+                )
+                cartViewModel.resetNavigation()
+            }
+            else -> Unit
+        }
+    }
+
+
     LaunchedEffect(state.navEvent) {
         when (val event = state.navEvent) {
+
+            is SplashNaEvent.GoToLogIn -> {
+                navHostController.navigate(
+                    AuthRoutes.Login.withArgs(
+                        isClose = event.isClose,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
                     NotificationRoutes.Notifications.withArgs(
@@ -140,7 +165,7 @@ fun HomePage(
         TopSearchNotificationCart(
             isTexField = true,
             text = searchText,
-            totalNotificationItems = totalNotificationItems,
+            totalNotificationItems = notificationState.totalNotificationItems,
             totalCartItems = cartState.totalCartItems,
             onTextChanged = { searchText = it },
             onSearchClick = { },

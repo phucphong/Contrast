@@ -37,6 +37,7 @@ import com.contrast.Contrast.presentation.features.register.viewmodel.RegisterAc
 import com.contrast.Contrast.presentation.theme.FCFCFC
 import com.contrast.Contrast.presentation.theme.FFD91E18
 import com.itechpro.domain.model.network.NetworkResponse
+
 @Preview(showBackground = true)
 @Composable
 fun RegisterAccountScreen(
@@ -67,10 +68,12 @@ fun RegisterAccountScreen(
                 isAlertDialogVisible = false
                 isRegisterButton = false
             }
+
             is NetworkResponse.Error -> {
                 isAlertDialogVisible = false
                 isRegisterButton = false
             }
+
             is NetworkResponse.Loading -> {
                 isAlertDialogVisible = true
             }
@@ -106,7 +109,7 @@ fun RegisterAccountScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            RegisterHeader( onBackClick={
+            RegisterHeader(onBackClick = {
                 navController.popBackStack()
             })
 
@@ -134,7 +137,9 @@ fun RegisterAccountScreen(
         item {
             CustomButton(
                 text = stringResource(id = R.string.create_account_button),
-                modifier = Modifier.padding(16.dp,40.dp,16.dp,16.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(16.dp, 40.dp, 16.dp, 16.dp)
+                    .fillMaxWidth(),
                 onClick = {
                     isRegisterButton = true
                     viewModel.validateAndRegister(
@@ -143,7 +148,7 @@ fun RegisterAccountScreen(
                         password,
                         confirmPassword,
                         email,
-                        selectedDay,selectedMonth,selectedYear,
+                        selectedDay, selectedMonth, selectedYear,
                         "off"
                     )
                 }
@@ -192,12 +197,12 @@ fun RegisterWarningBox() {
 
 
 @Composable
-private fun RegisterHeader( onBackClick:()->Unit) {
+private fun RegisterHeader(onBackClick: () -> Unit) {
     Spacer(modifier = Modifier.height(16.dp))
     CustomTopAppBarBackTitle(
         title = stringResource(id = R.string.register_account),
         titleColor = FFD91E18,
-        onBackClick = { onBackClick()}
+        onBackClick = { onBackClick() }
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -225,9 +230,9 @@ private fun RegisterInputFields(
 
     CustomText(
         text = buildAnnotatedString {
-        append(stringResource(id = R.string.password_new))
-        withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
-    }
+            append(stringResource(id = R.string.password_new))
+            withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
+        }
     )
     CustomTextFieldPassword(
         value = password,
@@ -241,9 +246,9 @@ private fun RegisterInputFields(
 
     CustomText(
         text = buildAnnotatedString {
-        append(stringResource(id = R.string.password_new))
-        withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
-    }
+            append(stringResource(id = R.string.password_new))
+            withStyle(style = SpanStyle(color = FFD91E18)) { append("*") }
+        }
     )
     CustomTextFieldPassword(
         value = confirmPassword,
@@ -296,8 +301,7 @@ private fun RegisterInputFields(
             selectedOption = selectedDay,
             onOptionSelected = onDayChange,
             placeholder = stringResource(id = R.string.day_placeholder),
-            modifier = Modifier.weight(1f)
-            ,
+            modifier = Modifier.weight(1f),
         )
         CustomDropdown(
             options = (1..12).map { it.toString() },

@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
@@ -53,35 +54,34 @@ class SplashViewModel @Inject constructor(
                 currentUserInfo = getCurrentUserUseCase()
                 _domain.value = currentUserInfo?.domain.orEmpty()
             } catch (e: Exception) {
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+                _validationError.value =
+                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
         }
     }
 
     fun handleShareIntent(intent: Intent) {
+        getAppType(intent)
+
+    }
+
+    fun  intentProductDetail(intent: Intent){
         val result = handleShareIntentUseCase.execute(intent) ?: return
-
-
-            if (result.domain.isNotEmpty() && result.domain != _domain.value) {
-                AppModule.updateBaseUrl(result.domain)
-                appConfig.setDomain(result.domain)
-                _navigationEvent.value = SplashNaEvent.ShowAffiliateInfo(
-                    id = result.id,
-                    idUnit = result.idUnit,
-                    introducerId = result.introducerId,
-                    domain = result.domain
-                )
-
-            } else {
-
-
-                _navigationEvent.value = SplashNaEvent.GoToMain(
-                    id = result.id,
-                    idUnit = result.idUnit,
-                    introducerId = result.introducerId,
-                )
-
-
+        if (result.domain.isNotEmpty() && result.domain != _domain.value) {
+            AppModule.updateBaseUrl(result.domain)
+            appConfig.setDomain(result.domain)
+            _navigationEvent.value = SplashNaEvent.ShowAffiliateInfo(
+                id = result.id,
+                idUnit = result.idUnit,
+                introducerId = result.introducerId,
+                domain = result.domain
+            )
+        } else {
+            _navigationEvent.value = SplashNaEvent.GoToMain(
+                id = result.id,
+                idUnit = result.idUnit,
+                introducerId = result.introducerId,
+            )
 
 
         }
@@ -89,12 +89,9 @@ class SplashViewModel @Inject constructor(
 
     fun checkLoginState() {
         viewModelScope.launch {
-            val isLoggedIn = getCurrentUserUseCase.isLoggedIn()
-            if (isLoggedIn) {
-                getSettingViewOff()
-            } else {
-                _navigationEvent.value = SplashNaEvent.GoToLogIn
-            }
+
+            getAppType(null)
+
         }
     }
 
@@ -105,11 +102,76 @@ class SplashViewModel @Inject constructor(
                     when (result) {
                         is NetworkResponse.Loading -> {}
                         is NetworkResponse.Success -> {
-                            _navigationEvent.value = SplashNaEvent.GoToMain(
-                                id = "0",
-                                idUnit = "0",
-                                introducerId = "0",
-                            )
+                            appConfig.setDisplayProduct(result.data?.bansanpham?:"")
+                            appConfig.setDisplayService(result.data?.bandichvu?:"")
+                            appConfig.setDisplayPriority(result.data?.uutienhienthisanpham?:"")
+
+                            if(result.data!=null){
+                                _navigationEvent.value = SplashNaEvent.GoToMain(
+                                    id = "0",
+                                    idUnit = "0",
+                                    introducerId = "0",
+                                )
+                            }else{
+
+                            }
+
+
+
+                        }
+
+                        is NetworkResponse.Error -> {
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _validationError.value =
+                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+
+    private fun getAppType(intent: Intent?) {
+        viewModelScope.launch(dispatcher) {
+            try {
+                useCase.getAppType("loaiapp").collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {}
+                        is NetworkResponse.Success -> {
+                            //tmdt
+
+                            val status = result.data.trangthai ?: ""
+                            appConfig.setAppType(status)
+                            if(intent!=null){
+                                intentProductDetail(intent)
+
+                            }else{
+                                val isLoggedIn = getCurrentUserUseCase.isLoggedIn()
+                                val isDomain = getCurrentUserUseCase.isDomain()
+                                if (!isDomain) {
+                                    _navigationEvent.value = SplashNaEvent.GoToDomain
+                                } else if (isLoggedIn) {
+                                    if(status=="tmdt"){
+                                        getSettingViewOff()
+                                    }else{
+                                        // thay vào main nhân viên
+                                        _navigationEvent.value = SplashNaEvent.GoToMain(
+                                            id = "0",
+                                            idUnit = "0",
+                                            introducerId = "0",
+                                        )
+                                    }
+                                } else {
+
+                                    if(status==""){
+                                        getSettingViewOff()
+                                    }else{
+                                        _navigationEvent.value = SplashNaEvent.GoToLogIn("0")
+                                    }
+
+                                }
+                            }
                         }
                         is NetworkResponse.Error -> {
                             _validationError.value = result.message
@@ -117,7 +179,32 @@ class SplashViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                _validationError.value = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+                _validationError.value =
+                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+            }
+        }
+    }
+    private fun getVerificationCodes() {
+        viewModelScope.launch(dispatcher) {
+            try {
+                useCase.getVerificationCodes().collect { result ->
+                    when (result) {
+                        is NetworkResponse.Loading -> {}
+                        is NetworkResponse.Success -> {
+                            //tmdt
+
+
+
+
+                        }
+                        is NetworkResponse.Error -> {
+                            _validationError.value = result.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _validationError.value =
+                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
             }
         }
     }

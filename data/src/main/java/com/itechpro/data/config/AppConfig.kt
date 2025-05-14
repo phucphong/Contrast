@@ -18,7 +18,7 @@ class AppConfig @Inject constructor(
     fun getAccount(): String = securePrefs.getString(KEY_ACCOUNT, "") ?: ""
     fun getPassword(): String = securePrefs.getString(KEY_PASSWORD, "") ?: ""
 
-    fun getToken(): String = securePrefs.getString(KEY_TOKEN,"")?:""
+    fun getToken(): String = securePrefs.getString(KEY_TOKEN,"")
     fun getRememberPassword(): Boolean = securePrefs.getBoolean(KEY_REMEMBER_PASSWORD,false)
     fun getIdCompany(): String = securePrefs.getString(KEY_ID_COMPANY, "") ?: ""
     fun getPointAffiliate(): String = securePrefs.getString(KEY_POINT_AFFILIATE, "0") ?: ""
@@ -30,7 +30,7 @@ class AppConfig @Inject constructor(
     fun getSalesPointName(): String = securePrefs.getString(KEY_SALE_POINT_NAME, "") ?: ""
     fun getFullName(): String = securePrefs.getString(KEY_ID_FULL_NAME, "") ?: ""
     fun getPermissionMobile(): String = securePrefs.getString(KEY_PERMISSION, "") ?: ""
-    fun getDomain(): String = securePrefs.getString(KEY_DOMAIN, "https://spa.ezmax.vn") ?: ""
+    fun getDomain(): String = securePrefs.getString(KEY_DOMAIN, "") ?: ""
     fun getDomainCustomer(): String = securePrefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") ?: ""
     fun getDevice(): String = securePrefs.getString(KEY_DEVICE, "") ?: ""
     fun getDiscountAgency(): String = securePrefs.getString(KEY_DISCOUNT_AGENCY, "") ?: ""
@@ -44,7 +44,7 @@ class AppConfig @Inject constructor(
     fun getShowEmailKH(): String = securePrefs.getString(KEY_SHOW_EMAIL, "") ?: ""
     fun getShowAddressKH(): String = securePrefs.getString(KEY_SHOW_ADDRESS, "") ?: ""
     fun getModuleOff(): String = securePrefs.getString(KEY_SHOW_MODULE_OFF, "") ?: ""
-    fun isOfflineMode(): Boolean = securePrefs.getBoolean(KEY_LOGIN, false)
+    fun isOfflineMode(): Boolean = securePrefs.getBoolean(KEY_OF_LINE, true)
     fun getAdmin(): Boolean = securePrefs.getBoolean(KEY_ADMIN, false)
     fun getAdminRoot(): Boolean = securePrefs.getBoolean(KEY_ADMIN_ROOT, false)
 
@@ -81,7 +81,7 @@ class AppConfig @Inject constructor(
     fun setShowEmailKH(value: String) = securePrefs.putString(KEY_SHOW_EMAIL, value)
     fun setShowAddressKH(value: String) = securePrefs.putString(KEY_SHOW_ADDRESS, value)
     fun setModuleOff(value: String) = securePrefs.putString(KEY_SHOW_MODULE_OFF, value)
-    fun setOfflineMode(value: Boolean) = securePrefs.putBoolean(KEY_LOGIN, value)
+    fun setOfflineMode(value: Boolean) = securePrefs.putBoolean(KEY_OF_LINE, value)
     fun setAdmin(value: Boolean) = securePrefs.putBoolean(KEY_ADMIN, value)
     fun setAdminRoot(value: Boolean) = securePrefs.putBoolean(KEY_ADMIN_ROOT, value)
 
@@ -94,6 +94,7 @@ class AppConfig @Inject constructor(
         private const val KEY_EMPLOYEE_NAME = "employeeName"
         private const val KEY_ACCOUNT = "KEY_ACCOUNT"
         private const val KEY_PASSWORD = "KEY_PASSWORD"
+        private const val KEY_OF_LINE = "KEY_OF_LINE"
         private const val KEY_TOKEN = "token"
         private const val KEY_REMEMBER_PASSWORD = "KEY_REMEMBER_PASSWORD"
         private const val KEY_ID_COMPANY = "IdCompany"

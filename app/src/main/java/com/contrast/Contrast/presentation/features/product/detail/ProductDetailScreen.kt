@@ -185,19 +185,33 @@ fun ProductDetailScreen(
             context.startActivity(intent)
         }
     }
+
+    LaunchedEffect(cartState.navEvent) {
+        when (val event = cartState.navEvent) {
+            is SplashNaEvent.GoToLogIn -> {
+                navHostController.navigate(
+                    AuthRoutes.Login.withArgs(event.isClose)
+                )
+                cartViewModel.resetNavigation()
+            }
+            else -> Unit
+        }
+    }
+
     LaunchedEffect(state.navEvent) {
         when (val event = state.navEvent) {
-
-
             is SplashNaEvent.GoToLogIn -> {
-                navHostController.navigate(AuthRoutes.Login.route)
+                navHostController.navigate(
+                    AuthRoutes.Login.withArgs(
+                        isClose = event.isClose,
+                    )
+                )
                 viewModel.resetNavigation()
             }
             is CartNavEvent.GoToCats -> {
                 navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
-
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
                     ProductRoutes.ProductDetail.withArgs(
@@ -209,12 +223,10 @@ fun ProductDetailScreen(
                 )
                 viewModel.resetNavigation()
             }
-
             is ProductNavEvent.GoToProductReviews -> {
                 navHostController.navigate(
                     ReviewRoutes.Reviews.withArgs(
                         id = event.id,
-
                         )
                 )
                 viewModel.resetNavigation()

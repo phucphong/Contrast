@@ -6,7 +6,7 @@ import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 data class LoginUiState(
     val isLoading: Boolean = false,
     val loginResult: Login? = null,
-    val errorMessage: String? = null,
+    val errorMessage: String = "",
     val domainLogin: String = "",
     val account: String = "",
     val password: String = "",

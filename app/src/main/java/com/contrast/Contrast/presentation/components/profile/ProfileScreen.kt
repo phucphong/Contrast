@@ -1,9 +1,13 @@
 package com.contrast.Contrast.presentation.components.profile
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -19,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.contrast.Contrast.presentation.components.copyrightInfoSection.CopyrightInfoSection
 
 import com.contrast.Contrast.presentation.components.logout.LogoutButton
 import com.contrast.Contrast.presentation.components.profile.ui.OrderStatusRow
@@ -31,6 +36,7 @@ import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(
     navHostController: NavHostController,
@@ -43,10 +49,12 @@ fun ProfileScreen(
     LaunchedEffect(navEvent) {
         when (val event = navEvent) {
             is SplashNaEvent.GoToLogIn -> {
-                navHostController.navigate(AuthRoutes.Login.route) {
-                    popUpTo(AuthRoutes.Logout.route) { inclusive = true }
-                    launchSingleTop = true
-
+                navHostController.navigate(
+                    AuthRoutes.Login.withArgs(
+                        isClose = event.isClose,
+                    )
+                ) {
+                    popUpTo(0) { inclusive = true } // Xóa toàn bộ backstack
                 }
                 viewModel.resetNavigation()
             }
@@ -93,23 +101,19 @@ fun ProfileScreen(
                     .weight(1f),
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
-
-
                 item {
                     OrderStatusRow(uiState.oders)
                 }
-
                 items(uiState.categorys) { option ->
                     ProfileOptionItem(option)
                 }
-
-
             }
 
             LogoutButton(onClickLogout = {
                 viewModel.onLogoutClick()
 
             })
+
         }
     }
 }

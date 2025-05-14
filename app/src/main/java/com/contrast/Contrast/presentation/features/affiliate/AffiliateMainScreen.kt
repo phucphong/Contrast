@@ -1,12 +1,15 @@
 package com.contrast.Contrast.presentation.features.affiliate
 
 import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -20,6 +23,8 @@ import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.NewsRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.VideoRoutes
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -44,7 +49,23 @@ fun AffiliateMainScreen(
         NewsRoutes.NewsList.route,
         AccountRoutes.Account.route
     )
+    val context = LocalContext.current
+    val backPressedOnce = remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
+    BackHandler(enabled = currentRoute in bottomNavRoutes) {
+        if (backPressedOnce.value) {
+            // Thoát app
+            (context as? android.app.Activity)?.finish()
+        } else {
+            backPressedOnce.value = true
+            Toast.makeText(context, "Nhấn lần nữa để thoát", Toast.LENGTH_SHORT).show()
+            coroutineScope.launch {
+                delay(2000) // reset sau 2 giây
+                backPressedOnce.value = false
+            }
+        }
+    }
     // Đồng bộ selectedIndex với currentRoute
     val selectedIndex = bottomNavRoutes.indexOf(currentRoute).coerceAtLeast(0)
 

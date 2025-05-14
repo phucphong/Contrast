@@ -44,7 +44,8 @@ fun CategoryAffiliatePage(
     val promoUiDataMap = viewModel.promoUiDataMap
 
     val cartState by cartViewModel.state.collectAsState()
-    val totalNotificationItems by notificationViewModel.totalNotificationItems.collectAsState()
+    val notificationState by notificationViewModel.state.collectAsState()
+
 
     var selectedTabIndex by remember { mutableStateOf(0) }
     var searchText by remember { mutableStateOf("") }
@@ -61,6 +62,7 @@ fun CategoryAffiliatePage(
         if (!isInit.value) {
             viewModel.initCategory(state.displayProduct, state.displayService, state.displayPriority, categoryId)
             isInit.value = true
+            cartViewModel.getCarts(false)
         }
     }
 
@@ -120,7 +122,7 @@ fun CategoryAffiliatePage(
 
                 viewModel.searchLocal (searchText, state.products)
                             },
-            totalNotificationItems = totalNotificationItems,
+            totalNotificationItems = notificationState.totalNotificationItems,
             totalCartItems = cartState.totalCartItems,
             onNotificationClick = { viewModel.onItemNotificationSelected() },
             onCartClick = { viewModel.onItemCarts() },

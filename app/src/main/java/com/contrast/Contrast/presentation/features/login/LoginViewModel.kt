@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
@@ -13,6 +14,7 @@ import com.itechpro.domain.model.CurrentUserInfo
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.login.Login
 import com.itechpro.domain.model.login.LoginUiState
+
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.login.LoginInputValidator
@@ -36,15 +38,15 @@ class LoginViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState: StateFlow<LoginUiState> = _uiState
+    private val _state = MutableStateFlow(LoginUiState())
+    val state: StateFlow<LoginUiState> = _state
 
     private lateinit var currentUserInfo: CurrentUserInfo
 
     init {
         viewModelScope.launch {
             currentUserInfo = getCurrentUserUseCase()
-            _uiState.update {
+            _state.update {
                 it.copy(
                     domainLogin = currentUserInfo.domainCustomer,
                     rememberPassword = currentUserInfo.rememberPassword,
@@ -62,7 +64,7 @@ class LoginViewModel @Inject constructor(
         val validationResult = validator.validateAll(account, password)
         if (!validationResult.success) {
             val error = ValidationErrorType.fromCode(validationResult.message)
-            _uiState.update {
+            _state.update {
                 it.copy(errorMessage = stringProvider.getString(ValidationErrorMapper.toMessageResId(error)))
             }
             return
@@ -71,7 +73,7 @@ class LoginViewModel @Inject constructor(
         val loginData = buildLogin(account, password)
         appConfig.setAccount(account)
         appConfig.setPassword(password)
-        if (_uiState.value.rememberPassword) {
+        if (_state.value.rememberPassword) {
             appConfig.setPassword(password)
 
         }
@@ -84,7 +86,7 @@ class LoginViewModel @Inject constructor(
 
         val loginData = buildLogin(account, password)
         appConfig.setAccount(account)
-        if (_uiState.value.rememberPassword) {
+        if (_state.value.rememberPassword) {
             appConfig.setPassword(password)
 
         }
@@ -95,13 +97,13 @@ class LoginViewModel @Inject constructor(
 
     fun rememberPassword(checked: Boolean) {
         appConfig.setRememberPassword(checked)
-        _uiState.update { it.copy(rememberPassword = checked) }
+        _state.update { it.copy(rememberPassword = checked) }
     }
     fun autoLoginFromFingerprint(account:String, password:String) {
 
 
         if (account.isNullOrEmpty() || password.isNullOrEmpty()) {
-            _uiState.update {
+            _state.update {
                 it.copy(errorMessage = "Không tìm thấy tài khoản đã lưu để đăng nhập.")
             }
             return
@@ -109,25 +111,26 @@ class LoginViewModel @Inject constructor(
 
         loginBiometricAuthenticator(account, password)
     }
+    // Sau khi navigate xong, reset lại state
 
     fun registerAccount() {
-        _uiState.update {
+        _state.update {
             it.copy(
                 navigationEvent = SplashNaEvent.GoToRegister
             )
         }
     }
     fun domain() {
-        _uiState.update {
+        _state.update {
             it.copy(
                 navigationEvent = SplashNaEvent.GoToDomain
             )
         }
     }
    fun forgotPassword() {
-        _uiState.update {
+        _state.update {
             it.copy(
-                navigationEvent = SplashNaEvent.GoToDomain
+                navigationEvent = SplashNaEvent.GoToForgotPassword
             )
         }
     }
@@ -145,34 +148,32 @@ class LoginViewModel @Inject constructor(
 
     private fun login(login: Login, password:String) {
         viewModelScope.launch(dispatcher) {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            _state.update { it.copy(isLoading = true, errorMessage = "") }
             try {
                 when (val result = loginUseCase(login)) {
                     is NetworkResponse.Success -> {
                         saveLoginOptions(result.data, password)
-                        _uiState.update {
+                        _state.update {
                             it.copy(
                                 isLoading = false,
                                 loginResult = result.data,
+                                errorMessage = if(result.data==null) "Mật khẩu hoặc pass đang sai" else "",
                                 navigationEvent = SplashNaEvent.GoToMain("0", "0", "0")
                             )
                         }
-
-
                     }
 
                     is NetworkResponse.Error -> {
-                        _uiState.update { it.copy(isLoading = false, errorMessage = result.message) }
+                        _state.update { it.copy(isLoading = false, errorMessage = stringProvider.getString(R.string.account_password_error)) }
                     }
-
                     else -> {
-                        _uiState.update {
+                        _state.update {
                             it.copy(isLoading = false, errorMessage = stringProvider.getString(R.string.error_unknown))
                         }
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update {
+                _state.update {
                     it.copy(
                         isLoading = false,
                         errorMessage = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage}"
@@ -193,15 +194,16 @@ class LoginViewModel @Inject constructor(
         appConfig.setSalesPointName(result.tendiambanle ?: "")
         appConfig.setAdmin((result.isadmincoso ?: "False").toBoolean())
         appConfig.setAdminRoot((result.isadmin ?: "False").toBoolean())
+        appConfig.setOfflineMode(false)
 
 
     }
 
     fun clearValidationError() {
-        _uiState.update { it.copy(errorMessage = null) }
+        _state.update { it.copy(errorMessage = "") }
     }
 
     fun resetNavigation() {
-        _uiState.update { it.copy(navigationEvent = SplashNaEvent.None) }
+        _state.update { it.copy(navigationEvent = SplashNaEvent.None) }
     }
 }

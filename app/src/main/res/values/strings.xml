@@ -29,17 +29,19 @@
     <string name="username_placeholder">admin@itechpro.vn</string>
     <string name="password_label">Mật khẩu</string>
     <string name="connect_code_label">Mã kết nối</string>
-    <string name="connect_code_placeholder">https://spa.ezmax.vn</string>
+    <string name="connect_code_placeholder">Nhập mã kết nối hoặc tên miền</string>
 
     <string name="register_qr">Đăng ký trở thành đại lý với Qr Code</string>
 
     <string name="remember_me">Lưu mật khẩu</string>
 
     <string name="register">Đăng ký</string>
+    <string name="device_not_support_biometricAuthenticator">Thiết bị không hỗ trợ xác thực vân tay!</string>
     <string name="registerAccount">Đăng ký tài khoản</string>
     <string name="connect_code">Mã kết nối</string>
-    <string name="copyright">Copyright © 2025 by ITECHPRO</string>
-    <string name="version">Phiên bản: 5.4</string>
+    <string name="copyright">Copyright ©</string>
+    <string name="biometricCredentials">Để sử dụng chức năng này, bạn vui lòng cài đặt vân tay trên thiết bị</string>
+    <string name="version">Phiên bản:</string>
 
     <string name="custom_detail">Chi tiết khách hàng</string>
     <string name="customType">Kiểu khách hàng</string>
@@ -510,6 +512,7 @@
     <string name="error_empty_password">Mật khẩu không được để trống!</string>
     <string name="error_empty_re_password">Nhập lại mật khẩu không được để trống!</string>
     <string name="error_unknown">Không xác định</string>
+    <string name="account_password_error">Tài khoản hoặc mật khẩu không đúng!</string>
     <string name="CONTACT_PERSON">Không xác định</string>
     <string name="error_empty_contact_person">Vui lòng chọn người phụ trách</string>
     <string name="error_email">Email chưa đúng định dạng</string>

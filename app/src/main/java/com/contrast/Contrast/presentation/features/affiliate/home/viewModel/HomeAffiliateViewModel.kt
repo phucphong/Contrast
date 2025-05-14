@@ -128,6 +128,8 @@ class HomeAffiliateViewModel @Inject constructor(
 
     private suspend fun getSlideHome(obj: String, mode: String) {
         val user = currentUserInfo ?: return
+
+        Log.e("user.isOfflineMode",user.isOfflineMode.toString())
         useCase.getSlideHome(user.isOfflineMode, obj, mode, user.token).collectResponse(
             dispatcher = dispatcher,
             onSuccess = { data ->
@@ -245,14 +247,44 @@ class HomeAffiliateViewModel @Inject constructor(
     }
 
     fun onItemNotificationSelected() {
-        _state.update { it.copy(navEvent = NotificationNavEvent.GoToNotifications("", "")) }
+        if (currentUserInfo?.isOfflineMode?:false) {
+            // Chuyển màn hình login từ Activity
+            viewModelScope.launch {
+                _state.update {
+                    it.copy(
+                        navEvent = SplashNaEvent.GoToLogIn("1")
+                    )
+                }
+            }
+        } else {
+        _state.update { it.copy(navEvent = NotificationNavEvent.GoToNotifications("", "")) }}
     }
 
     fun onItemCarts() {
-        _state.update { it.copy(navEvent = CartNavEvent.GoToCats) }
+        if (currentUserInfo?.isOfflineMode?:false) {
+            // Chuyển màn hình login từ Activity
+            viewModelScope.launch {
+                _state.update {
+                    it.copy(
+                        navEvent = SplashNaEvent.GoToLogIn("1")
+                    )
+                }
+            }
+        } else {
+        _state.update { it.copy(navEvent = CartNavEvent.GoToCats) }}
     }
 
     fun onAddServiceRequestSelected(product: Product) {
+        if (currentUserInfo?.isOfflineMode?:false) {
+            // Chuyển màn hình login từ Activity
+            viewModelScope.launch {
+                _state.update {
+                    it.copy(
+                        navEvent = SplashNaEvent.GoToLogIn("1")
+                    )
+                }
+            }
+        } else {
         _state.update {
             it.copy(navEvent = ProductNavEvent.GoToAddServiceRequest(
                 id = product.id ?: "",
@@ -260,7 +292,7 @@ class HomeAffiliateViewModel @Inject constructor(
                 idUnit = product.iddonvichuan ?: "",
                 discount = product.iddonvichuan ?: ""
             ))
-        }
+        }}
     }
 
     fun resetNavigation() {

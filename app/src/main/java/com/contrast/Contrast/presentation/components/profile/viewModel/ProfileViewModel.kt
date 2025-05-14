@@ -116,7 +116,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
     fun onLoginClick() {
-        _navigationEvent.value = SplashNaEvent.GoToLogIn
+        _navigationEvent.value = SplashNaEvent.GoToLogIn("1")
     }
 
     fun onRegisterClick() {
@@ -136,7 +136,8 @@ class ProfileViewModel @Inject constructor(
         appConfig.setCustomerId("")
         appConfig.setEmployeeName("")
         appConfig.setPermissionMobile("")
-        _navigationEvent.value = SplashNaEvent.GoToLogIn
+        appConfig.setOfflineMode(false)
+        _navigationEvent.value = SplashNaEvent.GoToLogIn("0")
     }
 
     fun getMenuApp() {

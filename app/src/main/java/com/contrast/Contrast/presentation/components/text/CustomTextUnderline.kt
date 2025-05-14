@@ -1,5 +1,7 @@
 package com.contrast.Contrast.presentation.components.text
 
+
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,16 +26,18 @@ import com.contrast.Contrast.presentation.theme.PlaceholderGray
 
 
 @Composable
-fun CustomText(
+fun CustomTextUnderline(
     text: AnnotatedString,
     fontWeight: FontWeight =  FontWeight(400),
     fontSize: TextUnit = 14.sp,
     color: Color = Color.Black,
     colorUnderline: Color = Color.Black,
     textAlign: TextAlign = TextAlign.Left,
+
+
     modifier: Modifier = Modifier
         .fillMaxWidth()
-        .padding(0.dp)
+        .padding(bottom =  5.dp)
 
 ) {
     val customFontFamily = FontFamily(
@@ -41,7 +45,7 @@ fun CustomText(
     )
 
     Column() {
-
+        Spacer(modifier = Modifier.height(6.dp))
 
         Text(
             text = text,
@@ -54,33 +58,31 @@ fun CustomText(
             modifier = modifier
 
         )
-
-
+        CustomDividerColor(PlaceholderGray)
     }
 }
 
 @Composable
-fun CustomText(
+fun CustomTextUnderline(
     text: String,
     fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit = 14.sp,
     color: Color = FF000000,
     textAlign: TextAlign = TextAlign.Left,
+
     isLowercase: Boolean = false, // ✅ thêm mới
     modifier: Modifier = Modifier
         .fillMaxWidth()
-        .padding(0.dp)
+        .padding(bottom =  5.dp)
 
 ) {
-
     val displayText = if (isLowercase) text.lowercase() else text
-    CustomText(
+    CustomTextUnderline(
         text = AnnotatedString(displayText),
         fontWeight = fontWeight,
         fontSize = fontSize,
         color = color,
         textAlign = textAlign,
-
         modifier =  modifier
     )
 }

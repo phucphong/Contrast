@@ -7,7 +7,10 @@ package com.itechpro.domain.model.navigationEvent
 
 
 sealed class SplashNaEvent : NavEvent {
-    object GoToLogIn : SplashNaEvent()
+
+    data class GoToLogIn(
+        val isClose: String,
+        ) : ProductNavEvent()
 
     object GoToRegister : SplashNaEvent()
     object GoToDomain : SplashNaEvent()

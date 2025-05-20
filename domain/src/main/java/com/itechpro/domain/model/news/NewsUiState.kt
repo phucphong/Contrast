@@ -13,7 +13,7 @@ data class NewsUiState(
     val categoryNews: List<Category> = emptyList(),
     val selectedTab: Int = 0,
     val isLoading: Boolean = false,
-    val validationError: String? = null,
+    val errorMessage: String = "",
     val newDetail: News? = null,
     val domain: String? = "",
     val navEvent: NavEvent = ProductNavEvent.None

@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.news.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
@@ -40,23 +42,18 @@ class NewsViewModel @Inject constructor(
     val state: StateFlow<NewsUiState> = _state
 
     private var currentUserInfo: CurrentUserInfo? = null
-
     init {
         viewModelScope.launch(dispatcher) {
-            try {
-                currentUserInfo = getCurrentUserUseCase()
-                _state.update { it.copy(domain = currentUserInfo?.domain ?: "") }
-
-                getCategory()
-            } catch (e: Exception) {
+            val user = runCatching { getCurrentUserUseCase() }.getOrNull()
+            currentUserInfo = user
+            if (user != null) {
                 _state.update {
-                    it.copy(
-                        validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-                    )
+                    it.copy(domain = user.domain)
                 }
             }
         }
     }
+
 
     fun setInitialNews(products: List<News>) {
         _state.update { it.copy(pagedNews = products.take(10)) }
@@ -80,45 +77,71 @@ class NewsViewModel @Inject constructor(
 
     fun onItemNewSelected(product: News) {
         _state.update {
-            it.copy(navEvent = NewsNavEvent.GoToNewDetail(
-                id = product.id ?: "",
-            ))
+            it.copy(
+                navEvent = NewsNavEvent.GoToNewDetail(
+                    id = product.id ?: "",
+                )
+            )
         }
     }
-
+    fun clearErrorMessage() {
+        _state.update { it.copy(errorMessage = "") }
+    }
     fun getNews(idCategory: String) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getNews(user.isOfflineMode, idCategory, user.token).collectResponse(
+            useCase.getNews(
+                 idCategory, user.token ?: ""
+            ).collectResponse(
+
                 dispatcher = dispatcher,
                 onLoading = { _state.update { it.copy(isLoading = true) } },
-                onSuccess = { news -> _state.update { it.copy(news = news, isLoading = false) } },
-                onError = { msg -> _state.update { it.copy(validationError = msg, isLoading = false) } }
-            )
+                onSuccess = { news ->
+                    _state.update { it.copy(news = news, isLoading = false) }
+                },
+                onError = { msg ->
+                    _state.update {
+                        it.copy(
+                            errorMessage = msg, isLoading = false
+                        )
+                    }
+                })
         }
     }
 
-    fun getNewDetail( id: String) {
+    fun getNewDetail(id: String) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getNewDetail(user.isOfflineMode,id, user.token).collectResponse(
-                dispatcher = dispatcher,
+            useCase.getNewDetail(
+                 id, user.token ?: ""
+            ).collectResponse(dispatcher = dispatcher,
                 onLoading = {}, // Optional: handle if needed
                 onSuccess = { detail -> _state.update { it.copy(newDetail = detail) } },
-                onError = { msg -> _state.update { it.copy(validationError = msg) } }
-            )
+                onError = { msg -> _state.update { it.copy(errorMessage = msg) } })
         }
     }
 
     fun getCategory() {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCategory(user.isOfflineMode, user.token).collectResponse(
-                dispatcher = dispatcher,
+            useCase.getCategory(
+                user.token
+            ).collectResponse(dispatcher = dispatcher,
                 onLoading = { _state.update { it.copy(isLoading = true) } },
-                onSuccess = { list -> _state.update { it.copy(categoryNews = list, isLoading = false) } },
-                onError = { msg -> _state.update { it.copy(validationError = msg, isLoading = false) } }
-            )
+                onSuccess = { list ->
+                    _state.update {
+                        it.copy(
+                            categoryNews = list, isLoading = false
+                        )
+                    }
+                },
+                onError = { msg ->
+                    _state.update {
+                        it.copy(
+                            errorMessage = msg, isLoading = false
+                        )
+                    }
+                })
         }
     }
 
@@ -129,9 +152,7 @@ class NewsViewModel @Inject constructor(
             useCase.searchLocal(textSearch, list).collect { filteredList ->
                 _state.update {
                     it.copy(
-                        pagedNews = filteredList,
-                        isLoading = false,
-                        validationError = null
+                        pagedNews = filteredList, isLoading = false, errorMessage = ""
                     )
                 }
             }

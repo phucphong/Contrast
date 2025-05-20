@@ -22,7 +22,7 @@ class ProductUseCase @Inject constructor(
     ) {
 
     fun getInfoProduct(
-        offline: Boolean,
+
         idParent: String,
         idUnit: String,
         authen: String
@@ -30,7 +30,7 @@ class ProductUseCase @Inject constructor(
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getInfoProductOff(idParent, idUnit)
             } else {
                 repository.getInfoProduct(idParent, idUnit, authen)
@@ -71,11 +71,11 @@ class ProductUseCase @Inject constructor(
 
 
 
-    fun getProductsByIdParent(offline: Boolean,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
+    fun getProductsByIdParent(type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getProductsByIdParentOff(type,idParent)
             } else {
                 repository.getProductsByIdParent( type,idParent,authen)
@@ -85,7 +85,7 @@ class ProductUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
     fun getProductsCategory(
-        offline: Boolean,
+
         type: String,
         idParent: String,
         idProduct: String,
@@ -94,7 +94,7 @@ class ProductUseCase @Inject constructor(
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getProductsByIdParentOff(type, idParent)
             } else {
                 repository.getProductsByIdParent(type, idParent, authen)
@@ -112,7 +112,7 @@ class ProductUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
     fun getProductsOther(
-        offline: Boolean,
+
         type: String,
         idParent: String,
         idProduct: String,
@@ -121,7 +121,7 @@ class ProductUseCase @Inject constructor(
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getProductsByIdParentOff(type, idParent)
             } else {
                 repository.getProductsByIdParent(type, idParent, authen)

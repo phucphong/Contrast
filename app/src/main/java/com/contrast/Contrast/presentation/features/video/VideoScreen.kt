@@ -1,9 +1,11 @@
 package com.contrast.Contrast.presentation.features.video
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -21,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 
@@ -52,9 +55,22 @@ fun VideoScreen(navHostController: NavHostController,
     var idCategory by remember { mutableStateOf("0") }
     var searchText by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
+        viewModel.loadUserInfo()
         cartViewModel.getCarts(false)
     }
-
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//
+//    DisposableEffect(lifecycleOwner) {
+//        val observer = LifecycleEventObserver { _, event ->
+//
+//            if (event == Lifecycle.Event.ON_RESUME) {
+//
+//                viewModel.getNews(idCategory)
+//            }
+//        }
+//        lifecycleOwner.lifecycle.addObserver(observer)
+//        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+//    }
 
     LaunchedEffect(state.videos) {
         viewModel.setInitialVideo(state.videos)
@@ -63,6 +79,7 @@ fun VideoScreen(navHostController: NavHostController,
     LaunchedEffect(state.selectedTab,state. categoryNews) {
         if (state.categoryNews.isNotEmpty() &&state. selectedTab in state.categoryNews.indices) {
             idCategory =state.categoryNews[state.selectedTab].id ?: "0"
+            Log.e("idCategory",idCategory)
             viewModel.getVideos(idCategory)
         }
     }
@@ -88,28 +105,23 @@ fun VideoScreen(navHostController: NavHostController,
             else -> Unit
         }
     }
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().padding( top = 10.dp ,bottom=80.dp)) {
 
         // 🔍 TopBar tìm kiếm + icon
         TopSearchNotificationCart(
             isTexField = true,
             text = searchText,
-
             totalNotificationItems =notificationState. totalNotificationItems,
             totalCartItems = cartState.totalCartItems,
             onTextChanged = { searchText = it
                 viewModel.searchLocal (searchText,state.videos)
-
                             },
             onNotificationClick = { viewModel.onItemNotificationSelected() },
             onCartClick = { viewModel.onItemCarts() },
 
         )
 
-        if (state.isLoading) {
-            // Hiển thị loading, ví dụ:
-            CustomCircularProgressIndicator()
-        }
+
 
         TabBarRow(
             tabs = state.categoryNews,
@@ -123,7 +135,13 @@ fun VideoScreen(navHostController: NavHostController,
 
             }
         )
+        if (state.isLoading) {
+            // Hiển thị loading, ví dụ:
+            CustomCircularProgressIndicator()
 
+
+
+        }
         CustomSwipeRefresh(
             isRefreshing = isRefreshing,
             onRefresh = { viewModel.getVideos(idCategory) }

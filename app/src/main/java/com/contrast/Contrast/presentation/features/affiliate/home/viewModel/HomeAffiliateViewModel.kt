@@ -129,8 +129,8 @@ class HomeAffiliateViewModel @Inject constructor(
     private suspend fun getSlideHome(obj: String, mode: String) {
         val user = currentUserInfo ?: return
 
-        Log.e("user.isOfflineMode",user.isOfflineMode.toString())
-        useCase.getSlideHome(user.isOfflineMode, obj, mode, user.token).collectResponse(
+
+        useCase.getSlideHome( obj, mode, user.token).collectResponse(
             dispatcher = dispatcher,
             onSuccess = { data ->
                 _state.update { it.copy(slides = data) }
@@ -144,7 +144,7 @@ class HomeAffiliateViewModel @Inject constructor(
 
     private suspend fun getCategory(obj: String, mode: String, type: String, idParent: String) {
         val user = currentUserInfo ?: return
-        useCase.getCategory(user.isOfflineMode, obj, mode, type, idParent, user.token).collectResponse(
+        useCase.getCategory( obj, mode, type, idParent, user.token).collectResponse(
             dispatcher = dispatcher,
             onSuccess = { data ->
                 _state.update { it.copy(categorys = data) }
@@ -157,7 +157,7 @@ class HomeAffiliateViewModel @Inject constructor(
 
     private suspend fun getFlashSale() {
         val user = currentUserInfo ?: return
-        useCase.getFlashSale(user.isOfflineMode, user.token).collectResponse(
+        useCase.getFlashSale( user.token).collectResponse(
             dispatcher = dispatcher,
             onSuccess = { data ->
                 _state.update { it.copy(flashSales = data) }
@@ -186,7 +186,7 @@ class HomeAffiliateViewModel @Inject constructor(
             currentPage = 0
             allProducts = emptyList()
 
-            useCase.getProductsByIdParent(user.isOfflineMode, type, idParent, user.token).collectResponse(
+            useCase.getProductsByIdParent( type, idParent, user.token).collectResponse(
                 dispatcher = dispatcher,
                 onSuccess = { data ->
                     allProducts = data
@@ -247,7 +247,7 @@ class HomeAffiliateViewModel @Inject constructor(
     }
 
     fun onItemNotificationSelected() {
-        if (currentUserInfo?.isOfflineMode?:false) {
+        if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {
@@ -261,7 +261,7 @@ class HomeAffiliateViewModel @Inject constructor(
     }
 
     fun onItemCarts() {
-        if (currentUserInfo?.isOfflineMode?:false) {
+        if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {
@@ -275,7 +275,7 @@ class HomeAffiliateViewModel @Inject constructor(
     }
 
     fun onAddServiceRequestSelected(product: Product) {
-        if (currentUserInfo?.isOfflineMode?:false) {
+        if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {

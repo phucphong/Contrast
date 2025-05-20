@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -42,14 +43,16 @@ import androidx.navigation.NavHostController
 
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.buildHtmlFromBody
-import com.contrast.Contrast.extensions.cleanHtml
+
 import com.contrast.Contrast.extensions.formatToDDMYYYYHHMM
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.media.NetworkImage
-import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
+import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
+
 import com.contrast.Contrast.presentation.components.webview.HtmlContentWebView
+
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
-import com.contrast.Contrast.presentation.features.product.detail.ui.WebViewProduct
-import com.contrast.Contrast.utils.Util
+
 
 @Composable
 fun NewDetailScreen(
@@ -66,16 +69,26 @@ fun NewDetailScreen(
 
     }
 
+    if (state.errorMessage.isNotEmpty()) {
+        CustomOkAlertDialog(message = state.errorMessage, onDismiss = {
+            viewModel.clearErrorMessage()
 
+        })
+    }
 
-    Column() {
-        CustomTopAppBarBackTitle(title = stringResource(id = R.string.new_detail),
-            Color.Red,
-            onBackClick = { navHostController.popBackStack() })
+    Column {
+
+        CustomBackTitle(
+            title = stringResource(R.string.new_detail),
+            tint = Color.Black,
+            textColor = Color.Black,
+            fontSize = 12.sp,
+            painter = painterResource(id = R.drawable.quaylai),
+            onBackPress = { navHostController.popBackStack() }
+        )
+
         val fullUrl = (state.domain?.trimEnd('/') ?: "") + (state.newDetail?.filetxt ?: "")
-//        val fullUrl = "https://images2.thanhnien.vn/528068263637045248/2023/12/4/mai-han-c-17016869677251382812401.jpg"
 
-        Log.d("IMAGE_URL", fullUrl)
 
         Column(
             modifier = Modifier
@@ -87,11 +100,12 @@ fun NewDetailScreen(
             NetworkImage(
                 model = fullUrl,
                 contentDescription = null,
-                contentScale = ContentScale.FillHeight,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .height(250.dp)
                     .padding(5.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+
 
             )
 
@@ -144,18 +158,18 @@ fun NewDetailScreen(
                 }
             }
 
-            val context = LocalContext.current
-            val configuration = LocalConfiguration.current
 
-            // Lấy mật độ màn hình và chiều rộng (giống DisplayMetrics)
-            val density = context.resources.displayMetrics.density
-            val screenWidthPx = (configuration.screenWidthDp * density).toInt()
             val htmlContent = state.newDetail?.noidung ?: ""
+//
+//            if(state.newDetail!=null){
+//
+//                ViewNewsScreen(news = state.newDetail!!, domain = state.domain ?: "")
+//            }
 
 
             HtmlContentWebView(
-                htmlContent = cleanHtml(htmlContent)
-                   ,     domain =state.domain?:"",
+                htmlContent = htmlContent,
+                domain = state.domain ?: "",
             )
         }
     }

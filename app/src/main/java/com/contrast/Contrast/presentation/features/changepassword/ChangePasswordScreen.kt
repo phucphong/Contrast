@@ -33,7 +33,7 @@ import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassw
 import com.contrast.Contrast.presentation.components.PasswordRequirements
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorRegisterDialog
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTitleBack
 
 
@@ -218,7 +218,7 @@ fun ChangePasswordScreen(
         }
         // ✅ Hiển thị Dialog khi đang tải
         if(showLoadingDialog){
-            CustomCircularProgressIndicatorDialog(
+            CustomCircularProgressIndicatorRegisterDialog(
                 networkState = registerState,
                 onDismiss = {  showLoadingDialog = false}
             )

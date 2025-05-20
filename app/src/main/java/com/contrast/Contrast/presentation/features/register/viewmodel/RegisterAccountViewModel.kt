@@ -47,7 +47,7 @@ class RegisterAccountViewModel @Inject constructor(
     private val device: String = preferencesManager.getDevice()
     private val authen: String = preferencesManager.getToken()
     private val idEmployee: String = preferencesManager.getEmployeeId()
-    private val isOffLine: Boolean = preferencesManager.isOfflineMode()
+
     fun validateAndRegister(
         phone: String, fullName: String, password: String, confirmPassword: String,
         email: String?, selectedDay: String, selectedMonth: String, selectedYear: String,
@@ -66,7 +66,7 @@ class RegisterAccountViewModel @Inject constructor(
     private fun checkPhone(phone: String, email: String?, fullName: String, password: String, typeCheck: String) {
         viewModelScope.launch(dispatcher) {
             try {
-                val token = if (!isOffLine) Common.key else authen
+                val token = if (authen.isEmpty()) Common.key else authen
                 checkPhoneUseCase.execute("dailyaf", "checkdt", phone, idEmployee, token, typeCheck).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {
@@ -93,7 +93,7 @@ class RegisterAccountViewModel @Inject constructor(
     private fun checkEmail(email: String, fullName: String, phone: String, password: String, typeCheck: String) {
         viewModelScope.launch(dispatcher) {
             try {
-                val token = if (!isOffLine) Common.key else authen
+                val token = if (authen.isEmpty()) Common.key else authen
                 checkEmailUseCase.execute("dailyaf", "checkemail", email, idEmployee, token, typeCheck).collect { result ->
                     when (result) {
                         is NetworkResponse.Success -> {

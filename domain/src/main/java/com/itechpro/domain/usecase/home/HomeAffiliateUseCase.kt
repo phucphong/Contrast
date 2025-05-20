@@ -21,12 +21,12 @@ class HomeAffiliateUseCase @Inject constructor(
     ) {
 
 
-    fun getCategory(offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Category>>> {
+    fun getCategory( obj: String,mode: String,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
             val startTime = System.currentTimeMillis()
             Log.d("Timing", "📤 Start getCategory at $startTime")
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getCategoryOff(obj, mode,type,idParent)
             } else {
                 repository.getCategory(obj, mode,type,idParent,authen)
@@ -37,12 +37,12 @@ class HomeAffiliateUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getSlideHome(offline: Boolean, obj: String,mode: String,authen: String): Flow<NetworkResponse<List<SliderHome>>> {
+    fun getSlideHome( obj: String,mode: String,authen: String): Flow<NetworkResponse<List<SliderHome>>> {
         return flow {
             emit(NetworkResponse.Loading)
             val startTime = System.currentTimeMillis()
             Log.d("Timing", "📤 Start getSlideHome at $startTime")
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getSlideHomeOff(obj, mode)
             } else {
                 repository.getSlideHome(obj, mode,authen)
@@ -53,11 +53,11 @@ class HomeAffiliateUseCase @Inject constructor(
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
-    fun getFlashSale(offline: Boolean, authen: String): Flow<NetworkResponse<List<Product>>> {
+    fun getFlashSale( authen: String): Flow<NetworkResponse<List<Product>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getFlashSaleOff()
             } else {
                 repository.getFlashSale(authen)
@@ -68,12 +68,12 @@ class HomeAffiliateUseCase @Inject constructor(
     }
 
 
-    fun getProductsByIdParent(offline: Boolean,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
+    fun getProductsByIdParent(type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
         return flow {
             emit(NetworkResponse.Loading)
             val startTime = System.currentTimeMillis()
             Log.d("Timing", "📤 Start getProductsByIdParent at $startTime")
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getProductsByIdParentOff(type,idParent)
             } else {
                 repository.getProductsByIdParent( type,idParent,authen)

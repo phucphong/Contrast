@@ -224,8 +224,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
         countdownJobDetail?.cancel()
         super.onCleared()
     }
-
-
+    
     fun onTabSelected(index: Int, category: Category) {
         _selectedTab.value =index
         _state.update {
@@ -259,7 +258,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
 
     fun onItemAddReviewsSelected( id: String,idUnit: String, fileTxt:String, name:String) {
-        if (currentUserInfo?.isOfflineMode?:false) {
+        if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {
@@ -283,7 +282,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
         }
     }
     fun onItemReportSelected( id: String,idUnit: String, fileTxt:String, name:String) {
-        if (currentUserInfo?.isOfflineMode?:false) {
+         if (currentUserInfo?.token?.isEmpty() == true) {
             viewModelScope.launch {
 
 
@@ -309,7 +308,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
         }
     }
     fun onFavorite(isLike: Boolean,idProduct: String, idUnit: String) {
-        if (currentUserInfo?.isOfflineMode?:false) {
+         if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {
@@ -330,7 +329,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
     fun onItemCarts( ) {
 
-        if (currentUserInfo?.isOfflineMode?:false) {
+         if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {
@@ -368,7 +367,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
     }
 
     fun onAddServiceRequestSelected( category: Product) {
-        if (currentUserInfo?.isOfflineMode?:false) {
+         if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {
@@ -424,7 +423,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
                         pointAffiliate = user.pointAffiliate,
                         customerId = user.customerId,
                         employeeId = user.employeeId,
-                        isOfflineMode = user.isOfflineMode,
+
                     )
                 }
             }
@@ -501,13 +500,13 @@ class ProductViewModel @Inject constructor(private val context: Context,
 
             try {
                 //offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String
-                useCase.getInfoProduct(currentUserInfo?.isOfflineMode?:false,idParent ,idUnit,currentUserInfo?.token?:"")
+                useCase.getInfoProduct(idParent ,idUnit,currentUserInfo?.token?:"")
 
                     .collectResponse(
                         dispatcher = dispatcher,
                         onSuccess = {
                                 data -> _state.update { it.copy(productInfo = data!!) }
-                            Log.e("getInfoProduct","getInfoProduct ${data.denngay}")
+
                             startPromoCountdownProductDetail(data)
 
                         },
@@ -594,7 +593,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 _pagedProducts.value = emptyList()
                 currentPage = 0
                 allProducts = emptyList()
-                useCase.getProductsByIdParent(currentUserInfo?.isOfflineMode?:false,type, idParent,  currentUserInfo?.token?:"")
+                useCase.getProductsByIdParent(type, idParent,  currentUserInfo?.token?:"")
                     .collectResponse(
                         dispatcher = dispatcher,
                         onSuccess = {
@@ -621,7 +620,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 _pagedProducts.value = emptyList()
                 currentPage = 0
                 allProducts = emptyList()
-                useCase.getProductsCategory(currentUserInfo?.isOfflineMode?:false,_type.value, idParent,idProduct,  currentUserInfo?.token?:"")
+                useCase.getProductsCategory(_type.value, idParent,idProduct,  currentUserInfo?.token?:"")
                     .collectResponse(
                         dispatcher = dispatcher,
                         onSuccess = {
@@ -646,7 +645,7 @@ class ProductViewModel @Inject constructor(private val context: Context,
                 _pagedProducts.value = emptyList()
                 currentPage = 0
                 allProducts = emptyList()
-                useCase.getProductsOther(currentUserInfo?.isOfflineMode?:false,_type.value, "0",idProduct,  currentUserInfo?.token?:"")
+                useCase.getProductsOther(_type.value, "0",idProduct,  currentUserInfo?.token?:"")
 
                     .collectResponse(
                         dispatcher = dispatcher,

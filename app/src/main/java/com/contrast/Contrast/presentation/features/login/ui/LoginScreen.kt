@@ -43,6 +43,7 @@ import com.contrast.Contrast.presentation.features.login.BiometricAuthenticator
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
 import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
 import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.contrast.Contrast.presentation.theme.TealGreen
@@ -60,7 +61,7 @@ fun LoginScreen(navHostController: NavHostController,
 
     var password by remember { mutableStateOf(state.password) }
     var rememberMe by remember { mutableStateOf(state.rememberPassword) }
-    var isRegisterButton by remember { mutableStateOf(false) }
+    var isLoginButton by remember { mutableStateOf(false) }
     var isBiometricAuthenticator by remember { mutableStateOf(false) }
     var biometricAuthenticatorError by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -70,14 +71,16 @@ fun LoginScreen(navHostController: NavHostController,
     val biometricAuthenticator = remember(activity) {
         activity?.let { BiometricAuthenticator(it) }
     }
-    if (state.errorMessage.isNotEmpty()&&isRegisterButton) {
+    if (state.errorMessage.isNotEmpty()&&isLoginButton) {
         CustomOkAlertDialog(message = state.errorMessage, onDismiss = {
-            viewModel.clearValidationError()
-            isRegisterButton = false
+            viewModel.clearErrorMessage()
+            isLoginButton = false
         })
     }
 
-
+    LaunchedEffect(Unit) {
+        Log.e("LoginScreen", "Composed at: ${System.currentTimeMillis()}")
+    }
     if (isBiometricAuthenticator) {
         CustomOkAlertDialog(message = stringResource(R.string.biometricCredentials), onDismiss = {
             isBiometricAuthenticator = false
@@ -85,15 +88,14 @@ fun LoginScreen(navHostController: NavHostController,
     }
 
     // Xử lý navigation event
-    LaunchedEffect(state.navigationEvent) {
-        when (val event = state.navigationEvent) {
+    LaunchedEffect(state.navEvent) {
+        when (val event = state.navEvent) {
             is SplashNaEvent.GoToMain -> {
-                delay(200)
                 navHostController.navigate(
-                    AffiliateRoutes.AffiliateHome.route
-                ) {
-                    popUpTo(0) { inclusive = true } // reset hoàn toàn
-                }
+                    MainRoutes.Main.withArgs(
+                        id = event.id, idUnit = event.idUnit, introducerId = event.introducerId
+                    )
+                )
                 viewModel.resetNavigation()
             }
 
@@ -192,7 +194,7 @@ fun LoginScreen(navHostController: NavHostController,
             Row (verticalAlignment = Alignment.CenterVertically){
                 Button(
                     onClick = {
-                        isRegisterButton = true
+                        isLoginButton = true
                         viewModel.validateAndLogin(account, password)
                     },
                     modifier = Modifier

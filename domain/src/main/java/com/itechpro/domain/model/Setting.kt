@@ -9,6 +9,9 @@ data class Setting(
     var trangthai: String? =  "",
     var bansanpham: String ?=  "",
     var bandichvu: String ?=  "",
+    var tenmien: String ?=  "",
+    var lydotamdung: String ?=  "",
+    var noidungbaotruoc: String ?=  "",
     var uutienhienthisanpham: String ?=  ""
 
 )

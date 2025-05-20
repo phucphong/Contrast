@@ -22,6 +22,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -68,7 +69,7 @@ class SplashViewModel @Inject constructor(
     fun  intentProductDetail(intent: Intent){
         val result = handleShareIntentUseCase.execute(intent) ?: return
         if (result.domain.isNotEmpty() && result.domain != _domain.value) {
-            AppModule.updateBaseUrl(result.domain)
+
             appConfig.setDomain(result.domain)
             _navigationEvent.value = SplashNaEvent.ShowAffiliateInfo(
                 id = result.id,
@@ -76,6 +77,7 @@ class SplashViewModel @Inject constructor(
                 introducerId = result.introducerId,
                 domain = result.domain
             )
+
         } else {
             _navigationEvent.value = SplashNaEvent.GoToMain(
                 id = result.id,
@@ -94,8 +96,10 @@ class SplashViewModel @Inject constructor(
 
         }
     }
-
-    private fun getSettingViewOff() {
+    fun resetNavigation() {
+        _navigationEvent.value =SplashNaEvent.None
+    }
+    private fun getSettingDisplay() {
         viewModelScope.launch(dispatcher) {
             try {
                 useCase.getSettingViewOff("laydulieu", "cauhinhhienthi").collect { result ->
@@ -107,15 +111,8 @@ class SplashViewModel @Inject constructor(
                             appConfig.setDisplayPriority(result.data?.uutienhienthisanpham?:"")
 
                             if(result.data!=null){
-                                _navigationEvent.value = SplashNaEvent.GoToMain(
-                                    id = "0",
-                                    idUnit = "0",
-                                    introducerId = "0",
-                                )
-                            }else{
-
+                                _navigationEvent.value = SplashNaEvent.GoToMain("0", "0", "0")
                             }
-
 
 
                         }
@@ -153,19 +150,15 @@ class SplashViewModel @Inject constructor(
                                     _navigationEvent.value = SplashNaEvent.GoToDomain
                                 } else if (isLoggedIn) {
                                     if(status=="tmdt"){
-                                        getSettingViewOff()
+                                        getSettingDisplay()
                                     }else{
                                         // thay vào main nhân viên
-                                        _navigationEvent.value = SplashNaEvent.GoToMain(
-                                            id = "0",
-                                            idUnit = "0",
-                                            introducerId = "0",
-                                        )
+                                        _navigationEvent.value = SplashNaEvent.GoToMain("0", "0", "0")
                                     }
                                 } else {
 
-                                    if(status==""){
-                                        getSettingViewOff()
+                                    if(status=="tmdt"){
+                                        getSettingDisplay()
                                     }else{
                                         _navigationEvent.value = SplashNaEvent.GoToLogIn("0")
                                     }

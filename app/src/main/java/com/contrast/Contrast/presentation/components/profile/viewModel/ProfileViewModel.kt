@@ -136,7 +136,7 @@ class ProfileViewModel @Inject constructor(
         appConfig.setCustomerId("")
         appConfig.setEmployeeName("")
         appConfig.setPermissionMobile("")
-        appConfig.setOfflineMode(false)
+
         _navigationEvent.value = SplashNaEvent.GoToLogIn("0")
     }
 

@@ -34,11 +34,11 @@ class VideoUseCase @Inject constructor(
     }.flowOn(Dispatchers.Default)
 
 
-    fun getVideos(offline: Boolean, idCategory: String, authen: String): Flow<NetworkResponse<List<Video>>> {
+    fun getVideos( idCategory: String, authen: String): Flow<NetworkResponse<List<Video>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getVideosOff(idCategory)
             } else {
                 repository.getVideos(idCategory, authen)
@@ -48,10 +48,10 @@ class VideoUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getCategory(offline: Boolean,obj: String,mode: String,  authen: String): Flow<NetworkResponse<List<Category>>> {
+    fun getCategory(obj: String,mode: String,  authen: String): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getCategoryOff(obj,mode)
             } else {
                 repository.getCategory( obj,mode,authen)

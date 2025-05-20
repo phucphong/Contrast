@@ -18,11 +18,11 @@ class NewsUseCase @Inject constructor(
 ) {
 
 
-    fun getNews(offline: Boolean, idCategory: String, authen: String): Flow<NetworkResponse<List<News>>> {
+    fun getNews( idCategory: String, authen: String): Flow<NetworkResponse<List<News>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getNewsOff(idCategory)
             } else {
                 repository.getNews(idCategory, authen)
@@ -47,11 +47,11 @@ class NewsUseCase @Inject constructor(
         emit(filtered)
     }.flowOn(Dispatchers.Default)
 
-    fun getCategory(offline: Boolean,  authen: String): Flow<NetworkResponse<List<Category>>> {
+    fun getCategory(  authen: String): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getCategoryOff()
             } else {
                 repository.getCategory( authen)
@@ -63,12 +63,12 @@ class NewsUseCase @Inject constructor(
 
 
     fun getNewDetail(
-        offline: Boolean,
+
         ido: String,
         authen: String
     ): Flow<NetworkResponse<News>> = safeFlowCall {
 
-        val response = if (offline) {
+        val response = if (authen.isEmpty()) {
             repository.getNewDetailOff( ido)
         } else {
             repository.getNewDetail( ido, authen)

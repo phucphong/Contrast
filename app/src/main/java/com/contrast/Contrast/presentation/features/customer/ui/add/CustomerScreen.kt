@@ -21,7 +21,7 @@ import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDi
 import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.category.CategoryDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialogMultiSelect
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorRegisterDialog
 import com.contrast.Contrast.presentation.components.datePicker.CustomDatePickerDialog
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
@@ -140,7 +140,7 @@ fun CustomerScreen(
     }
 
     if (isAlertDialogVisible && isRegisterButton && validationError == null) {
-        CustomCircularProgressIndicatorDialog(networkState = registerState, onDismiss = {
+        CustomCircularProgressIndicatorRegisterDialog(networkState = registerState, onDismiss = {
             isAlertDialogVisible = false
             isRegisterButton = false
         })

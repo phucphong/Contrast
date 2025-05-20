@@ -2,6 +2,7 @@ package com.contrast.Contrast.presentation.features.affiliate.category
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -63,18 +64,18 @@ class CategoryAffiliateModel @Inject constructor(
                     currentUser = it
                     _state.update { state ->
                         state.copy(
-                            domain = it.domain.orEmpty(),
-                            token = it.token.orEmpty(),
-                            pointAffiliate = it.pointAffiliate.orEmpty(),
-                            displayProduct = it.displayProduct.orEmpty(),
-                            displayService = it.displayService.orEmpty(),
-                            displayPriority = it.displayPriority.orEmpty()
+                            domain = it.domain,
+                            token = it.token,
+                            pointAffiliate = it.pointAffiliate,
+                            displayProduct = it.displayProduct,
+                            displayService = it.displayService,
+                            displayPriority = it.displayPriority
                         )
                     }
                 }
                 .onFailure {
                     _state.update {
-                        it.copy(validationError = stringProvider.getString(R.string.error_connection) )
+                        it.copy(errorMessage = stringProvider.getString(R.string.error_connection) )
                     }
                 }
         }
@@ -116,7 +117,7 @@ class CategoryAffiliateModel @Inject constructor(
                         _state.update { it.copy(pagedProducts = response.data, isLoading = false) }
                     }
                     is NetworkResponse.Error -> {
-                        _state.update { it.copy(isLoading = false, validationError = response.message ?: "Lỗi không xác định") }
+                        _state.update { it.copy(isLoading = false, errorMessage = response.message ?: "Lỗi không xác định") }
                     }
                 }
             }
@@ -146,6 +147,7 @@ class CategoryAffiliateModel @Inject constructor(
     fun onCategory2Selected(index: Int, categoryList: List<Category>, type: String) {
         _state.update { it.copy(selectedTab2 = index, selectedTab3 = 0) }
         val id = categoryList.getOrNull(index)?.id.orEmpty()
+
         getCategory3(type, id)
     }
 
@@ -179,7 +181,7 @@ class CategoryAffiliateModel @Inject constructor(
     private fun getCategory1(type: String, categoryId: String) {
         val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCategory(user.isOfflineMode, "tatcanhomsp", "tatcanhomsp", type, categoryId, user.token)
+            useCase.getCategory("tatcanhomsp", "tatcanhomsp", type, categoryId, user.token)
                 .collectResponse(
                     dispatcher = dispatcher,
                     onSuccess = { category1 ->
@@ -194,7 +196,7 @@ class CategoryAffiliateModel @Inject constructor(
 
                     },
                     onError = { message ->
-                        _state.update { it.copy(validationError = message) }
+                        _state.update { it.copy(errorMessage = message) }
                     }
                 )
         }
@@ -203,7 +205,7 @@ class CategoryAffiliateModel @Inject constructor(
     private fun getCategory2(type: String, categoryId: String) {
         val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCategory(user.isOfflineMode, "tatcanhomsp", "tatcanhomsp", type, categoryId, user.token)
+            useCase.getCategory( "tatcanhomsp", "tatcanhomsp", type, categoryId, user.token)
                 .collectResponse(
                     dispatcher = dispatcher,
                     onSuccess = { category2 ->
@@ -219,16 +221,16 @@ class CategoryAffiliateModel @Inject constructor(
 
                     },
                     onError = { message ->
-                        _state.update { it.copy(validationError = message) }
+                        _state.update { it.copy(errorMessage = message) }
                     }
                 )
         }
     }
 
-    private fun getCategory3(type: String, id: String) {
+    private fun getCategory3(type: String, categoryId: String) {
         val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCategory(user.isOfflineMode, "tatcanhomsp", "tatcanhomsp", type, id, user.token)
+            useCase.getCategory( "tatcanhomsp", "tatcanhomsp", type, categoryId, user.token)
 
                 .collectResponse(
                     dispatcher = dispatcher,
@@ -236,10 +238,15 @@ class CategoryAffiliateModel @Inject constructor(
                         _state.update { it.copy(category3 = category3) }
 
                         val id3 = category3.firstOrNull()?.id.orEmpty()
-                        getProductsByIdParent(type, id3) // <-- lấy luôn sản phẩm
+
+                        if (category3.isNullOrEmpty()) {
+                            getProductsByIdParent(type, categoryId) // không có cấp 1 thì lấy luôn
+                        } else {
+                            getProductsByIdParent(type, id3) // <-- lấy luôn sản phẩm
+                        }
                     },
                     onError = { message ->
-                        _state.update { it.copy(validationError = message) }
+                        _state.update { it.copy(errorMessage = message) }
                     }
                 )
         }
@@ -249,7 +256,7 @@ class CategoryAffiliateModel @Inject constructor(
         val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
             _state.update { it.copy(isLoading = true, products = emptyList(), pagedProducts = emptyList()) }
-            useCase.getProductsByIdParent(user.isOfflineMode, type, idParent, user.token)
+            useCase.getProductsByIdParent( type, idParent, user.token)
                 .collectResponse(
                     dispatcher = dispatcher,
                     onSuccess = { products ->
@@ -257,13 +264,11 @@ class CategoryAffiliateModel @Inject constructor(
                         startPromoCountdownProducts(products)
                     },
                     onError = { message ->
-                        _state.update { it.copy(validationError = message) }
+                        _state.update { it.copy(errorMessage = message) }
                     }
                 )
         }
     }
-
-
     fun startPromoCountdownProducts(products: List<Product>) {
         countdownJob?.cancel()
         countdownJob = startPromoCountdownUseCase.startForProductList(

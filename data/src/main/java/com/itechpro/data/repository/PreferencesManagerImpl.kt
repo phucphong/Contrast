@@ -39,7 +39,7 @@ class PreferencesManagerImpl @Inject constructor(
     override fun getShowPhoneKH(): String = appConfig.getShowPhoneKH()
     override fun getShowEmailKH(): String = appConfig.getShowEmailKH()
     override fun getShowAddressKH(): String = appConfig.getShowAddressKH()
-    override fun isOfflineMode(): Boolean = appConfig.isOfflineMode()
+
     override fun getAdmin(): Boolean = appConfig.getAdmin()
     override fun getAdminRoot(): Boolean = appConfig.getAdminRoot()
     override fun getModuleOff(): String = appConfig.getModuleOff()

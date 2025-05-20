@@ -10,7 +10,7 @@ data class VideoUiState(
     val pagedVideos: List<Video> = emptyList(),
     val selectedTab: Int = 0,
     val isLoading: Boolean = false,
-    val validationError: String? = null,
+    val errorMessage: String? = null,
     val obj: Video? = null,
     val categoryNews: List<Category> = emptyList(),
     val categoryNewsHeart: List<Category> = emptyList(),

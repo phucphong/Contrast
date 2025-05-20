@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
@@ -59,14 +60,14 @@ fun SplashScreen(
                 )  {
                     popUpTo(0) { inclusive = true } // reset hoàn toàn
                 }
-
+                viewModel.resetNavigation()
             }
 
             is SplashNaEvent.GoToDomain -> {
                 navHostController.navigate(AuthRoutes.Domain.route) {
                     popUpTo("splash") { inclusive = true }
                 }
-
+                viewModel.resetNavigation()
             }
 
             is SplashNaEvent.GoToMain -> {
@@ -75,6 +76,7 @@ fun SplashScreen(
                         id = event.id, idUnit = event.idUnit, introducerId = event.introducerId
                     )
                 )
+                viewModel.resetNavigation()
             }
 
 
@@ -93,7 +95,7 @@ fun SplashScreen(
         Image(
             painter = painterResource(R.drawable.logo),
             contentDescription = "",
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(50.dp)
         )
     }
 }

@@ -18,13 +18,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.contrast.Contrast.presentation.components.copyrightInfoSection.CopyrightInfoSection
-
 import com.contrast.Contrast.presentation.components.logout.LogoutButton
 import com.contrast.Contrast.presentation.components.profile.ui.OrderStatusRow
 import com.contrast.Contrast.presentation.components.profile.ui.ProfileHeader
@@ -53,8 +49,9 @@ fun ProfileScreen(
                     AuthRoutes.Login.withArgs(
                         isClose = event.isClose,
                     )
-                ) {
-                    popUpTo(0) { inclusive = true } // Xóa toàn bộ backstack
+                )  {
+                    popUpTo(0) { inclusive = true } // hoặc pop đến "splash" nếu có
+                    launchSingleTop = true
                 }
                 viewModel.resetNavigation()
             }
@@ -83,8 +80,7 @@ fun ProfileScreen(
             viewModel.getInfoAccount(uiState.customerId)
             viewModel.getMenuApp()
         }) {
-        Column {
-
+        Column(Modifier.padding( bottom=80.dp)) {
             ProfileHeader(uiState.avartar,
                 uiState.fullName,
                 uiState.qrCode,
@@ -93,7 +89,6 @@ fun ProfileScreen(
                 uiState.isLogin,
                 onLoginClick = { viewModel.onLoginClick() },
                 onRegisterClick = { viewModel.onRegisterClick() })
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()

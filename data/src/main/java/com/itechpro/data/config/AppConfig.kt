@@ -9,42 +9,40 @@ import javax.inject.Inject
 class AppConfig @Inject constructor(
     private val securePrefs: SecurePrefsHelper) {
 
-
-
-    fun getEmployeeId(): String = securePrefs.getString(KEY_EMPLOYEE_ID, "0") ?: ""
-    fun getCustomerId(): String = securePrefs.getString(KEY_ID_CUSTOMER, "0") ?: ""
-    fun getIntroducerId(): String = securePrefs.getString(KEY_INTRODUCER_ID, "0") ?: ""
-    fun getEmployeeName(): String = securePrefs.getString(KEY_EMPLOYEE_NAME, "") ?: ""
-    fun getAccount(): String = securePrefs.getString(KEY_ACCOUNT, "") ?: ""
-    fun getPassword(): String = securePrefs.getString(KEY_PASSWORD, "") ?: ""
-
+    fun getEmployeeId(): String = securePrefs.getString(KEY_EMPLOYEE_ID, "0") 
+    fun getCustomerId(): String = securePrefs.getString(KEY_ID_CUSTOMER, "0") 
+    fun getIntroducerId(): String = securePrefs.getString(KEY_INTRODUCER_ID, "0") 
+    fun getEmployeeName(): String = securePrefs.getString(KEY_EMPLOYEE_NAME, "") 
+    fun getAccount(): String = securePrefs.getString(KEY_ACCOUNT, "admin@itechpro.vn")
+    fun getPassword(): String = securePrefs.getString(KEY_PASSWORD, "123456")
+    fun getDomain(): String = securePrefs.getString(KEY_DOMAIN, "")
     fun getToken(): String = securePrefs.getString(KEY_TOKEN,"")
     fun getRememberPassword(): Boolean = securePrefs.getBoolean(KEY_REMEMBER_PASSWORD,false)
-    fun getIdCompany(): String = securePrefs.getString(KEY_ID_COMPANY, "") ?: ""
-    fun getPointAffiliate(): String = securePrefs.getString(KEY_POINT_AFFILIATE, "0") ?: ""
-    fun getIdCompanyParent(): String = securePrefs.getString(KEY_ID_COMPANY_PARENT, "") ?: ""
-    fun getAppType(): String = securePrefs.getString(KEY_APP_TYPE, "") ?: ""
-    fun getEmail(): String = securePrefs.getString(KEY_EMAIL, "") ?: ""
-    fun getPhone(): String = securePrefs.getString(KEY_PHONE, "") ?: ""
-    fun getSalesPointId(): String = securePrefs.getString(KEY_ID_SALE_POINT, "3") ?: ""
-    fun getSalesPointName(): String = securePrefs.getString(KEY_SALE_POINT_NAME, "") ?: ""
-    fun getFullName(): String = securePrefs.getString(KEY_ID_FULL_NAME, "") ?: ""
-    fun getPermissionMobile(): String = securePrefs.getString(KEY_PERMISSION, "") ?: ""
-    fun getDomain(): String = securePrefs.getString(KEY_DOMAIN, "") ?: ""
-    fun getDomainCustomer(): String = securePrefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") ?: ""
-    fun getDevice(): String = securePrefs.getString(KEY_DEVICE, "") ?: ""
-    fun getDiscountAgency(): String = securePrefs.getString(KEY_DISCOUNT_AGENCY, "") ?: ""
-    fun getPaySalary(): String = securePrefs.getString(KEY_PAY_SALARY, "") ?: ""
-    fun getDisplayService(): String = securePrefs.getString(KEY_DISPLAY_SERVICE, "1") ?: ""
-    fun getDisplayProduct(): String = securePrefs.getString(KEY_DISPLAY_PRODUCT, "1") ?: ""
-    fun getDisplayPriority(): String = securePrefs.getString(KEY_DISPLAY_PRIORITY, "1") ?: ""
-    fun getCategory(): String = securePrefs.getString(KEY_CATEGORY, "") ?: ""
-    fun getTypeAccount(): String = securePrefs.getString(KEY_TYPE_ACCOUNT, "khachhang") ?: ""
-    fun getShowPhoneKH(): String = securePrefs.getString(KEY_SHOW_PHONE, "") ?: ""
-    fun getShowEmailKH(): String = securePrefs.getString(KEY_SHOW_EMAIL, "") ?: ""
-    fun getShowAddressKH(): String = securePrefs.getString(KEY_SHOW_ADDRESS, "") ?: ""
-    fun getModuleOff(): String = securePrefs.getString(KEY_SHOW_MODULE_OFF, "") ?: ""
-    fun isOfflineMode(): Boolean = securePrefs.getBoolean(KEY_OF_LINE, true)
+    fun getIdCompany(): String = securePrefs.getString(KEY_ID_COMPANY, "") 
+    fun getPointAffiliate(): String = securePrefs.getString(KEY_POINT_AFFILIATE, "0") 
+    fun getIdCompanyParent(): String = securePrefs.getString(KEY_ID_COMPANY_PARENT, "") 
+    fun getAppType(): String = securePrefs.getString(KEY_APP_TYPE, "") 
+    fun getEmail(): String = securePrefs.getString(KEY_EMAIL, "") 
+    fun getPhone(): String = securePrefs.getString(KEY_PHONE, "") 
+    fun getSalesPointId(): String = securePrefs.getString(KEY_ID_SALE_POINT, "3") 
+    fun getSalesPointName(): String = securePrefs.getString(KEY_SALE_POINT_NAME, "") 
+    fun getFullName(): String = securePrefs.getString(KEY_ID_FULL_NAME, "") 
+    fun getPermissionMobile(): String = securePrefs.getString(KEY_PERMISSION, "") 
+
+    fun getDomainCustomer(): String = securePrefs.getString(KEY_DOMAIN_CUSTOMER, "dcheery") 
+    fun getDevice(): String = securePrefs.getString(KEY_DEVICE, "") 
+    fun getDiscountAgency(): String = securePrefs.getString(KEY_DISCOUNT_AGENCY, "") 
+    fun getPaySalary(): String = securePrefs.getString(KEY_PAY_SALARY, "") 
+    fun getDisplayService(): String = securePrefs.getString(KEY_DISPLAY_SERVICE, "1") 
+    fun getDisplayProduct(): String = securePrefs.getString(KEY_DISPLAY_PRODUCT, "1") 
+    fun getDisplayPriority(): String = securePrefs.getString(KEY_DISPLAY_PRIORITY, "1") 
+    fun getCategory(): String = securePrefs.getString(KEY_CATEGORY, "") 
+    fun getTypeAccount(): String = securePrefs.getString(KEY_TYPE_ACCOUNT, "khachhang") 
+    fun getShowPhoneKH(): String = securePrefs.getString(KEY_SHOW_PHONE, "") 
+    fun getShowEmailKH(): String = securePrefs.getString(KEY_SHOW_EMAIL, "") 
+    fun getShowAddressKH(): String = securePrefs.getString(KEY_SHOW_ADDRESS, "") 
+    fun getModuleOff(): String = securePrefs.getString(KEY_SHOW_MODULE_OFF, "") 
+
     fun getAdmin(): Boolean = securePrefs.getBoolean(KEY_ADMIN, false)
     fun getAdminRoot(): Boolean = securePrefs.getBoolean(KEY_ADMIN_ROOT, false)
 
@@ -81,7 +79,7 @@ class AppConfig @Inject constructor(
     fun setShowEmailKH(value: String) = securePrefs.putString(KEY_SHOW_EMAIL, value)
     fun setShowAddressKH(value: String) = securePrefs.putString(KEY_SHOW_ADDRESS, value)
     fun setModuleOff(value: String) = securePrefs.putString(KEY_SHOW_MODULE_OFF, value)
-    fun setOfflineMode(value: Boolean) = securePrefs.putBoolean(KEY_OF_LINE, value)
+
     fun setAdmin(value: Boolean) = securePrefs.putBoolean(KEY_ADMIN, value)
     fun setAdminRoot(value: Boolean) = securePrefs.putBoolean(KEY_ADMIN_ROOT, value)
 
@@ -94,7 +92,7 @@ class AppConfig @Inject constructor(
         private const val KEY_EMPLOYEE_NAME = "employeeName"
         private const val KEY_ACCOUNT = "KEY_ACCOUNT"
         private const val KEY_PASSWORD = "KEY_PASSWORD"
-        private const val KEY_OF_LINE = "KEY_OF_LINE"
+
         private const val KEY_TOKEN = "token"
         private const val KEY_REMEMBER_PASSWORD = "KEY_REMEMBER_PASSWORD"
         private const val KEY_ID_COMPANY = "IdCompany"

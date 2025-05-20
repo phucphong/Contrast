@@ -12,10 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 
-import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
-
-
-import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.CategoryProductRoutes
 
 

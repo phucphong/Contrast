@@ -13,10 +13,16 @@ import android.widget.TextView
 import com.contrast.Contrast.R
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
 
@@ -42,7 +48,22 @@ object Util {
         }
     }
 
+    fun initRetrofit(url: String,context: Context?): Retrofit {
+        val okHttpClient = OkHttpClient.Builder()
+            .readTimeout(100, TimeUnit.SECONDS)
+            .writeTimeout(100, TimeUnit.SECONDS)
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .build()
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
 
+        return Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okHttpClient)
+            .build()
+    }
     fun updateImageSrc(content: String, domain: String): String {
         // Biểu thức chính quy tìm các thẻ <img> với src không chứa 'http'
         val regex = "<img [^>]*src=['\"](?!http)([^'\"]+)"

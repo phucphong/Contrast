@@ -13,7 +13,7 @@ data class CategoryUiState(
     val displayProduct: String = "",
     val displayService: String = "",
     val displayPriority: String = "",
-    val validationError: String = "",
+    val errorMessage: String = "",
     val tabs: List<Category> = emptyList(),
     val category1: List<Category> = emptyList(),
     val category2: List<Category> = emptyList(),

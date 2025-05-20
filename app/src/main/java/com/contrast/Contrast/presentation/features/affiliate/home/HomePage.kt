@@ -51,7 +51,7 @@ fun HomePage(
     viewModel: HomeAffiliateViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.padding( top = 10.dp ,bottom=80.dp),
 ) {
     val state by viewModel.state.collectAsState()
     val promoUiDataMap = viewModel.promoUiDataMap

@@ -420,7 +420,7 @@ fun ProductDetailScreen(
                             stickyHeader {
                                 ProductDetailHeader(type = state.productInfo?.loaichitiet ?: "",
                                     isFavoriteInit = isFavoriteInit,
-                                    isOfflineMode = state.isOfflineMode,
+                                    isOfflineMode = true,
                                     onFavorite = {
 
                                         viewModel.onFavorite(it, id, idUnit)

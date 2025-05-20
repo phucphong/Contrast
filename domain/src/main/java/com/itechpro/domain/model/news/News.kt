@@ -11,7 +11,7 @@ data class News(
     val filetxt: String,
     val cd: String,
     val tungay: String,
-    val denngay: String,
+    val denngay: String?,
     val nguoidang: String,
     @Json(name = "duyet") val duyet: Boolean = false
 

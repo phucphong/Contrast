@@ -1,6 +1,8 @@
 package com.contrast.Contrast.presentation.features.affiliate
 
+import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
@@ -25,7 +27,7 @@ import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.VideoRoutes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AffiliateMainScreen(
@@ -102,11 +104,7 @@ fun AffiliateMainScreen(
                 }
             }
         }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            RootNavigationGraph(
-                navController = navController
-            )
-        }
+    ) {
+        RootNavigationGraph( navController) // ✅ đúng
     }
 }

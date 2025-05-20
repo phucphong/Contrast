@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,10 +28,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.copyrightInfoSection.CopyrightInfoSection
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.features.splas.SplashViewModel
+import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
 import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
@@ -39,13 +44,24 @@ import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 @Preview(showBackground = true)
 @Composable
 fun DomainScreen(navHostController: NavHostController, viewModel: DomainViewModel = hiltViewModel()) {
-    var connectCode by remember { mutableStateOf("https://spa.ezmax.vn") }
-    val navEvent by viewModel.navigationEvent.collectAsState()
+
+    var isRegisterButton by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val state by viewModel.state.collectAsState()
+
+    var connectCode by remember { mutableStateOf(state.domain) }
+
 
     // Xử lý navigation event
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    if (state.errorMessage.isNotEmpty()&&isRegisterButton) {
+        CustomOkAlertDialog(message = state.errorMessage, onDismiss = {
+            isRegisterButton = false
+        })
+    }
 
+    LaunchedEffect(state.navEvent) {
+        when (val event =state. navEvent) {
 
             is SplashNaEvent.GoToLogIn -> {
                 navHostController.navigate(
@@ -55,9 +71,16 @@ fun DomainScreen(navHostController: NavHostController, viewModel: DomainViewMode
                 )  {
                     popUpTo(0) { inclusive = true } // reset hoàn toàn
                 }
-
+                viewModel.resetNavigation()
             }
-
+            is SplashNaEvent.GoToMain -> {
+                navHostController.navigate(
+                    MainRoutes.Main.withArgs(
+                        id = event.id, idUnit = event.idUnit, introducerId = event.introducerId
+                    )
+                )
+                viewModel.resetNavigation()
+            }
             else -> Unit
 
         }
@@ -71,7 +94,12 @@ fun DomainScreen(navHostController: NavHostController, viewModel: DomainViewMode
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Spacer(modifier = Modifier.height(48.dp))
+
+        if(state.isLoading){
+            CustomCircularProgressIndicator(contentAlignment = Alignment.Center)
+        }
 
       Column (Modifier.weight(1f),  horizontalAlignment = Alignment.CenterHorizontally){   // Logo + slogan
           Image(
@@ -108,7 +136,8 @@ fun DomainScreen(navHostController: NavHostController, viewModel: DomainViewMode
           // Nút Tiếp tục
           Button(
               onClick = {
-//                navController.navigate("login")
+                  isRegisterButton = true
+                  viewModel.registerVerificationCodes(connectCode,context)
               },
               modifier = Modifier
                   .fillMaxWidth()
@@ -120,7 +149,8 @@ fun DomainScreen(navHostController: NavHostController, viewModel: DomainViewMode
                   text = stringResource(R.string.continue_button),
                   color = Color.White,
                   fontSize = 13.sp,
-                  textAlign = TextAlign.Center
+                  textAlign = TextAlign.Center,
+
               )
           }
 
@@ -133,8 +163,8 @@ fun DomainScreen(navHostController: NavHostController, viewModel: DomainViewMode
               fontSize = 13.sp,
               textAlign = TextAlign.Center,
 
-              modifier = Modifier.clickable {
-                viewModel.registerVerificationCodes(connectCode)
+              modifier = Modifier.noRippleClickableComposable {
+                viewModel.registerAccount()
               }
           )
  }
@@ -144,5 +174,6 @@ fun DomainScreen(navHostController: NavHostController, viewModel: DomainViewMode
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
         )
+
     }
 }

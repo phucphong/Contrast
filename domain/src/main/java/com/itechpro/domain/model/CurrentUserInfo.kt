@@ -26,7 +26,7 @@ data class CurrentUserInfo(
     val domain: String,
     val domainCustomer: String,
     val device: String,
-    val isOfflineMode: Boolean,
+
 
     val displayService: String,
     val displayProduct: String,

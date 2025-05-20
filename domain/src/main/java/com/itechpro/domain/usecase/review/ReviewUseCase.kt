@@ -27,7 +27,7 @@ class ReviewUseCase @Inject constructor(
 
 
     fun getReviews(
-        offline: Boolean,
+
         idReview: String,
         count: String,
         authen: String
@@ -35,7 +35,7 @@ class ReviewUseCase @Inject constructor(
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getReviewsOff(idReview, count)
             } else {
                 repository.getReviews(idReview, count, authen)

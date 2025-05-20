@@ -522,6 +522,8 @@
     <string name="create_account_button" translatable="false">Tạo tài khoản</string>
     <string name="phone_placeholder" translatable="false">Nhập số điện thoại của bạn</string>
     <string name="error_connection">Lỗi kết nối</string>
+    <string name="error_code_connection">Mã kết nối không đúng!</string>
+    <string name="emtry_connection">Mã kết nối không được bỏ trống!</string>
     <string name="earn">Kiếm được</string>
     <string name="perSale">mỗi lượt bán</string>
     <string name="quantity">Số lượng</string>

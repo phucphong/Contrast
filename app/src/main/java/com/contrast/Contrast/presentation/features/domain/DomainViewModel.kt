@@ -1,8 +1,10 @@
 package com.contrast.Contrast.presentation.features.domain
 
 
-
+import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
@@ -12,8 +14,14 @@ import com.contrast.Contrast.presentation.base.BaseViewModel
 import com.contrast.Contrast.utils.Common
 import com.contrast.Contrast.utils.NetworkChecker
 import com.contrast.Contrast.utils.StringProvider
+import com.contrast.Contrast.utils.Util
+import com.itechpro.data.api.RetrofitArrayAPI2
 import com.itechpro.data.config.AppConfig
 import com.itechpro.domain.model.CurrentUserInfo
+import com.itechpro.domain.model.Setting
+import com.itechpro.domain.model.customer.Customer
+import com.itechpro.domain.model.domain.DomainUiState
+import com.itechpro.domain.model.login.LoginUiState
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
@@ -23,10 +31,18 @@ import com.itechpro.domain.usecase.setting.SettingUseCase
 import com.itechpro.domain.usecase.share.HandleShareIntentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import java.util.Locale
 import javax.inject.Inject
 
@@ -41,87 +57,270 @@ class DomainViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseViewModel(networkChecker, dispatcher) {
 
-    private var currentUserInfo: CurrentUserInfo? = null
+    private lateinit var currentUserInfo: CurrentUserInfo
 
-    private val _validationError = MutableStateFlow("")
-    val validationError: StateFlow<String> = _validationError
-
-
-    private val _navigationEvent = MutableStateFlow<NavEvent>(ProductNavEvent.None)
-    val navigationEvent: StateFlow<NavEvent> = _navigationEvent
-
-    private val _domain = MutableStateFlow("")
-    val domain: StateFlow<String> = _domain
-
+    private val _state = MutableStateFlow(DomainUiState())
+    val state: StateFlow<DomainUiState> = _state
     init {
-        viewModelScope.launch(dispatcher) {
-            try {
-                currentUserInfo = getCurrentUserUseCase()
-                _domain.value = currentUserInfo?.domain.orEmpty()
-            } catch (e: Exception) {
-                _validationError.value =
-                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+        viewModelScope.launch {
+            currentUserInfo = getCurrentUserUseCase()
+            _state.update {
+                it.copy(
+                    domain = currentUserInfo.domain,
+                )
             }
         }
     }
+    fun registerAccount() {
+        _state.update {
+            it.copy(
+                navEvent = SplashNaEvent.GoToRegister
+            )
+        }
+    }
+
+    fun registerVerificationCodes(code: String, context: Context) {
+        if (code.isEmpty()) {
 
 
-
-
-    fun registerVerificationCodes(code :String) {
-
-        if (code.lowercase(Locale.getDefault()).contains("http")) {
-            appConfig.setDomain(code)
-            AppModule.updateBaseUrl(code)
-            getVerificationCodes()
+            _state.update {
+                it.copy(
+                    errorMessage = stringProvider.getString(R.string.emtry_connection)
+                )
+            }
         } else {
-            getVerificationCodesOnITP(code)
+            if (code.lowercase(Locale.getDefault()).contains("http")) {
+                appConfig.setDomain(code)
+
+                getVerificationCodes(code, context)
+            } else {
+                getVerificationCodesOnITP(code, context)
+            }
         }
-
-
+    }
+    fun resetNavigation() {
+        _state.update { it.copy(navEvent = SplashNaEvent.None) }
     }
 
+    private fun getVerificationCodesOnITP(code: String, context: Context) {
+        _state.update { it.copy(isLoading = true, errorMessage = "") }
+        val retrofit: Retrofit = Util.initRetrofit("https://itp.ezmax.vn", context)
+        val service: RetrofitArrayAPI2 = retrofit.create(RetrofitArrayAPI2::class.java)
+        val call: Call<List<Setting>> = service.getVerificationCodesOnITP(
+            Common.key, code
+        )
+        call.enqueue(object : Callback<List<Setting>> {
 
-    private fun getVerificationCodes() {
+            override fun onFailure(call: Call<List<Setting>>, t: Throwable) {
+
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = stringProvider.getString(R.string.error_code_connection)
+                    )
+                }
+            }
+
+            override fun onResponse(
+                call: Call<List<Setting>>, response: Response<List<Setting>>
+            ) {
+                try {
+
+                    var listData: List<Setting> = listOf()
+                    if (response.body() != null) {
+                        listData = response.body()!!
+
+
+                    }
+                    val verificationCodes = listData[0].tenmien ?: ""
+                    if (TextUtils.isEmpty(verificationCodes)) {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = stringProvider.getString(R.string.error_code_connection)
+                            )
+                        }
+
+                    } else {
+
+                        appConfig.setDomain(code)
+
+                        getVerificationCodes(verificationCodes, context)
+                    }
+
+                } catch (e: java.lang.Exception) {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = stringProvider.getString(R.string.error_code_connection)
+                        )
+                    }
+                }
+            }
+        })
+    }
+
+    private fun getVerificationCodes(code: String, context: Context) {
+        _state.update { it.copy(isLoading = true, errorMessage = "") }
+        val retrofit: Retrofit = Util.initRetrofit(code, context)
+        val service: RetrofitArrayAPI2 = retrofit.create(RetrofitArrayAPI2::class.java)
+        val call: Call<List<Setting>> = service.getVerificationCodesOnITP(
+            Common.key, code
+        )
+        call.enqueue(object : Callback<List<Setting>> {
+
+            override fun onFailure(call: Call<List<Setting>>, t: Throwable) {
+
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = stringProvider.getString(R.string.error_code_connection)
+                    )
+                }
+            }
+
+            override fun onResponse(
+                call: Call<List<Setting>>, response: Response<List<Setting>>
+            ) {
+                try {
+
+                    appConfig.setDomain(code)
+// Delay nhẹ hoặc đảm bảo set xong mới gọi API
+                    CoroutineScope(Dispatchers.IO).launch {
+                        delay(100) // Hoặc đảm bảo Prefs đã commit
+                        withContext(Dispatchers.Main) {
+                            getAppType()
+                        }
+                    }
+
+
+                } catch (e: java.lang.Exception) {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = stringProvider.getString(R.string.error_code_connection)
+                        )
+                    }
+                }
+            }
+        })
+    }
+
+    private fun getSettingViewOff() {
         viewModelScope.launch(dispatcher) {
             try {
-                useCase.getVerificationCodes().collect { result ->
+                useCase.getSettingViewOff("laydulieu", "cauhinhhienthi").collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {}
                         is NetworkResponse.Success -> {
-                            _navigationEvent.value = SplashNaEvent.GoToLogIn("0")
+                            appConfig.setDisplayProduct(result.data?.bansanpham ?: "")
+                            appConfig.setDisplayService(result.data?.bandichvu ?: "")
+                            appConfig.setDisplayPriority(result.data?.uutienhienthisanpham ?: "")
+
+                            if (result.data != null) {
+
+
+                                    _state.update {
+                                        it.copy(
+                                            isLoading = false,
+                                            errorMessage = "",
+                                            navEvent = SplashNaEvent.GoToMain(
+                                                id = "0",
+                                                idUnit = "0",
+                                                introducerId = "0",
+                                            )
+
+                                        )
+                                    }
+                            }
+
 
                         }
+
                         is NetworkResponse.Error -> {
-                            _validationError.value = result.message
+
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = result.message,
+
+                                    )
+                            }
+
                         }
                     }
                 }
             } catch (e: Exception) {
-                _validationError.value =
-                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = stringProvider.getString(R.string.error_connection),
+
+                        )
+                }
             }
         }
     }
 
-    private fun getVerificationCodesOnITP(code: String) {
+
+    private fun getAppType() {
         viewModelScope.launch(dispatcher) {
             try {
-                useCase.getVerificationCodesOnITP(Common.key,code).collect { result ->
+                useCase.getAppType("loaiapp").collect { result ->
                     when (result) {
                         is NetworkResponse.Loading -> {}
                         is NetworkResponse.Success -> {
-                            _navigationEvent.value = SplashNaEvent.GoToLogIn("0")
+                            //tmdt
+
+                            val status = result.data.trangthai ?: ""
+
+                            appConfig.setAppType(status)
+                            if (status == "tmdt") {
+//                                getSettingViewOff()
+
+                                _state.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        errorMessage = "",
+                                        navEvent =SplashNaEvent.GoToMain("0", "0", "0")
+
+                                    )
+                                }
+                            } else {
+                                _state.update {
+                                    it.copy(
+                                        isLoading = false, navEvent = SplashNaEvent.GoToLogIn("0")
+                                    )
+                                }
+                            }
                         }
+
                         is NetworkResponse.Error -> {
-                            _validationError.value = result.message
+
+
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = result.message,
+
+                                    )
+                            }
                         }
                     }
                 }
             } catch (e: Exception) {
-                _validationError.value =
-                    stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = stringProvider.getString(R.string.error_connection),
+
+                        )
+                }
+
+
             }
         }
     }
+
+
 }

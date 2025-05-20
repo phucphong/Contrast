@@ -190,7 +190,7 @@ class CartViewModel @Inject constructor(
 
 
     fun onItemAddCartToProductDetail(product: ProductDetail, introducerId: String) {
-        if (currentUserInfo?.isOfflineMode?:false) {
+        if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {
@@ -333,7 +333,7 @@ class CartViewModel @Inject constructor(
     }
 
     fun onItemAddCart(product: Product) {
-        if (currentUserInfo?.isOfflineMode ?: false) {
+        if (currentUserInfo?.token?.isEmpty() == true) {
             // Chuyển màn hình login từ Activity
             viewModelScope.launch {
                 _state.update {

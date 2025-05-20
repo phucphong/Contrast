@@ -16,11 +16,11 @@ class CategoryAffiliateUseCase @Inject constructor(
     ) {
 
 
-    fun getCategory(offline: Boolean, obj: String,mode: String,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Category>>> {
+    fun getCategory( obj: String,mode: String,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getCategoryOff(obj, mode,type,idParent)
             } else {
                 repository.getCategory(obj, mode,type,idParent,authen)
@@ -30,10 +30,10 @@ class CategoryAffiliateUseCase @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getProductsByIdParent(offline: Boolean,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
+    fun getProductsByIdParent(type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
         return flow {
             emit(NetworkResponse.Loading)
-            val result = if (offline) {
+            val result = if (authen.isEmpty()) {
                 repository.getProductsByIdParentOff(type,idParent)
             } else {
                 repository.getProductsByIdParent( type,idParent,authen)

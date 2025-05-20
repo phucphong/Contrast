@@ -1,5 +1,6 @@
 package com.contrast.Contrast.presentation.features.video.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
@@ -41,25 +42,49 @@ class VideoViewModel @Inject constructor(
 
 
 
-    private var currentUserInfo: CurrentUserInfo? = null
+    private var currentUser: CurrentUserInfo? = null
+
 
     init {
         viewModelScope.launch(dispatcher) {
-            try {
-                currentUserInfo = getCurrentUserUseCase()
-                _state.update { it.copy(domain = currentUserInfo?.domain ?: "") }
 
-                getCategory("nhomvideo", "modenhomvideo")
-                getCategoryVideoHeart("videokh", "modelaythumuc")
-            } catch (e: Exception) {
-                _state.update {
-                    it.copy(
-                        validationError = stringProvider.getString(R.string.error_connection) + ": ${e.localizedMessage ?: ""}"
-                    )
+
+            runCatching { getCurrentUserUseCase() }
+                .onSuccess {
+                    currentUser = it
+                    _state.update { state ->
+                        state.copy(
+                            domain = it.domain.orEmpty(),
+
+                        )
+                    }
                 }
-            }
+                .onFailure {
+                    _state.update {
+                        it.copy(errorMessage = stringProvider.getString(R.string.error_connection) )
+                    }
+                }
         }
     }
+    fun loadUserInfo() {
+        viewModelScope.launch(dispatcher) {
+            runCatching { getCurrentUserUseCase() }
+                .onSuccess {
+                    currentUser = it
+                    _state.update { state ->
+                        state.copy(domain = it.domain.orEmpty())
+                    }
+                   getCategory("nhomvideo", "modenhomvideo")
+                    getCategoryVideoHeart("videokh", "modelaythumuc")
+                }
+                .onFailure {
+                    _state.update {
+                        it.copy(errorMessage = stringProvider.getString(R.string.error_connection))
+                    }
+                }
+        }
+    }
+
 
     fun setInitialVideo(products: List<Video>) {
         _state.update { it.copy(pagedVideos = products.take(10)) }
@@ -82,41 +107,42 @@ class VideoViewModel @Inject constructor(
     }
 
     fun getVideos(categoryId: String) {
-        val user = currentUserInfo ?: return
+        val user = currentUser ?: return
+
         viewModelScope.launch(dispatcher) {
-            useCase.getVideos(user.isOfflineMode, categoryId, user.token).collectResponse(
+            useCase.getVideos( categoryId, user.token).collectResponse(
                 dispatcher = dispatcher,
                 onLoading = { _state.update { it.copy(isLoading = true) } },
                 onSuccess = { videos ->
                     _state.update { it.copy(videos = videos, isLoading = false) }
                 },
                 onError = { message ->
-                    _state.update { it.copy(validationError = message, isLoading = false) }
+                    _state.update { it.copy(errorMessage = message, isLoading = false) }
                 }
             )
         }
     }
 
     fun getCategory(obj: String, mode: String) {
-        val user = currentUserInfo ?: return
+        val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCategory(user.isOfflineMode, obj, mode, user.token).collectResponse(
+            useCase.getCategory( obj, mode, user.token).collectResponse(
                 dispatcher = dispatcher,
                 onLoading = { _state.update { it.copy(isLoading = true) } },
                 onSuccess = { data -> _state.update { it.copy(categoryNews = data, isLoading = false) } },
-                onError = { msg -> _state.update { it.copy(validationError = msg, isLoading = false) } }
+                onError = { msg -> _state.update { it.copy(errorMessage = msg, isLoading = false) } }
             )
         }
     }
 
     fun getCategoryVideoHeart(obj: String, mode: String) {
-        val user = currentUserInfo ?: return
+        val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCategory(user.isOfflineMode, obj, mode, user.token).collectResponse(
+            useCase.getCategory( obj, mode, user.token).collectResponse(
                 dispatcher = dispatcher,
                 onLoading = { _state.update { it.copy(isLoading = true) } },
                 onSuccess = { data -> _state.update { it.copy(categoryNewsHeart = data, isLoading = false) } },
-                onError = { msg -> _state.update { it.copy(validationError = msg, isLoading = false) } }
+                onError = { msg -> _state.update { it.copy(errorMessage = msg, isLoading = false) } }
             )
         }
     }
@@ -130,7 +156,7 @@ class VideoViewModel @Inject constructor(
                 _state.update { it.copy(
                     pagedVideos = filteredList,
                     isLoading = false,
-                    validationError = null
+                    errorMessage = null
                 ) }
             }
         }

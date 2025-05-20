@@ -60,7 +60,9 @@ fun CategoryAffiliatePage(
 
     LaunchedEffect(Unit) {
         if (!isInit.value) {
-            viewModel.initCategory(state.displayProduct, state.displayService, state.displayPriority, categoryId)
+            viewModel.initCategory(
+                state.displayProduct, state.displayService, state.displayPriority, categoryId
+            )
             isInit.value = true
             cartViewModel.getCarts(false)
         }
@@ -80,14 +82,17 @@ fun CategoryAffiliatePage(
                 )
                 viewModel.resetNavigation()
             }
+
             is CartNavEvent.GoToCats -> {
                 navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
+
             is ProductNavEvent.GoToProductsCategory -> {
                 navHostController.navigate(ProductRoutes.ProductByCategory.withArgs(event.categoryId))
                 viewModel.resetNavigation()
             }
+
             is ProductNavEvent.GoToProductDetail -> {
                 navHostController.navigate(
                     ProductRoutes.ProductDetail.withArgs(
@@ -98,6 +103,7 @@ fun CategoryAffiliatePage(
                 )
                 viewModel.resetNavigation()
             }
+
             is ProductNavEvent.GoToAddServiceRequest -> {
                 navHostController.navigate(
                     ServiceRequestRoutes.AddServiceRequest.withArgs(
@@ -109,29 +115,31 @@ fun CategoryAffiliatePage(
                 )
                 viewModel.resetNavigation()
             }
+
             else -> Unit
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopSearchNotificationCart(
-            isTexField = true,
+    Column(modifier = Modifier.fillMaxSize().padding( top = 10.dp ,bottom=80.dp)) {
+        TopSearchNotificationCart(isTexField = true,
             isBackStack = isBackStack,
             text = searchText,
-            onTextChanged = { searchText = it
+            onTextChanged = {
+                searchText = it
 
-                viewModel.searchLocal (searchText, state.products)
-                            },
+                viewModel.searchLocal(searchText, state.products)
+            },
             totalNotificationItems = notificationState.totalNotificationItems,
             totalCartItems = cartState.totalCartItems,
             onNotificationClick = { viewModel.onItemNotificationSelected() },
             onCartClick = { viewModel.onItemCarts() },
-            onBackStack = { navHostController.popBackStack() }
-        )
+            onBackStack = { navHostController.popBackStack() })
 
         if (state.isLoading) {
             Box(
-                modifier = Modifier.fillMaxSize().padding(top = 20.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 20.dp),
                 contentAlignment = Alignment.TopCenter
             ) {
                 CustomCircularProgressIndicator()
@@ -139,15 +147,11 @@ fun CategoryAffiliatePage(
         }
 
         if (state.tabs.size > 1) {
-            SegmentTabLocal(
-                tabs = state.tabs,
-                selectedTab = selectedTabIndex,
-                onTabSelected = {
-                    searchText = ""
-                    selectedTabIndex = it
-                    viewModel.onCategorySelected(it, state.tabs, categoryId)
-                }
-            )
+            SegmentTabLocal(tabs = state.tabs, selectedTab = selectedTabIndex, onTabSelected = {
+                searchText = ""
+                selectedTabIndex = it
+                viewModel.onCategorySelected(it, state.tabs, categoryId)
+            })
         }
 
         TabBarRow(
@@ -160,34 +164,39 @@ fun CategoryAffiliatePage(
         )
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize().background(Color.White),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White),
             contentPadding = PaddingValues(bottom = 80.dp)
         ) {
             item {
-                TabBarRowCircle(
-                    tabs = state.category2,
+                TabBarRowCircle(tabs = state.category2,
                     color = TealGreen,
                     textCorSelect = TealGreen,
                     selectedTab = state.selectedTab2,
                     type = "name",
                     domain = state.domain,
-                    onTabSelected = { viewModel.onCategory2Selected(it, state.category2, state.type) }
-                )
+                    onTabSelected = {
+                        viewModel.onCategory2Selected(
+                            it, state.category2, state.type
+                        )
+                    })
             }
             item {
-                TabBarRowPillStyle(
-                    tabs = state.category3,
+                TabBarRowPillStyle(tabs = state.category3,
                     selectedTab = state.selectedTab3,
                     type = "name",
-                    onTabSelected = { viewModel.onCategory3Selected(it, state.category3, state.type) }
-                )
+                    onTabSelected = {
+                        viewModel.onCategory3Selected(
+                            it, state.category3, state.type
+                        )
+                    })
                 CustomDividerColor()
             }
 
             val rows = state.pagedProducts.chunked(2)
             items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                ProductRow(
-                    domain = state.domain,
+                ProductRow(domain = state.domain,
                     token = state.token,
                     pointAffiliate = state.pointAffiliate,
                     rowProducts = row,
@@ -195,8 +204,7 @@ fun CategoryAffiliatePage(
                     onItemClick = { viewModel.onItemProductSelected(it) },
                     onClickCart = { cartViewModel.onItemAddCart(it) },
                     onClickAddServiceRequest = { viewModel.onAddServiceRequestSelected(it) },
-                    onClickShare = { }
-                )
+                    onClickShare = { })
             }
         }
     }

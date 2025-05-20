@@ -27,7 +27,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.*
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.button.CustomButton
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorRegisterDialog
 import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
@@ -92,7 +92,7 @@ fun RegisterAccountScreen(
     }
 
     if (isAlertDialogVisible && isRegisterButton && validationError == null) {
-        CustomCircularProgressIndicatorDialog(
+        CustomCircularProgressIndicatorRegisterDialog(
             networkState = registerState,
             onDismiss = {
                 isAlertDialogVisible = false

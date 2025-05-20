@@ -1,9 +1,11 @@
 package com.contrast.Contrast.presentation.features.news.list
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -24,7 +26,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
@@ -42,12 +46,12 @@ import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewsScreen(navHostController: NavHostController
-               , viewModel: NewsViewModel = hiltViewModel()
-               , cartViewModel: CartViewModel = hiltViewModel()
-               , notificationViewModel: NotificationViewModel = hiltViewModel()
+fun NewsScreen(
+    navHostController: NavHostController,
+    viewModel: NewsViewModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel(),
+    notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
-
 
 
     val isRefreshing by remember { mutableStateOf(false) }
@@ -57,8 +61,10 @@ fun NewsScreen(navHostController: NavHostController
     val state by viewModel.state.collectAsState()
     val cartState by cartViewModel.state.collectAsState()
     val notificationState by notificationViewModel.state.collectAsState()
-
+    var isLoading by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
+        viewModel.getCategory()
+
         cartViewModel.getCarts(false)
     }
 
@@ -68,6 +74,13 @@ fun NewsScreen(navHostController: NavHostController
             viewModel.getNews(idCategory)
         }
     }
+    if (state.errorMessage.isNotEmpty()) {
+        CustomOkAlertDialog(message = state.errorMessage, onDismiss = {
+            viewModel.clearErrorMessage()
+
+        })
+    }
+
     LaunchedEffect(state.news) {
         viewModel.setInitialNews(state.news)
     }
@@ -76,8 +89,7 @@ fun NewsScreen(navHostController: NavHostController
             is NotificationNavEvent.GoToNotifications -> {
                 navHostController.navigate(
                     NotificationRoutes.Notifications.withArgs(
-                        startDate = event.startDate,
-                        endDate = event.endDate
+                        startDate = event.startDate, endDate = event.endDate
                     )
                 )
                 viewModel.resetNavigation()
@@ -87,6 +99,7 @@ fun NewsScreen(navHostController: NavHostController
                 navHostController.navigate(CartRoutes.Carts.route)
                 viewModel.resetNavigation()
             }
+
             is NewsNavEvent.GoToNewDetail -> {
                 navHostController.navigate(
                     NewsRoutes.NewsDetail.withArgs(
@@ -100,51 +113,53 @@ fun NewsScreen(navHostController: NavHostController
         }
     }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//
+//    DisposableEffect(lifecycleOwner) {
+//        val observer = LifecycleEventObserver { _, event ->
+//
+//            if (event == Lifecycle.Event.ON_RESUME) {
+//
+//                viewModel.getNews(idCategory)
+//            }
+//        }
+//        lifecycleOwner.lifecycle.addObserver(observer)
+//        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+//    }
 
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
+    Column(modifier = Modifier.fillMaxSize().padding( top = 10.dp ,bottom=80.dp)) {
+        TopSearchNotificationCart(
+            isTexField = true,
+            text = searchText,
+            totalCartItems = cartState.totalCartItems,
+            totalNotificationItems = notificationState.totalNotificationItems,
+            onTextChanged = {
+                searchText = it
+                viewModel.searchLocal(searchText, state.news)
+            },
+            onNotificationClick = { viewModel.onItemNotificationSelected() },
+            onCartClick = { viewModel.onItemCarts() },
 
-            if (event == Lifecycle.Event.ON_RESUME) {
-
-                viewModel.getNews(idCategory)
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            TopSearchNotificationCart(
-                isTexField = true,
-                text = searchText,
-                totalCartItems = cartState.totalCartItems,
-                totalNotificationItems = notificationState.totalNotificationItems,
-                onTextChanged = { searchText = it
-                    viewModel.searchLocal (searchText,state.news)
-                                },
-                onNotificationClick = { viewModel.onItemNotificationSelected() },
-                onCartClick = { viewModel.onItemCarts() },
-
-                )
-            if (state.isLoading) {
-                // Hiển thị loading, ví dụ:
-                CustomCircularProgressIndicator()
-            }
-
-            TabBarRow(
-                tabs =state.categoryNews,
-                color = TealGreen,
-                textCorSelect = TealGreen,
-                selectedTab = state.selectedTab,
-                type = "",
-                onTabSelected = viewModel::onTabSelected
             )
 
-            CustomSwipeRefresh(
-                isRefreshing = isRefreshing,
-                onRefresh = { viewModel.getNews(idCategory) }
-            ) {
+
+        TabBarRow(
+            tabs = state.categoryNews,
+            color = TealGreen,
+            textCorSelect = TealGreen,
+            selectedTab = state.selectedTab,
+            type = "",
+            onTabSelected = viewModel::onTabSelected
+        )
+        if (state.isLoading) {
+            CustomCircularProgressIndicator()
+//            CustomCircularProgressIndicatorDialog(
+//                show = isLoading,
+//                onDismissRequest = { isLoading = false }
+//            )
+        }
+        CustomSwipeRefresh(isRefreshing = isRefreshing,
+            onRefresh = { viewModel.getNews(idCategory) }) {
             if (state.pagedNews.isEmpty()) {
                 EmptyStateScreen(
                     imageRes = R.drawable.nodata,
@@ -154,10 +169,12 @@ fun NewsScreen(navHostController: NavHostController
             } else {
                 LazyColumn {
                     items(state.pagedNews) { article ->
-                        state.domain?.let { NewsItem(article, it, onClickNew={
-                            viewModel.onItemNewSelected(article)
+                        state.domain?.let {
+                            NewsItem(article, it, onClickNew = {
+                                viewModel.onItemNewSelected(article)
 
-                        }) }
+                            })
+                        }
                     }
                 }
             }

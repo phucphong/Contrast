@@ -169,7 +169,7 @@ class ReviewViewModel @Inject constructor(
   fun getReviews(idProduct: String, count: String) {
 
         viewModelScope.launch(dispatcher) {
-            useCase.getReviews(user?.isOfflineMode ?:false, idProduct, count, user?.token.orEmpty()).collect { result ->
+            useCase.getReviews( idProduct, count, user?.token.orEmpty()).collect { result ->
                 when (result) {
                     is NetworkResponse.Success -> {
                         _reviews.value = result.data.reviewList

@@ -21,7 +21,7 @@ data class ProductDetailUiState(
     val employeeId: String ?= null,
     val validationError: String ?= null,
     val discount: Double = 0.0,
-    val isOfflineMode: Boolean = false,
+
 
     val productInfo: ProductDetail? = null,
     val products: List<Product> = emptyList(),

@@ -5,8 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.contrast.Contrast.presentation.features.affiliate.AffiliateMainScreen
-import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
+
 import com.contrast.Contrast.presentation.features.domain.DomainScreen
 import com.contrast.Contrast.presentation.features.forgotPassword.ForgotPasswordScreen
 import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
@@ -39,15 +38,7 @@ fun NavGraphBuilder.registerAuthRoutes(
     }
 
     composable(AuthRoutes.Domain.route) { DomainScreen(navController) }
+    registerMainRoutes(navController)
 
-    composable(
-        route = MainRoutes.Main.route,
-        arguments = MainRoutes.Main.arguments
-    ) { backStackEntry ->
-        val id = backStackEntry.arguments?.getString("id") ?: ""
-        val idUnit = backStackEntry.arguments?.getString("idUnit") ?: ""
-        val introducerId = backStackEntry.arguments?.getString("introducerId") ?: ""
-        AffiliateMainScreen(navController, id, idUnit,introducerId)
-    }
 
 }

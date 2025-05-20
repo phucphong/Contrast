@@ -33,15 +33,20 @@ fun LoginRegisterSwitch(
 ) {
     Row(
         modifier = Modifier
-            .height(40.dp)
-            .fillMaxWidth(),
+            .height(30.dp)
+            .fillMaxWidth().padding(horizontal = 10.dp),
+
     ) {
 
         val backgroundSelected = Color.White
 
         val textColorSelected = TealGreen
         val textColorUnselected = Color.White
+        Box(
+            modifier = Modifier
+                .weight(1f)
 
+        )
         Box(
             modifier = Modifier
                 .weight(1f)

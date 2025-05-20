@@ -35,43 +35,39 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
     @Singleton
     fun provideOKHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         dynamicBaseUrlInterceptor: DynamicBaseUrlInterceptor,
-      appConfig: AppConfig
+        appConfig: AppConfig
     ): OkHttpClient {
-
-
         return OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
-
             .dns(object : Dns {
                 override fun lookup(hostname: String): List<InetAddress> {
-                    return if (hostname == appConfig.getDomain().replace("https://","")) {
-                        listOf(InetAddress.getByName("123.30.186.75")) // IP tĩnh backend của bạn
+                    return if (hostname == appConfig.getDomain().replace("https://", "")) {
+                        listOf(InetAddress.getByName("123.30.186.75")) // IP tĩnh
                     } else {
                         Dns.SYSTEM.lookup(hostname)
                     }
                 }
             })
-
             .addInterceptor(dynamicBaseUrlInterceptor)
             .addInterceptor(httpLoggingInterceptor)
-            .eventListenerFactory { MyEventListener() } // ✅ để log call detail
-            .connectionPool(ConnectionPool(10, 5, TimeUnit.MINUTES)) // ✅ giữ alive connection
+            .eventListenerFactory { MyEventListener() }
+            .connectionPool(ConnectionPool(10, 5, TimeUnit.MINUTES))
             .dispatcher(
                 Dispatcher().apply {
-                    maxRequests = 64         // tăng số lượng request tổng
-                    maxRequestsPerHost = 10  // tăng số lượng request tới 1 host
+                    maxRequests = 64
+                    maxRequestsPerHost = 10
                 }
             )
             .build()
     }
-
 
     @Provides
     @Singleton
@@ -88,7 +84,6 @@ object AppModule {
             .add(LocalDateTimeAdapter())
             .add(ColorAdapter())
             .add(FlexibleBooleanAdapter())
-
             .addLast(KotlinJsonAdapterFactory())
             .build()
     }
@@ -98,28 +93,28 @@ object AppModule {
     fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory {
         return MoshiConverterFactory.create(moshi)
     }
-    @Volatile
-    private var currentBaseUrl: String = "https://spa.ezmax.vn"
+
     @Provides
     @Singleton
     fun provideRetrofitCustomDomain(
         okHttpClient: OkHttpClient,
-        moshiConverterFactory: MoshiConverterFactory
+        moshiConverterFactory: MoshiConverterFactory,
+        appConfig: AppConfig
     ): Retrofit {
+        // Dù dùng domain động, Retrofit vẫn cần baseUrl hợp lệ
+        val dummyBaseUrl = appConfig.getDomain().ifBlank { "https://spa.ezmax.vn" }
+
         val start = System.currentTimeMillis()
         val retrofit = Retrofit.Builder()
-            .baseUrl(currentBaseUrl) // dummy base URL overridden by interceptor
+            .baseUrl(dummyBaseUrl) // domain sẽ được DynamicBaseUrlInterceptor ghi đè
             .client(okHttpClient)
             .addConverterFactory(moshiConverterFactory)
             .build()
 
-
         android.util.Log.d("Timing", "🚀 Retrofit created in ${System.currentTimeMillis() - start}ms")
         return retrofit
     }
-    fun updateBaseUrl(newBaseUrl: String) {
-        currentBaseUrl = newBaseUrl
-    }
+
     @Provides
     @Singleton
     fun provideAppConfig(securePrefsHelper: SecurePrefsHelper): AppConfig {
@@ -135,20 +130,22 @@ object AppModule {
     fun provideSellConfigUseCase(): SellConfigUseCase {
         return SellConfigUseCase()
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun providePromoCountdownUseCase(): PromoCountdownUseCase {
         return PromoCountdownUseCase()
     }
+
     @Provides
     fun provideDownloadImageUseCase(
         context: Context
     ): DownloadUseCase {
         return DownloadUseCaseImpl(context)
     }
+
     @Provides
     fun provideHandleShareIntentUseCase(): HandleShareIntentUseCase {
         return HandleShareIntentUseCase()
     }
-
 }

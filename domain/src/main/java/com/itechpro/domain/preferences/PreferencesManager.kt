@@ -28,7 +28,7 @@ interface PreferencesManager {
     fun getDomain(): String
     fun getDomainCustomer(): String
     fun getDevice(): String
-    fun isOfflineMode(): Boolean
+
     fun getRememberPassword(): Boolean
 
     // ⚙️ UI Display Config

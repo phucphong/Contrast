@@ -11,7 +11,7 @@ data class LoginUiState(
     val account: String = "",
     val password: String = "",
     val passwordBiometricAuthen: String = "",
-    val validationError: String?= null,
+
     val rememberPassword: Boolean = false,
-    val navigationEvent: NavEvent = ProductNavEvent.None
+    val navEvent: NavEvent = ProductNavEvent.None
 )

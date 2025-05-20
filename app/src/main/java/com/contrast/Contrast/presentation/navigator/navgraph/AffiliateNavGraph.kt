@@ -35,14 +35,7 @@ fun NavGraphBuilder.registerAffiliateRoutes(
             HomePage(navController)
         }
 
-        composable(AffiliateRoutes.AffiliateHome.route) {
-            HomePage(navController)
-        }
-
-        composable(CategoryProductRoutes.CategoryProduct.route) {
-            CategoryAffiliatePage(navController, "0")
-        }
-
+        registerCategoryProductRoutes(navController)
         composable(VideoRoutes.Videos.route) {
            VideoScreen(navController)
         }

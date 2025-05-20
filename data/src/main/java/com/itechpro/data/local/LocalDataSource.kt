@@ -35,7 +35,7 @@ class LocalDataSource @Inject constructor(
             domain = getDomain(),
             domainCustomer = getDomainCustomer(),
             device = getDevice(),
-            isOfflineMode = isOfflineMode(),
+
 
             displayService = getDisplayService(),
             displayProduct = getDisplayProduct(),

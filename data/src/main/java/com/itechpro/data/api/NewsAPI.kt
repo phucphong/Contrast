@@ -48,12 +48,12 @@ interface NewsAPI {
         @Header("Authorization") authen: String?
     ): Response<List<News>>
     @Headers("Content-Type: application/json")
-    @GET("/ex/apiaffiliate/getobj")
+
+    @GET("/ex/apiaffiliate/getobjpublic")
     suspend  fun getNewDetailOff(
         @Query("obj") obj: String?,
         @Query("mode") mode: String?,
         @Query("ido") ido: String?,
-
     ): Response<List<News>>
 
     @Headers("Content-Type: application/json")
@@ -62,7 +62,6 @@ interface NewsAPI {
         @Query("obj") tintuc: String?,
         @Query("mode") modedschudetintuc: String?
     ): Response<List<Category>>
-
 
 
 }

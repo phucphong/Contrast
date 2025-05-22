@@ -19,11 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.MainRoutes
 
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import kotlinx.coroutines.delay

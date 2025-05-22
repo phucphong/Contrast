@@ -65,7 +65,14 @@ class ProfileRepositoryImpl @Inject constructor(
             NetworkResponse.Error("Lỗi: ${response.message()}")
         }
     }
-
+    override suspend fun getQrCodeContent(  obj: String, mode: String, content: String,authen: String): NetworkResponse<List<Account>> {
+        val response = api.getQrCodeContent(obj,mode, content ,authen)
+        return if (response.isSuccessful) {
+            NetworkResponse.Success(response.body() ?: emptyList())
+        } else {
+            NetworkResponse.Error("Lỗi: ${response.message()}")
+        }
+    }
 
     override suspend fun getInfoAccountEmployee(listparajson: String, authen: String): NetworkResponse<List<Account>> {
         val response = api.getInfoAccountEmployee(listparajson, authen)
@@ -75,7 +82,4 @@ class ProfileRepositoryImpl @Inject constructor(
             NetworkResponse.Error("Lỗi: ${response.message()}")
         }
     }
-
-
-
 }

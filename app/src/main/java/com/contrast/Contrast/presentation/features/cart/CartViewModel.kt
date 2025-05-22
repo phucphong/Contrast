@@ -54,11 +54,11 @@ class CartViewModel @Inject constructor(
                     currentUserInfo = user
                     _state.update {
                         it.copy(
-                            domain = user.domain.orEmpty(),
-                            device = user.device.orEmpty(),
-                            typeAccount = user.typeAccount.orEmpty(),
-                            customerId = user.customerId.orEmpty(),
-                            employeeId = user.employeeId.orEmpty()
+                            domain = user.domain,
+                            device = user.device,
+                            typeAccount = user.typeAccount,
+                            customerId = user.customerId,
+                            employeeId = user.employeeId
                         )
                     }
                 }.onFailure {

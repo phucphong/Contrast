@@ -28,11 +28,11 @@ import com.contrast.Contrast.presentation.features.flashSale.FlashSaleHome
 import com.contrast.Contrast.presentation.features.flashSale.ui.FlashSaleHeader
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
-import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ServiceRequestRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NotificationRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
@@ -59,6 +59,7 @@ fun HomePage(
     val notificationState by notificationViewModel.state.collectAsState()
 
 
+    var isSearch by remember { mutableStateOf(false) }
     val isRefreshing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf(0) }
@@ -161,14 +162,18 @@ fun HomePage(
         }
     }
 
+    if(isSearch){
+
+    }
+
     Column(modifier = modifier) {
         TopSearchNotificationCart(
-            isTexField = true,
+            isTexField = false,
             text = searchText,
             totalNotificationItems = notificationState.totalNotificationItems,
             totalCartItems = cartState.totalCartItems,
             onTextChanged = { searchText = it },
-            onSearchClick = { },
+            onSearchClick = {isSearch = true },
             onNotificationClick = { viewModel.onItemNotificationSelected() },
             onCartClick = { viewModel.onItemCarts() }
         )

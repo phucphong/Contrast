@@ -10,9 +10,7 @@ import com.contrast.Contrast.presentation.features.domain.DomainScreen
 import com.contrast.Contrast.presentation.features.forgotPassword.ForgotPasswordScreen
 import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
 import com.contrast.Contrast.presentation.features.register.ui.info.RegisterAccountScreen
-import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

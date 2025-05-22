@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.contrast.Contrast.presentation.features.notification.ui.NotificationScreen
-import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NotificationRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

@@ -1,6 +1,8 @@
 package com.itechpro.domain.model.profile
 
 import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 
 data class ProfileUiState(
@@ -22,13 +24,15 @@ data class ProfileUiState(
     val statusMessage: String = "",
     val typeAccount: String = "",
     val employeeId: String = "",
+    val employeeName: String = "",
     val customerId: String = "",
-
+    val selectedTab: Int = 0,
     val discount: Double = 0.0,
     val categorys: List<Category> = emptyList(),
     val coachings: List<Category> = emptyList(),
     val qACoachings: List<Category> = emptyList(),
-
+    val tabs: List<Category> = emptyList(),
     val oders: List<Category> = emptyList(),
+    val navEvent: NavEvent = ProductNavEvent.None,
 
     )

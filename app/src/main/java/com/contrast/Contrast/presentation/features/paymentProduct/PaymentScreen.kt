@@ -30,7 +30,7 @@ import com.contrast.Contrast.presentation.components.slider.ImageSliderPaymentFr
 import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 import com.contrast.Contrast.presentation.components.topAppBar.TopBackTittleHome
-import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
+import com.contrast.Contrast.presentation.navigator.routers.MainRoutes
 
 
 import com.contrast.Contrast.presentation.theme.FFFFFFFF

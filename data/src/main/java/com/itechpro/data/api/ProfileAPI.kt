@@ -50,7 +50,7 @@ interface ProfileAPI {
     //http://192.168.1.5:224/ex/api/getobj?mode=layqrcodetheonoidung&obj=layqrcode&noidung=1794703-192.168.1.119:224-http
     @Headers("Content-Type: application/json")
     @GET("/ex/api/getobj")
-    suspend  fun getQrCode(
+    suspend  fun getQrCodeContent(
         @Query("obj") layqrcode: String?,
         @Query("mode") layqrcodetheonoidung: String?,
         @Query("noidung") content: String?,

@@ -8,12 +8,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
 import com.contrast.Contrast.presentation.components.media.MediaPickerScreenNew
 import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
 import com.contrast.Contrast.presentation.features.review.ui.AddReviewScreen
 import com.contrast.Contrast.presentation.features.review.ui.ReviewsFilterScreen
-import com.contrast.Contrast.presentation.navigator.router.routes.ReviewRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ReviewRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

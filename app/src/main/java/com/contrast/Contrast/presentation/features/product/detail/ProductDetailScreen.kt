@@ -58,11 +58,11 @@ import com.contrast.Contrast.presentation.features.product.viewmodel.ProductView
 import com.contrast.Contrast.presentation.features.review.ReviewScreen
 import com.contrast.Contrast.presentation.features.review.ui.ReviewHeader
 import com.contrast.Contrast.presentation.features.share.ShareDialog
-import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ReviewRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ServiceRequestRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ReviewRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 
 
@@ -277,18 +277,7 @@ fun ProductDetailScreen(
         }
     }
 
-    if (showShareDialog) {
-        ShareDialog(visible = showShareDialog,
-            onDismissRequest = { showShareDialog = false },
-            onShareClick = { option ->
-                showShareDialog = false
-                val shareLink =
-                    "${state.domain}/sharelink.html?id=$id&iddonvi=$idUnit&idngt=${state.employeeId}&domain=${state.domain}"
-                viewModel.share(option, shareLink)
 
-            })
-
-    }
 
     if (isShowQuantity) {
 

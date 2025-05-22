@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.contrast.Contrast.presentation.features.cart.ui.CartScreen
 import com.contrast.Contrast.presentation.features.paymentProduct.PaymentScreen
-import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
+import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

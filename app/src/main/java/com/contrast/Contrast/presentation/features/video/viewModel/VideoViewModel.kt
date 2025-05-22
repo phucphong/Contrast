@@ -43,51 +43,24 @@ class VideoViewModel @Inject constructor(
 
 
     private var currentUser: CurrentUserInfo? = null
-
-
     init {
         viewModelScope.launch(dispatcher) {
-
-
-            runCatching { getCurrentUserUseCase() }
-                .onSuccess {
-                    currentUser = it
-                    _state.update { state ->
-                        state.copy(
-                            domain = it.domain.orEmpty(),
-
-                        )
-                    }
+            val user = runCatching { getCurrentUserUseCase() }.getOrNull()
+            currentUser = user
+            if (user != null) {
+                _state.update {
+                    it.copy(domain = user.domain)
                 }
-                .onFailure {
-                    _state.update {
-                        it.copy(errorMessage = stringProvider.getString(R.string.error_connection) )
-                    }
-                }
+            }
         }
     }
+
     fun loadUserInfo() {
-        viewModelScope.launch(dispatcher) {
-            runCatching { getCurrentUserUseCase() }
-                .onSuccess {
-                    currentUser = it
-                    _state.update { state ->
-                        state.copy(domain = it.domain.orEmpty())
-                    }
-                   getCategory("nhomvideo", "modenhomvideo")
-                    getCategoryVideoHeart("videokh", "modelaythumuc")
-                }
-                .onFailure {
-                    _state.update {
-                        it.copy(errorMessage = stringProvider.getString(R.string.error_connection))
-                    }
-                }
-        }
+        getCategory("nhomvideo", "modenhomvideo")
+        getCategoryVideoHeart("videokh", "modelaythumuc")
     }
-
-
-    fun setInitialVideo(products: List<Video>) {
-        _state.update { it.copy(pagedVideos = products.take(10)) }
+    fun setInitialVideo(videos: List<Video>) {
+        _state.update { it.copy(pagedVideos = videos.take(10)) }
     }
     fun onTabSelected(index: Int) {
         _state.update { it.copy(selectedTab = index) }
@@ -106,32 +79,51 @@ class VideoViewModel @Inject constructor(
         _state.update { it.copy(navEvent = CartNavEvent.GoToCats) }
     }
 
+
     fun getVideos(categoryId: String) {
         val user = currentUser ?: return
-
         viewModelScope.launch(dispatcher) {
-            useCase.getVideos( categoryId, user.token).collectResponse(
+            useCase.getVideos(
+                categoryId, user.token ?: ""
+            ).collectResponse(
+
                 dispatcher = dispatcher,
                 onLoading = { _state.update { it.copy(isLoading = true) } },
-                onSuccess = { videos ->
-                    _state.update { it.copy(videos = videos, isLoading = false) }
+                onSuccess = { news ->
+                    _state.update { it.copy(videos = news, isLoading = false) }
                 },
-                onError = { message ->
-                    _state.update { it.copy(errorMessage = message, isLoading = false) }
-                }
-            )
+                onError = { msg ->
+                    _state.update {
+                        it.copy(
+                            errorMessage = msg, isLoading = false
+                        )
+                    }
+                })
         }
     }
+
 
     fun getCategory(obj: String, mode: String) {
         val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
-            useCase.getCategory( obj, mode, user.token).collectResponse(
-                dispatcher = dispatcher,
+            useCase.getCategory(obj, mode,
+                user.token
+            ).collectResponse(dispatcher = dispatcher,
                 onLoading = { _state.update { it.copy(isLoading = true) } },
-                onSuccess = { data -> _state.update { it.copy(categoryNews = data, isLoading = false) } },
-                onError = { msg -> _state.update { it.copy(errorMessage = msg, isLoading = false) } }
-            )
+                onSuccess = { list ->
+                    _state.update {
+                        it.copy(
+                            categoryNews = list, isLoading = false
+                        )
+                    }
+                },
+                onError = { msg ->
+                    _state.update {
+                        it.copy(
+                            errorMessage = msg, isLoading = false
+                        )
+                    }
+                })
         }
     }
 

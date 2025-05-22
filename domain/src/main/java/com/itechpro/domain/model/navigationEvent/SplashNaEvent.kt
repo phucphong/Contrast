@@ -13,6 +13,7 @@ sealed class SplashNaEvent : NavEvent {
         ) : ProductNavEvent()
 
     object GoToRegister : SplashNaEvent()
+
     object GoToDomain : SplashNaEvent()
     object GoToForgotPassword : SplashNaEvent()
 

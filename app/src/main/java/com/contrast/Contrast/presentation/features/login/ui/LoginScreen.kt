@@ -22,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,14 +40,12 @@ import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.features.login.BiometricAuthenticator
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
-import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.MainRoutes
 import com.contrast.Contrast.presentation.theme.FF000000
 import com.contrast.Contrast.presentation.theme.FFD9D9D9
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
-import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

@@ -37,6 +37,7 @@ class VideoUseCase @Inject constructor(
     fun getVideos( idCategory: String, authen: String): Flow<NetworkResponse<List<Video>>> {
         return flow {
             emit(NetworkResponse.Loading)
+            Log.e("authen",authen)
 
             val result = if (authen.isEmpty()) {
                 repository.getVideosOff(idCategory)

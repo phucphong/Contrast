@@ -79,7 +79,22 @@ object Util {
         matcher.appendTail(updatedContent)
         return updatedContent.toString()
     }
-
+    fun extractAfterScheme(url: String): String {
+        val schemeDelimiterIndex = url.indexOf("://")
+        return if (schemeDelimiterIndex != -1) {
+            url.substring(schemeDelimiterIndex + 3) // +3 để bỏ qua "://"
+        } else {
+            url // Nếu không tìm thấy "://", trả về URL gốc
+        }
+    }
+    fun extractBeforeScheme(url: String): String {
+        val schemeDelimiterIndex = url.indexOf("://")
+        return if (schemeDelimiterIndex != -1) {
+            url.substring(0, schemeDelimiterIndex) // Lấy phần trước "://"
+        } else {
+            url // Nếu không có "://", trả về URL gốc
+        }
+    }
     fun showDialog(infomation: String?, context: Context) {
         if (context != null) {
             val builder = Dialog(context)

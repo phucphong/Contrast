@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 
 import com.contrast.Contrast.presentation.features.affiliate.AffiliateMainScreen
 
-import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
+import com.contrast.Contrast.presentation.navigator.routers.MainRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

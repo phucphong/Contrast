@@ -28,7 +28,7 @@ import com.contrast.Contrast.presentation.components.*
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.button.CustomButton
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorRegisterDialog
-import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
+import com.contrast.Contrast.presentation.components.dropdown.CustomDropdownUnderline
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassword
 import com.contrast.Contrast.presentation.components.text.CustomText
@@ -296,21 +296,21 @@ private fun RegisterInputFields(
     Spacer(modifier = Modifier.height(12.dp))
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        CustomDropdown(
+        CustomDropdownUnderline(
             options = (1..31).map { it.toString() },
             selectedOption = selectedDay,
             onOptionSelected = onDayChange,
             placeholder = stringResource(id = R.string.day_placeholder),
             modifier = Modifier.weight(1f),
         )
-        CustomDropdown(
+        CustomDropdownUnderline(
             options = (1..12).map { it.toString() },
             selectedOption = selectedMonth,
             onOptionSelected = onMonthChange,
             placeholder = stringResource(id = R.string.month_placeholder),
             modifier = Modifier.weight(1f)
         )
-        CustomDropdown(
+        CustomDropdownUnderline(
             options = (1950..2024).map { it.toString() },
             selectedOption = selectedYear,
             onOptionSelected = onYearChange,

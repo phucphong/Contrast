@@ -7,6 +7,7 @@ import com.itechpro.domain.model.network.NetworkResponse
 
 import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.Rotation
+import com.itechpro.domain.model.cart.CartItem
 import com.itechpro.domain.model.home.SliderHome
 import com.itechpro.domain.repository.HomeAffiliateRepository
 import kotlinx.coroutines.Dispatchers
@@ -21,39 +22,39 @@ class HomeAffiliateUseCase @Inject constructor(
     ) {
 
 
-    fun getCategory( obj: String,mode: String,type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Category>>> {
+    fun getCategory(
+        obj: String, mode: String, type: String, idParent: String, authen: String
+    ): Flow<NetworkResponse<List<Category>>> {
         return flow {
             emit(NetworkResponse.Loading)
-            val startTime = System.currentTimeMillis()
-            Log.d("Timing", "📤 Start getCategory at $startTime")
+
             val result = if (authen.isEmpty()) {
-                repository.getCategoryOff(obj, mode,type,idParent)
+                repository.getCategoryOff(obj, mode, type, idParent)
             } else {
-                repository.getCategory(obj, mode,type,idParent,authen)
+                repository.getCategory(obj, mode, type, idParent, authen)
             }
-            val endTime = System.currentTimeMillis()
-            Log.d("Timing", "📦 API getCategory response in ${endTime - startTime}ms")
+
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getSlideHome( obj: String,mode: String,authen: String): Flow<NetworkResponse<List<SliderHome>>> {
+    fun getSlideHome(
+        obj: String, mode: String, authen: String
+    ): Flow<NetworkResponse<List<SliderHome>>> {
         return flow {
             emit(NetworkResponse.Loading)
-            val startTime = System.currentTimeMillis()
-            Log.d("Timing", "📤 Start getSlideHome at $startTime")
+
             val result = if (authen.isEmpty()) {
                 repository.getSlideHomeOff(obj, mode)
             } else {
-                repository.getSlideHome(obj, mode,authen)
+                repository.getSlideHome(obj, mode, authen)
             }
 
-            val endTime = System.currentTimeMillis()
-            Log.d("Timing", "📦 API getSlideHome response in ${endTime - startTime}ms")
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
-    fun getFlashSale( authen: String): Flow<NetworkResponse<List<Product>>> {
+
+    fun getFlashSale(authen: String): Flow<NetworkResponse<List<Product>>> {
         return flow {
             emit(NetworkResponse.Loading)
 
@@ -68,30 +69,31 @@ class HomeAffiliateUseCase @Inject constructor(
     }
 
 
-    fun getProductsByIdParent(type: String,idParent: String,authen: String): Flow<NetworkResponse<List<Product>>> {
+    fun getProductsByIdParent(
+        type: String, idParent: String, authen: String
+    ): Flow<NetworkResponse<List<Product>>> {
         return flow {
             emit(NetworkResponse.Loading)
-            val startTime = System.currentTimeMillis()
-            Log.d("Timing", "📤 Start getProductsByIdParent at $startTime")
+
+
             val result = if (authen.isEmpty()) {
-                repository.getProductsByIdParentOff(type,idParent)
+                repository.getProductsByIdParentOff(type, idParent)
             } else {
-                repository.getProductsByIdParent( type,idParent,authen)
+                repository.getProductsByIdParent(type, idParent, authen)
             }
-            val endTime = System.currentTimeMillis()
-            Log.d("Timing", "📦 API getProductsByIdParent response in ${endTime - startTime}ms")
+
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
-    fun getRotation(type: String,authen: String): Flow<NetworkResponse<List<Rotation>>> {
+
+    fun getRotation(type: String, authen: String): Flow<NetworkResponse<List<Rotation>>> {
         return flow {
             emit(NetworkResponse.Loading)
-            val result =  repository.getRotation(type,authen)
+            val result = repository.getRotation(type, authen)
 
             emit(result)
         }.flowOn(Dispatchers.IO)
     }
-
 
 
 

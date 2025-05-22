@@ -9,8 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
+import com.contrast.Contrast.extensions.DateUtils
 import com.contrast.Contrast.extensions.collectResponse
+import com.contrast.Contrast.extensions.formatToYYYYMMDD
 import com.contrast.Contrast.utils.StringProvider
+import com.contrast.Contrast.utils.Util
 import com.itechpro.domain.model.*
 import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.home.HomeUiState
@@ -205,6 +208,7 @@ class HomeAffiliateViewModel @Inject constructor(
             )
         }
     }
+
 
     fun startPromoCountdown(products: List<Product>) {
         countdownJob?.cancel()

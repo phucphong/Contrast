@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,7 +16,7 @@ import com.contrast.Contrast.presentation.features.login.ui.LoginScreen
 
 import com.contrast.Contrast.presentation.features.splas.SplashScreen
 
-import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
 
 
 

@@ -16,6 +16,9 @@ interface ProfileRepository {
         mode: String,
         authen: String
     ): NetworkResponse<List<Account>>
+    suspend fun getQrCodeContent(
+        obj: String, mode: String, content: String,authen: String
+    ): NetworkResponse<List<Account>>
 
     suspend fun getInfoAccount(
         idCustomer: String,

@@ -7,11 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 
 import com.itechpro.domain.model.category.Category
 
 @Composable
-fun OrderStatusRow(statusList: List<Category>) {
+fun OrderStatusRow(statusList: List<Category>, onProfileClick: (Category) -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -22,7 +23,10 @@ fun OrderStatusRow(statusList: List<Category>) {
             status.icon?.let {
                 OrderStatusItem(
                     icon = it,
-                    title = status.ten?:""
+                    title = status.ten?:"",
+                    onClick ={
+                        onProfileClick(status)
+                    }
                 )
             }
         }

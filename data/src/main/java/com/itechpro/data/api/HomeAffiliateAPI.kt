@@ -100,4 +100,6 @@ interface HomeAffiliateAPI {
         @Header("Authorization") authen: String?
     ): Response<List<Rotation>>
 
+
+
 }

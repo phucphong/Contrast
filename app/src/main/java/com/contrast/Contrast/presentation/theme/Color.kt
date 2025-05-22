@@ -30,7 +30,8 @@ val FAFAFA = Color(0xFFFAFAFA)   // Xám nền phụ
 val EEEEEF = Color(0xFFEEEEEF)   // Xám segment tab
 val FFFFF6F6 = Color(0xFFFFF6F6) // Nền hồng nhạt
 val FFF5F5F5 = Color(0xFFF5F5F5) // Nền hồng xám nhạt
-val LightGrayBackground = Color(0xFFF8F8F8)
+
+val LightGrayBackground = Color(0xFFF5F4FA)
 val UltraLightGray = Color(0xFFF5F5F5)
 // 🔴 ĐỎ – REDS
 val FFDC143C = Color(0xFFDC143C) // Đỏ tươi (Crimson)

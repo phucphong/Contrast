@@ -20,7 +20,12 @@ class ProfileUseCase @Inject constructor(
 
     ) {
 
+    fun generateCategory(
 
+    ): List<Category> {
+
+        return  listOf(Category(code = "personal"), Category(code = "ios"), Category(code = "android"))
+    }
     fun getMenuApp(typeAccount: String, authen: String): Flow<NetworkResponse<ProfileResult>> {
         return flow {
             emit(NetworkResponse.Loading)
@@ -99,11 +104,7 @@ class ProfileUseCase @Inject constructor(
                                 }
                             }
 
-                            "baocaodoanhsotheotungdaily" ->  if (active){
-                                if (typeAccount != "khachhang") {
-                                    categorys.add(obj)
-                                }
-                            }
+
 
                             "baocaodoanhsotheotungdaily" ->  if (active){
                                 if (typeAccount != "khachhang") {
@@ -129,12 +130,7 @@ class ProfileUseCase @Inject constructor(
                                 }
                             }
 
-
-
-
                         }
-
-
                     }
 
                     emit(
@@ -181,6 +177,22 @@ class ProfileUseCase @Inject constructor(
         authen: String
     ): Flow<NetworkResponse<String>> = safeFlowCall {
         val response = repository.getQrCodeCustomer("layqrcode", "modelayqrcode", ido,authen)
+        when (response) {
+            is NetworkResponse.Success -> {
+                val customer = response.data.firstOrNull()?.kq ?: ""
+                customer?.let { NetworkResponse.Success(it) } ?: NetworkResponse.Error("Error")
+            }
+
+            is NetworkResponse.Error -> NetworkResponse.Error(response.message)
+            is NetworkResponse.Loading -> NetworkResponse.Loading
+        }
+    }
+
+    fun getQrCodeContent(
+        content: String,
+        authen: String
+    ): Flow<NetworkResponse<String>> = safeFlowCall {
+        val response = repository.getQrCodeContent("layqrcode", "layqrcodetheonoidung", content,authen)
         when (response) {
             is NetworkResponse.Success -> {
                 val customer = response.data.firstOrNull()?.kq ?: ""

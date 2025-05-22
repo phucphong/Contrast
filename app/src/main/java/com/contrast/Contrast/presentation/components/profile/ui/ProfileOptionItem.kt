@@ -23,11 +23,11 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.category.Category
 
 @Composable
-fun ProfileOptionItem(category: Category) {
+fun ProfileOptionItem(category: Category, onProfileClick: (Category) -> Unit = {},) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ }
+            .clickable { onProfileClick(category) }
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -1,7 +1,6 @@
 package com.contrast.Contrast.presentation.features.news.list
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,15 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
@@ -36,9 +30,9 @@ import com.contrast.Contrast.presentation.features.cart.CartViewModel
 
 import com.contrast.Contrast.presentation.features.news.viewModel.NewsViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.NewsRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
+import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NewsRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NotificationRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NewsNavEvent
@@ -160,14 +154,18 @@ fun NewsScreen(
         }
         CustomSwipeRefresh(isRefreshing = isRefreshing,
             onRefresh = { viewModel.getNews(idCategory) }) {
-            if (state.pagedNews.isEmpty()) {
-                EmptyStateScreen(
-                    imageRes = R.drawable.nodata,
-                    size = 60.dp,
-                    title = stringResource(R.string.no_data),
-                )
-            } else {
+
                 LazyColumn {
+                    if (state.pagedNews.isEmpty()) {
+                        item {
+                            EmptyStateScreen(
+                                imageRes = R.drawable.nodata,
+                                title = stringResource(R.string.empty_news),
+                                message = ""
+                            )
+                        }
+                    } else {
+
                     items(state.pagedNews) { article ->
                         state.domain?.let {
                             NewsItem(article, it, onClickNew = {
@@ -176,8 +174,9 @@ fun NewsScreen(
                             })
                         }
                     }
+                    }
                 }
-            }
+
         }
 
     }

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.presentation.features.news.detail.NewDetailScreen
 
-import com.contrast.Contrast.presentation.navigator.router.routes.NewsRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NewsRoutes
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.registerNewsRoutes(navController: NavHostController

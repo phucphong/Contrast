@@ -4,23 +4,19 @@ package com.contrast.Contrast.presentation.navigator.navgraph
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.contrast.Contrast.presentation.components.profile.ProfileScreen
-import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
 
 import com.contrast.Contrast.presentation.features.affiliate.home.HomePage
 import com.contrast.Contrast.presentation.features.news.list.NewsScreen
 import com.contrast.Contrast.presentation.features.video.VideoScreen
-import com.contrast.Contrast.presentation.navigator.router.routes.AccountRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.CategoryProductRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.NewsRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.VideoRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AccountRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AffiliateRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NewsRoutes
+import com.contrast.Contrast.presentation.navigator.routers.VideoRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

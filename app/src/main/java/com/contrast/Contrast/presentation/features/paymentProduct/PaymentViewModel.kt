@@ -13,6 +13,7 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.payment.PaymentUiState
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
@@ -142,7 +143,7 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun gotoHome() {
-        _navigationEvent.value = HomeNavEvent.GoToHome
+        _navigationEvent.value = SplashNaEvent.GoToMain("0", "0", "0")
     }
 }
 

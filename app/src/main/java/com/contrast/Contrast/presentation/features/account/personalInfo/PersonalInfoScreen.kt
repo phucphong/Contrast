@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
+import com.contrast.Contrast.presentation.components.dropdown.CustomDropdownUnderline
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 
@@ -142,21 +142,21 @@ fun PersonalInfoScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                CustomDropdown(
+                CustomDropdownUnderline(
                     options = (1..31).map { it.toString() },
                     selectedOption = "DD",
                     onOptionSelected = {},
                     placeholder = stringResource(id = R.string.day_placeholder),
                     modifier = Modifier.weight(1f)
                 )
-                CustomDropdown(
+                CustomDropdownUnderline(
                     options = (1..12).map { it.toString() },
                     selectedOption = "MM",
                     onOptionSelected = {},
                     placeholder = stringResource(id = R.string.month_placeholder),
                     modifier = Modifier.weight(1f)
                 )
-                CustomDropdown(
+                CustomDropdownUnderline(
                     options = (1950..2024).map { it.toString() },
                     selectedOption = "YY",
                     onOptionSelected = {},

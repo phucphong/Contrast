@@ -30,7 +30,32 @@
     <string name="password_label">Mật khẩu</string>
     <string name="connect_code_label">Mã kết nối</string>
     <string name="connect_code_placeholder">Nhập mã kết nối hoặc tên miền</string>
+    <!-- Thời gian -->
+    <string name="participation_result_title">Kết quả tham gia</string>
+    <!-- Tiêu đề dialog -->
+    <string name="filter_conditions">Điều kiện khác</string>
 
+
+    <!-- Nhãn điều kiện -->
+    <string name="date_label">Ngày</string>
+    <string name="from_date_placeholder">01/05/2025</string>
+    <string name="to_date_placeholder">31/05/2025</string>
+
+    <!-- Button -->
+    <string name="search">Tìm kiếm</string>
+
+    <!-- 3 chỉ số -->
+    <string name="order_count">Đơn hàng</string>
+    <string name="order">Đơn hàng</string>
+    <string name="order_key">Mã đơn</string>
+    <string name="estimated_commission">Hoa hồng ước tính</string>
+    <string name="revenue">Doanh thu</string>
+    <string name="stillInDebt">Còn nợ</string>
+    <!-- Hướng dẫn -->
+    <string name="start_earning_steps">3 Bước để bắt đầu nhận hoa hồng</string>
+    <string name="step_choose_product">Chọn 1 sản phẩm</string>
+    <string name="step_share_product">Chia sẻ sản phẩm</string>
+    <string name="step_earn_income">Thu nhập từ đơn hàng</string>
     <string name="register_qr">Đăng ký trở thành đại lý với Qr Code</string>
 
     <string name="remember_me">Lưu mật khẩu</string>
@@ -117,6 +142,29 @@
     <string name="no_notification">Không có thông báo nào</string>
     <string name="no_data">Không có dữ liệu</string>
     <string name="empty_cart">Giỏ hàng đang trống</string>
+    <string name="empty_product">Chưa có sản phẩm!</string>
+    <string name="dialog_confirm_delete_title">Xác nhận xóa</string>
+    <string name="dialog_confirm_delete_message">Bạn có chắc chắn muốn xóa mục này?</string>
+    <string name="dialog_confirm_button">Đồng ý</string>
+    <string name="dialog_cancel_button">Huỷ</string>
+    <string name="order_detail_title">Chi tiết đơn hàng</string>
+
+    <!-- Địa chỉ nhận hàng -->
+    <string name="delivery_address">Địa chỉ nhận hàng</string>
+
+    <!-- Trạng thái -->
+    <string name="waiting_confirm">Đơn đặt hàng chờ xác nhận</string>
+
+    <!-- Ghi chú -->
+    <string name="order_note">Ghi chú đơn hàng</string>
+
+    <!-- Tổng kết -->
+    <string name="total_price">Tổng tiền:</string>
+    <string name="discount">Chiết khấu:</string>
+    <string name="final_price">Thành tiền:</string>
+    <string name="empty_news">Chưa có tin tức</string>
+    <string name="order_code_label">Mã đơn đặt hàng</string>
+    <string name="empty_oder">Chưa có đơn hàng</string>
     <string name="no_review_data">Chưa có đánh giá nào</string>
     <string name="no_notification_desc">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
     <string name="delete">Xóa</string>
@@ -231,6 +279,7 @@
     <string name="preferences">Tùy chọn</string>
     <string name="language">Ngôn ngữ</string>
     <string name="security">Bảo mật</string>
+    <string name="incomes">Thu nhập của tôi</string>
 
     <string name="support">Hỗ trợ</string>
     <string name="faq">Các câu hỏi thường gặp</string>
@@ -296,6 +345,8 @@
     <string name="issue_drink">Đồ uống</string>
     <string name="feedback_hint">Nhập phản hồi của bạn...</string>
     <string name="createAccount">Tạo tài khoản</string>
+    <string name="createDate">Ngày tạo</string>
+    <string name="commission_label">Hoa hồng</string>
     <string name="feedback_note">Phản hồi của bạn giúp Contrast Coffee nâng cao chất lượng dịch vụ tốt hơn.</string>
     <string name="send_feedback">Gửi đi</string>
     <string name="email" translatable="false">Email</string>
@@ -415,6 +466,13 @@
     <string name="rank_drop_rules_black_diamond">+ Rớt hạng ở bất kỳ điểm nào khi là Black Diamond sẽ về 999 điểm Gold.</string>
     <string name="birthday">Sinh nhật</string>
     <string name="birthday_description">Contrast Coffee sẽ tặng bạn một món quà nhỏ trong dịp đặc biệt này 🥰</string>
+    <string name="day">Ngày</string>
+    <string name="week">Tuần</string>
+    <string name="month">Tháng</string>
+    <string name="quarte">Quý</string>
+    <string name="year">Năm</string>
+
+
     <string name="day_placeholder">DD</string>
     <string name="month_placeholder">MM</string>
     <string name="year_placeholder">YY</string>
@@ -468,6 +526,13 @@
     <string name="timeline">Timeline</string>
     <string name="exchange">Trao đổi</string>
     <string name="qrcode">Mã QR</string>
+    <string name="qrcode_inviter">Mã QR giới thiệu</string>
+    <string name="all">Tất cả</string>
+    <string name="payment_waiting">Chưa thanh toán</string>
+    <string name="paymented">Đã thanh toán</string>
+    <string name="personal">Cá nhân</string>
+    <string name="ios">IOS</string>
+    <string name="android">Android</string>
     <string name="paymentInfo">Thông tin thanh toán</string>
     <string name="task">Công việc</string>
     <string name="events_happening">Sự kiện đang diễn ra</string>

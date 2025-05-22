@@ -25,6 +25,7 @@ import com.itechpro.domain.usecase.login.LoginInputValidator
 import com.itechpro.domain.usecase.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -96,10 +97,7 @@ class LoginViewModel @Inject constructor(
         appConfig.setAccount(account)
         if (_state.value.rememberPassword) {
             appConfig.setPassword(password)
-
         }
-
-
         login(loginData, password)
     }
 
@@ -116,7 +114,6 @@ class LoginViewModel @Inject constructor(
             }
             return
         }
-
         loginBiometricAuthenticator(account, password)
     }
     // Sau khi navigate xong, reset lại state
@@ -161,6 +158,7 @@ class LoginViewModel @Inject constructor(
                 when (val result = loginUseCase(login)) {
                     is NetworkResponse.Success -> {
                         saveLoginOptions(result.data, password)
+                        delay(1000)
                         _state.update {
                             it.copy(
                                 isLoading = false,
@@ -224,20 +222,14 @@ class LoginViewModel @Inject constructor(
                         var lydotamdung = connection.lydotamdung?:""
                         var noidungbaotruoc =  connection.noidungbaotruoc?:""
 
-
-
-
                         if (lydotamdung.isNotEmpty()) {
                             _state.update {
                                 it.copy(isLoading = false,
                                     errorMessage =lydotamdung
                                 )
                             }
-
 //                            AppConfig.setngayhientai(this@LoginAcitivity, Util.ngayhomngay())
                         } else if (!TextUtils.isEmpty(noidungbaotruoc)) {
-
-
                             _state.update {
                                 it.copy(isLoading = false,
                                     errorMessage =noidungbaotruoc
@@ -262,18 +254,18 @@ class LoginViewModel @Inject constructor(
         })
     }
     private fun saveLoginOptions(result: Login, password: String) {
+
+        Log.e("getProductsByIdParent",result.token ?: "")
         appConfig.setToken(result.token ?: "")
         appConfig.setEmployeeId(result.idnhanvien ?: "")
         appConfig.setCustomerId(result.idkh ?: "")
         appConfig.setEmployeeName(result.hoten ?: "")
-        appConfig.setTypeAccount(result.loaikh ?: "")
+        appConfig.setTypeAccount(result.loaitk ?: "")
         appConfig.setPermissionMobile(result.permissionmobile ?: "")
         appConfig.setSalesPointId(result.iddiembanle ?: "")
         appConfig.setSalesPointName(result.tendiambanle ?: "")
         appConfig.setAdmin((result.isadmincoso ?: "False").toBoolean())
         appConfig.setAdminRoot((result.isadmin ?: "False").toBoolean())
-
-
 
     }
 

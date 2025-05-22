@@ -16,6 +16,12 @@ fun Category.label(): String {
         "exchange" -> stringResource(R.string.exchange)
         "payment_info" -> stringResource(R.string.paymentInfo)
         "qrcode" -> stringResource(R.string.qrcode)
+        "all" -> stringResource(R.string.all)
+        "payment_waiting" -> stringResource(R.string.payment_waiting)
+        "paymented" -> stringResource(R.string.paymented)
+        "personal" -> stringResource(R.string.personal)
+        "ios" -> stringResource(R.string.ios)
+        "android" -> stringResource(R.string.android)
         else -> name.orEmpty()
     }
 }

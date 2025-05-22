@@ -23,10 +23,10 @@ import com.contrast.Contrast.presentation.components.tab.TabBarRowPillStyle
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
 import com.contrast.Contrast.presentation.features.product.ui.ProductRow
-import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.NotificationRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ServiceRequestRoutes
+import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NotificationRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.navigationEvent.*
 

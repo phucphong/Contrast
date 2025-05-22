@@ -7,10 +7,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.extensions.collectResponse
 import com.contrast.Contrast.utils.StringProvider
-import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.Video
-
 import com.itechpro.domain.model.news.News
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
@@ -41,11 +38,11 @@ class NewsViewModel @Inject constructor(
     private val _state = MutableStateFlow(NewsUiState())
     val state: StateFlow<NewsUiState> = _state
 
-    private var currentUserInfo: CurrentUserInfo? = null
+    private var currentUser: CurrentUserInfo? = null
     init {
         viewModelScope.launch(dispatcher) {
             val user = runCatching { getCurrentUserUseCase() }.getOrNull()
-            currentUserInfo = user
+            currentUser = user
             if (user != null) {
                 _state.update {
                     it.copy(domain = user.domain)
@@ -55,8 +52,8 @@ class NewsViewModel @Inject constructor(
     }
 
 
-    fun setInitialNews(products: List<News>) {
-        _state.update { it.copy(pagedNews = products.take(10)) }
+    fun setInitialNews(news: List<News>) {
+        _state.update { it.copy(pagedNews = news.take(10)) }
     }
 
     fun onTabSelected(index: Int) {
@@ -88,7 +85,7 @@ class NewsViewModel @Inject constructor(
         _state.update { it.copy(errorMessage = "") }
     }
     fun getNews(idCategory: String) {
-        val user = currentUserInfo ?: return
+        val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
             useCase.getNews(
                  idCategory, user.token ?: ""
@@ -110,7 +107,7 @@ class NewsViewModel @Inject constructor(
     }
 
     fun getNewDetail(id: String) {
-        val user = currentUserInfo ?: return
+        val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
             useCase.getNewDetail(
                  id, user.token ?: ""
@@ -122,7 +119,7 @@ class NewsViewModel @Inject constructor(
     }
 
     fun getCategory() {
-        val user = currentUserInfo ?: return
+        val user = currentUser ?: return
         viewModelScope.launch(dispatcher) {
             useCase.getCategory(
                 user.token

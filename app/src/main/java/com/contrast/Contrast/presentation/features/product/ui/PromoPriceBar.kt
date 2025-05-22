@@ -70,27 +70,29 @@ fun PromoPriceBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.cart),
-                contentDescription = "Cart",
-                tint = if(isFlashSale) Color.White else TealGreen,
-                modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickCart() }
-            )
-            if(bookService){
-                Icon(
-                    painter = painterResource(id = R.drawable.calendar_service),
-                    contentDescription = "Buy Package",
-                    tint = if(isFlashSale) Color.White else TealGreen,
-                    modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickAddServiceRequest() }
-                )
-            }
+
             if(isShare){
                 Icon(
                     painter = painterResource(id = R.drawable.share),
                     contentDescription = "Buy Package",
                     tint = if(isFlashSale) Color.White else TealGreen,
-                    modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickShare() }
+                    modifier = Modifier.size(20.dp).noRippleClickableComposable { onClickShare() }
                 )
+            }else{
+                Icon(
+                    painter = painterResource(id = R.drawable.cart),
+                    contentDescription = "Cart",
+                    tint = if(isFlashSale) Color.White else TealGreen,
+                    modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickCart() }
+                )
+                if(bookService){
+                    Icon(
+                        painter = painterResource(id = R.drawable.calendar_service),
+                        contentDescription = "Buy Package",
+                        tint = if(isFlashSale) Color.White else TealGreen,
+                        modifier = Modifier.size(16.dp).noRippleClickableComposable { onClickAddServiceRequest() }
+                    )
+                }
             }
 
         }

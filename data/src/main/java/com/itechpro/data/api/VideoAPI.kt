@@ -19,7 +19,6 @@ interface VideoAPI {
 
     @Headers("Content-Type: application/json")
     @GET("/ex/apikh/getobj")
-//    @GET("/ex/apiaffiliate/getobjpublic") off
     suspend  fun getVideos(
         @Query("obj") tintuc: String,
         @Query("mode") modedstintuc: String,
@@ -32,7 +31,7 @@ interface VideoAPI {
     suspend  fun getVideosOff(
         @Query("obj") tintuc: String?,
         @Query("mode") modedstintuc: String?,
-        @Query("idchudetintuc") idCategory: String?
+        @Query("ido") idCategory: String?
     ): Response<List<Video>>
 
     @Headers("Content-Type: application/json")

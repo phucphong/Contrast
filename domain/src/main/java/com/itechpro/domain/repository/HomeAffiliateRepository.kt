@@ -31,6 +31,7 @@ interface HomeAffiliateRepository {
 
     suspend fun getProductsByIdParent(type: String,searchKey: String, authen: String): NetworkResponse<List<Product>>
 
+
     suspend fun getProductsByIdParentOff(type: String,searchKey: String): NetworkResponse<List<Product>>
     suspend fun getRotation(type: String,authen:String): NetworkResponse<List<Rotation>>
 

@@ -6,8 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.contrast.Contrast.presentation.features.affiliate.category.CategoryAffiliatePage
-import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ServiceRequestRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ServiceRequestRoutes
 
 
 @RequiresApi(Build.VERSION_CODES.O)

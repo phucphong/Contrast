@@ -3,10 +3,14 @@ package com.contrast.Contrast.extensions
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.time.temporal.WeekFields
+import java.util.Locale
+
 @RequiresApi(Build.VERSION_CODES.O)
 object DateUtils {
 
@@ -71,4 +75,65 @@ object DateUtils {
 
     // Cuối năm hiện tại
     fun lastDayOfThisYear(): String = LocalDate.of(LocalDate.now().year, Month.DECEMBER, 31).format(formatter)
+    fun LocalDate.format(pattern: String): String =
+        this.format(DateTimeFormatter.ofPattern(pattern))
+    fun getCurrentTimeLabel(type: String, currentDate: LocalDate = LocalDate.now()): String {
+        return when (type.uppercase()) {
+            "WEEK" -> {
+                val weekOfYear = currentDate.get(WeekFields.of(Locale.getDefault()).weekOfYear())
+                "Tuần $weekOfYear"
+            }
+
+            "MONTH" -> {
+                val month = currentDate.monthValue
+                "Tháng $month"
+            }
+
+            "QUARTER" -> {
+                val quarter = ((currentDate.monthValue - 1) / 3) + 1
+                "Quý $quarter"
+            }
+
+            "YEAR" -> {
+                val year = currentDate.year
+                "Năm $year"
+            }
+
+            else -> ""
+        }
+    }
+
+    fun getStartAndEndDate(type: String): Pair<String, String> {
+        val today = LocalDate.now()
+        return when (type) {
+            "DAY" -> {
+                val formatted = today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                formatted to formatted
+            }
+            "WEEK" -> {
+                val start = today.with(DayOfWeek.MONDAY)
+                val end = today.with(DayOfWeek.SUNDAY)
+                start.format("dd/MM/yyyy") to end.format("dd/MM/yyyy")
+            }
+            "MONTH" -> {
+                val start = today.withDayOfMonth(1)
+                val end = today.withDayOfMonth(today.lengthOfMonth())
+                start.format("dd/MM/yyyy") to end.format("dd/MM/yyyy")
+            }
+            "QUARTER" -> {
+                val month = today.monthValue
+                val quarterStartMonth = ((month - 1) / 3) * 3 + 1
+                val start = LocalDate.of(today.year, quarterStartMonth, 1)
+                val end = start.plusMonths(2).withDayOfMonth(start.plusMonths(2).lengthOfMonth())
+                start.format("dd/MM/yyyy") to end.format("dd/MM/yyyy")
+            }
+            "YEAR" -> {
+                val start = LocalDate.of(today.year, 1, 1)
+                val end = LocalDate.of(today.year, 12, 31)
+                start.format("dd/MM/yyyy") to end.format("dd/MM/yyyy")
+            }
+            else -> today.format("dd/MM/yyyy") to today.format("dd/MM/yyyy")
+        }
+    }
+
 }

@@ -23,7 +23,7 @@ import com.contrast.Contrast.presentation.components.category.CategoryDialog
 import com.contrast.Contrast.presentation.components.category.CategoryDialogMultiSelect
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorRegisterDialog
 import com.contrast.Contrast.presentation.components.datePicker.CustomDatePickerDialog
-import com.contrast.Contrast.presentation.components.dropdown.CustomDropdown
+import com.contrast.Contrast.presentation.components.dropdown.CustomDropdownUnderline
 import com.contrast.Contrast.presentation.components.inputs.CustomTextField
 import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
@@ -232,7 +232,7 @@ fun CustomerScreen(
                 if (key == CustomerFieldType.CUSTOMER_TYPE) {
 
 
-                    CustomDropdown(
+                    CustomDropdownUnderline(
                         options = listOf("Cá nhân", "Tổ chức"),
                         selectedOption = fieldTypeValues[key] ?: "",
                         onOptionSelected = { fieldTypeValues[key] = it },
@@ -246,7 +246,7 @@ fun CustomerScreen(
                         Row(
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            CustomDropdown(
+                            CustomDropdownUnderline(
                                 options = listOf(
                                     stringResource(R.string.pronoun_grandpa),
                                     stringResource(R.string.pronoun_grandma),

@@ -16,6 +16,7 @@ data class Login(
     val xemdtemkh: String?="",
     val idlh: String?="",
     val loaikh: String?="",
+    val loaitk: String?="",
     val hoten: String?="",
     val idguid: String?="",
     var Username: String?="",

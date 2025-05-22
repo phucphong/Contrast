@@ -60,7 +60,7 @@ import com.contrast.Contrast.presentation.components.toast.CustomToast
 import com.contrast.Contrast.presentation.components.toast.toastCollect
 
 import com.contrast.Contrast.presentation.features.cart.CartViewModel
-import com.contrast.Contrast.presentation.navigator.router.routes.CartRoutes
+import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF5722
 import com.contrast.Contrast.presentation.theme.FFFFFFFF

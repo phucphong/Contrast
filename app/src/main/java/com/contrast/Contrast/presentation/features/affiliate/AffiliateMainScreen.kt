@@ -2,7 +2,6 @@ package com.contrast.Contrast.presentation.features.affiliate
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
@@ -18,13 +17,12 @@ import androidx.navigation.compose.rememberNavController
 
 import com.contrast.Contrast.presentation.navigator.BottomNavigationBar
 import com.contrast.Contrast.presentation.navigator.navgraph.RootNavigationGraph
-import com.contrast.Contrast.presentation.navigator.router.routes.AccountRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.AffiliateRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.CategoryProductRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.MainRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.NewsRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.ProductRoutes
-import com.contrast.Contrast.presentation.navigator.router.routes.VideoRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AccountRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AffiliateRoutes
+import com.contrast.Contrast.presentation.navigator.routers.CategoryProductRoutes
+import com.contrast.Contrast.presentation.navigator.routers.NewsRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
+import com.contrast.Contrast.presentation.navigator.routers.VideoRoutes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

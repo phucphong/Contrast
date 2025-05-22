@@ -56,7 +56,7 @@ import com.contrast.Contrast.presentation.components.toast.toastCollect
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleSave
 
 import com.contrast.Contrast.presentation.features.review.ReviewViewModel
-import com.contrast.Contrast.presentation.navigator.router.routes.ReviewRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ReviewRoutes
 import com.contrast.Contrast.presentation.theme.FF7C7C7C
 import com.contrast.Contrast.presentation.theme.FFFFFFFF
 import com.itechpro.domain.model.ToastPosition

@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,8 +27,12 @@ import com.contrast.Contrast.presentation.components.profile.ui.ProfileOptionIte
 import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileViewModel
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
-import com.contrast.Contrast.presentation.navigator.router.routes.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
+import com.itechpro.domain.model.profile.ProfileNaEvent
+import com.contrast.Contrast.presentation.navigator.routers.ProfileRoutes
+import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -37,19 +40,19 @@ import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 fun ProfileScreen(
     navHostController: NavHostController,
     viewModel: ProfileViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel = hiltViewModel(),
-) {
+
+    ) {
     val isRefreshing by remember { mutableStateOf(false) }
-    val uiState by viewModel.uiState.collectAsState()
-    val navEvent by viewModel.navigationEvent.collectAsState()
-    LaunchedEffect(navEvent) {
-        when (val event = navEvent) {
+    val state by viewModel.state.collectAsState()
+
+    LaunchedEffect(state.navEvent) {
+        when (val event = state.navEvent) {
             is SplashNaEvent.GoToLogIn -> {
                 navHostController.navigate(
                     AuthRoutes.Login.withArgs(
                         isClose = event.isClose,
                     )
-                )  {
+                ) {
                     popUpTo(0) { inclusive = true } // hoặc pop đến "splash" nếu có
                     launchSingleTop = true
                 }
@@ -64,6 +67,150 @@ fun ProfileScreen(
                 viewModel.resetNavigation()
             }
 
+            is ProfileNaEvent.GoToShareQrcode -> {
+                navHostController.navigate(
+                    ProfileRoutes.ShareQrcode.withArgs(
+
+                        title = event.title,
+                    )
+                )
+
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToShareProduct -> {
+                navHostController.navigate(
+                    ProfileRoutes.ShareProduct.withArgs(
+
+                        title = event.title,
+                    )
+                )
+
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToInCome -> {
+                navHostController.navigate(
+                    ProfileRoutes.InCome.withArgs(
+
+                        title = event.title,
+                    )
+                )
+
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToProductViewSave -> {
+                navHostController.navigate(
+                    ProfileRoutes.ProductViewSave.withArgs(
+                        type = event.type,
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToServiceProgress -> {
+                navHostController.navigate(
+                    ProfileRoutes.ServiceProgress.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToServiceCalendar -> {
+                navHostController.navigate(
+                    ProfileRoutes.ServiceCalendar.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToOderType -> {
+                navHostController.navigate(
+                    ProfileRoutes.OderType.withArgs(
+                        type = event.type,
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToSpaAtHome -> {
+                navHostController.navigate(
+                    ProfileRoutes.SpaAtHome.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToAgency -> {
+                navHostController.navigate(
+                    ProfileRoutes.Agencys.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToOpportunity -> {
+                navHostController.navigate(
+                    ProfileRoutes.Opportunity.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToPersonalConsumptionSales -> {
+                navHostController.navigate(
+                    ProfileRoutes.PersonalConsumptionSales.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToPassiveCommissionReport -> {
+                navHostController.navigate(
+                    ProfileRoutes.PassiveCommissionReport.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToSalesReportByAgency -> {
+                navHostController.navigate(
+                    ProfileRoutes.SalesReportByAgency.withArgs(
+
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+            is ProfileNaEvent.GoToRankAdvancementBonusReport -> {
+                navHostController.navigate(
+                    ProfileRoutes.RankAdvancementBonusReport.withArgs(
+                        type = event.type,
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+
             else -> Unit
         }
     }
@@ -71,22 +218,22 @@ fun ProfileScreen(
     LaunchedEffect(Unit) {
 //        viewModel.getQrCodeEmployee()
         viewModel.getQrCodeCustomer()
-        viewModel.getInfoAccount(uiState.customerId)
+        viewModel.getInfoAccount(state.customerId)
         viewModel.getMenuApp()
     }
     CustomSwipeRefresh(isRefreshing = isRefreshing,
         onRefresh = { //        viewModel.getQrCodeEmployee()
             viewModel.getQrCodeCustomer()
-            viewModel.getInfoAccount(uiState.customerId)
+            viewModel.getInfoAccount(state.customerId)
             viewModel.getMenuApp()
         }) {
-        Column(Modifier.padding( bottom=80.dp)) {
-            ProfileHeader(uiState.avartar,
-                uiState.fullName,
-                uiState.qrCode,
-                uiState.agencyName,
-                uiState.discount,
-                uiState.isLogin,
+        Column(Modifier.padding(bottom = 80.dp)) {
+            ProfileHeader(state.avartar,
+                state.fullName,
+                state.qrCode,
+                state.agencyName,
+                state.discount,
+                state.isLogin,
                 onLoginClick = { viewModel.onLoginClick() },
                 onRegisterClick = { viewModel.onRegisterClick() })
             LazyColumn(
@@ -97,10 +244,10 @@ fun ProfileScreen(
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
                 item {
-                    OrderStatusRow(uiState.oders)
+                    OrderStatusRow(state.oders,onProfileClick = { viewModel.onProfileClick(it) })
                 }
-                items(uiState.categorys) { option ->
-                    ProfileOptionItem(option)
+                items(state.categorys) { option ->
+                    ProfileOptionItem(option, onProfileClick = { viewModel.onProfileClick(it) })
                 }
             }
 

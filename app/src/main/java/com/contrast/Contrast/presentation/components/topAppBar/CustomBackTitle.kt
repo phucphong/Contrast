@@ -47,7 +47,7 @@ fun CustomBackTitle(
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .size(55.dp)
-                .padding(20.dp).noRippleClickableComposable { onBackPress() }
+                .padding(10.dp).noRippleClickableComposable { onBackPress() }
         )
 
         // Tiêu đề căn giữa tuyệt đối

@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.presentation.components.media.NetworkImage
+import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.theme.FFFF5722
+import com.itechpro.domain.model.product.Product
 
 
 @Composable
@@ -36,11 +38,12 @@ fun OrderItemView(
     orderKey: String,
     totalAmount: String,
     dateOrder: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: () -> Unit,
 ) {
     Column(
         modifier = modifier
-            .padding(5.dp)
+            .padding(5.dp).noRippleClickableComposable { onItemClick() }
             .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(4.dp))
     ) {
         // Trạng thái đơn hàng

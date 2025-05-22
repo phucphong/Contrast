@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 
@@ -49,7 +50,7 @@ fun VideoScreen(navHostController: NavHostController,
     val state by viewModel.state.collectAsState()
     val cartState by cartViewModel.state.collectAsState()
     val notificationState by notificationViewModel.state.collectAsState()
-
+    var isLoading by remember { mutableStateOf(true) }
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
     var searchText by remember { mutableStateOf("") }
@@ -135,13 +136,7 @@ fun VideoScreen(navHostController: NavHostController,
 
             }
         )
-        if (state.isLoading) {
-            // Hiển thị loading, ví dụ:
-            CustomCircularProgressIndicator()
 
-
-
-        }
         CustomSwipeRefresh(
             isRefreshing = isRefreshing,
             onRefresh = { viewModel.getVideos(idCategory) }
@@ -153,15 +148,21 @@ fun VideoScreen(navHostController: NavHostController,
                 title = stringResource(R.string.no_data)
             )
         } else {
-            VideoList(state.pagedVideos)
+
+
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                if (state.isLoading) {
+                    item {
+                        CustomCircularProgressIndicatorDialog(
+                            show = isLoading,
+                            onDismissRequest = { isLoading = false })
+                    }
+                }
+
+                items(state.pagedVideos) { video ->
+                    VideoItem(video = video)
+                }
+            }
         }
     }}
-}
-@Composable
-private fun VideoList(videos: List<Video>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(videos) { video ->
-            VideoItem(video = video)
-        }
-    }
 }

@@ -49,7 +49,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun OrderDetailScreen(
     navHostController: NavHostController,
-    ido: String,
+    id: String,
     type: String,
     viewModel: OrderDetailViewModel = hiltViewModel()
 ) {
@@ -61,7 +61,7 @@ fun OrderDetailScreen(
     LaunchedEffect(Unit) {
         delay(100)
 
-        viewModel.getOderById(type, ido)
+        viewModel.getOderById(type, id)
 
 
     }

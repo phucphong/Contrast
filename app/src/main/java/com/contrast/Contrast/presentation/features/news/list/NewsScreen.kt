@@ -23,6 +23,7 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
@@ -46,7 +47,7 @@ fun NewsScreen(
     cartViewModel: CartViewModel = hiltViewModel(),
     notificationViewModel: NotificationViewModel = hiltViewModel()
 ) {
-
+    var isLoading by remember { mutableStateOf(true) }
 
     val isRefreshing by remember { mutableStateOf(false) }
     var idCategory by remember { mutableStateOf("0") }
@@ -55,7 +56,7 @@ fun NewsScreen(
     val state by viewModel.state.collectAsState()
     val cartState by cartViewModel.state.collectAsState()
     val notificationState by notificationViewModel.state.collectAsState()
-    var isLoading by remember { mutableStateOf(true) }
+
     LaunchedEffect(Unit) {
         viewModel.getCategory()
 
@@ -145,17 +146,19 @@ fun NewsScreen(
             type = "",
             onTabSelected = viewModel::onTabSelected
         )
-        if (state.isLoading) {
-            CustomCircularProgressIndicator()
-//            CustomCircularProgressIndicatorDialog(
-//                show = isLoading,
-//                onDismissRequest = { isLoading = false }
-//            )
-        }
+
         CustomSwipeRefresh(isRefreshing = isRefreshing,
             onRefresh = { viewModel.getNews(idCategory) }) {
 
                 LazyColumn {
+
+                    if (state.isLoading) {
+                        item {
+                            CustomCircularProgressIndicatorDialog(
+                                show = isLoading,
+                                onDismissRequest = { isLoading = false })
+                        }
+                    }
                     if (state.pagedNews.isEmpty()) {
                         item {
                             EmptyStateScreen(

@@ -37,9 +37,11 @@ import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomS
 import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
 import com.contrast.Contrast.presentation.features.order.viewmodel.OrderViewModel
 import com.contrast.Contrast.presentation.features.order.list.item.OrderItemView
+import com.itechpro.domain.model.navigationEvent.OrderNavEvent
 import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
 import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
 import com.contrast.Contrast.presentation.navigator.routers.NotificationRoutes
+import com.contrast.Contrast.presentation.navigator.routers.OrderRoutes
 import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
 import com.contrast.Contrast.presentation.navigator.routers.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
@@ -159,6 +161,16 @@ fun OrdersScreen(
                         serviceName = event.serviceName,
                         idUnit = event.idUnit,
                         discount = event.discount
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+            is OrderNavEvent.GoToOderDetail -> {
+                navHostController.navigate(
+                    OrderRoutes.OderDetail.withArgs(
+                        id = event.id,
+                        type = event.type,
+
                     )
                 )
                 viewModel.resetNavigation()
@@ -332,7 +344,10 @@ fun OrdersScreen(
                                         fullUrl = fullUrl,
                                         orderKey = "${stringResource(R.string.order)}: ${order.ma}",
                                         totalAmount = totalAmount.toString(),
-                                        dateOrder = "${stringResource(R.string.createDate)}: $createDate"
+                                        dateOrder = "${stringResource(R.string.createDate)}: $createDate",
+                                        onItemClick={
+                                            viewModel.onItemSelected(order.id?:"", type)
+                                        }
                                     )
                                 }
                             }else{
@@ -342,7 +357,10 @@ fun OrdersScreen(
                                     fullUrl = fullUrl,
                                     orderKey = "${stringResource(R.string.order)}: ${order.ma}",
                                     totalAmount = totalAmount.toString(),
-                                    dateOrder = "${stringResource(R.string.createDate)}: $createDate"
+                                    dateOrder = "${stringResource(R.string.createDate)}: $createDate",
+                                    onItemClick={
+                                        viewModel.onItemSelected(order.id?:"", type)
+                                    }
                                 )
                             }
 

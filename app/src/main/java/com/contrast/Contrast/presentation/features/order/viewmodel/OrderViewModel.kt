@@ -9,11 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.extensions.collectResponse
 import com.contrast.Contrast.extensions.formatToYYYYMMDD
+import com.contrast.Contrast.presentation.navigator.routers.OrderRoutes
 import com.itechpro.domain.model.*
 
 import com.itechpro.domain.model.navigationEvent.*
 import com.itechpro.domain.model.oder.Order
 import com.itechpro.domain.model.oder.OdersUiState
+import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.oder.OdersUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -126,7 +128,15 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    
+    fun onItemSelected(id: String, type:String) {
+        _state.update {
+            it.copy(navEvent = OrderNavEvent.GoToOderDetail(
+                id = id,
+                type = type,
+
+            ))
+        }
+    }
 
     fun loadNextPage() {
         if (isLoadingNextPage || currentPage * pageSize >= allOders.size) return

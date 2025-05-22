@@ -1,4 +1,5 @@
-package com.itechpro.data.repository
+package com.itechpro.data.repository.opportunity
+
 
 
 
@@ -16,7 +17,7 @@ import com.itechpro.domain.repository.OderRepository
 import javax.inject.Inject
 
 
-class OderRepositoryImpl @Inject constructor(
+class OpportunityDetailRepositoryImpl @Inject constructor(
     private val api: OderAPI
 ) : OderRepository {
 

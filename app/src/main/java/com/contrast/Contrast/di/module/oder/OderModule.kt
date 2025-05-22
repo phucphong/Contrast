@@ -4,7 +4,7 @@ package com.contrast.Contrast.di.module.oder
 
 
 import com.itechpro.data.api.oder.OderAPI
-import com.itechpro.data.repository.OderRepositoryImpl
+import com.itechpro.data.repository.oder.OderRepositoryImpl
 import com.itechpro.domain.repository.OderRepository
 import com.itechpro.domain.usecase.oder.OdersUserCase
 

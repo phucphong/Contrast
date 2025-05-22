@@ -1,4 +1,4 @@
-package com.itechpro.data.repository
+package com.itechpro.data.repository.oder
 import com.itechpro.data.api.oder.OderDetailAPI
 
 import com.itechpro.domain.model.network.NetworkResponse

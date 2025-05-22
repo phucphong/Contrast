@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.slider.ImageSliderFromUrl
@@ -58,7 +59,7 @@ fun HomePage(
     val cartState by cartViewModel.state.collectAsState()
     val notificationState by notificationViewModel.state.collectAsState()
 
-
+    var isLoading by remember { mutableStateOf(true) }
     var isSearch by remember { mutableStateOf(false) }
     val isRefreshing by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
@@ -188,6 +189,14 @@ fun HomePage(
                     .background(FAFAFA),
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
+
+                if (state.isLoading) {
+                    item {
+                        CustomCircularProgressIndicatorDialog(
+                            show = isLoading,
+                            onDismissRequest = { isLoading = false })
+                    }
+                }
                 item {
                     if (state.slides.isNotEmpty()) {
                         ImageSliderFromUrl(

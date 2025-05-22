@@ -35,6 +35,7 @@ import com.contrast.Contrast.extensions.DateUtils
 
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
 import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
@@ -50,7 +51,7 @@ fun NotificationScreen(navHostController: NavHostController,
     val state by viewModel.state.collectAsState()
 
 
-
+    var isLoading by remember { mutableStateOf(true) }
     val isRefreshing by remember { mutableStateOf(false) }
     var startDate by remember { mutableStateOf(startDateInit) }
     var endDate by remember { mutableStateOf(endDatenit) }
@@ -90,15 +91,7 @@ fun NotificationScreen(navHostController: NavHostController,
             title = stringResource(R.string.notification_title),
             onBackPress = { navHostController.popBackStack()}
         )
-        if (state.isLoading) {
-            // Hiển thị loading, ví dụ:
-            Box(
-                modifier = Modifier.fillMaxSize().padding(top = 20.dp),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                CustomCircularProgressIndicator()
-            }
-        }
+
 
         CustomSwipeRefresh(
             isRefreshing = isRefreshing,
@@ -122,6 +115,14 @@ fun NotificationScreen(navHostController: NavHostController,
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+
+                    if (state.isLoading) {
+                        item {
+                            CustomCircularProgressIndicatorDialog(
+                                show = isLoading,
+                                onDismissRequest = { isLoading = false })
+                        }
+                    }
                     items(state.notifications, key = { it.id?:"0" }) { notification ->
                         NotificationItem(notification)
                     }

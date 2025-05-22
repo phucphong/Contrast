@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
@@ -52,7 +53,7 @@ fun CategoryAffiliatePage(
     val isInit = remember { mutableStateOf(false) }
     var isBackStack by remember { mutableStateOf(false) }
 
-
+    var isLoading by remember { mutableStateOf(true) }
 
     LaunchedEffect(state.products) {
         viewModel.setInitialProducts(state.products)
@@ -135,16 +136,7 @@ fun CategoryAffiliatePage(
             onCartClick = { viewModel.onItemCarts() },
             onBackStack = { navHostController.popBackStack() })
 
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 20.dp),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                CustomCircularProgressIndicator()
-            }
-        }
+
 
         if (state.tabs.size > 1) {
             SegmentTabLocal(tabs = state.tabs, selectedTab = selectedTabIndex, onTabSelected = {
@@ -169,6 +161,14 @@ fun CategoryAffiliatePage(
                 .background(Color.White),
             contentPadding = PaddingValues(bottom = 80.dp)
         ) {
+
+            if (state.isLoading) {
+                item {
+                    CustomCircularProgressIndicatorDialog(
+                        show = isLoading,
+                        onDismissRequest = { isLoading = false })
+                }
+            }
             item {
                 TabBarRowCircle(tabs = state.category2,
                     color = TealGreen,

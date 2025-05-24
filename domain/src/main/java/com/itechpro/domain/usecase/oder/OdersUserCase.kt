@@ -7,9 +7,9 @@ package com.itechpro.domain.usecase.oder
 
 
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.oder.Order
+import com.itechpro.domain.model.order.Order
 
-import com.itechpro.domain.repository.OderRepository
+import com.itechpro.domain.repository.oder.OderRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

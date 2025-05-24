@@ -22,6 +22,9 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
@@ -47,6 +50,22 @@ object Util {
             }
         }
     }
+
+    fun ddMMYYY(strdate: String): String {
+
+        var dateFomat: String = ""
+        var date: Date? = null
+        val format: SimpleDateFormat
+        format = SimpleDateFormat("dd/MM/yyyy")
+        try {
+            date = format.parse(strdate)
+            dateFomat = format.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return dateFomat
+    }
+
 
     fun initRetrofit(url: String,context: Context?): Retrofit {
         val okHttpClient = OkHttpClient.Builder()

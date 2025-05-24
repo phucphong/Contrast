@@ -45,7 +45,12 @@ object DateUtils {
         val lastMonth = LocalDate.now().minusMonths(1)
         return YearMonth.of(lastMonth.year, lastMonth.month).atEndOfMonth().format(formatter)
     }
-
+// tháng năm
+    fun getCurrentMonthYear(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("MM/yyyy")
+        return currentDate.format(formatter)
+    }
     // Đầu quý hiện tại
     fun firstDayOfThisQuarter(): String {
         val now = LocalDate.now()

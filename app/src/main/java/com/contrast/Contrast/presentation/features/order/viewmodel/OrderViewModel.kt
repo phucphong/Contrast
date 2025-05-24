@@ -9,13 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.extensions.collectResponse
 import com.contrast.Contrast.extensions.formatToYYYYMMDD
-import com.contrast.Contrast.presentation.navigator.routers.OrderRoutes
 import com.itechpro.domain.model.*
 
 import com.itechpro.domain.model.navigationEvent.*
-import com.itechpro.domain.model.oder.Order
-import com.itechpro.domain.model.oder.OdersUiState
-import com.itechpro.domain.model.product.Product
+import com.itechpro.domain.model.order.Order
+import com.itechpro.domain.model.order.OrdersUiState
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.oder.OdersUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,8 +30,8 @@ class OrderViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(OdersUiState())
-    val state: StateFlow<OdersUiState> = _state
+    private val _state = MutableStateFlow(OrdersUiState())
+    val state: StateFlow<OrdersUiState> = _state
     private var currentUserInfo: CurrentUserInfo? = null
     private var allOders: List<Order> = emptyList()
     private var currentPage = 0
@@ -128,7 +126,7 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun onItemSelected(id: String, type:String) {
+    fun onItemClick(id: String, type:String) {
         _state.update {
             it.copy(navEvent = OrderNavEvent.GoToOderDetail(
                 id = id,

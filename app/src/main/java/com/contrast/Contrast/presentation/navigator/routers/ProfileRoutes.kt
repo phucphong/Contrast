@@ -70,40 +70,9 @@ object ProfileRoutes {
             navArgument("title") { type = NavType.StringType }
         )
     }
-    object Opportunity {
-        private const val baseRoute = "opportunity"
-        const val route = "$baseRoute/{title}"
-        fun withArgs(title: String) = "$baseRoute/${Uri.encode(title)}"
-        val arguments = listOf(
-            navArgument("title") { type = NavType.StringType }
-        )
-    }
 
-    object PersonalConsumptionSales {
-        private const val baseRoute = "personalConsumptionSales"
-        const val route = "$baseRoute/{title}"
-        fun withArgs(title: String) = "$baseRoute/${Uri.encode(title)}"
-        val arguments = listOf(
-            navArgument("title") { type = NavType.StringType }
-        )
-    }
-    object PassiveCommissionReport {
-        private const val baseRoute = "passiveCommissionReport"
-        const val route = "$baseRoute/{title}"
-        fun withArgs(title: String) = "$baseRoute/${Uri.encode(title)}"
-        val arguments = listOf(
-            navArgument("title") { type = NavType.StringType }
-        )
-    }
 
-    object SalesReportByAgency {
-        private const val baseRoute = "salesReportByAgency"
-        const val route = "$baseRoute/{title}"
-        fun withArgs(title: String) = "$baseRoute/${Uri.encode(title)}"
-        val arguments = listOf(
-            navArgument("title") { type = NavType.StringType }
-        )
-    }
+
 
     object ProductViewSave {
         private const val baseRoute = "productViewSave"
@@ -117,17 +86,6 @@ object ProfileRoutes {
 
     object OderType {
         private const val baseRoute = "oderType"
-        const val route = "$baseRoute/{type}/{title}"
-        fun withArgs(type: String,title: String) = "$baseRoute/${Uri.encode(type)}/${Uri.encode(title)}"
-        val arguments = listOf(
-            navArgument("type") { type = NavType.StringType }
-            ,
-            navArgument("title") { type = NavType.StringType }
-        )
-    }
-
-    object RankAdvancementBonusReport {
-        private const val baseRoute = "rankAdvancementBonusReport"
         const val route = "$baseRoute/{type}/{title}"
         fun withArgs(type: String,title: String) = "$baseRoute/${Uri.encode(type)}/${Uri.encode(title)}"
         val arguments = listOf(

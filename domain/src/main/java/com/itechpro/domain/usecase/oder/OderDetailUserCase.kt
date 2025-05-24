@@ -1,17 +1,12 @@
 package com.itechpro.domain.usecase.oder
 
-
-
-
-
-
-
-
-import com.itechpro.domain.model.cart.CartResult
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.oder.OrderResult
+import com.itechpro.domain.model.order.Order
+import com.itechpro.domain.model.order.OrderResult
+import com.itechpro.domain.model.order.OrderTable
 
-import com.itechpro.domain.repository.OderDetailRepository
+
+import com.itechpro.domain.repository.oder.OderDetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,26 +19,19 @@ class OderDetailUserCase @Inject constructor(
     ) {
 
 
-
-
-    fun getOderById(
+    fun getOderDetail(
         obj: String,  mode: String, ido: String, authen: String
     ): Flow<NetworkResponse<OrderResult?>> {
         return flow {
             emit(NetworkResponse.Loading)
-            when (val result = repository.getOderById(obj,mode, ido, authen)) {
+            when (val result = repository.getOderDetail(obj,mode, ido, authen)) {
 
 
                 is NetworkResponse.Success -> {
-                    val items = result.data.table
-                    val listInfo = result.data.table1
+                    val items = result.data.Table
+                    val oderInfo = result.data.Table1.firstOrNull()
 
-                    emit(
-                        NetworkResponse.Success(
-                            OrderResult(items,
-                                oderInfo = listInfo[0])
-                        ))
-
+                    emit(NetworkResponse.Success(OrderResult(items = items, oderInfo =oderInfo  )))
                 }
 
                 is NetworkResponse.Error -> {

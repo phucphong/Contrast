@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 
 import com.contrast.Contrast.presentation.features.product.detail.ProductDetailScreen
-import com.contrast.Contrast.presentation.features.report.AddReportProductScreen
+import com.contrast.Contrast.presentation.features.report.add_report_product.AddReportProductScreen
 
 import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
 

@@ -33,7 +33,7 @@ fun RootNavigationGraph(
         registerNotificationRoutes(navController)
         registerServiceRequestRoutes(navController)
         registerProfileRoutes(navController)
-        registerOrderRoutes(navController)
+
 
     }
 }

@@ -280,12 +280,7 @@ fun InComeScreen(
                     .background(FAFAFA)
             ) {
 
-                if (state.isLoading) {
-                    item {
-                        CustomCircularProgressIndicatorDialog(show = isLoading,
-                            onDismissRequest = { isLoading = false })
-                    }
-                }
+
                 if (state.tabs.size > 1) {
                     stickyHeader {
                         TabBarRowLocal(
@@ -296,87 +291,94 @@ fun InComeScreen(
                             })
                     }
                 }
-
-                if (state.pagedOders.isEmpty()) {
+                if (state.isLoading) {
                     item {
-                        EmptyStateScreen(
-                            imageRes = R.drawable.emptycart,
-                            size = 90.dp,
-                            title = stringResource(R.string.empty_cart),
-                            background = FFFAFAFA,
-                            modifier = Modifier.padding(40.dp)
-                        )
+                        CustomCircularProgressIndicatorDialog(show = isLoading,
+                            onDismissRequest = { isLoading = false })
                     }
+                }else{
+                    if (state.pagedOders.isEmpty()) {
+                        item {
+                            EmptyStateScreen(
+                                imageRes = R.drawable.emptycart,
+                                size = 90.dp,
+                                title = stringResource(R.string.empty_cart),
+                                background = FFFAFAFA,
+                                modifier = Modifier.padding(40.dp)
+                            )
+                        }
 
-                } else {
+                    } else {
 
-                    val rows = state.pagedOders.chunked(1)
+                        val rows = state.pagedOders.chunked(1)
 
-                    items(rows, key = { row -> row.firstOrNull()?.iddondathang ?: "row" }) { row ->
-                        val order = row.firstOrNull()
+                        items(rows, key = { row -> row.firstOrNull()?.iddondathang ?: "row" }) { row ->
+                            val order = row.firstOrNull()
 
-                        if (order != null) {
+                            if (order != null) {
 
-                            val  coin = order.tongdiem?:0.0
+                                val  coin = order.tongdiem?:0.0
 
-                            val  commission = order.tonghoahong?:0.0
+                                val  commission = order.tonghoahong?:0.0
 
-                            var  actualCommission = ""
-                            var  isShowCoin = false;
+                                var  actualCommission = ""
+                                var  isShowCoin = false;
 
-                            if(state.pointAffiliate=="1"){
+                                if(state.pointAffiliate=="1"){
 
-                                isShowCoin = true
+                                    isShowCoin = true
 
-                                actualCommission = "${stringResource(R.string.commission_label)}: ${coin}"
-                            }else{
-                                isShowCoin = false
-
-
-                                actualCommission = "${stringResource(R.string.commission_label)}: ${commission.formatCurrency()}"
-                            }
+                                    actualCommission = "${stringResource(R.string.commission_label)}: ${coin}"
+                                }else{
+                                    isShowCoin = false
 
 
-                            OrderItemViewIncome(
-                                orderKey = "${stringResource(R.string.order_code_label)}: ${order.madonhangdathang}",
-                                status = order.trangthai, // ví dụ: "Đã thanh toán"
-                                totalCount = "Tổng: ${order.sanphams.size} ${stringResource(R.string.product)}",
-                                actualCommission = actualCommission,
-                                createDate = "${stringResource(R.string.createDate)}: ${order.ngaytao}",
-                                showCoin = isShowCoin,
-                                isExpanded = false,
-                                onToggleClick = { /* mở rộng */ },
-                                onArrowClick = { /* xử lý icon */ }
-                            ) {
-                                // Danh sách sản phẩm trong đơn hàng
-                                LazyColumn {
-                                    items(order.sanphams) { product ->
-                                        val  coin = product.diem?:0.0
-                                        val  commission = product.sotienhoahong?:0.0
-                                        var  actualCommission = ""
-                                        var  isShowCoin:Boolean = false
-                                        if(state.pointAffiliate=="1"){
-                                            isShowCoin = true
-                                            actualCommission = "${stringResource(R.string.commission_label)}: ${coin}"
-                                        }else{
-                                            isShowCoin = false
-                                            actualCommission = "${stringResource(R.string.commission_label)}: ${commission.formatCurrency()}"
+                                    actualCommission = "${stringResource(R.string.commission_label)}: ${commission.formatCurrency()}"
+                                }
+
+
+                                OrderItemViewIncome(
+                                    orderKey = "${stringResource(R.string.order_code_label)}: ${order.madonhangdathang}",
+                                    status = order.trangthai, // ví dụ: "Đã thanh toán"
+                                    totalCount = "Tổng: ${order.sanphams.size} ${stringResource(R.string.product)}",
+                                    actualCommission = actualCommission,
+                                    createDate = "${stringResource(R.string.createDate)}: ${order.ngaytao}",
+                                    showCoin = isShowCoin,
+                                    isExpanded = false,
+                                    onToggleClick = { /* mở rộng */ },
+                                    onArrowClick = { /* xử lý icon */ }
+                                ) {
+                                    // Danh sách sản phẩm trong đơn hàng
+                                    LazyColumn {
+                                        items(order.sanphams) { product ->
+                                            val  coin = product.diem?:0.0
+                                            val  commission = product.sotienhoahong?:0.0
+                                            var  actualCommission = ""
+                                            var  isShowCoin:Boolean = false
+                                            if(state.pointAffiliate=="1"){
+                                                isShowCoin = true
+                                                actualCommission = "${stringResource(R.string.commission_label)}: ${coin}"
+                                            }else{
+                                                isShowCoin = false
+                                                actualCommission = "${stringResource(R.string.commission_label)}: ${commission.formatCurrency()}"
+                                            }
+                                            ProductItemView(
+                                                fullUrl ="${state.domain}${ product.filetxt}",
+                                                name = product.tensanpham,
+                                                count = product.soluong,
+                                                commission = actualCommission,
+                                                showCoin = isShowCoin
+                                            )
+
                                         }
-                                        ProductItemView(
-                                            fullUrl ="${state.domain}${ product.filetxt}",
-                                            name = product.tensanpham,
-                                            count = product.soluong,
-                                            commission = actualCommission,
-                                            showCoin = isShowCoin
-                                        )
-
                                     }
                                 }
                             }
                         }
-                    }
 
+                    }
                 }
+
 
             }
         }

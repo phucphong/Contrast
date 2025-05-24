@@ -35,6 +35,7 @@ import com.contrast.Contrast.presentation.components.inputs.CustomTextFieldPassw
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.checkbox.BorderedCheckBox
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
+import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.copyrightInfoSection.CopyrightInfoSection
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
@@ -62,7 +63,7 @@ fun LoginScreen(navHostController: NavHostController,
     var isBiometricAuthenticator by remember { mutableStateOf(false) }
     var biometricAuthenticatorError by remember { mutableStateOf("") }
     val context = LocalContext.current
-
+    var isLoading by remember { mutableStateOf(true) }
     val activity = context as? FragmentActivity
     // Khởi tạo biometricAuthenticator nếu activity không null
     val biometricAuthenticator = remember(activity) {
@@ -186,7 +187,11 @@ fun LoginScreen(navHostController: NavHostController,
             Spacer(modifier = Modifier.height(16.dp))
 
 
-
+            if (state.isLoading) {
+                CustomCircularProgressIndicatorDialog(
+                    show = isLoading,
+                    onDismissRequest = { isLoading = false })
+            }
             Spacer(modifier = Modifier.height(24.dp))
             Row (verticalAlignment = Alignment.CenterVertically){
                 Button(
@@ -305,9 +310,7 @@ fun LoginScreen(navHostController: NavHostController,
               .padding(vertical = 16.dp)
       )
     }
-        if(state.isLoading){
-            CustomCircularProgressIndicator(contentAlignment = Alignment.Center)
-        }
+
 
 
 }

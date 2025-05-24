@@ -158,26 +158,28 @@ fun NewsScreen(
                                 show = isLoading,
                                 onDismissRequest = { isLoading = false })
                         }
-                    }
-                    if (state.pagedNews.isEmpty()) {
-                        item {
-                            EmptyStateScreen(
-                                imageRes = R.drawable.nodata,
-                                title = stringResource(R.string.empty_news),
-                                message = ""
-                            )
-                        }
-                    } else {
+                    }else{
+                        if (state.pagedNews.isEmpty()) {
+                            item {
+                                EmptyStateScreen(
+                                    imageRes = R.drawable.nodata,
+                                    title = stringResource(R.string.empty_news),
+                                    message = ""
+                                )
+                            }
+                        } else {
 
-                    items(state.pagedNews) { article ->
-                        state.domain?.let {
-                            NewsItem(article, it, onClickNew = {
-                                viewModel.onItemNewSelected(article)
+                            items(state.pagedNews) { article ->
+                                state.domain?.let {
+                                    NewsItem(article, it, onClickNew = {
+                                        viewModel.onItemNewSelected(article)
 
-                            })
+                                    })
+                                }
+                            }
                         }
                     }
-                    }
+
                 }
 
         }

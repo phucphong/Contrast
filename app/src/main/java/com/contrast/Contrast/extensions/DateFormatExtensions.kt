@@ -6,15 +6,27 @@ fun formatDateYYYYMMDD(day: Int, month: Int, year: Int): String {
 }
 
 fun formatToYYYYMMDD(input: String): String {
-    return try {
-        val inputFormat = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss", java.util.Locale.getDefault())
-        val outputFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-        val date = inputFormat.parse(input)
-        outputFormat.format(date ?: return "")
-    } catch (e: Exception) {
-        ""
+    val formats = listOf(
+        "dd/MM/yyyy HH:mm:ss",
+        "dd/MM/yyyy"
+    )
+
+    for (pattern in formats) {
+        try {
+            val inputFormat = java.text.SimpleDateFormat(pattern, java.util.Locale.getDefault())
+            val outputFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            val date = inputFormat.parse(input)
+            if (date != null) {
+                return outputFormat.format(date)
+            }
+        } catch (e: Exception) {
+            // Continue to next pattern
+        }
     }
+
+    return ""
 }
+
 
 fun formatToDDMYYYYHHMM(input: String): String {
     return try {

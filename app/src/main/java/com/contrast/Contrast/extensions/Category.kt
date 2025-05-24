@@ -22,6 +22,8 @@ fun Category.label(): String {
         "personal" -> stringResource(R.string.personal)
         "ios" -> stringResource(R.string.ios)
         "android" -> stringResource(R.string.android)
+        "original" -> stringResource(R.string.original)
+        "discount" -> stringResource(R.string.discount)
         else -> name.orEmpty()
     }
 }

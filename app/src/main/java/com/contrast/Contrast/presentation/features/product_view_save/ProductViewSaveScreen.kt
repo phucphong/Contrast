@@ -220,12 +220,7 @@ fun ProductViewSaveScreen(
             ) {
 
 
-                if (state.isLoading) {
-                    item {
-                        CustomCircularProgressIndicatorDialog(show = isLoading,
-                            onDismissRequest = { isLoading = false })
-                    }
-                }
+
                 if (state.tabs.size > 1) {
                     stickyHeader {
                         SegmentTabLocal(tabs = state.tabs, selectedTab = state.selectedTab, onTabSelected = {
@@ -234,38 +229,47 @@ fun ProductViewSaveScreen(
                         })
                     }
                 }
-                if (state.pagedProducts.isEmpty()) {
-                item {
-                    EmptyStateScreen(
-                        imageRes = R.drawable.emptycart,
-                        size = 90.dp,
-                        title = stringResource(R.string.empty_product),
-                        background = FFFAFAFA,
-                        modifier = Modifier.padding(40.dp)
-                    )
+
+                if (state.isLoading) {
+                    item {
+                        CustomCircularProgressIndicatorDialog(show = isLoading,
+                            onDismissRequest = { isLoading = false })
+                    }
+                }else{
+                    if (state.pagedProducts.isEmpty()) {
+                        item {
+                            EmptyStateScreen(
+                                imageRes = R.drawable.emptycart,
+                                size = 90.dp,
+                                title = stringResource(R.string.empty_product),
+                                background = FFFAFAFA,
+                                modifier = Modifier.padding(40.dp)
+                            )
+                        }
+
+                    } else {
+                        val rows = state.pagedProducts.chunked(2)
+                        items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                            ProductRow(domain = state.domain,
+                                token = state.token,
+                                pointAffiliate = state.pointAffiliate,
+                                rowProducts = row,
+                                isShare = false,
+                                promoUiDataMap = promoUiDataMap,
+                                onItemClick = { viewModel.onItemProductSelected(it) },
+                                onClickCart = { cartViewModel.onItemAddCart(it) },
+                                onClickAddServiceRequest = {
+                                    viewModel.onAddServiceRequestSelected(it)
+
+                                },
+                                onClickShare = { obj ->
+
+
+                                })
+                        }
+                    }
                 }
 
-            } else {
-                val rows = state.pagedProducts.chunked(2)
-                items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                    ProductRow(domain = state.domain,
-                        token = state.token,
-                        pointAffiliate = state.pointAffiliate,
-                        rowProducts = row,
-                        isShare = false,
-                        promoUiDataMap = promoUiDataMap,
-                        onItemClick = { viewModel.onItemProductSelected(it) },
-                        onClickCart = { cartViewModel.onItemAddCart(it) },
-                        onClickAddServiceRequest = {
-                            viewModel.onAddServiceRequestSelected(it)
-
-                        },
-                        onClickShare = { obj ->
-
-
-                        })
-                }
-            }
             }
         }
     }

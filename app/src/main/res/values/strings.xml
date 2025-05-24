@@ -30,6 +30,7 @@
     <string name="password_label">Mật khẩu</string>
     <string name="connect_code_label">Mã kết nối</string>
     <string name="connect_code_placeholder">Nhập mã kết nối hoặc tên miền</string>
+    <string name="youNotHaveOpportunities">Bạn chưa có cơ hội nào</string>
     <!-- Thời gian -->
     <string name="participation_result_title">Kết quả tham gia</string>
     <!-- Tiêu đề dialog -->
@@ -43,7 +44,10 @@
 
     <!-- Button -->
     <string name="search">Tìm kiếm</string>
-
+    <string name="order_waiting_confirmation">Số lượng đơn hàng chờ xác nhận</string>
+    <string name="order_confirmed">Số lượng đơn hàng đã xác nhận</string>
+    <string name="total_before_discount">Tổng tiền trước chiết khấu</string>
+    <string name="total_after_discount">Tổng tiền sau chiết khấu</string>
     <!-- 3 chỉ số -->
     <string name="order_count">Đơn hàng</string>
     <string name="order">Đơn hàng</string>
@@ -81,6 +85,9 @@
     <string name="customer_type">Kiểu khách hàng</string>
     <string name="confirm">Đồng ý</string>
     <string name="content">Nội dung</string>
+    <string name="stt">STT</string>
+    <string name="name">Tên</string>
+    <string name="monthlySales">Doanh số</string>
     <string name="customer_name">Tên khách hàng</string>
     <string name="responsible_person">Người phụ trách</string>
     <string name="referrer">Người giới thiệu</string>
@@ -92,6 +99,7 @@
     <string name="policy_group">Nhóm chính sách</string>
     <string name="information_source">Nguồn thông tin</string>
     <string name="level">Cấp độ</string>
+    <string name="level_new_old">Cấp độ cũ/mới</string>
     <string name="representative">Người đại diện</string>
     <string name="position">Chức vụ</string>
     <string name="tax_code">Mã số thuế</string>
@@ -160,11 +168,12 @@
 
     <!-- Tổng kết -->
     <string name="total_price">Tổng tiền:</string>
-    <string name="discount">Chiết khấu:</string>
+    <string name="discount">Chiết khấu</string>
     <string name="final_price">Thành tiền:</string>
     <string name="empty_news">Chưa có tin tức</string>
     <string name="order_code_label">Mã đơn đặt hàng</string>
     <string name="empty_oder">Chưa có đơn hàng</string>
+    <string name="empty_report">Chưa có báo cáo</string>
     <string name="no_review_data">Chưa có đánh giá nào</string>
     <string name="no_notification_desc">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
     <string name="delete">Xóa</string>
@@ -531,8 +540,12 @@
     <string name="payment_waiting">Chưa thanh toán</string>
     <string name="paymented">Đã thanh toán</string>
     <string name="personal">Cá nhân</string>
+    <string name="agency">Đại lý</string>
+    <string name="total_revenue">Tổng doanh thu</string>
+    <string name="received_amount">Số tiền hưởng</string>
     <string name="ios">IOS</string>
     <string name="android">Android</string>
+    <string name="original">Giá gốc</string>
     <string name="paymentInfo">Thông tin thanh toán</string>
     <string name="task">Công việc</string>
     <string name="events_happening">Sự kiện đang diễn ra</string>

@@ -28,7 +28,7 @@ fun ProfileOptionItem(category: Category, onProfileClick: (Category) -> Unit = {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onProfileClick(category) }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         category.icon?.takeIf { it != 0 }?.let { iconRes ->

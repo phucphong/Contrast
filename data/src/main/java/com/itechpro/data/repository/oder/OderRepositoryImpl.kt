@@ -9,8 +9,8 @@ package com.itechpro.data.repository.oder
 import com.itechpro.data.api.oder.OderAPI
 
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.oder.Order
-import com.itechpro.domain.repository.OderRepository
+import com.itechpro.domain.model.order.Order
+import com.itechpro.domain.repository.oder.OderRepository
 
 
 import javax.inject.Inject

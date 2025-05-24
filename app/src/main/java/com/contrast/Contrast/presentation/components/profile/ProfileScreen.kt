@@ -28,11 +28,16 @@ import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileVi
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.features.login.LoginViewModel
 import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
+import com.contrast.Contrast.presentation.navigator.routers.OpportunityRoutes
 import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import com.itechpro.domain.model.profile.ProfileNaEvent
 import com.contrast.Contrast.presentation.navigator.routers.ProfileRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ReportPersonalSalesRoutes
+import com.itechpro.domain.model.navigationEvent.OpportunityNavEvent
+import com.itechpro.domain.model.navigationEvent.OrderNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.navigationEvent.ReportPersonalSalesNaEvent
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -70,7 +75,6 @@ fun ProfileScreen(
             is ProfileNaEvent.GoToShareQrcode -> {
                 navHostController.navigate(
                     ProfileRoutes.ShareQrcode.withArgs(
-
                         title = event.title,
                     )
                 )
@@ -81,22 +85,18 @@ fun ProfileScreen(
             is ProfileNaEvent.GoToShareProduct -> {
                 navHostController.navigate(
                     ProfileRoutes.ShareProduct.withArgs(
-
                         title = event.title,
                     )
                 )
-
                 viewModel.resetNavigation()
             }
 
             is ProfileNaEvent.GoToInCome -> {
                 navHostController.navigate(
                     ProfileRoutes.InCome.withArgs(
-
                         title = event.title,
                     )
                 )
-
                 viewModel.resetNavigation()
             }
 
@@ -130,7 +130,7 @@ fun ProfileScreen(
                 viewModel.resetNavigation()
             }
 
-            is ProfileNaEvent.GoToOderType -> {
+            is OrderNavEvent.GoToOderType -> {
                 navHostController.navigate(
                     ProfileRoutes.OderType.withArgs(
                         type = event.type,
@@ -153,56 +153,59 @@ fun ProfileScreen(
             is ProfileNaEvent.GoToAgency -> {
                 navHostController.navigate(
                     ProfileRoutes.Agencys.withArgs(
-
                         title = event.title,
                     )
                 )
                 viewModel.resetNavigation()
             }
 
-            is ProfileNaEvent.GoToOpportunity -> {
+            is OpportunityNavEvent.GoToOpportunity -> {
                 navHostController.navigate(
-                    ProfileRoutes.Opportunity.withArgs(
-
+                    OpportunityRoutes.Opportunity.withArgs(
+                        type = event.type,
                         title = event.title,
                     )
                 )
                 viewModel.resetNavigation()
             }
 
-            is ProfileNaEvent.GoToPersonalConsumptionSales -> {
+            is ReportPersonalSalesNaEvent.GoToPersonalConsumptionSales -> {
                 navHostController.navigate(
-                    ProfileRoutes.PersonalConsumptionSales.withArgs(
-
+                    ReportPersonalSalesRoutes.PersonalConsumptionSales.withArgs(
+                        title = event.title,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+            is ReportPersonalSalesNaEvent.GoToUpToLevelSales -> {
+                navHostController.navigate(
+                    ReportPersonalSalesRoutes.UpToLevelSales.withArgs(
+                        type = event.type,
                         title = event.title,
                     )
                 )
                 viewModel.resetNavigation()
             }
 
-            is ProfileNaEvent.GoToPassiveCommissionReport -> {
+            is ReportPersonalSalesNaEvent.GoToPassiveCommissionReport -> {
                 navHostController.navigate(
-                    ProfileRoutes.PassiveCommissionReport.withArgs(
-
+                    ReportPersonalSalesRoutes.PassiveCommissionReport.withArgs(
                         title = event.title,
                     )
                 )
                 viewModel.resetNavigation()
             }
-
-            is ProfileNaEvent.GoToSalesReportByAgency -> {
+            is ReportPersonalSalesNaEvent.GoToSalesReportByAgency -> {
                 navHostController.navigate(
-                    ProfileRoutes.SalesReportByAgency.withArgs(
-
+                    ReportPersonalSalesRoutes.SalesReportByAgency.withArgs(
                         title = event.title,
                     )
                 )
                 viewModel.resetNavigation()
             }
-
-            is ProfileNaEvent.GoToRankAdvancementBonusReport -> {
+            is ReportPersonalSalesNaEvent.GoToRankAdvancementBonusReport -> {
                 navHostController.navigate(
-                    ProfileRoutes.RankAdvancementBonusReport.withArgs(
+                    ReportPersonalSalesRoutes.RankAdvancementBonusReport.withArgs(
                         type = event.type,
                         title = event.title,
                     )
@@ -221,7 +224,8 @@ fun ProfileScreen(
         viewModel.getInfoAccount(state.customerId)
         viewModel.getMenuApp()
     }
-    CustomSwipeRefresh(isRefreshing = isRefreshing,
+    CustomSwipeRefresh(
+        isRefreshing = isRefreshing,
         onRefresh = { //        viewModel.getQrCodeEmployee()
             viewModel.getQrCodeCustomer()
             viewModel.getInfoAccount(state.customerId)
@@ -244,7 +248,7 @@ fun ProfileScreen(
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
                 item {
-                    OrderStatusRow(state.oders,onProfileClick = { viewModel.onProfileClick(it) })
+                    OrderStatusRow(state.oders, onProfileClick = { viewModel.onProfileClick(it) })
                 }
                 items(state.categorys) { option ->
                     ProfileOptionItem(option, onProfileClick = { viewModel.onProfileClick(it) })

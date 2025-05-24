@@ -10,8 +10,8 @@ import com.contrast.Contrast.utils.StringProvider
 import com.itechpro.domain.model.*
 
 import com.itechpro.domain.model.navigationEvent.*
-import com.itechpro.domain.model.oder.Order
-import com.itechpro.domain.model.oder.OdersUiState
+
+import com.itechpro.domain.model.order.OrdersUiState
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
 import com.itechpro.domain.usecase.oder.OderDetailUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,8 +29,8 @@ class OrderDetailViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(OdersUiState())
-    val state: StateFlow<OdersUiState> = _state
+    private val _state = MutableStateFlow(OrdersUiState())
+    val state: StateFlow<OrdersUiState> = _state
     private var currentUserInfo: CurrentUserInfo? = null
 
 
@@ -47,6 +47,7 @@ class OrderDetailViewModel @Inject constructor(
                         pointAffiliate = user.pointAffiliate,
                         employeeId = user.employeeId,
                         customerId = user.customerId,
+                        typeAccount = user.typeAccount,
                     )
                 }
             }
@@ -70,13 +71,13 @@ class OrderDetailViewModel @Inject constructor(
             }
 
 
-            useCase.getOderById(
+            useCase.getOderDetail(
                 obj, mode, ido, user.token
             ).collectResponse(dispatcher = dispatcher, onSuccess = { data ->
                 if (data != null) {
                     _state.update {
                         it.copy(
-                            order = data.oderInfo, orders = data.items, isLoading = false
+                            orders = data.items, order =data.oderInfo,isLoading = false
                         )
                     }
                 }

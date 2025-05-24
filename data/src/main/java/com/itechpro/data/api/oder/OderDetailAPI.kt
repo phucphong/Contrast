@@ -2,7 +2,8 @@ package com.itechpro.data.api.oder
 
 
 
-import com.itechpro.domain.model.oder.OderTable
+import com.itechpro.domain.model.order.Order
+import com.itechpro.domain.model.order.OrderTable
 
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,12 +17,12 @@ interface OderDetailAPI {
 
     @Headers("Content-Type: application/json")
     @GET("/ex/api/getobj")
-    suspend fun getOderById(
+    suspend fun getOderDetail(
         @Query("obj") obj: String?,
         @Query("mode") mode: String?,
         @Query("ido") ido: String?,
         @Header("Authorization") authen: String?
-    ): Response<OderTable>
+    ): Response<OrderTable>
 
 
 

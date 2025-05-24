@@ -27,80 +27,73 @@ import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.contrast.Contrast.presentation.theme.FFFF5722
-
-
 @Composable
 fun OrderItemViewDetail(
-
     fullUrl: String,
     orderKey: String,
     totalAmount: String,
-    dateOrder: String,
+    quantity: String,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Card(
         modifier = modifier
-            .padding(5.dp)
-            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(4.dp))
+            .fillMaxWidth()
+          ,
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(2.dp),
     ) {
-
-
         Row(
             modifier = Modifier
                 .background(Color.White)
-                .padding(5.dp),
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Hình ảnh danh mục
-            Card(
-                elevation = CardDefaults.cardElevation(6.dp),
-                shape = RoundedCornerShape(12.dp),
+
+            // Hình ảnh sản phẩm
+            NetworkImage(
+                model = fullUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(10.dp)
-                    .size(70.dp
-                    )
-            ) {
+                    .size(60.dp)
+                    .background(Color.LightGray, shape = RoundedCornerShape(4.dp))
+            )
 
-                NetworkImage(
-                    model = fullUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .width(67.dp)
-                        .height(67.dp)
-                        .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
-
-                )
-
-            }
+            Spacer(modifier = Modifier.width(10.dp))
 
             // Nội dung bên phải
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(top = 10.dp)
             ) {
                 Text(
                     text = orderKey,
-                    color = Color.Black,
-                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    fontSize = 13.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(top = 5.dp)
+                    modifier = Modifier.padding(vertical = 5.dp)
                 )
+
+
+
                 Text(
-                    text = (totalAmount.toDouble()).formatCurrency(),
-                    color = FFFF5722,
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(top = 5.dp)
-                )
-                Text(
-                    text = dateOrder,
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    modifier = Modifier
-                        .padding(vertical = 5.dp)
+                    text = totalAmount,
+                    color = Color.Black,
+                    fontSize = 14.sp
+                    ,
+                    modifier = Modifier.padding(bottom = 5.dp)
                 )
             }
+
+            // Số lượng canh phải
+            Text(
+                text = "x$quantity",
+                color = Color.Black,
+                fontSize = 13.sp,
+                textAlign = TextAlign.End,
+                modifier = Modifier.padding(start = 8.dp, top = 10.dp)
+            )
         }
     }
 }

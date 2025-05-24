@@ -17,7 +17,10 @@ import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
 import com.itechpro.domain.model.navigationEvent.NavEvent
+import com.itechpro.domain.model.navigationEvent.OpportunityNavEvent
+import com.itechpro.domain.model.navigationEvent.OrderNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.navigationEvent.ReportPersonalSalesNaEvent
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 import com.itechpro.domain.model.profile.ProfileNaEvent
 import com.itechpro.domain.model.profile.ProfileUiState
@@ -239,7 +242,7 @@ class ProfileViewModel @Inject constructor(
             "donhangchoxacnhan" -> {
                 _state.update {
                     it.copy(
-                        navEvent = ProfileNaEvent.GoToOderType(
+                        navEvent = OrderNavEvent.GoToOderType(
                             "donhangchoxacnhan", title
                         )
                     )
@@ -249,7 +252,7 @@ class ProfileViewModel @Inject constructor(
             "donhangdaxacnhan" -> {
                 _state.update {
                     it.copy(
-                        navEvent = ProfileNaEvent.GoToOderType(
+                        navEvent = OrderNavEvent.GoToOderType(
                             "donhangdaxacnhan", title
                         )
                     )
@@ -257,7 +260,7 @@ class ProfileViewModel @Inject constructor(
             }
 
             "donhang" -> {
-                _state.update { it.copy(navEvent = ProfileNaEvent.GoToOderType("donhang", title)) }
+                _state.update { it.copy(navEvent = OrderNavEvent.GoToOderType("donhang", title)) }
             }
 
             "huongdanspatainha" -> {
@@ -269,25 +272,31 @@ class ProfileViewModel @Inject constructor(
             }
 
             "cantuvan" -> {
-                _state.update { it.copy(navEvent = ProfileNaEvent.GoToOpportunity(title)) }
+                _state.update { it.copy(navEvent = OpportunityNavEvent.GoToOpportunity("cantuvan",title)) }
             }
 
             "doanhsotieudungcanhan" -> {
-                _state.update { it.copy(navEvent = ProfileNaEvent.GoToPersonalConsumptionSales(title)) }
+                _state.update { it.copy(navEvent = ReportPersonalSalesNaEvent.GoToPersonalConsumptionSales(title)) }
+            }
+  "baocaothuongthangcap" -> {
+                _state.update { it.copy(navEvent = ReportPersonalSalesNaEvent.GoToUpToLevelSales("baocaothuongthangcap",title)) }
+            }
+  "baocaothuongthangcapcanhan" -> {
+                _state.update { it.copy(navEvent = ReportPersonalSalesNaEvent.GoToUpToLevelSales("baocaothuongthangcapcanhan",title)) }
             }
 
             "baocaohoahongthudong" -> {
-                _state.update { it.copy(navEvent = ProfileNaEvent.GoToPassiveCommissionReport(title)) }
+                _state.update { it.copy(navEvent = ReportPersonalSalesNaEvent.GoToPassiveCommissionReport(title)) }
             }
 
             "baocaodoanhsotheotungdaily" -> {
-                _state.update { it.copy(navEvent = ProfileNaEvent.GoToSalesReportByAgency(title)) }
+                _state.update { it.copy(navEvent = ReportPersonalSalesNaEvent.GoToSalesReportByAgency(title)) }
             }
 
             "baocaothuongthangcap" -> {
                 _state.update {
                     it.copy(
-                        navEvent = ProfileNaEvent.GoToRankAdvancementBonusReport(
+                        navEvent = ReportPersonalSalesNaEvent.GoToRankAdvancementBonusReport(
                             "daily", title
                         )
                     )
@@ -297,7 +306,7 @@ class ProfileViewModel @Inject constructor(
             "baocaothuongthangcapcanhan" -> {
                 _state.update {
                     it.copy(
-                        navEvent = ProfileNaEvent.GoToRankAdvancementBonusReport(
+                        navEvent = ReportPersonalSalesNaEvent.GoToRankAdvancementBonusReport(
                             "canhan", title
                         )
                     )

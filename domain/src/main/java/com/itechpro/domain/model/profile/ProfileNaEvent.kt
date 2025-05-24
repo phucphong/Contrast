@@ -13,11 +13,6 @@ sealed class ProfileNaEvent : NavEvent {
 
 
 
-
-
-
-
-
     data class GoToShareProduct(
 
         val title: String,
@@ -43,10 +38,7 @@ sealed class ProfileNaEvent : NavEvent {
         val title: String,
     ) : ProfileNaEvent()
 
-    data class GoToOpportunity(
 
-        val title: String,
-    ) : ProfileNaEvent()
 
     data class GoToServiceProgress(
 
@@ -63,21 +55,7 @@ sealed class ProfileNaEvent : NavEvent {
         val title: String,
     ) : ProfileNaEvent()
 
-    data class GoToPersonalConsumptionSales(
 
-        val title: String,
-    ) : ProfileNaEvent()
-
-
-    data class GoToSalesReportByAgency(
-
-        val title: String,
-    ) : ProfileNaEvent()
-
-    data class GoToPassiveCommissionReport(
-
-        val title: String,
-    ) : ProfileNaEvent()
 
 
     data class GoToProductViewSave(
@@ -86,15 +64,8 @@ sealed class ProfileNaEvent : NavEvent {
     ) : ProfileNaEvent()
 
 
-    data class GoToOderType(
-        val type: String,
-        val title: String,
-    ) : ProfileNaEvent()
 
-    data class GoToRankAdvancementBonusReport(
-        val type: String,
-        val title: String,
-    ) : ProfileNaEvent()
+
 
 
 

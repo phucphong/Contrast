@@ -157,11 +157,13 @@ fun VideoScreen(navHostController: NavHostController,
                             show = isLoading,
                             onDismissRequest = { isLoading = false })
                     }
+                }else{
+                    items(state.pagedVideos) { video ->
+                        VideoItem(video = video)
+                    }
                 }
 
-                items(state.pagedVideos) { video ->
-                    VideoItem(video = video)
-                }
+
             }
         }
     }}

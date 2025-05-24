@@ -1,8 +1,7 @@
 package com.itechpro.data.api.oder
 
 
-import com.itechpro.domain.model.oder.Order
-
+import com.itechpro.domain.model.order.Order
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

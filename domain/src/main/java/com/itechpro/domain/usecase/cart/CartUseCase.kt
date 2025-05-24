@@ -21,9 +21,7 @@ class CartUseCase @Inject constructor(
     private val repository: CartRepository,
 
     ) {
-
-
-
+    
 
     fun getCarts(isTotalOder:Boolean,typeAccount:String, authToken: String): Flow<NetworkResponse<CartResult>> {
         return flow {

@@ -209,12 +209,7 @@ fun ShareProductPage(
                     .background(FAFAFA)
 
             ) {
-                if (state.isLoading) {
-                    item {
-                        CustomCircularProgressIndicatorDialog(show = isLoading,
-                            onDismissRequest = { isLoading = false })
-                    }
-                }
+
                 item {
                     ParticipationResultCard(
                         startDate, endDate, state.soluongdonhang, state.sotiendoanhthu,
@@ -234,26 +229,35 @@ fun ShareProductPage(
                             })
                     }
                 }
-                val rows = state.pagedProducts.chunked(2)
-                items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                    ProductRow(domain = state.domain,
-                        token = state.token,
-                        pointAffiliate = state.pointAffiliate,
-                        rowProducts = row,
-                        isShare = true,
-                        promoUiDataMap = promoUiDataMap,
-                        onItemClick = { viewModel.onItemProductSelected(it) },
-                        onClickCart = { },
-                        onClickAddServiceRequest = {
 
-                        },
-                        onClickShare = { obj->
-                            val shareLink =
-                                "${{ state.domain }}/sharelink.html?id=${obj.id}&iddonvi=${obj.iddonvichuan}&idngt=${state.employeeId}&domain=${state.domain}"
-                            viewModel.shareProduct(shareLink)
+                if (state.isLoading) {
+                    item {
+                        CustomCircularProgressIndicatorDialog(show = isLoading,
+                            onDismissRequest = { isLoading = false })
+                    }
+                }else{
+                    val rows = state.pagedProducts.chunked(2)
+                    items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                        ProductRow(domain = state.domain,
+                            token = state.token,
+                            pointAffiliate = state.pointAffiliate,
+                            rowProducts = row,
+                            isShare = true,
+                            promoUiDataMap = promoUiDataMap,
+                            onItemClick = { viewModel.onItemProductSelected(it) },
+                            onClickCart = { },
+                            onClickAddServiceRequest = {
 
-                        })
+                            },
+                            onClickShare = { obj->
+                                val shareLink =
+                                    "${{ state.domain }}/sharelink.html?id=${obj.id}&iddonvi=${obj.iddonvichuan}&idngt=${state.employeeId}&domain=${state.domain}"
+                                viewModel.shareProduct(shareLink)
+
+                            })
+                    }
                 }
+
             }
         }
     }

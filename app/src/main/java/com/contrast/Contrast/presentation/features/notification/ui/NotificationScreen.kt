@@ -122,10 +122,12 @@ fun NotificationScreen(navHostController: NavHostController,
                                 show = isLoading,
                                 onDismissRequest = { isLoading = false })
                         }
+                    }else{
+                        items(state.notifications, key = { it.id?:"0" }) { notification ->
+                            NotificationItem(notification)
+                        }
                     }
-                    items(state.notifications, key = { it.id?:"0" }) { notification ->
-                        NotificationItem(notification)
-                    }
+
                 }
 
             }

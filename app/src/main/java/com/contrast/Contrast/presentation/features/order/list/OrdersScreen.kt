@@ -52,7 +52,8 @@ import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.itechpro.domain.model.navigationEvent.SplashNaEvent
-import com.itechpro.domain.model.oder.Order
+import com.itechpro.domain.model.order.Order
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -288,56 +289,69 @@ fun OrdersScreen(
                             show = isLoading,
                             onDismissRequest = { isLoading = false })
                     }
-                }
-                if (state.pagedOrders.isEmpty()) {
-                    item {
-                        EmptyStateScreen(
-                            imageRes = R.drawable.emptycart,
-                            size = 90.dp,
-                            title = stringResource(R.string.empty_oder),
-                            background = FFFAFAFA,
-                            modifier = Modifier.padding(40.dp)
-                        )
-                    }
+                }else{
+                    if (state.pagedOrders.isEmpty()) {
+                        item {
+                            EmptyStateScreen(
+                                imageRes = R.drawable.emptycart,
+                                size = 90.dp,
+                                title = stringResource(R.string.empty_oder),
+                                background = FFFAFAFA,
+                                modifier = Modifier.padding(40.dp)
+                            )
+                        }
 
-                } else {
+                    } else {
 
-                    val rows = state.pagedOrders.chunked(1)
+                        val rows = state.pagedOrders.chunked(1)
 
-                    items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
-                        val order = row.firstOrNull()
+                        items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
+                            val order = row.firstOrNull()
 
-                        if (order != null) {
-                            val amountDebit = order.tongtienconno ?: 0.0
-                            val totalAmount = order.tongtien ?: 0.0
-                            val fullUrl = "${state.domain}${order.hinhanhtxt}"
-                            var createDate = ""
-                            if (order.ngaytao != null) {
-                                createDate = order.ngaytao ?: ""
-                            }
-                            if (order.ngaytaotxt != null) {
-                                createDate = order.ngaytaotxt ?: ""
-                            }
-                            var status = ""
-                            if (amountDebit == 0.0) {
-                                status = stringResource(R.string.stillInDebt)
-                            } else if (amountDebit == totalAmount) {
-                                status = stringResource(R.string.paymented)
-                            }
+                            if (order != null) {
+                                val amountDebit = order.tongtienconno ?: 0.0
+                                val totalAmount = order.tongtien ?: 0.0
+                                val fullUrl = "${state.domain}${order.hinhanhtxt}"
+                                var createDate = ""
+                                if (order.ngaytao != null) {
+                                    createDate = order.ngaytao ?: ""
+                                }
+                                if (order.ngaytaotxt != null) {
+                                    createDate = order.ngaytaotxt ?: ""
+                                }
+                                var status = ""
+                                if (amountDebit == 0.0) {
+                                    status = stringResource(R.string.stillInDebt)
+                                } else if (amountDebit == totalAmount) {
+                                    status = stringResource(R.string.paymented)
+                                }
 
-                            if (type == "donhangchoxacnhan") {
-                                SwipeRevealItem(
-                                    item = order,
-                                    isOpen = openedItem == order,
-                                    onSwipeStart = { swipedItem -> openedItem = swipedItem },
-                                    onDeleteClick = { itemToDelete ->
-                                        showDeleteDialog = true
-                                        orderToDelete =
-                                            itemToDelete // 💡 lưu lại để xử lý sau khi confirm
-                                    },
-                                    paddingTop = 5.dp,
-                                    paddingBottom = 5.dp
-                                ) { itemModifier ->
+                                if (type == "donhangchoxacnhan") {
+                                    SwipeRevealItem(
+                                        item = order,
+                                        isOpen = openedItem == order,
+                                        onSwipeStart = { swipedItem -> openedItem = swipedItem },
+                                        onDeleteClick = { itemToDelete ->
+                                            showDeleteDialog = true
+                                            orderToDelete =
+                                                itemToDelete // 💡 lưu lại để xử lý sau khi confirm
+                                        },
+                                        paddingTop = 5.dp,
+                                        paddingBottom = 5.dp
+                                    ) { itemModifier ->
+                                        OrderItemView(
+                                            status = status,
+                                            type = type,
+                                            fullUrl = fullUrl,
+                                            orderKey = "${stringResource(R.string.order)}: ${order.ma}",
+                                            totalAmount = totalAmount.toString(),
+                                            dateOrder = "${stringResource(R.string.createDate)}: $createDate",
+                                            onItemClick={
+                                                viewModel.onItemClick(order.id?:"", type)
+                                            }
+                                        )
+                                    }
+                                }else{
                                     OrderItemView(
                                         status = status,
                                         type = type,
@@ -346,28 +360,17 @@ fun OrdersScreen(
                                         totalAmount = totalAmount.toString(),
                                         dateOrder = "${stringResource(R.string.createDate)}: $createDate",
                                         onItemClick={
-                                            viewModel.onItemSelected(order.id?:"", type)
+                                            viewModel.onItemClick(order.id?:"", type)
                                         }
                                     )
                                 }
-                            }else{
-                                OrderItemView(
-                                    status = status,
-                                    type = type,
-                                    fullUrl = fullUrl,
-                                    orderKey = "${stringResource(R.string.order)}: ${order.ma}",
-                                    totalAmount = totalAmount.toString(),
-                                    dateOrder = "${stringResource(R.string.createDate)}: $createDate",
-                                    onItemClick={
-                                        viewModel.onItemSelected(order.id?:"", type)
-                                    }
-                                )
+
                             }
-
                         }
-                    }
 
+                    }
                 }
+
 
             }
         }

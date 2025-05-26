@@ -6,6 +6,7 @@ package com.contrast.Contrast.presentation.features.report.report_passive_commis
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -32,6 +33,7 @@ import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.alertDialog.ConfirmDeleteDialog
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchDialog.SearchConditionDialog
+import com.contrast.Contrast.presentation.components.searchDialog.SearchConditionMonthDialog
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleFilter
@@ -41,6 +43,7 @@ import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.LightGrayBackground
 import com.itechpro.domain.model.DateFieldType
+import com.itechpro.domain.model.SearchDialog
 import com.itechpro.domain.model.navigationEvent.OpportunityNavEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
@@ -62,8 +65,7 @@ fun ReportPassiveCommissionScreen(
     var isLoading by remember { mutableStateOf(true) }
     var monthYear by remember { mutableStateOf(DateUtils.getCurrentMonthYear()) }
     val listState = rememberLazyListState()
-    var startDate by remember { mutableStateOf(DateUtils.today()) }
-    var endDate by remember { mutableStateOf(DateUtils.today()) }
+
     var ids by remember { mutableStateOf("") }
     var idsAgencyLevel by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf("Ngày") }
@@ -111,15 +113,14 @@ fun ReportPassiveCommissionScreen(
 
 
     if (isFinterDialog) {
-        SearchConditionDialog(onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
-            selectedType = selectedType,
+        var  obj = SearchDialog(monthYear = monthYear
+            , selectedType = selectedType)
+
+        SearchConditionMonthDialog(onDismiss = { isFinterDialog = false },
+            search = obj,
             type = typeDate,
             onSearch = { search ->
-                startDate = search.startDate
-                endDate = search.endDate
-                selectedType = search.selectedType
+                monthYear = search.monthYear?:""
                 viewModel.getReportPassiveCommission(monthYear)
                 isFinterDialog = false
             })
@@ -161,8 +162,6 @@ fun ReportPassiveCommissionScreen(
             viewModel.getReportPassiveCommission(monthYear)
 
         }) {
-
-
             LazyColumn(
                 state = listState, modifier = Modifier
                     .fillMaxSize()
@@ -212,7 +211,7 @@ fun ReportPassiveCommissionScreen(
                                     fullname,
                                     (item.tongdoanhso?:0.0).formatDouble(),
                                     (item.sotienduochuong?:0.0).formatCurrency(),
-                                    (item.phantramhuong?:0.0).formatDouble()
+                                   "${ (item.phantramhuong?:0.0).formatDouble()}%"
                                 )
 
                             }

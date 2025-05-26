@@ -1,4 +1,4 @@
-package com.itechpro.data.api.opportunity_project
+package com.itechpro.data.api.opportunity
 
 
 
@@ -11,12 +11,12 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Query
-interface OpportunityProjectDetailAPI {
+interface OpportunityDetailAPI {
 
 
     @Headers("Content-Type: application/json")
     @GET("/ex/api/getobj")
-    suspend   fun getOpportunitiesProjectDetail(
+    suspend   fun getOpportunityDetail(
         @Query("obj") obj: String?,
         @Query("mode") getbyid: String?,
         @Query("ido") ido: String?,

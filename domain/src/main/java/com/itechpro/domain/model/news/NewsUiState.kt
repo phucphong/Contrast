@@ -2,7 +2,6 @@ package com.itechpro.domain.model.news
 
 
 
-import com.itechpro.domain.model.Video
 import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent

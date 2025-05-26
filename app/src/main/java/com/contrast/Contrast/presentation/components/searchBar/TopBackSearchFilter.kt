@@ -35,7 +35,7 @@ import com.contrast.Contrast.presentation.theme.iOSUnderlineGray
 @Preview(showBackground = true)
 @Composable
 fun TopBackSearchFilter(
-    painter: Painter = painterResource(R.drawable.back),
+    painter: Painter = painterResource(R.drawable.quaylai),
     modifier: Modifier = Modifier,
     placeholder: String = "Tìm kiếm",
     isBackStack: Boolean = true,
@@ -56,14 +56,14 @@ fun TopBackSearchFilter(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         if (isBackStack) {
-            IconButton(onClick = onBackStack) {
-                Icon(
-                    painter = painter,
-                    contentDescription = "Back",
-                    tint = TealGreen,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+
+            Image(
+                painter = painter,
+                contentDescription = "Back",
+                colorFilter = ColorFilter.tint(TealGreen),
+                modifier = Modifier.size(24.dp).noRippleClickableComposable { onBackStack() }
+            )
+
         }
 
         Box(
@@ -78,7 +78,7 @@ fun TopBackSearchFilter(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 12.dp),
+                    .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -135,7 +135,7 @@ fun TopBackSearchFilter(
                             colorFilter = ColorFilter.tint(TealGreen),
                             modifier = Modifier
                                 .size(28.dp)
-                                .padding(5.dp)
+                                .padding(vertical = 5.dp)
                                 .noRippleClickableComposable { onFilterClick() }
                         )
                     }

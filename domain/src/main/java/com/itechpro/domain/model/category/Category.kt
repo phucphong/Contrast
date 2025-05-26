@@ -14,5 +14,6 @@ data class Category(
     val filetxt: String? =   "",
     val idcohoi: String? =   "",
     var icon: Int?=0,
-    var hoatdong: Boolean?=false
+    var hoatdong: Boolean?=false,
+    val quantity: Int = 0
 )

@@ -1,15 +1,15 @@
-package com.itechpro.domain.repository.opportunity_project
+package com.itechpro.domain.repository.opportunity
 
 
 
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.opportunity_project.OpportunityProject
+import com.itechpro.domain.model.opportunity.Opportunity
 
 
-interface OpportunityProjectDetailRepository {
+interface OpportunityDetailRepository {
 
 
-    suspend fun getOpportunitiesProjectDetail(obj: String,mode: String,ido: String,authen: String): NetworkResponse<List<OpportunityProject>>
+    suspend fun getOpportunityDetail(obj: String,mode: String,ido: String,authen: String): NetworkResponse<List<Opportunity>>
 
 
 }

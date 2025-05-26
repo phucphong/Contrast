@@ -13,16 +13,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
@@ -32,29 +28,27 @@ import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.alertDialog.ConfirmDeleteDialog
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.header.HeaderImageTitle
-import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 import com.contrast.Contrast.presentation.components.searchBar.TopBackSearchFilter
 import com.contrast.Contrast.presentation.components.searchDialog.SearchConditionDialog
 
 import com.contrast.Contrast.presentation.components.swipeDelete.SwipeRevealItem
 
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
-import com.contrast.Contrast.presentation.components.tagWithIcon.TagWithIcon
-import com.contrast.Contrast.presentation.components.topAppBar.CustomBackTitle
-import com.contrast.Contrast.presentation.features.opportunity.OpportunityProjectViewModel
+import com.contrast.Contrast.presentation.components.tab.TabBarRow
+import com.contrast.Contrast.presentation.features.opportunity.OpportunityViewModel
 import com.contrast.Contrast.presentation.features.opportunity.list.item.OpportunityItem
 
 import com.contrast.Contrast.presentation.navigator.routers.OpportunityRoutes
 
-import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.contrast.Contrast.utils.Util
 import com.itechpro.domain.model.DateFieldType
+import com.itechpro.domain.model.SearchDialog
 
 import com.itechpro.domain.model.navigationEvent.OpportunityNavEvent
 
-import com.itechpro.domain.model.opportunity_project.OpportunityProject
+import com.itechpro.domain.model.opportunity.Opportunity
 
 
 import kotlinx.coroutines.delay
@@ -68,7 +62,7 @@ fun OpportunityScreen(
     navHostController: NavHostController,
     type: String,
     title: String,
-    viewModel: OpportunityProjectViewModel = hiltViewModel(),
+    viewModel: OpportunityViewModel = hiltViewModel(),
 
 
     ) {
@@ -84,18 +78,20 @@ fun OpportunityScreen(
 
     var selectedType by remember { mutableStateOf("Ngày") }
     var searchText by remember { mutableStateOf("") }
+    var statusId by remember { mutableStateOf("0") }
 
     val listState = rememberLazyListState()
     var typeDate by remember { mutableStateOf<DateFieldType>(DateFieldType.END) }
-    var openedItem by remember { mutableStateOf<OpportunityProject?>(null) }
-    var orderToDelete by remember { mutableStateOf<OpportunityProject?>(null) }
+    var openedItem by remember { mutableStateOf<Opportunity?>(null) }
+    var objToDelete by remember { mutableStateOf<Opportunity?>(null) }
     LaunchedEffect(state.opportunityProjects) {
         viewModel.setInitialOders(state.pagedOpportunityProjects)
     }
 
     LaunchedEffect(Unit) {
         delay(100)
-        callAPI(type, startDate, endDate, state.customerId, searchText,viewModel)
+
+        callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
 
     }
 
@@ -129,18 +125,20 @@ fun OpportunityScreen(
     }
 
 
+
+
     if (isFinterDialog) {
+        var  obj = SearchDialog(startDate = startDate, endDate = endDate
+            , selectedType = selectedType)
+
         SearchConditionDialog(onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
-            selectedType = selectedType,
+            search = obj,
             type = typeDate,
             onSearch = { search ->
-                startDate = search.startDate
-                endDate = search.endDate
-                selectedType = search.selectedType
-
-                callAPI(type, startDate, endDate, state.customerId, searchText,viewModel)
+                startDate = search.startDate?:""
+                endDate = search.endDate?:""
+                selectedType = search.selectedType?:""
+                callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
                 isFinterDialog = false
             })
 
@@ -148,13 +146,19 @@ fun OpportunityScreen(
     if (showDeleteDialog) {
         ConfirmDeleteDialog(show = showDeleteDialog, onDismiss = {
             showDeleteDialog = false
-            orderToDelete = null
+            objToDelete = null
             openedItem = null // 💡 đóng nút delete đang mở
         }, onConfirm = {
-//                viewModel.removeOrder(orderToDelete!!.id)
+            
+            var  content = "";
+            val  name = objToDelete?.ten?:""
+            val  customerName = "- ${objToDelete?.ten?:""}"
+            content =name+customerName
+
+            viewModel.deleteOpportunity(type,"cohoikinhdoanh",objToDelete?.id?:"", "cohoikinhdoanh", content, startDate, endDate, searchText, state.categoryCode, state.categorys)
 
             showDeleteDialog = false
-            orderToDelete = null
+            objToDelete = null
             openedItem = null // 💡 đóng nút delete đang mở
         })
 
@@ -166,15 +170,10 @@ fun OpportunityScreen(
         TopBackSearchFilter(
             painter = painterResource(R.drawable.quaylai),
             text = searchText,
-            isFilter =if(type=="cantuvan")false else true,
-            onTextChanged = { searchText = it
-
-
-                            },
-
+            isFilter =true,
+            onTextChanged = { searchText = it },
             onSearchClick = {
-                // 👉 gọi API tìm kiếm ở đây
-                callAPI(type, startDate, endDate, state.customerId, searchText,viewModel)
+                callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
             },
             onBackStack = { navHostController.popBackStack() },
             onFilterClick = { isFinterDialog = true }
@@ -188,13 +187,25 @@ fun OpportunityScreen(
 
         CustomSwipeRefresh(isRefreshing = isRefreshing, onRefresh = {
 
-            callAPI(type, startDate, endDate, state.customerId, searchText,viewModel)
+            callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
         }) {
             LazyColumn(
                 state = listState, modifier = Modifier
                     .fillMaxSize()
                     .background(Color.White)
             ) {
+                item {
+                TabBarRow(
+                    tabs = state.categorys,
+                    color = TealGreen,
+                    textCorSelect = TealGreen,
+                    selectedTab = state.selectedTab,
+                    isQuantity=true,
+                    onTabSelected = { viewModel.onCategorySelected(it, state.categorys, type, startDate,endDate,searchText) },
+                    type = ""
+                )
+                }
+
                 if (state.isLoading) {
                     item {
                         CustomCircularProgressIndicatorDialog(
@@ -227,7 +238,7 @@ fun OpportunityScreen(
                                     onSwipeStart = { swipedItem -> openedItem = swipedItem },
                                     onDeleteClick = { itemToDelete ->
                                         showDeleteDialog = true
-                                        orderToDelete =
+                                        objToDelete =
                                             itemToDelete // 💡 lưu lại để xử lý sau khi confirm
                                     },
                                     paddingTop = 5.dp,
@@ -255,8 +266,6 @@ fun OpportunityScreen(
 
                     }
                 }
-
-
             }
         }
     }
@@ -267,13 +276,11 @@ fun callAPI(
     type: String,
     startDate: String,
     endDate: String,
-    customerId: String,
     searchText: String,
-    viewModel: OpportunityProjectViewModel,
+    statusId: String,
+    viewModel: OpportunityViewModel,
 ) {
-    if (type == "cohoikinhdoanh") {
-        viewModel.getOpportunitiesProject("cohoikinhdoanh",startDate, endDate, searchText)
-    } else if (type == "cantuvan") {
-        viewModel.getOpportunitiesProject("cohoikinhdoanh","", "", searchText)
-    }
+
+    viewModel.getOpportunityProcess(type,startDate,endDate, searchText,statusId)
+    
 }

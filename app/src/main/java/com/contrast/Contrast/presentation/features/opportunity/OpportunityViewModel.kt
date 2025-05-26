@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class OpportunityProjectViewModel @Inject constructor(
+class OpportunityViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val useCase: OpportunitysUserCase,
     private val stringProvider: StringProvider,
@@ -85,9 +85,9 @@ class OpportunityProjectViewModel @Inject constructor(
                         _state.update { it.copy(categorys = categoryListWithAll) }
 
                         if (type == "cohoikinhdoanh") {
-                           getOpportunitiesProject("cohoikinhdoanh",startDate, endDate, searchText, statusId,categoryListWithAll)
+                           getOpportunity("cohoikinhdoanh",startDate, endDate, searchText, statusId,categoryListWithAll)
                         } else if (type == "cantuvan") {
-                           getOpportunitiesProject("cohoikinhdoanh","", "", searchText,statusId,categoryListWithAll)
+                           getOpportunity("cohoikinhdoanh","", "", searchText,statusId,categoryListWithAll)
                         }
 
                     },
@@ -102,19 +102,19 @@ class OpportunityProjectViewModel @Inject constructor(
 
 
         if (type == "cohoikinhdoanh") {
-            getOpportunitiesProject("cohoikinhdoanh",startDate, endDate, searchText, categorys.getOrNull(index)?.id.orEmpty(),categorys)
+            getOpportunity("cohoikinhdoanh",startDate, endDate, searchText, categorys.getOrNull(index)?.id.orEmpty(),categorys)
         } else if (type == "cantuvan") {
-            getOpportunitiesProject("cohoikinhdoanh","", "", searchText,categorys.getOrNull(index)?.id.orEmpty(),categorys)
+            getOpportunity("cohoikinhdoanh","", "", searchText,categorys.getOrNull(index)?.id.orEmpty(),categorys)
         }
     }
-    fun getOpportunitiesProject(obj: String,startDate: String, endDate: String, searchText: String, statusId: String, categorys: List<Category>) {
+    fun getOpportunity(obj: String,startDate: String, endDate: String, searchText: String, statusId: String, categorys: List<Category>) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             _state.update { it.copy(isLoading = true, opportunityProjects = emptyList(), pagedOpportunityProjects = emptyList()) }
             currentPage = 0
             allOders = emptyList()
 
-            useCase.getOpportunitiesProject( obj, formatToYYYYMMDD(startDate),
+            useCase.getOpportunity( obj, formatToYYYYMMDD(startDate),
                 formatToYYYYMMDD(endDate),searchText, user.token,statusId, categorys).collectResponse(
                 dispatcher = dispatcher,
                 onSuccess = { data ->
@@ -136,14 +136,14 @@ class OpportunityProjectViewModel @Inject constructor(
         }
     }
 
-    fun getOpportunitiesProjectByIDCustomer(obj: String,mode: String,customerId: String,  searchText: String, statusId: String, categorys: List<Category>) {
+    fun getOpportunityByIDCustomer(obj: String,mode: String,customerId: String,  searchText: String, statusId: String, categorys: List<Category>) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             _state.update { it.copy(isLoading = true, opportunityProjects = emptyList(), pagedOpportunityProjects = emptyList()) }
             currentPage = 0
             allOders = emptyList()
 
-            useCase.getOpportunitiesProjectByIDCustomer( obj, mode,
+            useCase.getOpportunityByIDCustomer( obj, mode,
                 customerId,searchText, user.token,statusId, categorys).collectResponse(
                 dispatcher = dispatcher,
                 onSuccess = { data ->
@@ -173,7 +173,7 @@ class OpportunityProjectViewModel @Inject constructor(
             allOders = emptyList()
 
 
-            useCase.deleteOpportunitiesProject( obj, "deletes",
+            useCase.deleteOpportunity( obj, "deletes",
                 ids,mamenu, "android",user.device,content, user.token ).collectResponse(
                 dispatcher = dispatcher,
                 onSuccess = { data ->
@@ -186,9 +186,9 @@ class OpportunityProjectViewModel @Inject constructor(
                     }
 
                     if (type == "cohoikinhdoanh") {
-                        getOpportunitiesProject("cohoikinhdoanh",startDate, endDate, searchText, statusId,categorys)
+                        getOpportunity("cohoikinhdoanh",startDate, endDate, searchText, statusId,categorys)
                     } else if (type == "cantuvan") {
-                        getOpportunitiesProject("cohoikinhdoanh","", "", searchText, statusId,categorys)
+                        getOpportunity("cohoikinhdoanh","", "", searchText, statusId,categorys)
                     }
 
                 },
@@ -198,10 +198,6 @@ class OpportunityProjectViewModel @Inject constructor(
             )
         }
     }
-
-
-
-
 
 
     fun onItemClick(id: String, type:String) {

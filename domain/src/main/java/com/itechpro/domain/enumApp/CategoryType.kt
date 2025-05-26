@@ -108,6 +108,50 @@ enum class CategoryType(
     ),
 
 
+    // đại lý
+    AGENCY(
+        endpoint = "/ex/apiaffiliate/getobj",
+        obj = "dailyaf",
+        mode = "laydanhsachdaily",
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.hoten }
+    ),
+
+    // đại lý
+    AGENCY_LEVEL(
+        endpoint = "/ex/apiaffiliate/getobj",
+        obj = "dailyaf",
+        mode = "laycapdaily",
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
+    ),
+
+
+
+    CUSTOMER_PROCESS (
+        endpoint = "/ex/apiaffiliate/getobj",
+        obj = "quytrinhkhachhang",
+        mode = "getallbyidcongty",
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
+    ),
+
+    OPPORTUNITY_PROCESS (
+        endpoint = "/ex/api/getobj",
+        obj = "quytrinhbanhang",
+        mode = "getallbyidcongty",
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
+    ),
+    PROJECT_PROCESS (
+        endpoint = "/ex/api/getobj",
+        obj = "duan",
+        mode = "quytrinhtrienkhai",
+        extractId = { it.id?.replace(".0","") },
+        extractName = { it.ten }
+    ),
+
+
 
 
 }

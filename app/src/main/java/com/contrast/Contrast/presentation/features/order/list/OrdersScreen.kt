@@ -48,6 +48,7 @@ import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.DateFieldType
+import com.itechpro.domain.model.SearchDialog
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
@@ -83,7 +84,7 @@ fun OrdersScreen(
     val listState = rememberLazyListState()
     var typeDate by remember { mutableStateOf<DateFieldType>(DateFieldType.END) }
     var openedItem by remember { mutableStateOf<Order?>(null) }
-    var orderToDelete by remember { mutableStateOf<Order?>(null) }
+    var objToDelete by remember { mutableStateOf<Order?>(null) }
     LaunchedEffect(state.orders) {
         viewModel.setInitialOders(state.orders)
     }
@@ -182,17 +183,18 @@ fun OrdersScreen(
     }
 
 
+
     if (isFinterDialog) {
+        var  obj = SearchDialog(startDate = startDate, endDate = endDate
+            , selectedType = selectedType)
+
         SearchConditionDialog(onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
-            selectedType = selectedType,
+            search = obj,
             type = typeDate,
             onSearch = { search ->
-                startDate = search.startDate
-                endDate = search.endDate
-                selectedType = search.selectedType
-
+                startDate = search.startDate?:""
+                endDate = search.endDate?:""
+                selectedType = search.selectedType?:""
                 callAPI(type, startDate, endDate, state.customerId, viewModel)
                 isFinterDialog = false
             })
@@ -201,13 +203,13 @@ fun OrdersScreen(
     if (showDeleteDialog) {
         ConfirmDeleteDialog(show = showDeleteDialog, onDismiss = {
             showDeleteDialog = false
-            orderToDelete = null
+            objToDelete = null
             openedItem = null // 💡 đóng nút delete đang mở
         }, onConfirm = {
-//                viewModel.removeOrder(orderToDelete!!.id)
+//                viewModel.removeOrder(objToDelete!!.id)
 
             showDeleteDialog = false
-            orderToDelete = null
+            objToDelete = null
             openedItem = null // 💡 đóng nút delete đang mở
         })
 
@@ -333,7 +335,7 @@ fun OrdersScreen(
                                         onSwipeStart = { swipedItem -> openedItem = swipedItem },
                                         onDeleteClick = { itemToDelete ->
                                             showDeleteDialog = true
-                                            orderToDelete =
+                                            objToDelete =
                                                 itemToDelete // 💡 lưu lại để xử lý sau khi confirm
                                         },
                                         paddingTop = 5.dp,

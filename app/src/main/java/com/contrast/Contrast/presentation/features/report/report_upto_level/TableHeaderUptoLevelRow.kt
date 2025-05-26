@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 
 import androidx.compose.material3.Text
@@ -22,22 +23,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.presentation.theme.LightGrayBackground
 import com.contrast.Contrast.presentation.theme.FF0967DF
+import androidx.compose.foundation.layout.IntrinsicSize
 
 @Composable
 fun TableHeaderUptoLevelRow(
-
     type: String = "",
     name: String = "",
     level: String = "",
     total_revenue: String = "",
     received_amount: String = "",
-
-    textAlign:TextAlign= TextAlign.Left,
-    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Left,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-        if(type=="baocaothuongthangcap"){
-            Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+    Row(
+        modifier = modifier
+            .height(IntrinsicSize.Min) // 👈 Giúp co chiều cao theo nội dung
+            .background(LightGrayBackground)
+        ,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        if (type == "baocaothuongthangcap") {
+            Box(
+                modifier = Modifier
+                    .background(LightGrayBackground)
+                    .width(1.dp)
+                    .fillMaxHeight() // 👈 Giúp Box cao bằng dòng
+            )
             Text(
                 text = name,
                 modifier = Modifier
@@ -49,17 +61,12 @@ fun TableHeaderUptoLevelRow(
             )
         }
 
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
-        Text(
-            text = name,
+        Box(
             modifier = Modifier
-                .weight(2f)
-                .padding(10.dp),
-            fontSize = 14.sp,
-            color = Color.Black,
-            textAlign = textAlign
+                .background(LightGrayBackground)
+                .width(1.dp)
+                .fillMaxHeight()
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
         Text(
             text = level,
             modifier = Modifier
@@ -69,7 +76,12 @@ fun TableHeaderUptoLevelRow(
             color = Color.Black,
             textAlign = textAlign
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+        Box(
+            modifier = Modifier
+                .background(LightGrayBackground)
+                .width(1.dp)
+                .fillMaxHeight()
+        )
         Text(
             text = total_revenue,
             modifier = Modifier
@@ -78,7 +90,12 @@ fun TableHeaderUptoLevelRow(
             fontSize = 14.sp,
             color = Color.Black
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+        Box(
+            modifier = Modifier
+                .background(LightGrayBackground)
+                .width(1.dp)
+                .fillMaxHeight()
+        )
         Text(
             text = received_amount,
             modifier = Modifier
@@ -87,6 +104,11 @@ fun TableHeaderUptoLevelRow(
             fontSize = 14.sp,
             color = Color.Black
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+        Box(
+            modifier = Modifier
+                .background(LightGrayBackground)
+                .width(1.dp)
+                .fillMaxHeight()
+        )
     }
 }

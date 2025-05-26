@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -33,55 +34,55 @@ import com.contrast.Contrast.presentation.theme.TealGreen
 @Composable
 fun CompactDropdownField(
     value: String,
-    textColor: Color= TealGreen,
+    hint: String = "", // ✨ Gợi ý thêm vào
+    textColor: Color = TealGreen,
     modifier: Modifier = Modifier,
     isRequired: Boolean = false,
-    isDown: Boolean = false,
+    isDownOrClose: Boolean = false,
+    painter: Painter = painterResource(R.drawable.down),
     onClick: () -> Unit = {},
-
+    onClickDownOrClose: () -> Unit = {},
 ) {
-
     val customFontFamily = FontFamily(
         Font(R.font.inter),
         Font(R.font.inter_18pt_bold, FontWeight.Bold),
     )
 
-
     Box(
         modifier = modifier
             .height(40.dp)
-            .background(if(isRequired) LightGrayBackground else Color.White, shape = RoundedCornerShape(8.dp))
+            .background(
+                if (isRequired) LightGrayBackground else Color.White,
+                shape = RoundedCornerShape(8.dp)
+            )
             .border(1.dp, Color(0xFFD7D7D7), shape = RoundedCornerShape(8.dp))
             .fillMaxWidth()
             .padding(horizontal = 12.dp),
         contentAlignment = Alignment.CenterStart
     ) {
-    Row {
-        Box(modifier = modifier
-            .weight(1f)
-            .padding(vertical = 5.dp)
-            .noRippleClickableComposable { onClick() }
-        ) {
-            Text(
-                text = value,
-                fontSize = 14.sp,
-                fontFamily = customFontFamily,
-                color = textColor,
-            )
+        Row {
+            Box(
+                modifier = modifier
+                    .weight(1f)
+                    .padding(vertical = 5.dp)
+                    .noRippleClickableComposable { onClick() }
+            ) {
+                Text(
+                    text = if (value.isNotBlank()) value else hint,
+                    fontSize = 14.sp,
+                    fontFamily = customFontFamily,
+                    color = if (value.isNotBlank()) textColor else Color.Gray, // ✨ Đổi màu nếu là hint
+                )
+            }
+            if (isDownOrClose&&value.isNotEmpty()) {
+                Image(
+                    painter = painter,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(30.dp)
+                        .padding(vertical = 5.dp).noRippleClickableComposable { onClickDownOrClose() }
+                )
+            }
         }
-        if(isDown){
-            Image(
-                painter = painterResource(R.drawable.down),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(30.dp)
-                    .padding( vertical = 5.dp)
-
-            )
-        }
-
-
-
-    }
     }
 }

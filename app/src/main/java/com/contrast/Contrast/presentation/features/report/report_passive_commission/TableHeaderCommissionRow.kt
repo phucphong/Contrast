@@ -6,6 +6,7 @@ package com.contrast.Contrast.presentation.features.report.report_passive_commis
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
@@ -35,18 +36,19 @@ fun TableHeaderCommissionRow(
     textAlign:TextAlign= TextAlign.Left,
     modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+    Row(modifier = modifier .height(IntrinsicSize.Min), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Box(modifier=Modifier.background(LightGrayBackground).fillMaxHeight(). width(1.dp))
         Text(
             text = sttTitle,
             modifier = Modifier
                 .weight(2f)
+                
                 .padding(10.dp),
             fontSize = 14.sp,
             color =if(isBlue) FF0967DF else Color.Black,
             textAlign = textAlign
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+        Box(modifier=Modifier.background(LightGrayBackground).fillMaxHeight(). width(1.dp))
         Text(
             text = contentTitle,
             modifier = Modifier
@@ -55,7 +57,7 @@ fun TableHeaderCommissionRow(
             fontSize = 14.sp,
             color =if(isBlue) FF0967DF else Color.Black
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+        Box(modifier=Modifier.background(LightGrayBackground).fillMaxHeight(). width(1.dp))
         Text(
             text = valueTitle,
             modifier = Modifier
@@ -64,7 +66,7 @@ fun TableHeaderCommissionRow(
             fontSize = 14.sp,
             color =if(isBlue) FF0967DF else Color.Black
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+        Box(modifier=Modifier.background(LightGrayBackground).fillMaxHeight(). width(1.dp))
         Text(
             text = discount,
             modifier = Modifier
@@ -73,6 +75,6 @@ fun TableHeaderCommissionRow(
             fontSize = 14.sp,
             color =if(isBlue) FF0967DF else Color.Black
         )
-        Box(modifier=Modifier.background(LightGrayBackground).height(50.dp). width(1.dp))
+        Box(modifier=Modifier.background(LightGrayBackground).fillMaxHeight(). width(1.dp))
     }
 }

@@ -164,19 +164,14 @@ fun SearchConditionAllDialog(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Nút Tìm kiếm
-            Button(
+
+            PrimarySearchButton(
                 onClick = {
                     val  obj = SearchDialog(startDateNew, endDateNew, selectedTypeNew)
                     onSearch(obj)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00B8A9))
-            ) {
-                Text(text = stringResource(R.string.search), color = Color.White)
-            }
+                }
+            )
+
         }
     }
 }

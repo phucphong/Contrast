@@ -181,21 +181,7 @@ fun ProductViewSaveScreen(
     if (isInfomation) {
 
     }
-    if (isFinterDialog) {
-        SearchConditionDialog(onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
-            selectedType = selectedType,
-            type = typeDate,
-            onSearch = { search ->
-                startDate = search.startDate
-                endDate = search.endDate
-                selectedType = search.selectedType
 
-                isFinterDialog = false
-            })
-
-    }
 
     Column {
         TopTextNotificationCart(painter = painterResource(R.drawable.quaylai),

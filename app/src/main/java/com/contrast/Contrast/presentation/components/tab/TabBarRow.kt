@@ -26,16 +26,16 @@ import com.itechpro.domain.model.category.Category
 
 
 @Composable
-fun TabBarRow(tabs: List<Category>,
+fun TabBarRow(
+    tabs: List<Category>,
 
-              color: Color=Color.Red, textCorSelect: Color=Color.Black,
-              selectedTab: Int,
-
-              type :String?
-
-              , onTabSelected: (Int) -> Unit) {
+    color: Color = Color.Red,
+    textCorSelect: Color = Color.Black,
+    selectedTab: Int,
+    isQuantity:Boolean = false,
+    type: String?, onTabSelected: (Int) -> Unit
+) {
     val listState = rememberLazyListState()
-
 
 
     // Auto scroll
@@ -55,38 +55,34 @@ fun TabBarRow(tabs: List<Category>,
         state = listState,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .padding( 10.dp)
     ) {
         items(tabs.size) { index ->
             var textWidth by remember { mutableStateOf(0) }
-            var name =""
-            if(type=="name"){
-                 name =tabs[index].name?:""
-            }else{
-                name =tabs[index].ten?:""
+            var name = ""
+            var quantity = "(${tabs[index].quantity?:0})"
+            if (type == "name") {
+                name = tabs[index].name ?: ""
+            } else {
+                name = tabs[index].ten ?: ""
             }
 
 
-                Column(
-                modifier = Modifier
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
-                        onTabSelected(index)
-                    }
-                    .padding(horizontal = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = name,
+            Column(modifier = Modifier
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() }, indication = null
+                ) {
+                    onTabSelected(index)
+                }
+                .padding(horizontal = 5.dp),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = if(isQuantity) "$name$quantity " else name,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = if (index == selectedTab) textCorSelect else Color.Gray,
                     modifier = Modifier.onGloballyPositioned {
                         textWidth = it.size.width
-                    }
-                )
+                    })
                 Spacer(modifier = Modifier.height(5.dp))
                 if (index == selectedTab) {
                     Box(

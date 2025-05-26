@@ -21,6 +21,7 @@ fun CustomDatePickerDialog(
     initialDate: String? = null,  // Chuỗi định dạng "dd/MM/yyyy"
     minDate: String? = null,  // Chuỗi định dạng "dd/MM/yyyy"
     maxDate: String? = null,  // Chuỗi định dạng "dd/MM/yyyy"
+    isMonthYearPicker: Boolean = false,
     onDismiss: () -> Unit,
     onDateSelected: (String) -> Unit
 ) {
@@ -41,15 +42,25 @@ fun CustomDatePickerDialog(
                     .padding(),
                 color = Color.White
             ) {
-                IOSStyleWheelDatePicker(
-                    initialDate = initialDate,
-                    minDate = minDate,
-                    maxDate = maxDate,
-                    onDateSelected = {
-                        onDateSelected(it)
-                        onDismiss()
-                    }
-                )
+                if (isMonthYearPicker) {
+                    IOSStyleMonthYearPicker(
+                        onDateSelected = { month, year ->
+
+                            onDateSelected(String.format("%02d/%04d", month, year))
+                            onDismiss()
+                        }
+                    )
+                } else {
+                    IOSStyleWheelDatePicker(
+                        initialDate = initialDate,
+                        minDate = minDate,
+                        maxDate = maxDate,
+                        onDateSelected = {
+                            onDateSelected(it)
+                            onDismiss()
+                        }
+                    )
+                }
             }
         }
     }

@@ -60,6 +60,7 @@ import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.FFFF5722
 import com.contrast.Contrast.presentation.theme.TealGreen
 import com.itechpro.domain.model.DateFieldType
+import com.itechpro.domain.model.SearchDialog
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
@@ -91,7 +92,7 @@ fun InComeScreen(
     var status by remember { mutableStateOf("all") }
     var selectedType by remember { mutableStateOf("Ngày") }
     val listState = rememberLazyListState()
-    var type by remember { mutableStateOf<DateFieldType>(DateFieldType.END) }
+    var typeDate by remember { mutableStateOf<DateFieldType>(DateFieldType.END) }
     LaunchedEffect(state.oders) {
         viewModel.setInitialOders(state.oders)
     }
@@ -184,16 +185,19 @@ fun InComeScreen(
     if (isInfomation) {
 
     }
+
+
     if (isFinterDialog) {
+        var  obj = SearchDialog(startDate = startDate, endDate = endDate
+            , selectedType = selectedType)
+
         SearchConditionDialog(onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
-            selectedType = selectedType,
-            type = type,
+            search = obj,
+            type = typeDate,
             onSearch = { search ->
-                startDate = search.startDate
-                endDate = search.endDate
-                selectedType = search.selectedType
+                startDate = search.startDate?:""
+                endDate = search.endDate?:""
+                selectedType = search.selectedType?:""
                 viewModel.getReportShareLink("layhoahongthucte", startDate, endDate)
                 viewModel.getActualCommissionByIdOder(
                     status, "laychitiethoahong", startDate, endDate

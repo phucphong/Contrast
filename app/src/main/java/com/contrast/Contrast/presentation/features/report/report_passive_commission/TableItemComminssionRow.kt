@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
@@ -30,7 +31,7 @@ fun TableItemComminssionRow(
     discount: String = "",
 
 
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier .height(IntrinsicSize.Min),
 ) {
     Column {
         Row(
@@ -41,7 +42,7 @@ fun TableItemComminssionRow(
             Box(
                 modifier = Modifier
                     .background(LightGrayBackground)
-                    .height(50.dp)
+                    .fillMaxHeight()
                     .width(1.dp)
             )
             Text(
@@ -56,7 +57,7 @@ fun TableItemComminssionRow(
             Box(
                 modifier = Modifier
                     .background(LightGrayBackground)
-                    .height(50.dp)
+                    .fillMaxHeight()
                     .width(1.dp)
             )
             Text(
@@ -65,12 +66,13 @@ fun TableItemComminssionRow(
                     .weight(2f)
                     .padding(10.dp),
                 fontSize = 14.sp,
-                color = Color.Black
+                color = Color.Black,
+                textAlign = TextAlign.Right
             )
             Box(
                 modifier = Modifier
                     .background(LightGrayBackground)
-                    .height(50.dp)
+                    .fillMaxHeight()
                     .width(1.dp)
             )
             Text(
@@ -85,7 +87,7 @@ fun TableItemComminssionRow(
             Box(
                 modifier = Modifier
                     .background(LightGrayBackground)
-                    .height(50.dp)
+                    .fillMaxHeight()
                     .width(1.dp)
             )
             Text(
@@ -100,7 +102,7 @@ fun TableItemComminssionRow(
             Box(
                 modifier = Modifier
                     .background(LightGrayBackground)
-                    .height(50.dp)
+                    .fillMaxHeight()
                     .width(1.dp)
             )
         }

@@ -45,6 +45,7 @@
     <!-- Button -->
     <string name="search">Tìm kiếm</string>
     <string name="order_waiting_confirmation">Số lượng đơn hàng chờ xác nhận</string>
+
     <string name="order_confirmed">Số lượng đơn hàng đã xác nhận</string>
     <string name="total_before_discount">Tổng tiền trước chiết khấu</string>
     <string name="total_after_discount">Tổng tiền sau chiết khấu</string>
@@ -99,6 +100,7 @@
     <string name="policy_group">Nhóm chính sách</string>
     <string name="information_source">Nguồn thông tin</string>
     <string name="level">Cấp độ</string>
+    <string name="monthYear">Cấp độ</string>
     <string name="level_new_old">Cấp độ cũ/mới</string>
     <string name="representative">Người đại diện</string>
     <string name="position">Chức vụ</string>
@@ -177,6 +179,7 @@
     <string name="no_review_data">Chưa có đánh giá nào</string>
     <string name="no_notification_desc">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
     <string name="delete">Xóa</string>
+    <string name="delete_success">Xóa thành công</string>
     <string name="no_notifications">Không có thông báo nào</string>
     <string name="check_later_for_updates">Vui lòng quay lại sau để cập nhật các ưu đãi và sự kiện</string>
     <string name="other_amount">Số tiền khác</string>
@@ -478,6 +481,7 @@
     <string name="day">Ngày</string>
     <string name="week">Tuần</string>
     <string name="month">Tháng</string>
+    <string name="select_month_year">Chọn tháng năm</string>
     <string name="quarte">Quý</string>
     <string name="year">Năm</string>
 

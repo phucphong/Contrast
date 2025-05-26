@@ -9,13 +9,10 @@ package com.itechpro.data.repository.report
 
 
 
-import com.itechpro.data.api.opportunity_project.OpportunityProjectDetailAPI
 import com.itechpro.data.api.report.ReportPersonalAPI
 
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.opportunity_project.OpportunityProject
 import com.itechpro.domain.model.report.Report
-import com.itechpro.domain.repository.opportunity_project.OpportunityProjectDetailRepository
 import com.itechpro.domain.repository.report.ReportPersonalRepository
 
 

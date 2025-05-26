@@ -10,18 +10,19 @@ package com.itechpro.data.repository.opportunity
 
 
 
-import com.itechpro.data.api.opportunity.OpportunityAddEditAPI
+import com.itechpro.data.api.opportunity.OpportunityAPI
 
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.opportunity.Opportunity
 import com.itechpro.domain.repository.opportunity.OpportunityRepository
+import com.itechpro.domain.repository.opportunity.OpportunitysRepository
 
 
 import javax.inject.Inject
 
 
-class OpportunityAddEditRepositoryImpl @Inject constructor(
-    private val api: OpportunityAddEditAPI
+class OpportunityRepositoryImpl @Inject constructor(
+    private val api: OpportunityAPI
 ) : OpportunityRepository {
     override suspend fun getCheckKey(
         obj: String,

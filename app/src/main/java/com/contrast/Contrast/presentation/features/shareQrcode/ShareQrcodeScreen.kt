@@ -23,42 +23,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
-import com.contrast.Contrast.extensions.DateUtils
-import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.base64.decodeBase64ToBitmap
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
-import com.contrast.Contrast.presentation.components.media.NetworkImage
 import com.contrast.Contrast.presentation.components.profile.viewModel.ProfileViewModel
-import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
-import com.contrast.Contrast.presentation.components.searchDialog.SearchConditionDialog
+
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
-import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
-import com.contrast.Contrast.presentation.components.tab.TabBarRowLocal
-import com.contrast.Contrast.presentation.components.topAppBar.BackSearchInfomation
+
 import com.contrast.Contrast.presentation.components.topAppBar.TopBackTittleHome
-import com.contrast.Contrast.presentation.features.affiliate.home.viewModel.HomeAffiliateViewModel
-import com.contrast.Contrast.presentation.features.cart.CartViewModel
-import com.contrast.Contrast.presentation.features.notification.NotificationViewModel
-import com.contrast.Contrast.presentation.features.product.ui.ProductRow
-import com.contrast.Contrast.presentation.features.share.viewModel.ShareProductViewModel
-import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
-import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
+
 import com.contrast.Contrast.presentation.navigator.routers.MainRoutes
-import com.contrast.Contrast.presentation.navigator.routers.NotificationRoutes
-import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
-import com.contrast.Contrast.presentation.navigator.routers.ServiceRequestRoutes
-import com.contrast.Contrast.presentation.theme.FAFAFA
+
 import com.contrast.Contrast.utils.Util
-import com.itechpro.domain.model.DateFieldType
-import com.itechpro.domain.model.navigationEvent.CartNavEvent
+
 import com.itechpro.domain.model.navigationEvent.HomeNavEvent
-import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
-import com.itechpro.domain.model.navigationEvent.ProductNavEvent
-import com.itechpro.domain.model.navigationEvent.SplashNaEvent
+
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)

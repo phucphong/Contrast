@@ -1,9 +1,9 @@
 package com.contrast.Contrast.di.module.OpportunityAddEdits
-import com.itechpro.data.api.opportunity.OpportunityAddEditAPI
-import com.itechpro.data.repository.opportunity.OpportunityAddEditRepositoryImpl
+import com.itechpro.data.api.opportunity.OpportunityAPI
+import com.itechpro.data.repository.opportunity.OpportunityRepositoryImpl
 
-import com.itechpro.domain.repository.opportunity.OpportunityRepository
-import com.itechpro.domain.usecase.opportunity.OpportunityAddEditUserCase
+import com.itechpro.domain.repository.opportunity.OpportunitysRepository
+import com.itechpro.domain.usecase.opportunity.OpportunityUserCase
 
 
 import dagger.Binds
@@ -16,29 +16,29 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class OpportunityAddEditAddEditModule {
+abstract class OpportunityModule {
 
     @Binds
     @Singleton
-    abstract fun bindOpportunityAddEditRepository(
-        impl: OpportunityAddEditRepositoryImpl
-    ): OpportunityRepository
+    abstract fun bindOpportunityRepository(
+        impl: OpportunityRepositoryImpl
+    ): OpportunitysRepository
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-object OpportunityAddEditNetworkModule {
+object OpportunityNetworkModule {
 
     @Provides
     @Singleton
-    fun provideOpportunityAddEditAPI(retrofit: Retrofit): OpportunityAddEditAPI {
-        return retrofit.create(OpportunityAddEditAPI::class.java)
+    fun provideOpportunityAPI(retrofit: Retrofit): OpportunityAPI {
+        return retrofit.create(OpportunityAPI::class.java)
     }
 
 
     @Provides
-    fun provideOpportunityAddEditUserCase(repository: OpportunityRepository): OpportunityAddEditUserCase {
-        return OpportunityAddEditUserCase(repository)
+    fun provideOpportunityUserCase(repository: OpportunitysRepository): OpportunityUserCase {
+        return OpportunityUserCase(repository)
     }
 
 

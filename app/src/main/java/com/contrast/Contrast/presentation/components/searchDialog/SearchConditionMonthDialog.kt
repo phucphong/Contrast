@@ -1,6 +1,8 @@
 package com.contrast.Contrast.presentation.components.searchDialog
 
+
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,7 +36,7 @@ import com.itechpro.domain.model.TimeTypeOption
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SearchConditionDialog(
+fun SearchConditionMonthDialog(
 
     search: SearchDialog,
     type: DateFieldType,
@@ -42,47 +44,31 @@ fun SearchConditionDialog(
     onDismiss: () -> Unit,
     onSearch: (SearchDialog) -> Unit,
 ) {
-    var startDateNew by remember { mutableStateOf(search.startDate ?: "") }
-    var endDateNew by remember { mutableStateOf(search.endDate ?: "") }
+    var monthYear by remember { mutableStateOf(search.monthYear ?: "") }
+
     var showDatePicker by remember { mutableStateOf(false) }
     var showAgency by remember { mutableStateOf(false) }
     var showAgencyLevel by remember { mutableStateOf(false) }
-    var pickingField by remember { mutableStateOf<DateFieldType?>(null) }
-    var typeNew by remember { mutableStateOf<DateFieldType?>(type) }
+
     var selectedTypeNew by remember { mutableStateOf(search.selectedType ?: "") }
-    var weekMonthQuarterYear by remember { mutableStateOf("") }
+
     var agencys by remember { mutableStateOf(search.agencys ?: "") }
     var agencyIds by remember { mutableStateOf(search.agencyIds ?: "") }
     var agencysLevel by remember { mutableStateOf(search.agencysLevel ?: "") }
     var agencyLevelIds by remember { mutableStateOf(search.agencyLevelIds ?: "") }
 
-
-    val timeTypeOptions = listOf(
-        TimeTypeOption(stringResource(R.string.day), "DAY"),
-        TimeTypeOption(stringResource(R.string.week), "WEEK"),
-        TimeTypeOption(stringResource(R.string.month), "MONTH"),
-        TimeTypeOption(stringResource(R.string.quarte), "QUARTER"),
-        TimeTypeOption(stringResource(R.string.year), "YEAR")
-    )
-
-
     // Hiển thị Date Picker
-    if (showDatePicker && pickingField != null) {
-        val initialDate = if (pickingField == DateFieldType.START) startDateNew else endDateNew
+    if (showDatePicker) {
+        CustomDatePickerDialog(initialDate = monthYear, isMonthYearPicker = true, onDismiss = {
+            showDatePicker = false
 
-        CustomDatePickerDialog(initialDate = initialDate, onDismiss = {
-            showDatePicker = false
-            pickingField = null
         }, onDateSelected = { selectedDate ->
-            if (pickingField == DateFieldType.START) {
-                startDateNew = selectedDate
-            } else {
-                endDateNew = selectedDate
-            }
+            monthYear = selectedDate
             showDatePicker = false
-            pickingField = null
+
         })
-    }    // Hiển thị Date Picker
+    }
+
     if (showAgency) {
         CategoryDialogMultiSelect(title = stringResource(R.string.agency),
             typeCheck = CategoryType.AGENCY,
@@ -99,8 +85,8 @@ fun SearchConditionDialog(
     if (showAgencyLevel) {
         CategoryDialogMultiSelect(title = stringResource(R.string.level),
             typeCheck = CategoryType.AGENCY_LEVEL,
-            preSelectedIds = agencyLevelIds.split(",")?.filter { it.isNotBlank() } ?: emptyList(),
-            preSelectedNames = agencysLevel.split(",")?.filter { it.isNotBlank() } ?: emptyList(),
+            preSelectedIds = agencyIds.split(",")?.filter { it.isNotBlank() } ?: emptyList(),
+            preSelectedNames = agencys.split(",")?.filter { it.isNotBlank() } ?: emptyList(),
             onOptionSelectedIds = { selectedIds ->
                 agencyLevelIds = selectedIds.joinToString(",")
             },
@@ -123,69 +109,22 @@ fun SearchConditionDialog(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
+
             DialogHeaderWithCancel(
                 title = stringResource(R.string.filter_conditions),
                 onDismiss = { onDismiss() })
 
 
 
+            CompactDropdownField(value = monthYear, modifier = Modifier.fillMaxWidth(),
 
-            CustomDropdownTimeType(
-                options = timeTypeOptions,
-                selectedOption = selectedTypeNew,
-                onOptionSelected = { option ->
-                    val (start, end) = getStartAndEndDate(option.value)
-                    startDateNew = start
-                    endDateNew = end
-                    selectedTypeNew = option.label
-                    if (option.value != "DAY") {
-                        typeNew = DateFieldType.ALL
-                    } else {
-                        typeNew = DateFieldType.END
-                    }
-                    weekMonthQuarterYear = getCurrentTimeLabel(option.value)
-                },
-                placeholder = "",
-                textAlign = TextAlign.Left,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 5.dp),
+                onClick = {
+                    showDatePicker = true
 
-                )
-
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-
-            // Từ ngày - Đến ngày
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                CompactDropdownField(value = if (typeNew == DateFieldType.ALL) "$weekMonthQuarterYear ($startDateNew - $endDateNew)" else startDateNew,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    onClick = {
-                        if (typeNew != DateFieldType.ALL) {
-                            pickingField = DateFieldType.START
-                            showDatePicker = true
-                        }
-                    })
-
-                if (typeNew != DateFieldType.ALL) {
-                    CompactDropdownField(value = endDateNew,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        onClick = {
-                            pickingField = DateFieldType.END
-                            showDatePicker = true
-                        })
                 }
 
+            )
 
-            }
             Spacer(modifier = Modifier.height(10.dp))
             if (search.isAgencyLevel) {
                 CompactDropdownField(value = agencysLevel,
@@ -221,24 +160,17 @@ fun SearchConditionDialog(
 
                 Spacer(modifier = Modifier.height(10.dp))
             }
-
-
-
-
             PrimarySearchButton(onClick = {
                 val obj = SearchDialog(
-                    startDate=startDateNew,
-                    endDate=endDateNew,
-                    selectedType=selectedTypeNew,
-                    agencyIds=agencyIds,
-                    agencys=agencys,
-                    agencyLevelIds=agencyLevelIds,
-                    agencysLevel=agencysLevel
+                    monthYear=monthYear,selectedType= selectedTypeNew, agencyIds=agencyIds, agencys=agencys, agencyLevelIds=agencyLevelIds, agencysLevel=agencysLevel
                 )
                 onSearch(obj)
             })
-
-
         }
+
+
+
+
     }
 }
+

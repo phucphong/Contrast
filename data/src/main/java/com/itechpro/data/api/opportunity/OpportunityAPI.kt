@@ -14,7 +14,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-interface OpportunityAddEditAPI {
+interface OpportunityAPI {
 
 
 
@@ -34,7 +34,7 @@ interface OpportunityAddEditAPI {
 
     @Headers("Content-Type: application/json")
     @POST
-    suspend fun addEditOpportunitiesProject(
+    suspend fun addEditOpportunity(
         @Url url: String,
         @Body body: Opportunity?,
         @Header("Authorization") authen: String?

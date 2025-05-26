@@ -1,9 +1,9 @@
-package com.itechpro.domain.model.opportunity_project
+package com.itechpro.domain.model.opportunity
 
 
 
 
-data class OpportunityProject(
+data class Opportunity(
     val pos: Int? = 0,
     val id: String? = "",
     val ma: String? = "",

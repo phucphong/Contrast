@@ -3,7 +3,7 @@ package com.itechpro.domain.repository
 
 import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.Video
+import com.itechpro.domain.model.video.Video
 
 interface VideoRepository {
 

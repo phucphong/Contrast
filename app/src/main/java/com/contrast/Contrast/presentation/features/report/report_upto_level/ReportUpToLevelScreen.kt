@@ -4,7 +4,6 @@ import com.contrast.Contrast.presentation.features.report.report_sales_Agency.Ta
 import com.contrast.Contrast.presentation.features.report.report_sales_Agency.TableItemAgencyRow
 
 
-
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
@@ -34,6 +33,7 @@ import com.contrast.Contrast.presentation.components.alertDialog.ConfirmDeleteDi
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.components.searchDialog.SearchConditionDialog
+import com.contrast.Contrast.presentation.components.searchDialog.SearchConditionMonthDialog
 import com.contrast.Contrast.presentation.components.segment_tab.SegmentTabLocal
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitleFilter
@@ -43,6 +43,7 @@ import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.LightGrayBackground
 import com.itechpro.domain.model.DateFieldType
+import com.itechpro.domain.model.SearchDialog
 import com.itechpro.domain.model.navigationEvent.OpportunityNavEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
@@ -67,16 +68,17 @@ fun ReportUpToLevelScreen(
     val listState = rememberLazyListState()
     var startDate by remember { mutableStateOf(DateUtils.today()) }
     var endDate by remember { mutableStateOf(DateUtils.today()) }
-    var ids by remember { mutableStateOf("") }
-    var idsAgencyLevel by remember { mutableStateOf("") }
+    var agencyIds by remember { mutableStateOf("") }
+    var agencyLevelIds by remember { mutableStateOf("") }
+    var agencysLevel by remember { mutableStateOf("") }
+    var agencys by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf("Ngày") }
     var typeDate by remember { mutableStateOf<DateFieldType>(DateFieldType.END) }
 
 
-
     LaunchedEffect(Unit) {
         delay(100)
-        viewModel.getReportUpToLevel("01/$monthYear", ids, idsAgencyLevel)
+        viewModel.getReportUpToLevel("01/$monthYear", agencyIds, agencyLevelIds)
 
     }
     LaunchedEffect(state.reports) {
@@ -114,16 +116,27 @@ fun ReportUpToLevelScreen(
 
 
     if (isFinterDialog) {
-        SearchConditionDialog(onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
+        var obj = SearchDialog(
+            monthYear = monthYear,
             selectedType = selectedType,
+            agencyLevelIds = agencyLevelIds,
+            agencysLevel = agencysLevel,
+            agencyIds = agencyIds,
+            agencys = agencys,
+            isAgency =  if (type == "baocaothuongthangcap") true else false,
+            isAgencyLevel =  if (type == "baocaothuongthangcap") true else false
+        )
+
+        SearchConditionMonthDialog(onDismiss = { isFinterDialog = false },
+            search = obj,
             type = typeDate,
             onSearch = { search ->
-                startDate = search.startDate
-                endDate = search.endDate
-                selectedType = search.selectedType
-                viewModel.getReportUpToLevel("01/$monthYear", ids, idsAgencyLevel)
+                monthYear = search.monthYear ?: ""
+                agencyIds = search.agencyIds ?: ""
+                agencys = search.agencys ?: ""
+                agencyLevelIds = search.agencyLevelIds ?: ""
+                agencysLevel = search.agencysLevel ?: ""
+                viewModel.getReportUpToLevel("01/$monthYear", agencyIds, agencyLevelIds)
                 isFinterDialog = false
             })
 
@@ -140,7 +153,7 @@ fun ReportUpToLevelScreen(
                 isFinterDialog = true
             },
         )
-CustomDividerColor()
+
 
         TableHeaderUptoLevelRow(
             type,
@@ -152,7 +165,7 @@ CustomDividerColor()
 
 
         CustomSwipeRefresh(isRefreshing = isRefreshing, onRefresh = {
-            viewModel.getReportUpToLevel("01/$monthYear", ids, idsAgencyLevel)
+            viewModel.getReportUpToLevel("01/$monthYear", agencyIds, agencyLevelIds)
         }) {
 
 
@@ -165,8 +178,7 @@ CustomDividerColor()
 
                 if (state.isLoading) {
                     item {
-                        CustomCircularProgressIndicatorDialog(
-                            show = isLoading,
+                        CustomCircularProgressIndicatorDialog(show = isLoading,
                             onDismissRequest = { isLoading = false })
                     }
                 } else {
@@ -185,27 +197,24 @@ CustomDividerColor()
 
                         val rows = state.pagedReports.chunked(1)
 
-                        itemsIndexed(
-                            rows,
-                            key = { index, row ->
-                                row.firstOrNull()?.id ?: "row_$index"
-                            }) { index, row ->
+                        itemsIndexed(rows, key = { index, row ->
+                            row.firstOrNull()?.id ?: "row_$index"
+                        }) { index, row ->
                             val item = row.firstOrNull()
 
                             if (item != null) {
 
 
-                                val levelOld = item.capdodailycu?:""
-
+                                val levelOld = item.capdodailycu ?: ""
 
 
                                 val levelNew = item.capdodailymoi
-                                var  level = ""
-                                if(levelNew!=null){
-                                    if(levelOld.isNotEmpty()){
-                                        level ="$levelOld/$levelNew"
-                                    }else{
-                                        level ="$levelNew"
+                                var level = ""
+                                if (levelNew != null) {
+                                    if (levelOld.isNotEmpty()) {
+                                        level = "$levelOld/$levelNew"
+                                    } else {
+                                        level = "$levelNew"
                                     }
                                 }
                                 val count = index + 1
@@ -218,8 +227,8 @@ CustomDividerColor()
                                     type,
                                     fullname,
                                     level,
-                                    (item.tongdoanhso?:0.0).formatDouble(),
-                                    (item.sotienduochuong?:0.0).formatCurrency(),
+                                    (item.tongdoanhso ?: 0.0).formatDouble(),
+                                    (item.sotienduochuong ?: 0.0).formatCurrency(),
                                 )
 
                             }

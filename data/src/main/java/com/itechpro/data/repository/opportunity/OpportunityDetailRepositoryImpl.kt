@@ -17,16 +17,16 @@ import com.itechpro.domain.repository.opportunity.OpportunityDetailRepository
 import javax.inject.Inject
 
 
-class OpportunityProjectDetailRepositoryImpl @Inject constructor(
+class OpportunityDetailRepositoryImpl @Inject constructor(
     private val api: OpportunityDetailAPI
 ) : OpportunityDetailRepository {
-    override suspend fun getOpportunitiesProjectDetail(
+    override suspend fun getOpportunityDetail(
         obj: String,
         mode: String,
         ido: String,
         authen: String
     ): NetworkResponse<List<Opportunity>> {
-        val response = api.getOpportunitiesProjectDetail(obj,mode,ido,authen)
+        val response = api.getOpportunityDetail(obj,mode,ido,authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())
         } else {

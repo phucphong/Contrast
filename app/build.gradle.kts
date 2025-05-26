@@ -35,7 +35,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += "-Xplugin=${rootProject.projectDir}/build.gradle.kts"  // Optional
+
     }
 
     kotlin {
@@ -167,7 +167,6 @@ dependencies {
     implementation(project(":swipe-reveal-layout"))
     implementation(project(":refreshLayout"))
     implementation(project(":singledateandtimepicker"))
-    implementation(project(":photoView"))
     implementation(project(":compressor"))
     implementation(project(":domain"))
     implementation(project(":data"))

@@ -4,8 +4,7 @@ import android.util.Log
 import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.network.NetworkResponse
 
-import com.itechpro.domain.model.Video
-import com.itechpro.domain.model.product.Product
+import com.itechpro.domain.model.video.Video
 import com.itechpro.domain.repository.VideoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

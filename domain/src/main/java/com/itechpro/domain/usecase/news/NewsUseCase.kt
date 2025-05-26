@@ -1,6 +1,5 @@
 package com.itechpro.domain.usecase.news
 
-import com.itechpro.domain.model.Video
 import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.news.News

@@ -1,18 +1,11 @@
 package com.itechpro.domain.usecase.opportunity
 
 
-import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.opportunity.Opportunity
-
-import com.itechpro.domain.repository.opportunity.OpportunityRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import com.itechpro.domain.repository.opportunity.OpportunitysRepository
 import javax.inject.Inject
 
-class OpportunityAddEditUserCase @Inject constructor(
-    private val repository: OpportunityRepository,
+class OpportunityUserCase @Inject constructor(
+    private val repository: OpportunitysRepository,
 
     ) {
 

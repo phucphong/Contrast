@@ -4,7 +4,6 @@ package com.itechpro.domain.usecase.report
 import android.util.Log
 import com.itechpro.domain.model.category.Category
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.opportunity_project.OpportunityProject
 import com.itechpro.domain.model.report.Report
 
 import com.itechpro.domain.repository.report.ReportPersonalRepository

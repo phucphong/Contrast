@@ -22,7 +22,7 @@ import javax.inject.Singleton
 abstract class OpportunityDetailModule {
     @Binds
     @Singleton
-    abstract fun bindOderRepository(
+    abstract fun bindOpportunityDetailRepository(
         impl: OpportunityDetailRepositoryImpl
     ): OpportunityDetailRepository
 }

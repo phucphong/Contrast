@@ -1,4 +1,4 @@
-package com.itechpro.domain.model
+package com.itechpro.domain.model.video
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Video(

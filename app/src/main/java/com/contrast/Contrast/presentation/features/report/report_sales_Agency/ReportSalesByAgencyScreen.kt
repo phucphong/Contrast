@@ -39,6 +39,7 @@ import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.LightGrayBackground
 import com.itechpro.domain.model.DateFieldType
+import com.itechpro.domain.model.SearchDialog
 import com.itechpro.domain.model.navigationEvent.OpportunityNavEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
@@ -108,16 +109,19 @@ fun ReportSalesByAgencyScreen(
     }
 
 
+
+
     if (isFinterDialog) {
+        var  obj = SearchDialog(startDate = startDate, endDate = endDate
+            , selectedType = selectedType)
+
         SearchConditionDialog(onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
-            selectedType = selectedType,
+            search = obj,
             type = typeDate,
             onSearch = { search ->
-                startDate = search.startDate
-                endDate = search.endDate
-                selectedType = search.selectedType
+                startDate = search.startDate?:""
+                endDate = search.endDate?:""
+                selectedType = search.selectedType?:""
                 viewModel.getReportSalesReportByAgentByLevel(
                     startDate,
                     endDate,

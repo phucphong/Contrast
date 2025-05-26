@@ -37,6 +37,7 @@ import com.contrast.Contrast.presentation.navigator.routers.ProductRoutes
 import com.contrast.Contrast.presentation.navigator.routers.ServiceRequestRoutes
 import com.contrast.Contrast.presentation.theme.FAFAFA
 import com.itechpro.domain.model.DateFieldType
+import com.itechpro.domain.model.SearchDialog
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
@@ -169,23 +170,25 @@ fun ShareProductPage(
     if (isInfomation) {
 
     }
+
+
     if (isFinterDialog) {
-        SearchConditionDialog(
-            onDismiss = { isFinterDialog = false },
-            startDate = startDate,
-            endDate = endDate,
-            selectedType = selectedType,
+        var  obj = SearchDialog(startDate = startDate, endDate = endDate
+            , selectedType = selectedType)
+
+        SearchConditionDialog(onDismiss = { isFinterDialog = false },
+            search = obj,
             type = typeDate,
             onSearch = { search ->
-              startDate = search.startDate
-              endDate = search.endDate
-                selectedType = search.selectedType
+                startDate = search.startDate?:""
+                endDate = search.endDate?:""
+                selectedType = search.selectedType?:""
                 viewModel.getReportShareLink("layhoahongtamtinh", startDate, endDate)
                 isFinterDialog = false
-            }
-        )
+            })
 
     }
+
 
     Column {
         BackSearchInfomation(

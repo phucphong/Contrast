@@ -1,22 +1,17 @@
 package com.contrast.Contrast.presentation.features.video.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.contrast.Contrast.R
 import com.contrast.Contrast.di.qualifier.IoDispatcher
 import com.contrast.Contrast.extensions.collectResponse
 
 import com.contrast.Contrast.utils.StringProvider
 
 import com.itechpro.domain.model.CurrentUserInfo
-import com.itechpro.domain.model.Video
+import com.itechpro.domain.model.video.Video
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
-import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
-import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.video.VideoUiState
 
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase

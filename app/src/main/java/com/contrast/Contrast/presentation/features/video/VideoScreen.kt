@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
-import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicator
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.searchBar.TopSearchNotificationCart
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
@@ -35,7 +34,6 @@ import com.contrast.Contrast.presentation.features.video.viewModel.VideoViewMode
 import com.contrast.Contrast.presentation.navigator.routers.CartRoutes
 import com.contrast.Contrast.presentation.navigator.routers.NotificationRoutes
 import com.contrast.Contrast.presentation.theme.TealGreen
-import com.itechpro.domain.model.Video
 import com.itechpro.domain.model.navigationEvent.CartNavEvent
 import com.itechpro.domain.model.navigationEvent.NotificationNavEvent
 

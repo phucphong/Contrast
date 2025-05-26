@@ -1,4 +1,4 @@
-package com.itechpro.domain.model.opportunity_project
+package com.itechpro.domain.model.opportunity
 
 
 
@@ -7,14 +7,14 @@ import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
-data class OpportunityProjectUiState(
+data class OpportunityUiState(
 
 
     val tabs: List<Category> = emptyList(),
     val categorys: List<Category> = emptyList(),
-    val opportunityProjects: List<OpportunityProject> = emptyList(),
-    val pagedOpportunityProjects: List<OpportunityProject> = emptyList(),
-    val opportunityProject: OpportunityProject? = null,
+    val opportunityProjects: List<Opportunity> = emptyList(),
+    val pagedOpportunityProjects: List<Opportunity> = emptyList(),
+    val opportunityProject: Opportunity? = null,
     val domain: String = "",
     val pointAffiliate: String = "",
     val token: String = "",

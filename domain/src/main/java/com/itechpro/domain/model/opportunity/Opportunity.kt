@@ -18,6 +18,7 @@ data class OpportunityProject(
     val ngaybatdau: String? = "",
     val ngayketthuc: String? = "",
     val nhanvienphutrach: String? = "",
+    val idtrangthai: String? = "",
     val tongtien: Double? = 0.0,
     val tongtienconno: Double? = 0.0,
     val tongtiendatt: Double? = 0.0,

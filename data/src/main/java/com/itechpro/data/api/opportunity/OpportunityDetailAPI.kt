@@ -4,7 +4,7 @@ package com.itechpro.data.api.opportunity_project
 
 
 
-import com.itechpro.domain.model.opportunity_project.OpportunityProject
+import com.itechpro.domain.model.opportunity.Opportunity
 
 import retrofit2.Response
 import retrofit2.http.GET
@@ -21,7 +21,7 @@ interface OpportunityProjectDetailAPI {
         @Query("mode") getbyid: String?,
         @Query("ido") ido: String?,
         @Header("Authorization") authen: String?
-    ): Response<List<OpportunityProject>>
+    ): Response<List<Opportunity>>
 
 
 }

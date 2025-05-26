@@ -10,26 +10,26 @@ package com.itechpro.data.repository.opportunity
 
 
 
-import com.itechpro.data.api.opportunity_project.OpportunityProjectAddEditAPI
+import com.itechpro.data.api.opportunity.OpportunityAddEditAPI
 
 import com.itechpro.domain.model.network.NetworkResponse
-import com.itechpro.domain.model.opportunity_project.OpportunityProject
-import com.itechpro.domain.repository.opportunity_project.OpportunityProjectAddEditRepository
+import com.itechpro.domain.model.opportunity.Opportunity
+import com.itechpro.domain.repository.opportunity.OpportunityRepository
 
 
 import javax.inject.Inject
 
 
-class OpportunityProjectAddEditRepositoryImpl @Inject constructor(
-    private val api: OpportunityProjectAddEditAPI
-) : OpportunityProjectAddEditRepository {
+class OpportunityAddEditRepositoryImpl @Inject constructor(
+    private val api: OpportunityAddEditAPI
+) : OpportunityRepository {
     override suspend fun getCheckKey(
         obj: String,
         mode: String,
         code: String,
         ido: String,
         authen: String
-    ): NetworkResponse<List<OpportunityProject>> {
+    ): NetworkResponse<List<Opportunity>> {
         val response = api.getCheckKey(obj,mode,code,ido,authen)
         return if (response.isSuccessful) {
 
@@ -40,13 +40,13 @@ class OpportunityProjectAddEditRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun addEditOpportunitiesProject(
+    override suspend fun addEditOpportunity(
         url: String,
-        obj: OpportunityProject,
+        obj: Opportunity,
         authen: String
-    ): NetworkResponse<List<OpportunityProject>> {
+    ): NetworkResponse<List<Opportunity>> {
         return try {
-            val response = api.addEditOpportunitiesProject(url, obj,authen)
+            val response = api.addEditOpportunity(url, obj,authen)
             if (response.isSuccessful) {
                 NetworkResponse.Success(response.body() ?: emptyList())
             } else {

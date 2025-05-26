@@ -1,9 +1,9 @@
-package com.itechpro.data.api.opportunity_project
+package com.itechpro.data.api.opportunity
 
 
 
 
-import com.itechpro.domain.model.opportunity_project.OpportunityProject
+import com.itechpro.domain.model.opportunity.Opportunity
 
 import retrofit2.Response
 import retrofit2.http.Body
@@ -14,7 +14,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-interface OpportunityProjectAddEditAPI {
+interface OpportunityAddEditAPI {
 
 
 
@@ -28,7 +28,7 @@ interface OpportunityProjectAddEditAPI {
         @Query("ma") ten: String?,
         @Query("ido") ido: String?,
         @Header("Authorization") authen: String?
-    ): Response<List<OpportunityProject>>
+    ): Response<List<Opportunity>>
 
 
 
@@ -36,9 +36,9 @@ interface OpportunityProjectAddEditAPI {
     @POST
     suspend fun addEditOpportunitiesProject(
         @Url url: String,
-        @Body body: OpportunityProject?,
+        @Body body: Opportunity?,
         @Header("Authorization") authen: String?
-    ): Response<List<OpportunityProject>>
+    ): Response<List<Opportunity>>
 
 
 }

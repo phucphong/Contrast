@@ -12,7 +12,7 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-interface OpportunitysAPI {
+interface OpportunityListAPI {
 
 //OPPORTUNITY_PROCESS
     @Headers("Content-Type: application/json")

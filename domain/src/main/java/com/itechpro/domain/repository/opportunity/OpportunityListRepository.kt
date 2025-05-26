@@ -7,7 +7,7 @@ import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.opportunity.Opportunity
 
 
-interface OpportunitysRepository {
+interface OpportunityListRepository {
 
     suspend fun getOpportunityProcess(obj: String,mode: String,authen: String
     ): NetworkResponse<List<Category>>

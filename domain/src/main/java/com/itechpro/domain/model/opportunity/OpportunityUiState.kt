@@ -12,8 +12,8 @@ data class OpportunityUiState(
 
     val tabs: List<Category> = emptyList(),
     val categorys: List<Category> = emptyList(),
-    val opportunityProjects: List<Opportunity> = emptyList(),
-    val pagedOpportunityProjects: List<Opportunity> = emptyList(),
+    val opportunitys: List<Opportunity> = emptyList(),
+    val pagedOpportunitys: List<Opportunity> = emptyList(),
     val opportunityProject: Opportunity? = null,
     val domain: String = "",
     val pointAffiliate: String = "",

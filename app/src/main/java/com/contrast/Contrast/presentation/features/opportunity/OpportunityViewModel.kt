@@ -19,7 +19,7 @@ import com.itechpro.domain.model.navigationEvent.*
 import com.itechpro.domain.model.opportunity.Opportunity
 import com.itechpro.domain.model.opportunity.OpportunityUiState
 import com.itechpro.domain.usecase.account.GetCurrentUserUseCase
-import com.itechpro.domain.usecase.opportunity.OpportunitysUserCase
+import com.itechpro.domain.usecase.opportunity.OpportunityListUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -29,7 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OpportunityViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val useCase: OpportunitysUserCase,
+    private val useCase: OpportunityListUserCase,
     private val stringProvider: StringProvider,
 
     @IoDispatcher private val dispatcher: CoroutineDispatcher
@@ -38,7 +38,7 @@ class OpportunityViewModel @Inject constructor(
     private val _state = MutableStateFlow(OpportunityUiState())
     val state: StateFlow<OpportunityUiState> = _state
     private var currentUserInfo: CurrentUserInfo? = null
-    private var allOders: List<Opportunity> = emptyList()
+    private var allOpportunity: List<Opportunity> = emptyList()
     private var currentPage = 0
     private val pageSize = 10
     private var isLoadingNextPage = false
@@ -65,11 +65,11 @@ class OpportunityViewModel @Inject constructor(
     }
 
 
-    fun setInitialOders(oders: List<Opportunity>) {
-        allOders = oders
+    fun setInitialOpportunitys(Opportunitys: List<Opportunity>) {
+        allOpportunity = Opportunitys
         currentPage = 1
         _state.update {
-            it.copy(pagedOpportunityProjects = oders.take(pageSize))
+            it.copy(pagedOpportunitys = Opportunitys.take(pageSize))
         }
     }
     fun getOpportunityProcess(type:String,startDate: String, endDate: String, searchText: String, statusId: String) {
@@ -82,7 +82,7 @@ class OpportunityViewModel @Inject constructor(
                         val categoryListWithAll = listOf(
                             Category(id = "-1", code = "all", ten = "Tất cả", quantity = 0)
                         ) + categorys
-                        _state.update { it.copy(categorys = categoryListWithAll) }
+                        _state.update { it.copy(isLoading =true, categorys = categoryListWithAll) }
 
                         if (type == "cohoikinhdoanh") {
                            getOpportunity("cohoikinhdoanh",startDate, endDate, searchText, statusId,categoryListWithAll)
@@ -110,19 +110,19 @@ class OpportunityViewModel @Inject constructor(
     fun getOpportunity(obj: String,startDate: String, endDate: String, searchText: String, statusId: String, categorys: List<Category>) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            _state.update { it.copy(isLoading = true, opportunityProjects = emptyList(), pagedOpportunityProjects = emptyList()) }
+            _state.update { it.copy(isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()) }
             currentPage = 0
-            allOders = emptyList()
+            allOpportunity = emptyList()
 
             useCase.getOpportunity( obj, formatToYYYYMMDD(startDate),
                 formatToYYYYMMDD(endDate),searchText, user.token,statusId, categorys).collectResponse(
                 dispatcher = dispatcher,
                 onSuccess = { data ->
-                    allOders = data.items
+                    allOpportunity = data.items
                     _state.update {
                         it.copy(
-                            opportunityProjects = data.items,
-                            pagedOpportunityProjects = data.items.take(pageSize),
+                            opportunitys = data.items,
+                            pagedOpportunitys = data.items.take(pageSize),
                             categorys = data.categories,
                             isLoading = false
                         )
@@ -139,19 +139,19 @@ class OpportunityViewModel @Inject constructor(
     fun getOpportunityByIDCustomer(obj: String,mode: String,customerId: String,  searchText: String, statusId: String, categorys: List<Category>) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            _state.update { it.copy(isLoading = true, opportunityProjects = emptyList(), pagedOpportunityProjects = emptyList()) }
+            _state.update { it.copy(isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()) }
             currentPage = 0
-            allOders = emptyList()
+            allOpportunity = emptyList()
 
             useCase.getOpportunityByIDCustomer( obj, mode,
                 customerId,searchText, user.token,statusId, categorys).collectResponse(
                 dispatcher = dispatcher,
                 onSuccess = { data ->
-                    allOders = data.items
+                    allOpportunity = data.items
                     _state.update {
                         it.copy(
-                            opportunityProjects = data.items,
-                            pagedOpportunityProjects = data.items.take(pageSize),
+                            opportunitys = data.items,
+                            pagedOpportunitys = data.items.take(pageSize),
                             categorys = data.categories,
                             isLoading = false
                         )
@@ -168,9 +168,9 @@ class OpportunityViewModel @Inject constructor(
                          searchText: String,  statusId: String, categorys: List<Category>) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            _state.update { it.copy(isLoading = true, opportunityProjects = emptyList(), pagedOpportunityProjects = emptyList()) }
+            _state.update { it.copy(isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()) }
             currentPage = 0
-            allOders = emptyList()
+            allOpportunity = emptyList()
 
 
             useCase.deleteOpportunity( obj, "deletes",
@@ -202,7 +202,7 @@ class OpportunityViewModel @Inject constructor(
 
     fun onItemClick(id: String, type:String) {
         _state.update {
-            it.copy(navEvent = OrderNavEvent.GoToOderDetail(
+            it.copy(navEvent = OpportunityNavEvent.GoToOpportunityDetail(
                 id = id,
                 type = type,
 
@@ -211,10 +211,10 @@ class OpportunityViewModel @Inject constructor(
     }
 
     fun loadNextPage() {
-        if (isLoadingNextPage || currentPage * pageSize >= allOders.size) return
+        if (isLoadingNextPage || currentPage * pageSize >= allOpportunity.size) return
         isLoadingNextPage = true
         currentPage++
-        _state.update { it.copy(pagedOpportunityProjects = allOders.take(currentPage * pageSize)) }
+        _state.update { it.copy(pagedOpportunitys = allOpportunity.take(currentPage * pageSize)) }
         isLoadingNextPage = false
     }
 

@@ -8,20 +8,20 @@ package com.itechpro.data.repository.opportunity
 
 
 
-import com.itechpro.data.api.opportunity.OpportunitysAPI
+import com.itechpro.data.api.opportunity.OpportunityListAPI
 import com.itechpro.domain.model.category.Category
 
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.opportunity.Opportunity
-import com.itechpro.domain.repository.opportunity.OpportunitysRepository
+import com.itechpro.domain.repository.opportunity.OpportunityListRepository
 
 
 import javax.inject.Inject
 
 
-class OpportunitysRepositoryImpl @Inject constructor(
-    private val api: OpportunitysAPI
-) : OpportunitysRepository {
+class OpportunityListRepositoryImpl @Inject constructor(
+    private val api: OpportunityListAPI
+) : OpportunityListRepository {
     override suspend fun getOpportunityProcess(
         obj: String,
         mode: String,

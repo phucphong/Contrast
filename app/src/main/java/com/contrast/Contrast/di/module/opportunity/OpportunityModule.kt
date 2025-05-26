@@ -2,7 +2,8 @@ package com.contrast.Contrast.di.module.OpportunityAddEdits
 import com.itechpro.data.api.opportunity.OpportunityAPI
 import com.itechpro.data.repository.opportunity.OpportunityRepositoryImpl
 
-import com.itechpro.domain.repository.opportunity.OpportunitysRepository
+import com.itechpro.domain.repository.opportunity.OpportunityListRepository
+import com.itechpro.domain.repository.opportunity.OpportunityRepository
 import com.itechpro.domain.usecase.opportunity.OpportunityUserCase
 
 
@@ -22,7 +23,7 @@ abstract class OpportunityModule {
     @Singleton
     abstract fun bindOpportunityRepository(
         impl: OpportunityRepositoryImpl
-    ): OpportunitysRepository
+    ): OpportunityRepository
 }
 
 @Module
@@ -37,7 +38,7 @@ object OpportunityNetworkModule {
 
 
     @Provides
-    fun provideOpportunityUserCase(repository: OpportunitysRepository): OpportunityUserCase {
+    fun provideOpportunityUserCase(repository: OpportunityListRepository): OpportunityUserCase {
         return OpportunityUserCase(repository)
     }
 

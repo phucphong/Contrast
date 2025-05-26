@@ -13,15 +13,15 @@ import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.opportunity.Opportunity
 import com.itechpro.domain.model.opportunity.OpportunityResult
 
-import com.itechpro.domain.repository.opportunity.OpportunitysRepository
+import com.itechpro.domain.repository.opportunity.OpportunityListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class OpportunitysUserCase @Inject constructor(
-    private val repository: OpportunitysRepository,
+class OpportunityListUserCase @Inject constructor(
+    private val repository: OpportunityListRepository,
 
     ) {
 

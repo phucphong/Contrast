@@ -84,8 +84,8 @@ fun OpportunityScreen(
     var typeDate by remember { mutableStateOf<DateFieldType>(DateFieldType.END) }
     var openedItem by remember { mutableStateOf<Opportunity?>(null) }
     var objToDelete by remember { mutableStateOf<Opportunity?>(null) }
-    LaunchedEffect(state.opportunityProjects) {
-        viewModel.setInitialOders(state.pagedOpportunityProjects)
+    LaunchedEffect(state.opportunitys) {
+        viewModel.setInitialOpportunitys(state.pagedOpportunitys)
     }
 
     LaunchedEffect(Unit) {
@@ -213,7 +213,7 @@ fun OpportunityScreen(
                             onDismissRequest = { isLoading = false })
                     }
                 }else{
-                    if (state.pagedOpportunityProjects.isEmpty()) {
+                    if (state.pagedOpportunitys.isEmpty()) {
                         item {
                             EmptyStateScreen(
                                 imageRes = R.drawable.nodata,
@@ -225,7 +225,7 @@ fun OpportunityScreen(
                         }
 
                     } else {
-                        val rows = state.pagedOpportunityProjects.chunked(1)
+                        val rows = state.pagedOpportunitys.chunked(1)
                         items(rows, key = { row -> row.firstOrNull()?.id ?: "row" }) { row ->
                             val item = row.firstOrNull()
 

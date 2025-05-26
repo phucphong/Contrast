@@ -1,11 +1,11 @@
 package com.itechpro.domain.usecase.opportunity
 
 
-import com.itechpro.domain.repository.opportunity.OpportunitysRepository
+import com.itechpro.domain.repository.opportunity.OpportunityListRepository
 import javax.inject.Inject
 
 class OpportunityUserCase @Inject constructor(
-    private val repository: OpportunitysRepository,
+    private val repository: OpportunityListRepository,
 
     ) {
 

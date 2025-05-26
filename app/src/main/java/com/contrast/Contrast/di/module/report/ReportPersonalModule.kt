@@ -27,6 +27,9 @@ abstract class ReportPersonalModule {
     abstract fun bindReportPersonalRepository(
         impl: ReportPersonalRepositoryImpl
     ): ReportPersonalRepository
+
+
+
 }
 
 @Module

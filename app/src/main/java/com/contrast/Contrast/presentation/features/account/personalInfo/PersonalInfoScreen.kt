@@ -62,6 +62,8 @@ fun PersonalInfoScreen(navController: NavController) {
 
 
             Spacer(modifier = Modifier.height(16.dp))
+
+
             CustomText(
                 text = buildAnnotatedString {
                     append(stringResource(id = R.string.full_name))
@@ -69,35 +71,43 @@ fun PersonalInfoScreen(navController: NavController) {
                         append("*")
                     }
                 }.toString(),
+                fontSize = 16.sp,
+                color = Color.Black,
                 fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                Color.Gray
+                modifier = Modifier.weight(1f)
             )
+
+
             CustomText(
                 text = "Lương Duy Long",
+                fontSize = 16.sp,
+                color = Color.Black,
                 fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,Color.Black ,
-                TextAlign.Left,
-                true
-
+                textAlign= TextAlign.Right,
+                modifier = Modifier.weight(1f)
             )
+
             Spacer(modifier = Modifier.height(16.dp))
+
+
 
             CustomText(
                 text = stringResource(id = R.string.occupation),
-                fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
-                Color.Gray
+                color = Color.Black,
+                fontWeight = FontWeight.Normal,
+                textAlign= TextAlign.Right,
+                modifier = Modifier.weight(1f)
+            )
 
-                )
 
             CustomText(
                 text = "Sinh viên",
+                fontSize = 14.sp,
+                color = Color.Black,
                 fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,Color.Black ,
-                TextAlign.Left,
-                true
-
+                textAlign= TextAlign.Right,
+                modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.height(40.dp))
 
@@ -172,6 +182,8 @@ fun PersonalInfoScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(16.dp))
 
+
+
             CustomText(
                 text = buildAnnotatedString {
                     append(stringResource(id = R.string.email))
@@ -179,19 +191,26 @@ fun PersonalInfoScreen(navController: NavController) {
                         append("*")
                     }
                 }.toString(),
+                fontSize = 16.sp,
+                color = Color.Black,
                 fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                Color.Gray
+                textAlign= TextAlign.Right,
+                modifier = Modifier.weight(1f)
             )
+
             CustomText(
                 text = "long@gmail.com",
+                fontSize = 16.sp,
+                color = Color.Black,
                 fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,Color.Black ,
-                TextAlign.Left,
-                true
-
+                textAlign= TextAlign.Right,
+                modifier = Modifier.weight(1f)
             )
+
+
             Spacer(modifier = Modifier.height(16.dp))
+
+
             CustomText(
                 text = buildAnnotatedString {
                     append(stringResource(id = R.string.phone_number))
@@ -199,18 +218,23 @@ fun PersonalInfoScreen(navController: NavController) {
                         append("*")
                     }
                 }.toString(),
+                fontSize = 16.sp,
+                color = Color.Gray,
                 fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                Color.Gray
+                textAlign= TextAlign.Right,
+                modifier = Modifier.weight(1f)
             )
+
+
             CustomText(
                 text = "0964931225",
+                fontSize = 16.sp,
+                color = Color.Black,
                 fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,Color.Black ,
-                TextAlign.Left,
-                true
-
+                textAlign= TextAlign.Right,
+                modifier = Modifier.weight(1f)
             )
+
         }
     }
 }

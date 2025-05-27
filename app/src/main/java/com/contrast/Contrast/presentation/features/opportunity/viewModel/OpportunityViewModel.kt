@@ -1,4 +1,4 @@
-package com.contrast.Contrast.presentation.features.opportunity
+package com.contrast.Contrast.presentation.features.opportunity.viewModel
 
 
 
@@ -80,7 +80,7 @@ class OpportunityViewModel @Inject constructor(
                     dispatcher = dispatcher,
                     onSuccess = { categorys ->
                         val categoryListWithAll = listOf(
-                            Category(id = "-1", code = "all", ten = "Tất cả", quantity = 0)
+                            Category(id = "-1",  ten = "Tất cả", quantity = 0)
                         ) + categorys
                         _state.update { it.copy(isLoading =true, categorys = categoryListWithAll) }
 
@@ -135,35 +135,11 @@ class OpportunityViewModel @Inject constructor(
             )
         }
     }
-
-    fun getOpportunityByIDCustomer(obj: String,mode: String,customerId: String,  searchText: String, statusId: String, categorys: List<Category>) {
-        val user = currentUserInfo ?: return
-        viewModelScope.launch(dispatcher) {
-            _state.update { it.copy(isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()) }
-            currentPage = 0
-            allOpportunity = emptyList()
-
-            useCase.getOpportunityByIDCustomer( obj, mode,
-                customerId,searchText, user.token,statusId, categorys).collectResponse(
-                dispatcher = dispatcher,
-                onSuccess = { data ->
-                    allOpportunity = data.items
-                    _state.update {
-                        it.copy(
-                            opportunitys = data.items,
-                            pagedOpportunitys = data.items.take(pageSize),
-                            categorys = data.categories,
-                            isLoading = false
-                        )
-                    }
-
-                },
-                onError = { message ->
-                    _state.update { it.copy(isLoading = false, errorMessage = message) }
-                }
-            )
-        }
+    fun clearErrorMessage() {
+        _state.update { it.copy(errorMessage = "") }
     }
+
+
    fun deleteOpportunity(type: String,obj: String,ids: String,  mamenu: String, content: String, startDate: String, endDate: String,
                          searchText: String,  statusId: String, categorys: List<Category>) {
         val user = currentUserInfo ?: return
@@ -200,13 +176,10 @@ class OpportunityViewModel @Inject constructor(
     }
 
 
-    fun onItemClick(id: String, type:String) {
+    fun onItemClick(id: String) {
         _state.update {
             it.copy(navEvent = OpportunityNavEvent.GoToOpportunityDetail(
-                id = id,
-                type = type,
-
-                ))
+                id = id))
         }
     }
 
@@ -220,7 +193,7 @@ class OpportunityViewModel @Inject constructor(
 
 
     fun resetNavigation() {
-        _state.update { it.copy(navEvent = ProductNavEvent.None) }
+        _state.update { it.copy(navEvent = OpportunityNavEvent.None) }
     }
 
 

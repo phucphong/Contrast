@@ -194,16 +194,15 @@ fun WalletScreen(
                    modifier = Modifier.size(50.dp)
                )
                Spacer(modifier = Modifier.height(8.dp))
-
-
                CustomText(
                    text = stringResource(id = R.string.quick_payment_message),
-                   fontWeight = FontWeight.Normal,
-                   fontSize = 16.sp, FFD7D7D7 ,
-                   TextAlign.Center,
-
-
+                   fontSize = 16.sp,
+                   color = FFD7D7D7,
+                   textAlign= TextAlign.Center,
+                   modifier = Modifier.weight(1f)
                )
+
+
            }
        }
     }

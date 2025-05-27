@@ -5,6 +5,8 @@ import com.squareup.moshi.JsonClass
 data class InfoDetail(
     val label: String,
     val value: String,
+    val customerId: String?="",
+    val customertype: String?="",
     val highlight: Boolean = false,
     val showCheckbox: Boolean = false,
     val isChecked: Boolean = false,

@@ -26,6 +26,7 @@ import com.contrast.Contrast.extensions.DateUtils
 import com.contrast.Contrast.extensions.formatCurrency
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.alertDialog.ConfirmDeleteDialog
+import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
 import com.contrast.Contrast.presentation.components.circularProgressIndicatorCentered.CustomCircularProgressIndicatorDialog
 import com.contrast.Contrast.presentation.components.header.HeaderImageTitle
 import com.contrast.Contrast.presentation.components.searchBar.TopBackSearchFilter
@@ -35,10 +36,13 @@ import com.contrast.Contrast.presentation.components.swipeDelete.SwipeRevealItem
 
 import com.contrast.Contrast.presentation.components.swiperefresh_custom.CustomSwipeRefresh
 import com.contrast.Contrast.presentation.components.tab.TabBarRow
-import com.contrast.Contrast.presentation.features.opportunity.OpportunityViewModel
+import com.contrast.Contrast.presentation.features.opportunity.viewModel.OpportunityViewModel
 import com.contrast.Contrast.presentation.features.opportunity.list.item.OpportunityItem
+import com.contrast.Contrast.presentation.navigator.routers.AuthRoutes
 
 import com.contrast.Contrast.presentation.navigator.routers.OpportunityRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ProfileRoutes
+import com.contrast.Contrast.presentation.navigator.routers.ReportPersonalSalesRoutes
 
 import com.contrast.Contrast.presentation.theme.FFFAFAFA
 import com.contrast.Contrast.presentation.theme.TealGreen
@@ -47,8 +51,12 @@ import com.itechpro.domain.model.DateFieldType
 import com.itechpro.domain.model.SearchDialog
 
 import com.itechpro.domain.model.navigationEvent.OpportunityNavEvent
+import com.itechpro.domain.model.navigationEvent.OrderNavEvent
+import com.itechpro.domain.model.navigationEvent.ReportPersonalSalesNaEvent
+import com.itechpro.domain.model.navigationEvent.SplashNaEvent
 
 import com.itechpro.domain.model.opportunity.Opportunity
+import com.itechpro.domain.model.profile.ProfileNaEvent
 
 
 import kotlinx.coroutines.delay
@@ -79,6 +87,7 @@ fun OpportunityScreen(
     var selectedType by remember { mutableStateOf("Ngày") }
     var searchText by remember { mutableStateOf("") }
     var statusId by remember { mutableStateOf("0") }
+    var ido by remember { mutableStateOf("0") }
 
     val listState = rememberLazyListState()
     var typeDate by remember { mutableStateOf<DateFieldType>(DateFieldType.END) }
@@ -93,6 +102,23 @@ fun OpportunityScreen(
 
         callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
 
+    }
+
+
+    LaunchedEffect(state.navEvent) {
+        when (val event = state.navEvent) {
+            is OpportunityNavEvent.GoToOpportunityDetail -> {
+                navHostController.navigate(
+                    OpportunityRoutes.OpportunityDetail.withArgs(
+                        id = ido,
+                    )
+                )
+                viewModel.resetNavigation()
+            }
+
+
+            else -> Unit
+        }
     }
 
     LaunchedEffect(listState) {
@@ -114,7 +140,6 @@ fun OpportunityScreen(
                 navHostController.navigate(
                     OpportunityRoutes.OpportunityDetail.withArgs(
                         id = event.id,
-                        type = event.type,
                         )
                 )
                 viewModel.resetNavigation()
@@ -164,7 +189,12 @@ fun OpportunityScreen(
 
 
     }
+    if (state.errorMessage.isNotEmpty()) {
+        CustomOkAlertDialog(message = state.errorMessage, onDismiss = {
+            viewModel.clearErrorMessage()
 
+        })
+    }
     Column {
 
         TopBackSearchFilter(
@@ -256,6 +286,11 @@ fun OpportunityScreen(
                                         complete = "Hoàn thành",
                                         date = "$startDate $endDate",
                                         personInCharge = item.nhanvienphutrach?:""
+                                        ,onClickOpportunity={
+
+                                            viewModel.onItemClick(item.id?:"0")
+
+                                        }
                                     )
 
                                 }

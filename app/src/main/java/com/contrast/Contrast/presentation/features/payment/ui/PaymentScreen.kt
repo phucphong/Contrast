@@ -31,6 +31,7 @@ import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.components.topAppBar.CustomTopAppBarBackTitle
 
 import com.contrast.Contrast.presentation.features.voucher.ownership.vouchers
+import com.contrast.Contrast.presentation.theme.FFD7D7D7
 import com.contrast.Contrast.presentation.theme.FFD91E18
 import com.itechpro.domain.model.Voucher
 
@@ -203,12 +204,14 @@ fun PaymentScreen() {
                 modifier = Modifier.size(200.dp, 60.dp)
             )
             Spacer(modifier = Modifier.height(40.dp))
+
+
             CustomText(
-                text = stringResource(R.string.barcode_update),
-                FontWeight.Normal,
+                text = stringResource(id = R.string.barcode_update),
                 fontSize = 12.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center
+                color = FFD7D7D7,
+                textAlign= TextAlign.Center,
+                modifier = Modifier.weight(1f)
             )
 
             Spacer(modifier = Modifier.height(80.dp))

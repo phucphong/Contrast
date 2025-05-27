@@ -15,12 +15,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 import com.contrast.Contrast.R
+import com.contrast.Contrast.presentation.components.text.CustomText
 import com.contrast.Contrast.presentation.theme.FAFAFA
+import com.contrast.Contrast.presentation.theme.PlaceholderGray
 
 
 @Composable
@@ -34,7 +38,7 @@ fun HeaderImageTitle(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .wrapContentHeight()
             .background(Color.White),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -43,13 +47,14 @@ fun HeaderImageTitle(
             painter = painterResource(id = iconRes),
             contentDescription = null,
             modifier = Modifier.size(50.dp).padding(10.dp),
-
         )
 
-        Text(
-            text = name,
-            style = MaterialTheme.typography.titleMedium,modifier = Modifier.weight(1f).padding(10.dp),
-        )
+        CustomText(text = name, color = Color.Black, fontSize = 14.sp,
+            fontWeight = FontWeight(500),
+
+            modifier = Modifier.weight(1f).padding(10.dp))
+
+
 
         if(isAdd){
             Image(

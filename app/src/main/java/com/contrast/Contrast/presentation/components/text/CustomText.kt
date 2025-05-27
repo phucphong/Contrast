@@ -1,6 +1,8 @@
 package com.contrast.Contrast.presentation.components.text
 
-import androidx.compose.foundation.layout.*
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,78 +11,66 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contrast.Contrast.R
-import com.contrast.Contrast.presentation.components.line.CustomDivider
-import com.contrast.Contrast.presentation.components.line.CustomDividerColor
 import com.contrast.Contrast.presentation.theme.FF000000
-import com.contrast.Contrast.presentation.theme.PlaceholderGray
 
-
-@Composable
-fun CustomText(
-    text: AnnotatedString,
-    fontWeight: FontWeight =  FontWeight(400),
-    fontSize: TextUnit = 14.sp,
-    color: Color = Color.Black,
-    colorUnderline: Color = Color.Black,
-    textAlign: TextAlign = TextAlign.Left,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(0.dp)
-
-) {
-    val customFontFamily = FontFamily(
-        Font(R.font.inter)
-    )
-
-    Column() {
-
-
-        Text(
-            text = text,
-            style = TextStyle(
-                fontFamily = customFontFamily,
-                fontWeight = fontWeight,
-                fontSize = fontSize,
-                color = color,
-                textAlign = textAlign,),
-            modifier = modifier
-
-        )
-
-
-    }
-}
+private val defaultFontFamily = FontFamily(Font(R.font.inter))
 
 @Composable
 fun CustomText(
     text: String,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(0.dp),
     fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit = 14.sp,
     color: Color = FF000000,
-    textAlign: TextAlign = TextAlign.Left,
-    isLowercase: Boolean = false, // ✅ thêm mới
+    maxLines: Int = 1,
+    textAlign: TextAlign = TextAlign.Start,
+    isLowercase: Boolean = false
+) {
+    val displayText = if (isLowercase) text.lowercase() else text
+    Text(
+        text = displayText,
+        style = TextStyle(
+            fontFamily = defaultFontFamily,
+            fontWeight = fontWeight,
+            fontSize = fontSize,
+            color = color,
+            textAlign = textAlign
+        ),
+        maxLines = maxLines,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun CustomText(
+    text: AnnotatedString,
     modifier: Modifier = Modifier
         .fillMaxWidth()
-        .padding(0.dp)
-
+        .padding(0.dp),
+    fontWeight: FontWeight = FontWeight.Normal,
+    fontSize: TextUnit = 14.sp,
+    color: Color = FF000000,
+    maxLines: Int = 1,
+    textAlign: TextAlign = TextAlign.Start
 ) {
-
-    val displayText = if (isLowercase) text.lowercase() else text
-    CustomText(
-        text = AnnotatedString(displayText),
-        fontWeight = fontWeight,
-        fontSize = fontSize,
-        color = color,
-        textAlign = textAlign,
-
-        modifier =  modifier
+    Text(
+        text = text,
+        style = TextStyle(
+            fontFamily = defaultFontFamily,
+            fontWeight = fontWeight,
+            fontSize = fontSize,
+            color = color,
+            textAlign = textAlign
+        ),
+        maxLines = maxLines,
+        modifier = modifier
     )
 }

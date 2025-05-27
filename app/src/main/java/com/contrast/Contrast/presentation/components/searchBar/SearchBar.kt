@@ -44,64 +44,65 @@ fun SearchBar(
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
+   Column(Modifier.padding( 10.dp)) {  Box(
+       modifier = modifier
+           .fillMaxWidth()
+           .height(48.dp)
 
-            .background(
-                color =backgroundColor,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(horizontal = 10.dp) // Padding cho content trong Box
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().wrapContentHeight()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.search),
-                contentDescription = "search",
-                modifier = Modifier
-                    .size(20.dp)
-            )
+           .background(
+               color =backgroundColor,
+               shape = RoundedCornerShape(8.dp)
+           )
+           .border(
+               width = 1.dp,
+               color = borderColor,
+               shape = RoundedCornerShape(8.dp)
+           )
+           .padding(horizontal = 10.dp) // Padding cho content trong Box
+   ) {
+       Row(
+           verticalAlignment = Alignment.CenterVertically,
+           modifier = Modifier.fillMaxWidth().wrapContentHeight()
+       ) {
+           Image(
+               painter = painterResource(id = R.drawable.search),
+               contentDescription = "search",
+               modifier = Modifier
+                   .size(16.dp)
+           )
 
-            Spacer(modifier = Modifier.width(4.dp))
+           Spacer(modifier = Modifier.width(4.dp))
 
-            TextField(
-                value = searchText,
-                onValueChange = onTextChange,
-                placeholder = {
-                    Text(
-                        text = placeholder,
-                        color = Color(0xFFD7D7D7),
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.inter)),
-                        fontWeight = FontWeight.W400
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(), // Chiều cao gần giống ảnh
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.White,  // Màu nền của TextField
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    textColor = Color.Black,
-                    cursorColor = Color.Gray
-                ),
-                textStyle = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.inter)),
-                    fontWeight = FontWeight.W400
-                )
-            )
-        }
-    }
+           TextField(
+               value = searchText,
+               onValueChange = onTextChange,
+               placeholder = {
+                   Text(
+                       text = placeholder,
+                       color = Color(0xFFD7D7D7),
+                       fontSize = 14.sp,
+                       fontFamily = FontFamily(Font(R.font.inter)),
+                       fontWeight = FontWeight.W400
+                   )
+               },
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .fillMaxHeight(), // Chiều cao gần giống ảnh
+               singleLine = true,
+               colors = TextFieldDefaults.textFieldColors(
+                   backgroundColor = Color.White,  // Màu nền của TextField
+                   focusedIndicatorColor = Color.Transparent,
+                   unfocusedIndicatorColor = Color.Transparent,
+                   disabledIndicatorColor = Color.Transparent,
+                   textColor = Color.Black,
+                   cursorColor = Color.Gray
+               ),
+               textStyle = TextStyle(
+                   fontSize = 14.sp,
+                   fontFamily = FontFamily(Font(R.font.inter)),
+                   fontWeight = FontWeight.W400
+               )
+           )
+       }
+   } }
 }

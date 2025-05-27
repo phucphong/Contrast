@@ -2,20 +2,30 @@ package com.itechpro.domain.model.opportunity
 
 
 
+
+
 import com.itechpro.domain.model.category.Category
+import com.itechpro.domain.model.contacts.Contacts
 import com.itechpro.domain.model.navigationEvent.NavEvent
 import com.itechpro.domain.model.navigationEvent.ProductNavEvent
+import com.itechpro.domain.model.product.AttachFile
+import com.itechpro.domain.model.product.InfoDetail
+import com.itechpro.domain.model.product.Product
+import com.itechpro.domain.model.product.ProductOpoortutityProject
 import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
-data class OpportunityUiState(
+data class OpportunityDetailUiState(
 
 
     val tabs: List<Category> = emptyList(),
-    val categorys: List<Category> = emptyList(),
-    val opportunitys: List<Opportunity> = emptyList(),
+    val contactsList: List<Contacts> = emptyList(),
+    val productList: List<ProductOpoortutityProject> = emptyList(),
+    val attachList: List<AttachFile> = emptyList(),
+    val objInfoList: List<InfoDetail> = emptyList(),
     val pagedOpportunitys: List<Opportunity> = emptyList(),
     val opportunity: Opportunity? = null,
     val domain: String = "",
+    val opportunityName: String = "",
     val pointAffiliate: String = "",
     val token: String = "",
     val customerId: String = "",
@@ -24,9 +34,17 @@ data class OpportunityUiState(
     val address: String = "",
     val personCreate: String = "",
     val categoryCode: String = "all",
-    val errorMessage: String = "",
+    val errorMessage: String= "",
+    val searchText: String= "",
     val type: String = "",
+
+
     val selectedTab: Int = 0,
+    val successRate: Double = 0.0,
+    val transferredToProject: Boolean = false,
     val isLoading: Boolean = false,
+    val showPhoneKH: Boolean = false,
+    val showEmailKH: Boolean = false,
+    val showAddressKH: Boolean = false,
     val navEvent: NavEvent = ProductNavEvent.None,
 )

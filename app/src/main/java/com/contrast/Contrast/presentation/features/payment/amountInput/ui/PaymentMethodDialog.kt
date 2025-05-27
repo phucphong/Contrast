@@ -140,22 +140,26 @@ fun PaymentMethodDialog(
                         ) {
 
 
+
                             CustomText(
                                 text = stringResource(id = R.string.powered_by_payoo),
-                                FontWeight.Bold,
-                                fontSize = 14.sp, // Font lớn hơn một chút
+                                fontSize = 14.sp,
                                 color = Color.Black,
-                                TextAlign.Right // Căn chỉnh text về bên phải
+                                textAlign= TextAlign.Right,
+                                modifier = Modifier.weight(1f)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
 
+
+
                             CustomText(
                                 text = stringResource(id = R.string.secure_transaction),
-                                FontWeight.Medium,
-                                fontSize = 12.sp, // Font lớn hơn một chút
+                                fontSize = 12.sp,
                                 color = Color.Black,
-                                TextAlign.Right // Căn chỉnh text về bên phải
+                                textAlign= TextAlign.Right,
+                                modifier = Modifier.weight(1f)
                             )
+
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                     }

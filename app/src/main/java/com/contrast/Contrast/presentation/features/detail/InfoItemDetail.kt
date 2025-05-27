@@ -28,24 +28,24 @@ fun InfoItemDetail(
             .fillMaxWidth()
             .padding(vertical = 4.dp),
 
-    ) {
+        ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
             CustomText(text = info.label, color = PlaceholderGray, fontSize = 14.sp)
-            Spacer(Modifier.size(10.dp))
+            Spacer(Modifier.size(15.dp))
             if (info.showCheckbox && info.onCheckedChange != null) {
                 CheckBoxColor(checked = info.isChecked, onCheckedChange = { info.onCheckedChange })
-            }else{
+            } else {
                 CustomText(
                     text = info.value.ifBlank { "" },
                     color = if (info.highlight) TealGreen else Color.Black,
                     fontSize = 14.sp,
 
 
-                )
+                    )
             }
         }
-
-        CustomDividerColor(iOSUnderlineGray)
+        Spacer(Modifier.size(5.dp))
+        CustomDividerColor()
 
 
     }

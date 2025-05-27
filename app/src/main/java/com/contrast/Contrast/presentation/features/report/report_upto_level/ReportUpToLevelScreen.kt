@@ -98,21 +98,7 @@ fun ReportUpToLevelScreen(
         }
     }
 
-    LaunchedEffect(state.navEvent) {
-        when (val event = state.navEvent) {
-            is OpportunityNavEvent.GoToOpportunityDetail -> {
-                navHostController.navigate(
-                    OpportunityRoutes.OpportunityDetail.withArgs(
-                        id = event.id,
-                        type = event.type,
-                    )
-                )
-                viewModel.resetNavigation()
-            }
 
-            else -> Unit
-        }
-    }
 
 
     if (isFinterDialog) {

@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.contrast.Contrast.presentation.components.media.MediaPickerScreenNew
 import com.contrast.Contrast.presentation.components.media.MediaCreateViewModel
+import com.contrast.Contrast.presentation.features.opportunity.detail.OpportunityDetailScreen
 import com.contrast.Contrast.presentation.features.opportunity.list.OpportunityScreen
 import com.contrast.Contrast.presentation.features.order.detail.OrderDetailScreen
 import com.contrast.Contrast.presentation.features.order.list.OrdersScreen
@@ -42,8 +43,17 @@ fun NavGraphBuilder.registerOpportunityRoutes(navController: NavHostController) 
         arguments = OpportunityRoutes.OpportunityDetail.arguments
     ) { backStackEntry ->
         val id = backStackEntry.arguments?.getString("id") ?: ""
-        val type = backStackEntry.arguments?.getString("type") ?: ""
-        OrderDetailScreen(navController, id,type)
+
+        OpportunityDetailScreen(navController, id)
+    }
+
+    composable(
+        route = OpportunityRoutes.OpportunityEdit.route, // = "product_Reviews/{id}"
+        arguments = OpportunityRoutes.OpportunityEdit.arguments
+    ) { backStackEntry ->
+        val id = backStackEntry.arguments?.getString("id") ?: ""
+
+        OpportunityDetailScreen(navController, id)
     }
 
 }

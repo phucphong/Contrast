@@ -3,11 +3,11 @@ package com.contrast.Contrast.utils
 
 
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.text.TextUtils
 import android.util.Log
 import android.widget.TextView
 import com.contrast.Contrast.R
@@ -51,6 +51,33 @@ object Util {
         }
     }
 
+
+    fun hide4PhoneEnd(number: String): String {
+        var hide = ""
+        if (!TextUtils.isEmpty(number)) {
+            hide = number.replace("\\w(?=\\w{4})".toRegex(), "*")
+        }
+
+        return hide
+    }
+
+    fun hideEmail(email: String): String {
+        if (!email.contains("@") || email.length < 5) return email
+
+        val parts = email.split("@")
+        val username = parts[0]
+        val domain = parts[1]
+
+        val hiddenUsername = buildString {
+            for (i in username.indices) {
+                if (i < 4) append("*") else append(username[i])
+            }
+        }
+
+        return "$hiddenUsername@$domain"
+    }
+
+
     fun ddMMYYY(strdate: String): String {
 
         var dateFomat: String = ""
@@ -65,7 +92,30 @@ object Util {
         }
         return dateFomat
     }
+    fun ddMMYYYHHMM(strdate: String): String {
 
+        var dateFomat: String = ""
+        var date: Date? = null
+        val format: SimpleDateFormat
+        if (strdate.lastIndexOf(" ") > 0) {
+            format = SimpleDateFormat("dd/MM/yyyy HH:mm")
+            try {
+                date = format.parse(strdate)
+                dateFomat = format.format(date)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+        } else {
+            format = SimpleDateFormat("dd/MM/yyyy")
+            try {
+                date = format.parse(strdate)
+                dateFomat = format.format(date)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+        }
+        return dateFomat
+    }
 
     fun initRetrofit(url: String,context: Context?): Retrofit {
         val okHttpClient = OkHttpClient.Builder()

@@ -53,6 +53,7 @@
     <string name="order_count">Đơn hàng</string>
     <string name="order">Đơn hàng</string>
     <string name="order_key">Mã đơn</string>
+    <string name="key">Mã </string>
     <string name="estimated_commission">Hoa hồng ước tính</string>
     <string name="revenue">Doanh thu</string>
     <string name="stillInDebt">Còn nợ</string>
@@ -72,8 +73,27 @@
     <string name="copyright">Copyright ©</string>
     <string name="biometricCredentials">Để sử dụng chức năng này, bạn vui lòng cài đặt vân tay trên thiết bị</string>
     <string name="version">Phiên bản:</string>
-
+    <string name="tooLimit">Quá hạn</string>
+    <string name="successRate">Tỷ lệ thành công (%)</string>
+    <string name="completeRate">Tỷ lệ hoàn thành</string>
+    <string name="completedNotBeen">Chưa hoàn thành</string>
+    <string name="workTotal">Tông công việc</string>
+    <string name="department">Phòng ban</string>
+    <string name="time">Thời gian</string>
     <string name="custom_detail">Chi tiết khách hàng</string>
+    <string name="pause">Tạm dừng</string>
+    <string name="workCustomer">Tạo việc cho khách</string>
+    <string name="dateReminder">Ngày nhắc</string>
+    <string name="reminderDay">Nhắc hẹn</string>
+    <string name="numberOfPayments">Số lần thanh toán</string>
+    <string name="costLimit">Hạn mức chi phí (%)</string>
+    <string name="priorityLevel">Mức độ ưu tiên</string>
+    <string name="opportunity_process">Quy trình bán hàng</string>
+    <string name="contactForm">Hình thức liên lạc</string>
+    <string name="updateTime">Ngày cập nhật</string>
+    <string name="dateRange">Ngày cấp</string>
+    <string name="detail">Chi tiết </string>
+    <string name="addressWork">Địa chỉ triển khai</string>
     <string name="customType">Kiểu khách hàng</string>
     <string name="customFullName">Tên khách hàng</string>
     <string name="contact_person">Người phụ trách</string>
@@ -89,7 +109,11 @@
     <string name="stt">STT</string>
     <string name="name">Tên</string>
     <string name="monthlySales">Doanh số</string>
+    <string name="price">Đơn giá</string>
+    <string name="vat">Vat</string>
     <string name="customer_name">Tên khách hàng</string>
+
+    <string name="customer">Khách hàng</string>
     <string name="responsible_person">Người phụ trách</string>
     <string name="referrer">Người giới thiệu</string>
     <string name="established_date">Ngày thành lập</string>
@@ -108,7 +132,7 @@
     <string name="bank_account">Tài khoản ngân hàng</string>
     <string name="max_image">Tối đa chỉ được 5 ảnh!</string>
     <string name="max_video">Tối đa chỉ được  1 video!</string>
-
+    <string name="informationSources">Nguồn thông tin</string>
 
     <string name="bank_name">Tên ngân hàng</string>
     <string name="care_date">Ngày chăm sóc</string>
@@ -211,6 +235,7 @@
     <string name="cart_total_amount">TỔNG TIỀN</string>
     <string name="cart_discount">CHIẾT KHẤU</string>
     <string name="cart_final_amount">THÀNH TIỀN</string>
+    <string name="final_amount">Thành tiền</string>
 
     <string name="cart_need_consultation">CẦN TƯ VẤN THÊM</string>
     <string name="cart_checkout">THANH TOÁN</string>
@@ -528,9 +553,12 @@
     <string name="history">Lịch sử</string>
     <string name="call_internal">Nội bộ</string>
     <string name="contact">Liên hệ</string>
+    <string name="attach">Đính kèm</string>
     <string name="contact_phone">Danh bạ</string>
     <string name="contact_info">Thông tin liên hệ</string>
     <string name="business_opportunity">CHKD</string>
+    <string name="opportunity_name">Tên cơ hội</string>
+    <string name="opportunity_detail">Chi tiết cơ hội</string>
     <string name="more">Khác</string>
     <string name="info">Thông tin</string>
     <string name="other">Khác</string>
@@ -552,6 +580,8 @@
     <string name="original">Giá gốc</string>
     <string name="paymentInfo">Thông tin thanh toán</string>
     <string name="task">Công việc</string>
+    <string name="cost">Chi phí</string>
+    <string name="transferredToProject">Sang dự án</string>
     <string name="events_happening">Sự kiện đang diễn ra</string>
     <string name="store_list">Danh sách cửa hàng</string>
     <string name="see_all">Xem tất cả</string>
@@ -618,7 +648,7 @@
     <string name="error_password_mismatch">Mật khẩu nhập lại không khớp!</string>
     <string name="password_placeholder" translatable="false">Nhập mật khẩu mới của bạn</string>
     <string name="confirm_password_placeholder" translatable="false">Nhập mật khẩu xác nhận của bạn</string>
-
+    <string name="completed">Hoàn thành</string>
     <string name="confirm_button">Xác nhận</string>
     <string name="logout">Đăng xuất</string>
     <string name="policy_text">

@@ -80,7 +80,7 @@ fun ProductItem(
                 modifier = Modifier.weight(1f)
             ) {
                 CustomText(
-                    text = " ${obj.soluong} x (${obj.tendonvi}) ${obj.tensanpham} ",
+                    text = " ${(obj.soluong?:0.0).formatDouble()} x (${obj.tendonvi}) ${obj.tensanpham} ",
                     color = Color.Gray,
                     fontSize = 13.sp,
                     maxLines = 2,

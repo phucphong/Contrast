@@ -31,7 +31,7 @@ fun <T> SwipeRevealItem(
     paddingBottom: Dp = 5.dp,
     isOpen: Boolean,
     onSwipeStart: (T) -> Unit,
-    onDeleteClick: (T) -> Unit,
+    onDeleteClick:  (T) -> Unit,
     content: @Composable (Modifier) -> Unit
 ) {
     val swipeOffset = remember { Animatable(0f) }

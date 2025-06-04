@@ -35,6 +35,7 @@ import com.contrast.Contrast.extensions.capitalizeEachWord
 import com.contrast.Contrast.presentation.components.modifier.noRippleClickableComposable
 @Composable
 fun CustomTextField(
+    textAlign: TextAlign = TextAlign.Left,
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
@@ -110,6 +111,7 @@ fun CustomTextField(
                             lineHeight = 21.sp,
                             fontFamily = customFontFamily,
                             fontWeight = FontWeight.Normal
+                                    ,textAlign =textAlign
                         )
                     )
                 },
@@ -128,7 +130,8 @@ fun CustomTextField(
                     lineHeight = 21.sp,
                     fontFamily = customFontFamily,
                     fontWeight = FontWeight.Normal,
-                    color = Color(0xFF151515),
+                    color = Color(0xFF151515)
+                    ,textAlign =textAlign
                 ),
                 singleLine = true,
                 trailingIcon = {

@@ -7,6 +7,7 @@ data class Opportunity(
     val pos: Int? = 0,
     val id: String? = "",
     val ma: String? = "",
+    val makhachhang: String? = "",
     val ten: String? = "",
     val hinhanhtxt: String? = "",
     val ngaytaotxt: String? = "",
@@ -23,6 +24,7 @@ data class Opportunity(
     val tennguon: String? = "",
     val tenmucdo: String? = "",
     val diachitrienkhai: String? = "",
+    val tentrangthai: String? = "",
 
     val tenquytrinh: String? = "",
     val nguoitao: String? = "",
@@ -30,13 +32,16 @@ data class Opportunity(
     val ngayketthuc: String? = "",
     val nhanvienphutrach: String? = "",
     val idtrangthai: String? = "",
+    val mautrangthai: String? = "",
     val tongtien: Double? = 0.0,
     val tongtienconno: Double? = 0.0,
     val tongtiendatt: Double? = 0.0,
     val tongiatri: Double? = 0.0,
-    val tylethanhcong: Double? = 0.0,
+
     val hanmucchiphi: Double? = 0.0,
+    val tylethanhcong: Float? = 0f,
     val tamdung: Boolean? = false,
+    val xoa: Boolean? = false,
     val chuyensangduan: Boolean? = false,
 
 )

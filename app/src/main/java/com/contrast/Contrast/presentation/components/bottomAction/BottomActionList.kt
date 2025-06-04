@@ -23,7 +23,7 @@ fun BottomActionList(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         actions.forEach { action ->

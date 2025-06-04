@@ -5,10 +5,14 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class AttachFile(
 
-    var id: String? = null,
-    var tenfile: String? = null,
-    var dinhkem: String? = null,
-    var dinhdang: String? = null,
+    var id: String? = "",
+    var tenfile: String? = "",
+    var tenfilehienthi: String? = "",
+    var dinhkem: String? = "",
+    var dinhdang: String? = "",
+    var dungluong: String? = "",
+    var nguoidang: String? = "",
+    var lud: String? = "",
 
     )
 

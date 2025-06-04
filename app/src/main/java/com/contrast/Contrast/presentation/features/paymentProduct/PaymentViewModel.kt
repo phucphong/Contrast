@@ -112,6 +112,8 @@ class PaymentViewModel @Inject constructor(
             _notificationToast.emit(if (success)stringProvider.getString(R.string.save_image_to_gallery) else stringProvider.getString(R.string.save_image_to_gallery_error) )
         }
     }
+
+
     fun getUpdateOder(idCustomer: String, idOder:String, ghichu:String) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {

@@ -8,12 +8,11 @@ package com.itechpro.data.repository.opportunity
 
 
 import com.itechpro.data.api.opportunity.OpportunityDetailAPI
-import com.itechpro.domain.model.contacts.Contacts
+import com.itechpro.domain.model.contact.Contact
 
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.opportunity.Opportunity
 import com.itechpro.domain.model.product.AttachFile
-import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductOpoortutityProject
 import com.itechpro.domain.repository.opportunity.OpportunityDetailRepository
 
@@ -44,7 +43,7 @@ class OpportunityDetailRepositoryImpl @Inject constructor(
         opportunityId: String,
         searchText: String,
         authen: String
-    ): NetworkResponse<List<Contacts>> {
+    ): NetworkResponse<List<Contact>> {
         val response = api.getContactByOpportunity(obj,mode,opportunityId,searchText,authen)
         return if (response.isSuccessful) {
             NetworkResponse.Success(response.body() ?: emptyList())

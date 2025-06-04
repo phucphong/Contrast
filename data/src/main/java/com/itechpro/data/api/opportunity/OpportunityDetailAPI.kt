@@ -4,10 +4,9 @@ package com.itechpro.data.api.opportunity
 
 
 
-import com.itechpro.domain.model.contacts.Contacts
+import com.itechpro.domain.model.contact.Contact
 import com.itechpro.domain.model.opportunity.Opportunity
 import com.itechpro.domain.model.product.AttachFile
-import com.itechpro.domain.model.product.Product
 import com.itechpro.domain.model.product.ProductOpoortutityProject
 
 import retrofit2.Response
@@ -36,7 +35,7 @@ interface OpportunityDetailAPI {
         @Query("idcohoikinhdoanh") opportunityId: String?,
         @Query("tukhoa") searchText: String?,
         @Header("Authorization") authen: String?
-    ): Response<List<Contacts>>
+    ): Response<List<Contact>>
 
     //  call = service.getsanphambyidcohoikinhdoanh("sanphamcohoikinhdoanh", "getallbyidcongtybyidcohoikinhdoanh", Common.idcohoikinhdoanhtab, tukhoa,"brmitechpro " + token);
 

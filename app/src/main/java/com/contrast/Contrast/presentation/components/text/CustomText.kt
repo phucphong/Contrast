@@ -30,7 +30,7 @@ fun CustomText(
     fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit = 14.sp,
     color: Color = FF000000,
-    maxLines: Int = 1,
+    maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign = TextAlign.Start,
     isLowercase: Boolean = false
 ) {
@@ -58,7 +58,7 @@ fun CustomText(
     fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit = 14.sp,
     color: Color = FF000000,
-    maxLines: Int = 1,
+    maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign = TextAlign.Start
 ) {
     Text(

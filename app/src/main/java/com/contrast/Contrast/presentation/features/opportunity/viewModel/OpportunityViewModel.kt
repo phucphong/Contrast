@@ -1,10 +1,9 @@
 package com.contrast.Contrast.presentation.features.opportunity.viewModel
 
 
-
-
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.contrast.Contrast.R
@@ -44,7 +43,6 @@ class OpportunityViewModel @Inject constructor(
     private var isLoadingNextPage = false
 
 
-
     init {
         viewModelScope.launch(dispatcher) {
             val user = runCatching { getCurrentUserUseCase() }.getOrNull()
@@ -58,12 +56,48 @@ class OpportunityViewModel @Inject constructor(
                         pointAffiliate = user.pointAffiliate,
                         employeeId = user.employeeId,
                         customerId = user.customerId,
+                        admin = user.admin,
+                        adminRoot = user.adminRoot,
+                        permissionMobile = user.permissionMobile,
                     )
                 }
             }
         }
     }
 
+    fun canDeleteOpportunity(
+        item: Opportunity, customer: String, customerDelete: String
+    ): String {
+
+        if (customer=="1") {
+            if (customerDelete == "0") {
+                var error =
+                    "${stringProvider.getString(R.string.youNotPermissionMobileDeleteOpportunityCustomer)} ${item.makhachhang?:"".lowercase()} - ${item.tenkhachhang?:"".lowercase()} ${
+                        stringProvider.getString(R.string.pleaseContactToAdminPermissionMobileDeleteCustomer)
+                    }"
+                return error
+            } else {
+                return ""
+            }
+
+        } else {
+            val permissions = _state.value.permissionMobile.split(",").map { it.trim() }
+            val hasPermission = "danhsachcohoikinhdoanhdelete" in permissions
+            val isDelete = item.xoa ?: false
+            if (_state.value.adminRoot || _state.value.admin || hasPermission || isDelete) {
+                return "";
+            } else {
+                var error = "${stringProvider.getString(R.string.youNotPermissionMobileDeleteOpportunity)} ${
+                    stringProvider.getString(R.string.pleaseContactToAdminPermissionMobileDeleteCustomer)
+                }"
+                return error
+
+            }
+
+        }
+
+
+    }
 
     fun setInitialOpportunitys(Opportunitys: List<Opportunity>) {
         allOpportunity = Opportunitys
@@ -72,114 +106,188 @@ class OpportunityViewModel @Inject constructor(
             it.copy(pagedOpportunitys = Opportunitys.take(pageSize))
         }
     }
-    fun getOpportunityProcess(type:String,startDate: String, endDate: String, searchText: String, statusId: String) {
+
+    fun getOpportunityProcess(
+        type: String, startDate: String, endDate: String, searchText: String, statusId: String
+    ) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
             useCase.getOpportunityProcess(user.token)
-                .collectResponse(
-                    dispatcher = dispatcher,
-                    onSuccess = { categorys ->
-                        val categoryListWithAll = listOf(
-                            Category(id = "-1",  ten = "Tất cả", quantity = 0)
-                        ) + categorys
-                        _state.update { it.copy(isLoading =true, categorys = categoryListWithAll) }
+                .collectResponse(dispatcher = dispatcher, onSuccess = { categorys ->
+                    val categoryListWithAll = listOf(
+                        Category(id = "-1", ten = "Tất cả", quantity = 0)
+                    ) + categorys
+                    _state.update { it.copy(isLoading = true, categorys = categoryListWithAll) }
 
-                        if (type == "cohoikinhdoanh") {
-                           getOpportunity("cohoikinhdoanh",startDate, endDate, searchText, statusId,categoryListWithAll)
-                        } else if (type == "cantuvan") {
-                           getOpportunity("cohoikinhdoanh","", "", searchText,statusId,categoryListWithAll)
-                        }
-
-                    },
-                    onError = { message ->
-                        _state.update { it.copy(errorMessage = message) }
-                    }
-                )
-        }
-    }
-    fun onCategorySelected(index: Int, categorys: List<Category>, type: String, startDate: String, endDate: String, searchText: String, ) {
-        _state.update { it.copy(selectedTab = index,categoryCode = categorys.getOrNull(index)?.id.orEmpty()) }
-
-
-        if (type == "cohoikinhdoanh") {
-            getOpportunity("cohoikinhdoanh",startDate, endDate, searchText, categorys.getOrNull(index)?.id.orEmpty(),categorys)
-        } else if (type == "cantuvan") {
-            getOpportunity("cohoikinhdoanh","", "", searchText,categorys.getOrNull(index)?.id.orEmpty(),categorys)
-        }
-    }
-    fun getOpportunity(obj: String,startDate: String, endDate: String, searchText: String, statusId: String, categorys: List<Category>) {
-        val user = currentUserInfo ?: return
-        viewModelScope.launch(dispatcher) {
-            _state.update { it.copy(isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()) }
-            currentPage = 0
-            allOpportunity = emptyList()
-
-            useCase.getOpportunity( obj, formatToYYYYMMDD(startDate),
-                formatToYYYYMMDD(endDate),searchText, user.token,statusId, categorys).collectResponse(
-                dispatcher = dispatcher,
-                onSuccess = { data ->
-                    allOpportunity = data.items
-                    _state.update {
-                        it.copy(
-                            opportunitys = data.items,
-                            pagedOpportunitys = data.items.take(pageSize),
-                            categorys = data.categories,
-                            isLoading = false
+                    if (type == "cohoikinhdoanh") {
+                        getOpportunity(
+                            "cohoikinhdoanh",
+                            startDate,
+                            endDate,
+                            searchText,
+                            statusId,
+                            categoryListWithAll
+                        )
+                    } else if (type == "cantuvan") {
+                        getOpportunity(
+                            "cohoikinhdoanh", "", "", searchText, statusId, categoryListWithAll
                         )
                     }
 
-                },
-                onError = { message ->
-                    _state.update { it.copy(isLoading = false, errorMessage = message) }
-                }
+                }, onError = { message ->
+                    _state.update { it.copy(errorMessage = message) }
+                })
+        }
+    }
+
+    fun onCategorySelected(
+        index: Int,
+        categorys: List<Category>,
+        type: String,
+        startDate: String,
+        endDate: String,
+        searchText: String,
+    ) {
+        _state.update {
+            it.copy(
+                selectedTab = index, categoryCode = categorys.getOrNull(index)?.id.orEmpty()
+            )
+        }
+
+
+        if (type == "cohoikinhdoanh") {
+            getOpportunity(
+                "cohoikinhdoanh",
+                startDate,
+                endDate,
+                searchText,
+                categorys.getOrNull(index)?.id.orEmpty(),
+                categorys
+            )
+        } else if (type == "cantuvan") {
+            getOpportunity(
+                "cohoikinhdoanh",
+                "",
+                "",
+                searchText,
+                categorys.getOrNull(index)?.id.orEmpty(),
+                categorys
             )
         }
     }
+
+    fun getOpportunity(
+        obj: String,
+        startDate: String,
+        endDate: String,
+        searchText: String,
+        statusId: String,
+        categorys: List<Category>
+    ) {
+        val user = currentUserInfo ?: return
+        viewModelScope.launch(dispatcher) {
+            _state.update {
+                it.copy(
+                    isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()
+                )
+            }
+            currentPage = 0
+            allOpportunity = emptyList()
+
+            useCase.getOpportunity(
+                obj,
+                formatToYYYYMMDD(startDate),
+                formatToYYYYMMDD(endDate),
+                searchText,
+                user.token,
+                statusId,
+                categorys
+            ).collectResponse(dispatcher = dispatcher, onSuccess = { data ->
+                allOpportunity = data.items
+                _state.update {
+                    it.copy(
+                        opportunitys = data.items,
+                        pagedOpportunitys = data.items.take(pageSize),
+                        categorys = data.categories,
+                        isLoading = false
+                    )
+                }
+
+            }, onError = { message ->
+                _state.update { it.copy(isLoading = false, errorMessage = message) }
+            })
+        }
+    }
+
     fun clearErrorMessage() {
         _state.update { it.copy(errorMessage = "") }
     }
 
+    fun setErrorMessage(error: String) {
+        _state.update { it.copy(errorMessage = error) }
+    }
 
-   fun deleteOpportunity(type: String,obj: String,ids: String,  mamenu: String, content: String, startDate: String, endDate: String,
-                         searchText: String,  statusId: String, categorys: List<Category>) {
+
+    fun deleteOpportunity(
+        type: String,
+        obj: String,
+        ids: String,
+        mamenu: String,
+        content: String,
+        startDate: String,
+        endDate: String,
+        searchText: String,
+        statusId: String,
+        categorys: List<Category>
+    ) {
         val user = currentUserInfo ?: return
         viewModelScope.launch(dispatcher) {
-            _state.update { it.copy(isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()) }
+            _state.update {
+                it.copy(
+                    isLoading = true, opportunitys = emptyList(), pagedOpportunitys = emptyList()
+                )
+            }
             currentPage = 0
             allOpportunity = emptyList()
 
 
-            useCase.deleteOpportunity( obj, "deletes",
-                ids,mamenu, "android",user.device,content, user.token ).collectResponse(
-                dispatcher = dispatcher,
-                onSuccess = { data ->
+            useCase.deleteOpportunity(
+                obj, "deletes", ids, mamenu, "android", user.device, content, user.token
+            ).collectResponse(dispatcher = dispatcher, onSuccess = { data ->
 
-                    _state.update {
-                        it.copy(
-                            errorMessage = stringProvider.getString(R.string.delete_success),
-                            isLoading = false
-                        )
-                    }
-
-                    if (type == "cohoikinhdoanh") {
-                        getOpportunity("cohoikinhdoanh",startDate, endDate, searchText, statusId,categorys)
-                    } else if (type == "cantuvan") {
-                        getOpportunity("cohoikinhdoanh","", "", searchText, statusId,categorys)
-                    }
-
-                },
-                onError = { message ->
-                    _state.update { it.copy(isLoading = false, errorMessage = message) }
+                _state.update {
+                    it.copy(
+                        errorMessage = stringProvider.getString(R.string.delete_success),
+                        isLoading = false
+                    )
                 }
-            )
+
+                if (type == "cohoikinhdoanh") {
+                    getOpportunity(
+                        "cohoikinhdoanh", startDate, endDate, searchText, statusId, categorys
+                    )
+                } else if (type == "cantuvan") {
+                    getOpportunity("cohoikinhdoanh", "", "", searchText, statusId, categorys)
+                }
+
+            }, onError = { message ->
+                _state.update { it.copy(isLoading = false, errorMessage = message) }
+            })
         }
     }
 
 
-    fun onItemClick(id: String) {
+    fun onItemClick(
+        id: String,
+        customerEdit: String,
+    ) {
         _state.update {
-            it.copy(navEvent = OpportunityNavEvent.GoToOpportunityDetail(
-                id = id))
+            it.copy(
+                navEvent = OpportunityNavEvent.GoToOpportunityDetail(
+                    id = id,
+                    customerEdit = customerEdit,
+                )
+            )
         }
     }
 

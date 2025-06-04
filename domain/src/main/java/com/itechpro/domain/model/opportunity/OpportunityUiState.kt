@@ -23,10 +23,15 @@ data class OpportunityUiState(
     val device: String = "",
     val address: String = "",
     val personCreate: String = "",
+
     val categoryCode: String = "all",
     val errorMessage: String = "",
     val type: String = "",
+    val permissionMobile: String = "",
     val selectedTab: Int = 0,
     val isLoading: Boolean = false,
+    val admin: Boolean = false,
+    val adminRoot: Boolean = false,
+
     val navEvent: NavEvent = ProductNavEvent.None,
 )

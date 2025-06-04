@@ -1,11 +1,10 @@
 package com.itechpro.domain.usecase.opportunity
 import com.itechpro.domain.model.category.Category
-import com.itechpro.domain.model.contacts.Contacts
+import com.itechpro.domain.model.contact.Contact
 import com.itechpro.domain.model.network.NetworkResponse
 import com.itechpro.domain.model.opportunity.Opportunity
+import com.itechpro.domain.model.opportunity.OpportunityResult
 import com.itechpro.domain.model.product.AttachFile
-import com.itechpro.domain.model.product.Product
-import com.itechpro.domain.model.product.ProductOpoortutityProject
 import com.itechpro.domain.repository.opportunity.OpportunityDetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -45,7 +44,7 @@ class OpportunityDetailUseCase @Inject constructor(
         ido: String,
         searchText: String,
         authen: String
-    ): Flow<NetworkResponse<List<Contacts>>> {
+    ): Flow<NetworkResponse<List<Contact>>> {
         return flow {
             emit(NetworkResponse.Loading)
             when (val result = repository.getContactByOpportunity("lienhecohoikinhdoanh", "getallbyidcongtybyidcohoikinhdoanh", ido,searchText, authen)) {
@@ -64,28 +63,45 @@ class OpportunityDetailUseCase @Inject constructor(
     }
 
 
-
     fun getProductByOpportunity(
         ido: String,
         searchText: String,
         authen: String
-    ): Flow<NetworkResponse<List<ProductOpoortutityProject>>> {
+    ): Flow<NetworkResponse<OpportunityResult>> {
         return flow {
             emit(NetworkResponse.Loading)
-            when (val result = repository.getProductByOpportunity("sanphamcohoikinhdoanh", "getallbyidcongtybyidcohoikinhdoanh", ido, searchText,authen)) {
+            when (
+                val result = repository.getProductByOpportunity(
+                    "sanphamcohoikinhdoanh",
+                    "getallbyidcongtybyidcohoikinhdoanh",
+                    ido,
+                    searchText,
+                    authen
+                )
+            ) {
                 is NetworkResponse.Success -> {
+                    val products = result.data
+                    val totalMoney = products.sumOf { it.thanhtien ?: 0.0 }
 
-                    emit(NetworkResponse.Success(result.data))
+                    val opportunityResult = OpportunityResult(
+                        products = products,
+                        totalMoney = totalMoney
+                    )
+
+                    emit(NetworkResponse.Success(opportunityResult))
                 }
+
                 is NetworkResponse.Error -> {
                     emit(NetworkResponse.Error(result.message))
                 }
+
                 else -> {
                     emit(NetworkResponse.Error("Unknown error"))
                 }
             }
         }.flowOn(Dispatchers.IO)
     }
+
 
 
     fun getAttachByOpportunity(

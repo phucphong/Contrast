@@ -4,7 +4,10 @@ import com.itechpro.domain.model.profile.ProfileNaEvent
 
 
 sealed class OpportunityNavEvent: NavEvent {
-    data class GoToOpportunityDetail(val id: String) : OrderNavEvent()
+    data class GoToOpportunityDetail(val id: String,
+
+                                     val customerEdit: String,
+        ) : OrderNavEvent()
 
     data class GoToOpportunity(
         val type: String,

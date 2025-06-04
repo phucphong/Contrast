@@ -34,7 +34,10 @@ fun NavGraphBuilder.registerOpportunityRoutes(navController: NavHostController) 
     ) { backStackEntry ->
         val type = backStackEntry.arguments?.getString("type") ?:""
         val title = backStackEntry.arguments?.getString("title") ?:""
-        OpportunityScreen(navController,type,title)
+        val customer = backStackEntry.arguments?.getString("customer") ?:""
+        val customerEdit = backStackEntry.arguments?.getString("customerEdit") ?:""
+        val customerDelete = backStackEntry.arguments?.getString("customerDelete") ?:""
+        OpportunityScreen(navController,type,title,customer,customerEdit,customerDelete)
     }
 
 
@@ -43,9 +46,13 @@ fun NavGraphBuilder.registerOpportunityRoutes(navController: NavHostController) 
         arguments = OpportunityRoutes.OpportunityDetail.arguments
     ) { backStackEntry ->
         val id = backStackEntry.arguments?.getString("id") ?: ""
+        val customer = backStackEntry.arguments?.getString("customer") ?: ""
+        val customerEdit = backStackEntry.arguments?.getString("customerEdit") ?: ""
 
-        OpportunityDetailScreen(navController, id)
+        OpportunityDetailScreen(navController, id,customer,customerEdit)
     }
+
+
 
     composable(
         route = OpportunityRoutes.OpportunityEdit.route, // = "product_Reviews/{id}"
@@ -53,7 +60,9 @@ fun NavGraphBuilder.registerOpportunityRoutes(navController: NavHostController) 
     ) { backStackEntry ->
         val id = backStackEntry.arguments?.getString("id") ?: ""
 
-        OpportunityDetailScreen(navController, id)
+//        OpportunityDetailScreen(navController, id)
     }
+
+    registerContactRoutes(navController)
 
 }

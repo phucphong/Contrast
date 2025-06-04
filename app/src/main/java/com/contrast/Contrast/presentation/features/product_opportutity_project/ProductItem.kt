@@ -39,7 +39,7 @@ import com.itechpro.domain.model.product.ProductOpoortutityProject
 fun ProductItem(
     domain: String,
     obj: ProductOpoortutityProject,
-    onClickItem: (String) -> Unit = {},
+    onClickItem: (ProductOpoortutityProject) -> Unit = {},
     modifier: Modifier = Modifier
 
 
@@ -48,12 +48,30 @@ fun ProductItem(
     val fullUrl = "${domain}${obj.avata}"
 
 
+    val  vat = obj.phantramthue?:0.0
+    val  discountPercent = obj.phantramgiamgia?:0.0
+    val  discountPercent1 = obj.phantramgiamgia1?:0.0
+    val  price = obj.dongia?:0.0
+    val  count = obj.soluong?:0.0
+    val  finalAmount = obj.thanhtien?:0.0
+   var discountTotal = 0.0
+    if(discountPercent>0){
+        discountTotal = (count*price*discountPercent)/100
+
+    }else{
+        discountTotal = obj.sotiengiamgia?:0.0
+    }
+
+
+
+
+
 
 
     Column (
         modifier = modifier
             .fillMaxWidth()
-            .noRippleClickableComposable { onClickItem(obj.id ?: "") },
+            .noRippleClickableComposable { onClickItem(obj) },
 
     ) {
         Row(
@@ -103,16 +121,30 @@ fun ProductItem(
                         modifier = Modifier.weight(1f)
                     )
                 }
-
                 Row (modifier = Modifier.padding(bottom = 5.dp)){
                     CustomText(
-                        text = stringResource(R.string.vat),
+                        text =if(discountPercent>0)  "${stringResource(R.string.discount)}(${discountPercent.formatDouble()}%)" else "${stringResource(R.string.discount)}(${discountPercent1.formatDouble()}%) ",
+                        color = Color.Black,
+                        fontSize = 14.sp,
+                        modifier = Modifier.wrapContentWidth()
+                    )
+                    CustomText(
+                        text =discountTotal.formatCurrency(),
+                        color = Color.Red,
+                        textAlign = TextAlign.Right,
+                        fontSize = 14.sp,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Row (modifier = Modifier.padding(bottom = 5.dp)){
+                    CustomText(
+                        text =if(vat>0)  "${stringResource(R.string.vat)}(${vat.formatDouble()}%)" else "${stringResource(R.string.vat)} ",
                         color = Color.Black,
                         fontSize = 14.sp,
                         modifier = Modifier.wrapContentWidth()
                         )
                     CustomText(
-                        text ="${( obj.phantramthue?:0.0).formatDouble()}%",
+                        text = (obj.tienvat?:0.0).formatCurrency(),
                         color = Color.Black,
                         textAlign = TextAlign.Right,
                         fontSize = 14.sp,
@@ -121,7 +153,7 @@ fun ProductItem(
                 }
                 Row (modifier = Modifier.padding(bottom = 5.dp)){
                     CustomText(
-                        text = stringResource(R.string.final_amount),
+                        text = stringResource(R.string.total_amount),
                         color = Color.Black,
                         fontSize = 14.sp,
                         modifier = Modifier.wrapContentWidth()

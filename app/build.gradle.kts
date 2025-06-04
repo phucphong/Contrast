@@ -138,6 +138,8 @@ dependencies {
     implementation(libs.biometric)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.foundation.layout.android)
 
 
     annotationProcessor(libs.glideCompiler)

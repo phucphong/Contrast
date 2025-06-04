@@ -46,7 +46,7 @@ fun HeaderImageTitle(
         Image(
             painter = painterResource(id = iconRes),
             contentDescription = null,
-            modifier = Modifier.size(50.dp).padding(10.dp),
+            modifier = Modifier.size(60.dp).padding(10.dp),
         )
 
         CustomText(text = name, color = Color.Black, fontSize = 14.sp,

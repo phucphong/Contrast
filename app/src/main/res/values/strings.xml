@@ -8,6 +8,8 @@
     <string name="note_work" translatable="false">Lưu ý:</string>
     <string name="phoneNumber" translatable="false">Số điện thoại</string>
     <string name="register_account" translatable="false">Tạo tài khoản</string>
+    <string name="phone" translatable="false">Điện thoại</string>
+    <string name="phone_house" translatable="false">Điện thoại nhà riêng</string>
     <string name="phone_number" translatable="false">Số điện thoại</string>
     <string name="password" translatable="false">Mật khẩu</string>
     <string name="password_new" translatable="false">Mật khẩu mới</string>
@@ -31,6 +33,18 @@
     <string name="connect_code_label">Mã kết nối</string>
     <string name="connect_code_placeholder">Nhập mã kết nối hoặc tên miền</string>
     <string name="youNotHaveOpportunities">Bạn chưa có cơ hội nào</string>
+    <string name="youNotPermissionMobileEditOpportunity">Chỉ có admin hoặc người được phân quyền sửa mới được sửa cơ hội kinh doanh!</string>
+    <string name="youNotPermissionMobileEditOpportunityCustomer">Chỉ có admin hoặc người được phân quyền sửa mới được sửa cơ hội kinh doanh của khách hàng</string>
+    <string name="youNotPermissionMobileDeleteOpportunity">Chỉ có admin hoặc người được phân quyền xóa mới được xóa cơ hội kinh doanh!</string>
+    <string name="youNotPermissionMobileDeleteOpportunityCustomer">Chỉ có admin , người phụ trách khách hàng mới được xóa cơ hội kinh doanh của khách hàng</string>
+    <string name="pleaseContactToAdminPermissionMobileDeleteCustomer">vui lòng liên hệ admin để được phần quyền xóa khách hàng hoặc có thể xóa từ danh sách cơ hội kinh doanh nếu bạn đợc quền xóa!</string>
+     <string name="pleaseContactToAdminPermissionMobileEditCustomer">vui lòng liên hệ admin để được phần quyền xóa khách hàng hoặc có thể xóa từ danh sách cơ hội kinh doanh nếu bạn đợc quền xóa!</string>
+
+    <string name="youNotPermissionMobileDeleteContacts">Chỉ có admin hoặc người được phân quyền xóa mới được xóa liên hệ!</string>
+    <string name="youNotPermissionMobileDeleteContactsCustomer">Chỉ có admin , người phụ trách khách hàng mới được xóa liên hệ của khách hàng</string>
+
+    <string name="pleaseSelectContact">Lên hệ chưa được chọn vui lòng chọn liên hệ!</string>
+
     <!-- Thời gian -->
     <string name="participation_result_title">Kết quả tham gia</string>
     <!-- Tiêu đề dialog -->
@@ -103,6 +117,7 @@
     <string name="info_source">Nguồn thông tin</string>
     <string name="customer_add">Thêm khách hàng</string>
     <string name="edit">Sửa</string>
+    <string name="edit_product">Sửa sản phẩm</string>
     <string name="customer_type">Kiểu khách hàng</string>
     <string name="confirm">Đồng ý</string>
     <string name="content">Nội dung</string>
@@ -111,6 +126,7 @@
     <string name="monthlySales">Doanh số</string>
     <string name="price">Đơn giá</string>
     <string name="vat">Vat</string>
+    <string name="dowload">Tải về</string>
     <string name="customer_name">Tên khách hàng</string>
 
     <string name="customer">Khách hàng</string>
@@ -140,6 +156,7 @@
     <string name="search_placeholder">Nhập từ khóa tìm kiếm</string>
     <string name="send">Gửi</string>
     <string name="save">Lưu</string>
+    <string name="save_success">Lưu thành công</string>
     <string name="select">Chọn</string>
     <string name="pronoun">Xưng hô</string>
     <string name="pronoun_mr">Anh</string>
@@ -191,6 +208,7 @@
 
     <!-- Ghi chú -->
     <string name="order_note">Ghi chú đơn hàng</string>
+    <string name="total_amount">Tổng cộng</string>
 
     <!-- Tổng kết -->
     <string name="total_price">Tổng tiền:</string>
@@ -296,6 +314,7 @@
     <string name="invoice_number">Số hóa đơn</string>
     <string name="voucher_applied">Voucher áp dụng</string>
     <string name="none">Không có</string>
+    <string name="procedure">Quy trình</string>
     <string name="complete" translatable="false">Hoàn thành</string>
     <string name="total_payment">Tổng thanh toán</string>
     <string name="voucher">Voucher</string>
@@ -386,6 +405,8 @@
     <string name="commission_label">Hoa hồng</string>
     <string name="feedback_note">Phản hồi của bạn giúp Contrast Coffee nâng cao chất lượng dịch vụ tốt hơn.</string>
     <string name="send_feedback">Gửi đi</string>
+    <string name="call">Cuộc gọi</string>
+    <string name="sms">SMS</string>
     <string name="email" translatable="false">Email</string>
     <string name="website" translatable="false">Website</string>
     <string name="news" translatable="false">Tin tức</string>
@@ -553,12 +574,15 @@
     <string name="history">Lịch sử</string>
     <string name="call_internal">Nội bộ</string>
     <string name="contact">Liên hệ</string>
+    <string name="contact_opportunity">Liên hệ cơ hội</string>
+    <string name="contact_project">Liên hệ dự án</string>
     <string name="attach">Đính kèm</string>
     <string name="contact_phone">Danh bạ</string>
     <string name="contact_info">Thông tin liên hệ</string>
     <string name="business_opportunity">CHKD</string>
     <string name="opportunity_name">Tên cơ hội</string>
     <string name="opportunity_detail">Chi tiết cơ hội</string>
+    <string name="contact_detail">Chi tiết liên hệ</string>
     <string name="more">Khác</string>
     <string name="info">Thông tin</string>
     <string name="other">Khác</string>

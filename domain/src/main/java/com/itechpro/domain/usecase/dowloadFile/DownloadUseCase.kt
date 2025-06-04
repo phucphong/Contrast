@@ -10,6 +10,8 @@ import java.util.Base64
 interface DownloadUseCase {
     operator fun invoke(url: String, fileName: String)
 
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveBase64ImageToGallery(
         context: Context,

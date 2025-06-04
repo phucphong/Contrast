@@ -1,8 +1,6 @@
 package com.contrast.Contrast.presentation.features.opportunity.list
 
 
-
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -24,6 +22,7 @@ import androidx.navigation.NavHostController
 import com.contrast.Contrast.R
 import com.contrast.Contrast.extensions.DateUtils
 import com.contrast.Contrast.extensions.formatCurrency
+import com.contrast.Contrast.extensions.formatFloat
 import com.contrast.Contrast.presentation.components.EmptyStateScreen
 import com.contrast.Contrast.presentation.components.alertDialog.ConfirmDeleteDialog
 import com.contrast.Contrast.presentation.components.alertDialog.CustomOkAlertDialog
@@ -70,6 +69,9 @@ fun OpportunityScreen(
     navHostController: NavHostController,
     type: String,
     title: String,
+    customer: String,
+    customerEdit: String,
+    customerDelete: String,
     viewModel: OpportunityViewModel = hiltViewModel(),
 
 
@@ -100,26 +102,11 @@ fun OpportunityScreen(
     LaunchedEffect(Unit) {
         delay(100)
 
-        callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
+        callAPI(type, startDate, endDate, searchText, statusId, viewModel)
 
     }
 
 
-    LaunchedEffect(state.navEvent) {
-        when (val event = state.navEvent) {
-            is OpportunityNavEvent.GoToOpportunityDetail -> {
-                navHostController.navigate(
-                    OpportunityRoutes.OpportunityDetail.withArgs(
-                        id = ido,
-                    )
-                )
-                viewModel.resetNavigation()
-            }
-
-
-            else -> Unit
-        }
-    }
 
     LaunchedEffect(listState) {
         snapshotFlow {
@@ -140,7 +127,9 @@ fun OpportunityScreen(
                 navHostController.navigate(
                     OpportunityRoutes.OpportunityDetail.withArgs(
                         id = event.id,
-                        )
+                        customer = customer,
+                        customerEdit = event.customerEdit,
+                    )
                 )
                 viewModel.resetNavigation()
             }
@@ -153,34 +142,48 @@ fun OpportunityScreen(
 
 
     if (isFinterDialog) {
-        var  obj = SearchDialog(startDate = startDate, endDate = endDate
-            , selectedType = selectedType)
+        var obj = SearchDialog(
+            startDate = startDate, endDate = endDate, selectedType = selectedType
+        )
 
         SearchConditionDialog(onDismiss = { isFinterDialog = false },
             search = obj,
             type = typeDate,
             onSearch = { search ->
-                startDate = search.startDate?:""
-                endDate = search.endDate?:""
-                selectedType = search.selectedType?:""
-                callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
+                startDate = search.startDate ?: ""
+                endDate = search.endDate ?: ""
+                selectedType = search.selectedType ?: ""
+                callAPI(type, startDate, endDate, searchText, statusId, viewModel)
                 isFinterDialog = false
             })
 
     }
     if (showDeleteDialog) {
+
+
         ConfirmDeleteDialog(show = showDeleteDialog, onDismiss = {
             showDeleteDialog = false
             objToDelete = null
             openedItem = null // 💡 đóng nút delete đang mở
         }, onConfirm = {
-            
-            var  content = "";
-            val  name = objToDelete?.ten?:""
-            val  customerName = "- ${objToDelete?.ten?:""}"
-            content =name+customerName
 
-            viewModel.deleteOpportunity(type,"cohoikinhdoanh",objToDelete?.id?:"", "cohoikinhdoanh", content, startDate, endDate, searchText, state.categoryCode, state.categorys)
+            var content = "";
+            val name = objToDelete?.ten ?: ""
+            val customerName = "- ${objToDelete?.ten ?: ""}"
+            content = name + customerName
+
+            viewModel.deleteOpportunity(
+                type,
+                "cohoikinhdoanh",
+                objToDelete?.id ?: "",
+                "cohoikinhdoanh",
+                content,
+                startDate,
+                endDate,
+                searchText,
+                state.categoryCode,
+                state.categorys
+            )
 
             showDeleteDialog = false
             objToDelete = null
@@ -197,27 +200,24 @@ fun OpportunityScreen(
     }
     Column {
 
-        TopBackSearchFilter(
-            painter = painterResource(R.drawable.quaylai),
+        TopBackSearchFilter(painter = painterResource(R.drawable.quaylai),
             text = searchText,
-            isFilter =true,
+            isFilter = true,
             onTextChanged = { searchText = it },
             onSearchClick = {
-                callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
+                callAPI(type, startDate, endDate, searchText, statusId, viewModel)
             },
             onBackStack = { navHostController.popBackStack() },
-            onFilterClick = { isFinterDialog = true }
-        )
+            onFilterClick = { isFinterDialog = true })
 
         HeaderImageTitle(
-            name = title,
-            iconRes = R.drawable.vcohoikinhdoanh
+            name = title, iconRes = R.drawable.vcohoikinhdoanh
 
         )
 
         CustomSwipeRefresh(isRefreshing = isRefreshing, onRefresh = {
 
-            callAPI(type, startDate, endDate,  searchText,statusId,viewModel)
+            callAPI(type, startDate, endDate, searchText, statusId, viewModel)
         }) {
             LazyColumn(
                 state = listState, modifier = Modifier
@@ -225,15 +225,19 @@ fun OpportunityScreen(
                     .background(Color.White)
             ) {
                 item {
-                TabBarRow(
-                    tabs = state.categorys,
-                    color = TealGreen,
-                    textCorSelect = TealGreen,
-                    selectedTab = state.selectedTab,
-                    isQuantity=true,
-                    onTabSelected = { viewModel.onCategorySelected(it, state.categorys, type, startDate,endDate,searchText) },
-                    type = ""
-                )
+                    TabBarRow(
+                        tabs = state.categorys,
+                        color = TealGreen,
+                        textCorSelect = TealGreen,
+                        selectedTab = state.selectedTab,
+                        isQuantity = true,
+                        onTabSelected = {
+                            viewModel.onCategorySelected(
+                                it, state.categorys, type, startDate, endDate, searchText
+                            )
+                        },
+                        type = ""
+                    )
                 }
 
                 if (state.isLoading) {
@@ -242,7 +246,7 @@ fun OpportunityScreen(
                             show = isLoading,
                             onDismissRequest = { isLoading = false })
                     }
-                }else{
+                } else {
                     if (state.pagedOpportunitys.isEmpty()) {
                         item {
                             EmptyStateScreen(
@@ -267,31 +271,44 @@ fun OpportunityScreen(
                                     isOpen = openedItem == item,
                                     onSwipeStart = { swipedItem -> openedItem = swipedItem },
                                     onDeleteClick = { itemToDelete ->
-                                        showDeleteDialog = true
-                                        objToDelete =
-                                            itemToDelete // 💡 lưu lại để xử lý sau khi confirm
+
+
+                                        val error = viewModel.canDeleteOpportunity(
+                                            openedItem!!, customer, customerDelete
+                                        )
+                                        if (error.isNotEmpty()) {
+                                            viewModel.setErrorMessage(error)
+                                            showDeleteDialog = false
+                                            objToDelete = null
+                                            openedItem = null
+                                        } else {
+                                            showDeleteDialog = true
+                                            objToDelete = itemToDelete
+                                        }
+
+
                                     },
                                     paddingTop = 5.dp,
                                     paddingBottom = 5.dp
                                 ) { itemModifier ->
-                                    val   startDate = Util.ddMMYYY(item.ngaybatdau ?: "")
+                                    val startDate = Util.ddMMYYY(item.ngaybatdau ?: "")
                                     val endDate = " - " + Util.ddMMYYY(item.ngayketthuc ?: "")
 
-                                    OpportunityItem(
-                                        name = item.ten?:"",
-                                        key =item.ma?:"",
-                                        total = ( item.tongiatri?:0.0).formatCurrency(),
-                                        customer =item.tenkhachhang?:"",
-                                        blankWork = "${( item.tylethanhcong?:0.0).formatCurrency()}%",
+                                    OpportunityItem(name = item.ten ?: "",
+                                        key = item.ma ?: "",
+                                        total = (item.tongiatri ?: 0.0).formatCurrency(),
+                                        customer = item.tenkhachhang ?: "",
+                                        blankWork = "${(item.tylethanhcong ?: 0f).formatFloat()}%",
                                         complete = "Hoàn thành",
                                         date = "$startDate $endDate",
-                                        personInCharge = item.nhanvienphutrach?:""
-                                        ,onClickOpportunity={
+                                        personInCharge = item.nhanvienphutrach ?: "",
+                                        onClickOpportunity = {
 
-                                            viewModel.onItemClick(item.id?:"0")
+                                            viewModel.onItemClick(
+                                                item.id ?: "0",  customerEdit
+                                            )
 
-                                        }
-                                    )
+                                        })
 
                                 }
 
@@ -316,6 +333,6 @@ fun callAPI(
     viewModel: OpportunityViewModel,
 ) {
 
-    viewModel.getOpportunityProcess(type,startDate,endDate, searchText,statusId)
-    
+    viewModel.getOpportunityProcess(type, startDate, endDate, searchText, statusId)
+
 }

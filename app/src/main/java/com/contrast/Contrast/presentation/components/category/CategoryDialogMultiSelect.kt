@@ -59,17 +59,16 @@ fun CategoryDialogMultiSelect(
 
     // ✅ Danh sách ID và Name được chọn, khởi tạo với giá trị đã chọn trước đó
     val selectedIds = remember { mutableStateListOf<String>().apply { addAll(preSelectedIds) } }
-    val selectedNames = remember { mutableStateListOf<String>().apply{
-        addAll(preSelectedNames)
-    } }
+    val selectedNames = remember {
+        mutableStateListOf<String>().apply {
+            addAll(preSelectedNames)
+        }
+    }
 
 
     Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            dismissOnClickOutside = false,
-            dismissOnBackPress = true,
-            usePlatformDefaultWidth = true
+        onDismissRequest = onDismiss, properties = DialogProperties(
+            dismissOnClickOutside = false, dismissOnBackPress = true, usePlatformDefaultWidth = true
         )
     ) {
         Surface(
@@ -87,70 +86,72 @@ fun CategoryDialogMultiSelect(
 
                 Spacer(Modifier.size(20.dp))
 
-                SearchBar(
-                    searchText = search,
+                SearchBar(searchText = search,
                     backgroundColor = FFFFFFFF,
                     placeholder = stringResource(R.string.search_placeholder),
                     onTextChange = { newText ->
                         viewModel.setSearch(newText)
                         if (!searchLocal) viewModel.getCategory(newText, typeCheck)
-                    }
-                )
+                    })
 
                 Spacer(Modifier.size(20.dp))
 
-            Column(Modifier.height(300.dp)) {     when {
-                isLoading -> {
-                    CustomCircularProgressIndicator()
-                }
-                categories.isEmpty() -> {
-                    EmptyStateScreen(
-                        imageRes = R.drawable.nodata,
-                        size = 60.dp,
-                        title = stringResource(R.string.no_data),
-                    )
-                }
-                else -> {
-                    LazyColumn {
-                        items(categories) { category ->
-                            val isSelected = selectedIds.contains(category.id)
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(12.dp)
-                                    .noRippleClickableComposable {
-                                        category.id?.let { id ->
-                                            if (isSelected) {
-                                                selectedIds.remove(id)
-                                                selectedNames.remove(category.name)
-                                            } else {
-                                                selectedIds.add(id)
-                                                selectedNames.add(category.name.orEmpty())
+                Column(Modifier.height(300.dp)) {
+                    when {
+                        isLoading -> {
+                            CustomCircularProgressIndicator()
+                        }
+
+                        categories.isEmpty() -> {
+                            EmptyStateScreen(
+                                imageRes = R.drawable.nodata,
+                                size = 60.dp,
+                                title = stringResource(R.string.no_data),
+                            )
+                        }
+
+                        else -> {
+                            LazyColumn {
+                                items(categories) { category ->
+                                    val isSelected = selectedIds.contains(category.id)
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(12.dp)
+                                            .noRippleClickableComposable {
+                                                category.id?.let { id ->
+                                                    if (isSelected) {
+                                                        selectedIds.remove(id)
+                                                        selectedNames.remove(category.name)
+                                                    } else {
+                                                        selectedIds.add(id)
+                                                        selectedNames.add(category.name.orEmpty())
+                                                    }
+                                                }
+                                            }, verticalAlignment = Alignment.CenterVertically
+                                    ) {
+
+                                        BorderedCheckBox(checked = isSelected, onCheckedChange = {
+                                            category.id?.let { id ->
+                                                if (isSelected) {
+                                                    selectedIds.remove(id)
+                                                    selectedNames.remove(category.name)
+                                                } else {
+                                                    selectedIds.add(id)
+                                                    selectedNames.add(category.name.orEmpty())
+                                                }
                                             }
-                                        }
-                                    },
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
+                                        })
 
-                                BorderedCheckBox(checked = isSelected, onCheckedChange = {
-                                    category.id?.let { id ->
-                                    if (isSelected) {
-                                        selectedIds.remove(id)
-                                        selectedNames.remove(category.name)
-                                    } else {
-                                        selectedIds.add(id)
-                                        selectedNames.add(category.name.orEmpty())
+                                        Spacer(Modifier.width(8.dp))
+                                        CustomText(text = category.name ?: "")
                                     }
-                                } })
-
-                                Spacer(Modifier.width(8.dp))
-                                CustomText(text = category.name ?: "")
+                                    CustomDividerColor()
+                                }
                             }
-                            CustomDividerColor()
                         }
                     }
                 }
-            } }
 
 
 
@@ -160,9 +161,10 @@ fun CategoryDialogMultiSelect(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    CustomButton(
-                        text = stringResource(id = R.string.close),
-                        modifier = Modifier.padding(16.dp,40.dp,16.dp,16.dp).weight(1f),
+                    CustomButton(text = stringResource(id = R.string.close),
+                        modifier = Modifier
+                            .padding(16.dp, 40.dp, 16.dp, 16.dp)
+                            .weight(1f),
                         textColor = Color.White,
                         containerColor = FFAFAFAF,
                         roundedCornerShape = 10.dp,
@@ -170,8 +172,7 @@ fun CategoryDialogMultiSelect(
                             onOptionSelectedIds(selectedIds)
                             onOptionSelectedNames(selectedNames)
                             onDismiss()
-                        }
-                    )
+                        })
                 }
             }
         }

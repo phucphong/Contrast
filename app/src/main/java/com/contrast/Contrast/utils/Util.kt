@@ -22,9 +22,12 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
@@ -76,7 +79,25 @@ object Util {
 
         return "$hiddenUsername@$domain"
     }
+    fun formatDecimalFormatSymbols(number: Double): String {
+        var formattedNumber = ""
+        try {
+            val symbols = DecimalFormatSymbols(Locale.getDefault())
+            symbols.groupingSeparator = '.' // Sử dụng dấu chấm để phân tách hàng ngàn
+            symbols.decimalSeparator = ',' // Sử dụng dấu phẩy để phân tách phần thập phân
+            val decimalFormat = DecimalFormat("#,##0.00", symbols)
 
+            // Định dạng số và hiển thị
+            val numberformat = decimalFormat.format(number)
+            formattedNumber = if (numberformat.endsWith(",00")) {
+                numberformat.replace(",00", "")
+            } else {
+                numberformat
+            }
+        } catch (e: java.lang.Exception) {
+        }
+        return formattedNumber
+    }
 
     fun ddMMYYY(strdate: String): String {
 

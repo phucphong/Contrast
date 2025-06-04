@@ -164,6 +164,9 @@ fun ProfileScreen(
                     OpportunityRoutes.Opportunity.withArgs(
                         type = event.type,
                         title = event.title,
+                        customer ="1",
+                        customerDelete ="0",
+                        customerEdit ="0",
                     )
                 )
                 viewModel.resetNavigation()

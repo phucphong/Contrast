@@ -22,7 +22,8 @@ fun BottomAction(icon: Int, label: String, onClick: () -> Unit) {
             .noRippleClickableComposable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = icon), contentDescription = label, modifier = Modifier.size(24.dp))
-        Text(text = label, fontSize = 12.sp, modifier = Modifier.padding(5.dp))
+        Image(painter = painterResource(id = icon), contentDescription = label, modifier = Modifier.size(22.dp))
+        Text(text = label, fontSize = 12.sp, modifier = Modifier.padding(4.dp))
     }
 }
+

@@ -69,7 +69,7 @@ fun CustomOkAlertDialog(
                 text = message,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth().wrapContentHeight()
                     .padding(horizontal = 20.dp)
             )
 

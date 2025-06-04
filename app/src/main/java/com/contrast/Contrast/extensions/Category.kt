@@ -27,6 +27,11 @@ fun Category.label(): String {
         "contact" -> stringResource(R.string.contact)
         "product" -> stringResource(R.string.product)
         "attach" -> stringResource(R.string.attach)
+        "email" -> stringResource(R.string.email)
+        "call" -> stringResource(R.string.call)
+        "sms" -> stringResource(R.string.sms)
+        "zalo" -> stringResource(R.string.zalo)
+        "facebook" -> stringResource(R.string.facebook)
         else -> name.orEmpty()
     }
 }

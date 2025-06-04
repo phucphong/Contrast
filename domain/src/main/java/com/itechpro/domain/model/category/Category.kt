@@ -13,6 +13,7 @@ data class Category(
     val hoten: String? =   "",
     val filetxt: String? =   "",
     val idcohoi: String? =   "",
+    var count: Int?=0,
     var icon: Int?=0,
     var hoatdong: Boolean?=false,
     val quantity: Int = 0
